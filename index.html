@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinguaPlay — Belajar Bahasa Jadi Lebih Mudah</title>
+  <meta name="description" content="Platform belajar bahasa interaktif. Audio-visual, ramah, dan mudah dipahami langkah demi langkah.">
+  <meta name="theme-color" content="#080812">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=33">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══════════ NAVIGATION ═══════════ -->
+  <nav id="main-nav" class="hidden">
+    <div class="nav-brand" onclick="showView('dashboard')">
+      <span class="brand-icon">✨</span>
+      <span class="brand-name">LinguaPlay</span>
+    </div>
+    <div class="nav-stats">
+      <div class="stat-item" title="Streak harian">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-value" id="streak-count">0</span>
+        <span class="stat-label">streak</span>
+      </div>
+      <div class="stat-item" title="Total XP">
+        <span class="stat-icon">⚡</span>
+        <span class="stat-value" id="xp-count">0</span>
+        <span class="stat-label">XP</span>
+      </div>
+    </div>
+    <div class="nav-auth-section" id="nav-auth-section">
+      <button class="btn-auth-nav" id="auth-nav-btn" onclick="openAuthModal('login')">
+        Masuk / Daftar
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════ VIEW CONTAINER ═══════════ -->
+  <div id="views-container">
+
+    <!-- ───────── VIEW: ONBOARDING ───────── -->
+    <div id="view-onboarding" class="view active">
+      <div class="onboarding-container">
+        <div class="onboarding-hero">
+          <div class="floating-emojis">
+            <span class="float-emoji" style="--delay: 0s">🌏</span>
+            <span class="float-emoji" style="--delay: 0.4s">⭐</span>
+            <span class="float-emoji" style="--delay: 0.8s">💬</span>
+            <span class="float-emoji" style="--delay: 1.2s">🌱</span>
+            <span class="float-emoji" style="--delay: 1.6s">✨</span>
+          </div>
+          <h1 class="hero-title">
+            Belajar Bahasa<br>
+            <span class="gradient-text">Jadi Lebih Mudah ✨</span>
+          </h1>
+          <p class="hero-sub">Teman setia belajarmu setiap hari — santai, interaktif, dan bertumbuh langkah demi langkah 🌱</p>
+        </div>
+        <div class="onboarding-form">
+          <!-- Google Sign In Button -->
+          <button type="button" class="btn-google btn-large" onclick="openGoogleModal()">
+            <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Lanjutkan dengan Google</span>
+          </button>
+
+          <div class="onboarding-divider">
+            <span>atau masuk dengan akun email</span>
+          </div>
+
+          <div class="onboarding-auth-actions">
+            <button type="button" class="btn-secondary btn-action-half" onclick="openAuthModal('login')">
+              🔑 Masuk (Login)
+            </button>
+            <button type="button" class="btn-secondary btn-action-half" onclick="openAuthModal('register')">
+              📝 Daftar Akun Baru
+            </button>
+          </div>
+
+          <div class="onboarding-divider">
+            <span>atau coba dulu tanpa akun</span>
+          </div>
+
+          <div class="guest-start-box">
+            <label class="form-label" for="user-name-input">Mulai dengan nama saja: 👋</label>
+            <div class="guest-input-row">
+              <input
+                type="text"
+                id="user-name-input"
+                class="form-input"
+                placeholder="Ketik nama kamu..."
+                maxlength="20"
+                autocomplete="off"
+              >
+              <button id="start-btn" class="btn-primary btn-guest-start" onclick="startApp()">
+                Mulai 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: DASHBOARD ───────── -->
+    <div id="view-dashboard" class="view">
+      <div class="dashboard-container">
+
+        <div class="dashboard-header">
+          <div class="greeting-section">
+            <h1 class="greeting" id="dashboard-greeting">Halo! 👋</h1>
+            <p class="greeting-sub" id="dashboard-sub">Yuk mulai belajar hari ini!</p>
+          </div>
+          <div class="daily-goal" title="XP harian kamu">
+            <div class="goal-ring">
+              <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                <path class="circle" id="goal-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              </svg>
+              <div class="goal-text">
+                <span id="goal-xp-today">0</span>
+                <span class="goal-label">/ 50 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Cards -->
+        <div class="lang-cards">
+
+          <div class="lang-card korean-card" id="korean-card" onclick="showView('korean-map')" role="button" tabindex="0" aria-label="Buka jalur belajar Korea">
+            <div class="card-glow"></div>
+            <div class="card-header">
+              <span class="card-flag">🇰🇷</span>
+              <div class="card-badge" id="korean-badge">Level 1</div>
+            </div>
+            <h2 class="card-title">Bahasa Korea</h2>
+            <p class="card-subtitle">Dari Hangul sampai percakapan formal</p>
+            <div class="card-progress">
+              <div class="progress-bar">
+                <div class="progress-fill korean-progress" id="korean-progress-bar" style="width: 0%"></div>
+              </div>
+              <span class="progress-text" id="korean-progress-text">0% selesai</span>
+            </div>
+            <div class="card-stats">
+              <span>🏆 <span id="korean-xp">0</span> XP</span>
+              <span>📚 <span id="korean-lessons">0</span>/<span id="korean-total">0</span> pelajaran</span>
+            </div>
+            <div class="card-action">
+              <button class="btn-card korean-btn" id="korean-cta-btn">
+                <span id="korean-btn-text">Mulai Belajar</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lang-card english-card" id="english-card" onclick="showView('english-map')" role="button" tabindex="0" aria-label="Buka jalur belajar Inggris">
+            <div class="card-glow"></div>
+            <div class="card-header">
+              <span class="card-flag">🇬🇧</span>
+              <div class="card-badge" id="english-badge">Level 1</div>
+            </div>
+            <h2 class="card-title">Bahasa Inggris</h2>
+            <p class="card-subtitle">Grammar, tenses & professional English</p>
+            <div class="card-progress">
+              <div class="progress-bar">
+                <div class="progress-fill english-progress" id="english-progress-bar" style="width: 0%"></div>
+              </div>
+              <span class="progress-text" id="english-progress-text">0% selesai</span>
+            </div>
+            <div class="card-stats">
+              <span>🏆 <span id="english-xp">0</span> XP</span>
+              <span>📚 <span id="english-lessons">0</span>/<span id="english-total">0</span> pelajaran</span>
+            </div>
+            <div class="card-action">
+              <button class="btn-card english-btn" id="english-cta-btn">
+                <span id="english-btn-text">Mulai Belajar</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lang-card toefl-card" id="toefl-card" onclick="showView('toefl-map')" role="button" tabindex="0" aria-label="Buka jalur Inggris Lanjutan">
+            <div class="card-glow"></div>
+            <div class="card-header">
+              <span class="card-flag">📝</span>
+              <div class="card-badge" id="toefl-badge">Level 1</div>
+            </div>
+            <h2 class="card-title">TOEFL Fast Track ⚡</h2>
+            <p class="card-subtitle">Target 500–550+ dalam 7 hari (Listening, Structure & Reading)</p>
+            <div class="card-progress">
+              <div class="progress-bar">
+                <div class="progress-fill toefl-progress" id="toefl-progress-bar" style="width: 0%"></div>
+              </div>
+              <span class="progress-text" id="toefl-progress-text">0% selesai</span>
+            </div>
+            <div class="card-stats">
+              <span>🏆 <span id="toefl-xp">0</span> XP</span>
+              <span>📚 <span id="toefl-lessons">0</span>/<span id="toefl-total">0</span> pelajaran</span>
+            </div>
+            <div class="card-action">
+              <button class="btn-card toefl-btn" id="toefl-cta-btn">
+                <span id="toefl-btn-text">Mulai Belajar</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 💬 Mini-Dialogue Real-World Chat Banner -->
+        <div class="dialogue-cta-banner" onclick="showView('dialogue-hub')" role="button" tabindex="0">
+          <div class="dialogue-cta-content">
+            <div class="dialogue-cta-badge">✨ Fitur Baru • Interaktif</div>
+            <h3 class="dialogue-cta-title">💬 Simulasi Percakapan Nyata</h3>
+            <p class="dialogue-cta-desc">Latih respon spontanmu dalam obrolan dua arah dengan penutur asli: pesan kopi di Seoul, belanja di GS25, arah jalan di New York & kafe London!</p>
+            <div class="dialogue-cta-tags">
+              <span>☕ Kafe Hongdae</span>
+              <span>🏪 Minimarket GS25</span>
+              <span>🥐 London Coffee</span>
+              <span>🗽 Arah Jalan NYC</span>
+            </div>
+          </div>
+          <button class="btn-primary dialogue-cta-btn">Mulai Ngobrol 🚀</button>
+        </div>
+
+        <!-- 🎯 TOEFL ITP Full Simulation & Score Predictor Banner -->
+        <div class="toefl-sim-cta-banner" onclick="startToeflSimulation()" role="button" tabindex="0">
+          <div class="toefl-sim-cta-content">
+            <div class="toefl-sim-cta-badge">🎓 Ujian Lengkap • Prediksi Skor 310 - 677</div>
+            <h3 class="toefl-sim-cta-title">🎯 Simulasi Resmi Tes TOEFL ITP</h3>
+            <p class="toefl-sim-cta-desc">Uji kemampuanmu dengan 30 soal standar ETS (Listening Audio 2 Orang, Structure Grammar, & Academic Reading) lengkap dengan timer 25 menit dan prediksi skor resmi!</p>
+            <div class="toefl-sim-cta-tags">
+              <span>🎧 10 Soal Listening</span>
+              <span>📐 10 Soal Structure & Error ID</span>
+              <span>📖 10 Soal Reading Passage</span>
+              <span>⏱️ Timer 25 Menit</span>
+              <span>📊 Prediksi Skor & CEFR</span>
+            </div>
+          </div>
+          <button class="btn-primary toefl-sim-cta-btn">Mulai Ujian ⏱️</button>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-section">
+          <h3 class="section-title">🏅 Pencapaian</h3>
+          <div class="achievements-grid" id="achievements-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: KOREAN MAP ───────── -->
+    <div id="view-korean-map" class="view">
+      <div class="map-container">
+        <div class="map-header">
+          <button class="btn-back-nav" onclick="navigateBack()" aria-label="Kembali ke menu sebelumnya">
+            <span class="back-arrow">←</span>
+            <span>Kembali</span>
+          </button>
+          <h2 class="map-title">🇰🇷 Jalur Korea</h2>
+          <div class="map-xp">⚡ <span id="korean-map-xp">0</span> XP</div>
+        </div>
+        <div class="korean-hangul-rule-banner" onclick="openHangulGuideModal()" role="button" tabindex="0" title="Buka penjelasan kenapa huruf vokal ada lingkaran ㅇ">
+          <div class="hangul-banner-left">
+            <span class="hangul-banner-icon">💡</span>
+            <div>
+              <div class="hangul-banner-title">Rahasia Hangul: Mengapa Huruf Vokal Memakai "ㅇ"?</div>
+              <div class="hangul-banner-sub">Kapan ㅇ bisu (0) & kapan berbunyi "ng"? Klik untuk panduan visual lengkap!</div>
+            </div>
+          </div>
+          <span class="hangul-banner-btn">Buka Panduan 📖</span>
+        </div>
+        <div class="lesson-path" id="korean-lesson-path">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: TOEFL MAP ───────── -->
+    <div id="view-toefl-map" class="view">
+      <div class="map-container">
+        <div class="map-header">
+          <button class="btn-back-nav" onclick="navigateBack()" aria-label="Kembali ke menu sebelumnya">
+            <span class="back-arrow">←</span>
+            <span>Kembali</span>
+          </button>
+          <h2 class="map-title">📝 Fast Track 7 Hari TOEFL ITP</h2>
+          <div class="map-xp">⚡ <span id="toefl-map-xp">0</span> XP</div>
+        </div>
+
+        <!-- ⚡ FAST TRACK 7 HARI TEMBUS 500-550+ (METODE 30-45 MENIT/HARI) -->
+        <div class="toefl-hack-banner" onclick="openToeflHackModal()" role="button" tabindex="0">
+          <div class="hack-banner-badge">🔥 TARGET SKOR 500–550+ DALAM 7 HARI (30–45 MNT/HARI)</div>
+          <div class="hack-banner-main">
+            <div class="hack-banner-icon">⚡</div>
+            <div class="hack-banner-text">
+              <h3 class="hack-banner-title">Jalur Kilat 7 Hari: Listening, Structure & Reading 🔑</h3>
+              <p class="hack-banner-sub">Kurikulum harian bertahap & bisa diulang bebas: Day 1 Second Speaker, Day 2 Note-Taking Kuliah, Day 3 Rumus S+V, Day 4 Detektif Error, Day 5 Inversi, Day 6 Reading, Day 7 Simulasi.</p>
+            </div>
+            <button class="btn-hack-cta">Buka Panduan 🚀</button>
+          </div>
+          <div class="hack-pills-row">
+            <span class="hack-pill">🎧 Day 1-2: Listening</span>
+            <span class="hack-pill">📐 Day 3-5: Structure & Error</span>
+            <span class="hack-pill">📖 Day 6: Reading Ninja</span>
+            <span class="hack-pill highlight">🏆 Day 7: Full Sim 310-677</span>
+            <span class="hack-pill">🔄 Repeat Drill 100%</span>
+          </div>
+        </div>
+
+        <div class="toefl-info-banner">
+          <span class="toefl-banner-icon">🎧</span>
+          <div>
+            <strong>Baru: TOEFL Listening — Percakapan 2 Orang (Short Conversations)</strong>
+            <p>Latih pendengaranmu dengan percakapan autentik 2 penutur (Pria 👨 & Wanita 👩) seputar tugas, idiom, dan kehidupan kampus lengkap dengan audio dua suara, naskah, dan pembahasan TOEFL.</p>
+          </div>
+        </div>
+        <div class="toefl-sim-map-cta" onclick="startToeflSimulation()" role="button" tabindex="0">
+          <div class="sim-cta-icon">🏆</div>
+          <div class="sim-cta-info">
+            <h4>Tes Simulasi Resmi TOEFL ITP (30 Soal • 25 Menit)</h4>
+            <p>Uji Listening 2 Orang, Structure Grammar, & Reading dengan prediksi skor 310–677!</p>
+          </div>
+          <button class="btn-primary" style="padding: 10px 18px; font-size: 0.88rem; flex-shrink: 0;">Mulai Simulasi ⏱️</button>
+        </div>
+        <div class="lesson-path" id="toefl-lesson-path">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: ENGLISH MAP ───────── -->
+    <div id="view-english-map" class="view">
+      <div class="map-container">
+        <div class="map-header">
+          <button class="btn-back-nav" onclick="navigateBack()" aria-label="Kembali ke menu sebelumnya">
+            <span class="back-arrow">←</span>
+            <span>Kembali</span>
+          </button>
+          <h2 class="map-title">🇬🇧 Jalur Inggris</h2>
+          <div class="map-xp">⚡ <span id="english-map-xp">0</span> XP</div>
+        </div>
+        <div class="lesson-path" id="english-lesson-path">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: LESSON ───────── -->
+    <div id="view-lesson" class="view">
+      <div class="lesson-container">
+        <div class="lesson-header">
+          <button class="btn-quit" id="lesson-quit-btn">✕ Keluar</button>
+          <div class="lesson-progress-bar">
+            <div class="lesson-progress-fill" id="lesson-progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="lesson-content" id="lesson-content">
+          <!-- Dynamic content injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: RESULT ───────── -->
+    <div id="view-result" class="view">
+      <div class="result-container">
+        <div class="result-card">
+          <div class="result-icon" id="result-icon">🎉</div>
+          <h2 class="result-title" id="result-title">Luar Biasa!</h2>
+          <p class="result-sub" id="result-sub">Kamu berhasil menyelesaikan pelajaran!</p>
+          <div class="result-stats">
+            <div class="result-stat">
+              <span class="result-stat-icon">⚡</span>
+              <span class="result-stat-value" id="result-xp">+0</span>
+              <span class="result-stat-label">XP</span>
+            </div>
+            <div class="result-stat">
+              <span class="result-stat-icon">🎯</span>
+              <span class="result-stat-value" id="result-accuracy">0%</span>
+              <span class="result-stat-label">Akurasi</span>
+            </div>
+            <div class="result-stat">
+              <span class="result-stat-icon">⏱️</span>
+              <span class="result-stat-value" id="result-time">0s</span>
+              <span class="result-stat-label">Waktu</span>
+            </div>
+          </div>
+          <div class="result-actions">
+            <button class="btn-secondary" id="result-back-btn">← Kembali ke Peta</button>
+            <button class="btn-secondary btn-repeat-drill" id="result-repeat-btn">🔄 Ulangi Latihan (Target 100%)</button>
+            <button class="btn-primary" id="result-next-btn">Pelajaran Berikutnya →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: DIALOGUE HUB (Pilih Skenario) ───────── -->
+    <div id="view-dialogue-hub" class="view">
+      <div class="dialogue-hub-container">
+        <div class="map-header">
+          <button class="btn-back-nav" onclick="navigateBack()" aria-label="Kembali ke menu sebelumnya">
+            <span class="back-arrow">←</span>
+            <span>Kembali</span>
+          </button>
+          <h2 class="map-title">💬 Simulasi Percakapan Nyata</h2>
+          <div class="map-xp">⚡ Praktik Alami</div>
+        </div>
+        <p class="dialogue-hub-subtitle">Pilih situasi nyata untuk menguji kemampuan mendengar dan merespon percakapan sehari-hari:</p>
+        <div class="dialogue-cards-grid" id="dialogue-cards-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: DIALOGUE SIMULATION ───────── -->
+    <div id="view-dialogue" class="view">
+      <div class="dialogue-container">
+        <div class="dialogue-header">
+          <button class="btn-back-nav" onclick="quitDialogue()" aria-label="Kembali ke daftar dialog">
+            <span class="back-arrow">←</span>
+            <span>Keluar</span>
+          </button>
+          <div class="dialogue-partner-info">
+            <div class="partner-avatar" id="dialogue-partner-avatar">☕</div>
+            <div>
+              <div class="partner-name" id="dialogue-partner-name">Min-jun</div>
+              <div class="partner-status" id="dialogue-partner-status">● Sedang mengobrol...</div>
+            </div>
+          </div>
+          <div class="dialogue-toggles">
+            <button class="btn-toggle-rom active" id="btn-toggle-rom" onclick="toggleDialogueRomanization()" title="Tampilkan / Sembunyikan Cara Baca">
+              Aa
+            </button>
+          </div>
+        </div>
+        
+        <div class="dialogue-chat-stream" id="dialogue-chat-stream">
+          <!-- Chat bubbles populated dynamically by JS -->
+        </div>
+
+        <div class="dialogue-typing-indicator" id="dialogue-typing" style="display: none;">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-text" id="dialogue-typing-text">sedang mengetik...</span>
+        </div>
+
+        <div class="dialogue-action-area" id="dialogue-action-area">
+          <!-- Prompt & User Choice Buttons -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: TOEFL SIMULATION (EXAM MODE) ───────── -->
+    <div id="view-toefl-sim" class="view">
+      <div class="toefl-exam-container">
+        <!-- Sticky Exam Top Header -->
+        <div class="exam-top-bar">
+          <div class="exam-title-group">
+            <button class="btn-exam-quit" onclick="confirmQuitToeflSim()" title="Batalkan ujian">✕ Keluar</button>
+            <div>
+              <div class="exam-section-name" id="exam-section-name">Section 1: Listening Comprehension</div>
+              <div class="exam-test-name">TOEFL ITP Diagnostic Simulation</div>
+            </div>
+          </div>
+          <div class="exam-timer-wrapper" id="exam-timer-badge">
+            <span class="timer-icon">⏱️</span>
+            <span class="timer-digits" id="exam-timer-digits">25:00</span>
+          </div>
+          <button class="btn-submit-exam" onclick="confirmSubmitToeflSim()">Kumpulkan Ujian 🏁</button>
+        </div>
+
+        <!-- Question Grid Navigator (1 - 30) -->
+        <div class="exam-nav-drawer">
+          <div class="exam-nav-header">
+            <span>Daftar Nomor Soal (Klik untuk lompat):</span>
+            <span class="exam-answered-count" id="exam-answered-count">0 / 30 Terjawab</span>
+          </div>
+          <div class="exam-grid-numbers" id="exam-grid-numbers">
+            <!-- 1 to 30 buttons populated by JS -->
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="exam-question-card" id="exam-question-card">
+          <!-- Dynamic Question Content populated by renderExamQuestion() -->
+        </div>
+
+        <!-- Bottom Exam Navigation Bar -->
+        <div class="exam-bottom-bar">
+          <button class="btn-exam-nav" id="btn-exam-prev" onclick="navExamQuestion(-1)">← Soal Sebelumnya</button>
+          <span class="exam-current-indicator" id="exam-current-indicator">Soal 1 dari 30</span>
+          <button class="btn-exam-nav primary" id="btn-exam-next" onclick="navExamQuestion(1)">Soal Selanjutnya →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── VIEW: TOEFL SCORE REPORT CARD ───────── -->
+    <div id="view-toefl-report" class="view">
+      <div class="toefl-report-container">
+        <!-- Sticky Top Navigation Bar (UCD Mobile & Desktop) -->
+        <div class="report-sticky-top-bar">
+          <button class="btn-back-nav" onclick="navigateBack()" aria-label="Kembali ke menu sebelumnya">
+            <span class="back-arrow">←</span>
+            <span>Kembali</span>
+          </button>
+          <div class="report-top-bar-title">Hasil Prediksi TOEFL</div>
+          <button class="btn-home-nav" onclick="showView('dashboard')" title="Kembali ke Beranda">
+            <span>🏠 Beranda</span>
+          </button>
+        </div>
+
+        <!-- Official Style Certificate / Report Card -->
+        <div class="report-certificate-card">
+          <div class="cert-watermark">TOEFL ITP</div>
+          <div class="cert-header">
+            <div class="cert-emblem">🏛️</div>
+            <div class="cert-title-group">
+              <h2 class="cert-title">OFFICIAL TOEFL ITP® SCORE REPORT</h2>
+              <div class="cert-subtitle">Hasil Prediksi Simulasi Tes Diagnostik LinguaPlay</div>
+            </div>
+          </div>
+
+          <div class="cert-candidate-row">
+            <div class="candidate-item">
+              <span class="label">Nama Peserta:</span>
+              <span class="val" id="report-candidate-name">User</span>
+            </div>
+            <div class="candidate-item">
+              <span class="label">Tanggal Tes:</span>
+              <span class="val" id="report-test-date">Hari Ini</span>
+            </div>
+            <div class="candidate-item">
+              <span class="label">Durasi Tes:</span>
+              <span class="val" id="report-test-time">25 Menit</span>
+            </div>
+          </div>
+
+          <!-- Score Hero Banner -->
+          <div class="cert-score-hero">
+            <div class="score-main-group">
+              <div class="score-label">PREDIKSI TOTAL SKOR TOEFL</div>
+              <div class="score-number-wrap">
+                <span class="score-big" id="report-total-score">543</span>
+                <span class="score-max">/ 677</span>
+              </div>
+            </div>
+            <div class="score-cefr-badge" id="report-cefr-badge">
+              <div class="cefr-code" id="report-cefr-code">CEFR B2</div>
+              <div class="cefr-title" id="report-cefr-title">Upper Intermediate</div>
+            </div>
+          </div>
+
+          <!-- Section Breakdown Cards -->
+          <div class="cert-sections-grid">
+            <div class="section-score-card">
+              <div class="sec-score-icon">🎧</div>
+              <div class="sec-score-info">
+                <div class="sec-name">Listening Comprehension</div>
+                <div class="sec-raw" id="report-listening-raw">Benar: 8 / 10</div>
+                <div class="sec-bar"><div class="sec-bar-fill" id="report-listening-bar" style="width: 80%;"></div></div>
+              </div>
+              <div class="sec-scale-val" id="report-listening-scale">56 <span style="font-size:0.75rem;">/ 68</span></div>
+            </div>
+
+            <div class="section-score-card">
+              <div class="sec-score-icon">📐</div>
+              <div class="sec-score-info">
+                <div class="sec-name">Structure & Written Expression</div>
+                <div class="sec-raw" id="report-structure-raw">Benar: 7 / 10</div>
+                <div class="sec-bar"><div class="sec-bar-fill" id="report-structure-bar" style="width: 70%;"></div></div>
+              </div>
+              <div class="sec-scale-val" id="report-structure-scale">52 <span style="font-size:0.75rem;">/ 68</span></div>
+            </div>
+
+            <div class="section-score-card">
+              <div class="sec-score-icon">📖</div>
+              <div class="sec-score-info">
+                <div class="sec-name">Reading Comprehension</div>
+                <div class="sec-raw" id="report-reading-raw">Benar: 9 / 10</div>
+                <div class="sec-bar"><div class="sec-bar-fill" id="report-reading-bar" style="width: 90%;"></div></div>
+              </div>
+              <div class="sec-scale-val" id="report-reading-scale">58 <span style="font-size:0.75rem;">/ 68</span></div>
+            </div>
+          </div>
+
+          <!-- Personalized Pedagogical Feedback & Target Analysis -->
+          <div class="cert-analysis-box" id="report-analysis-box">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Review All 30 Questions Accordion / List -->
+        <div class="report-review-section">
+          <div class="review-section-header">
+            <h3>📝 Pembahasan Lengkap Semua Nomor Soal</h3>
+            <p>Periksa jawabanmu, pelajari jebakan kata, dan pahami strategi TOEFL di setiap nomor:</p>
+          </div>
+          <div class="review-questions-list" id="report-review-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="report-actions-bar">
+          <button class="btn-primary" onclick="startToeflSimulation()">Ulangi Simulasi Tes 🔄</button>
+          <button class="btn-secondary" onclick="showView('toefl-map')">Kembali ke Jalur Inggris Lanjutan 📚</button>
+          <button class="btn-secondary" onclick="showView('dashboard')">Ke Dashboard 🏠</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end views-container -->
+
+  <!-- ═══════════ MOBILE BOTTOM NAVIGATION BAR (UCD) ═══════════ -->
+  <nav id="mobile-bottom-nav" class="mobile-bottom-nav hidden" aria-label="Navigasi Menu Utama">
+    <button class="mobile-nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+      <span class="mobile-nav-icon">🏠</span>
+      <span class="mobile-nav-label">Beranda</span>
+    </button>
+    <button class="mobile-nav-item" data-view="korean-map" onclick="showView('korean-map')">
+      <span class="mobile-nav-icon">🇰🇷</span>
+      <span class="mobile-nav-label">Korea</span>
+    </button>
+    <button class="mobile-nav-item" data-view="english-map" onclick="showView('english-map')">
+      <span class="mobile-nav-icon">🇬🇧</span>
+      <span class="mobile-nav-label">Inggris</span>
+    </button>
+    <button class="mobile-nav-item" data-view="toefl-map" onclick="showView('toefl-map')">
+      <span class="mobile-nav-icon">📝</span>
+      <span class="mobile-nav-label">TOEFL</span>
+    </button>
+    <button class="mobile-nav-item" data-view="dialogue-hub" onclick="showView('dialogue-hub')">
+      <span class="mobile-nav-icon">💬</span>
+      <span class="mobile-nav-label">Dialog</span>
+    </button>
+  </nav>
+
+</div><!-- end #app -->
+
+<!-- Confetti Canvas (global, outside app) -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast toast-info hidden">
+  <span id="toast-icon">ℹ️</span>
+  <span id="toast-message">Info</span>
+</div>
+
+<!-- Modal Panduan Struktur Hangul & Huruf ㅇ -->
+<div id="hangul-guide-modal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">🎯</span>
+        <h3 class="modal-title">Rahasia Struktur Hangul & Huruf "ㅇ" (이응)</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeHangulGuideModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <!-- Card Aturan 1: Syarat Balok -->
+      <div class="guide-section">
+        <div class="guide-num">1</div>
+        <div class="guide-content">
+          <h4>Huruf Korea Ditulis dalam Bentuk BALOK SUKU KATA</h4>
+          <p>Hangul tidak ditulis berjejer huruf per huruf seperti alfabet Latin (bukan <em>m-u-l</em> tapi <strong>물</strong>). Setiap satu balok adalah satu suku kata.</p>
+          <div class="guide-rule-badge">
+            ⚡ <strong>SYARAT MUTLAK:</strong> Setiap balok suku kata WAJIB minimal memiliki <strong>[1 Konsonan Awal + 1 Vokal]</strong>. Huruf vokal DILARANG berdiri sendirian!
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Aturan 2: Mengapa Ada Lingkaran ㅇ? -->
+      <div class="guide-section">
+        <div class="guide-num">2</div>
+        <div class="guide-content">
+          <h4>Kenapa Huruf Vokal Selalu Ditemani Lingkaran "ㅇ"?</h4>
+          <p>Jika sebuah suku kata hanya memiliki suara vokal murni (suara "a", "ya", "eo", "o", "u", "i"), suku kata tersebut <strong>tidak memiliki konsonan awal</strong>.</p>
+          <p>Tetapi karena syarat balok mewajibkan harus ada konsonan di depan, maka huruf <strong>"ㅇ" (Ieung)</strong> dimasukkan sebagai <strong>Konsonan Bisu / Placeholder (Bunyi 0)</strong>!</p>
+          <div class="guide-compare-grid">
+            <div class="compare-card">
+              <span class="compare-hangeul">ㅏ</span>
+              <span class="compare-label">Vokal Murni "a"</span>
+              <span class="compare-status bad">❌ Tidak boleh ditulis sendirian</span>
+            </div>
+            <div class="compare-arrow">→</div>
+            <div class="compare-card highlight">
+              <span class="compare-hangeul">아</span>
+              <span class="compare-label">ㅇ (bisu) + ㅏ (a)</span>
+              <span class="compare-status good">✅ Bentuk Resmi Suku Kata</span>
+              <button class="btn-micro-audio" onclick="speak('아', 'ko-KR')">🔊 Dengar: "a"</button>
+            </div>
+          </div>
+          <p class="guide-note">👉 Jadi huruf <strong>아</strong> bunyinya tetap murni <strong>"a"</strong>, sama sekali BUKAN "nga"!</p>
+        </div>
+      </div>
+
+      <!-- Card Aturan 3: Posisi ㅇ -->
+      <div class="guide-section">
+        <div class="guide-num">3</div>
+        <div class="guide-content">
+          <h4>Di Mana Posisi "ㅇ"? (Vokal Vertikal vs Horizontal)</h4>
+          <div class="position-grid">
+            <div class="pos-card">
+              <div class="pos-badge">Vokal Vertikal (Tegak: ㅏ, ㅑ, ㅓ, ㅕ, ㅣ)</div>
+              <p>Huruf <strong>ㅇ diletakkan di SEBELAH KIRI</strong> vokal:</p>
+              <div class="pos-examples">
+                <span class="pos-chip" onclick="speak('아', 'ko-KR')">아 (a) 🔊</span>
+                <span class="pos-chip" onclick="speak('야', 'ko-KR')">야 (ya) 🔊</span>
+                <span class="pos-chip" onclick="speak('어', 'ko-KR')">어 (eo) 🔊</span>
+                <span class="pos-chip" onclick="speak('여', 'ko-KR')">여 (yeo) 🔊</span>
+                <span class="pos-chip" onclick="speak('이', 'ko-KR')">이 (i) 🔊</span>
+              </div>
+            </div>
+            <div class="pos-card">
+              <div class="pos-badge horizontal">Vokal Horizontal (Mendatar: ㅗ, ㅛ, ㅜ, ㅠ, ㅡ)</div>
+              <p>Huruf <strong>ㅇ diletakkan di ATAS</strong> vokal:</p>
+              <div class="pos-examples">
+                <span class="pos-chip" onclick="speak('오', 'ko-KR')">오 (o) 🔊</span>
+                <span class="pos-chip" onclick="speak('요', 'ko-KR')">요 (yo) 🔊</span>
+                <span class="pos-chip" onclick="speak('우', 'ko-KR')">우 (u) 🔊</span>
+                <span class="pos-chip" onclick="speak('유', 'ko-KR')">유 (yu) 🔊</span>
+                <span class="pos-chip" onclick="speak('으', 'ko-KR')">으 (eu) 🔊</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Aturan 4: Kapan Berbunyi NG? -->
+      <div class="guide-section">
+        <div class="guide-num special">4</div>
+        <div class="guide-content">
+          <h4>Kapan Huruf "ㅇ" Berbunyi "NG"?</h4>
+          <p>Huruf "ㅇ" <strong>HANYA BERBUNYI "NG"</strong> jika posisinya berada di <strong>BAWAH (Batchim / Konsonan Akhir)</strong>!</p>
+          <div class="batchim-spotlight">
+            <div class="spotlight-anatomy">
+              <div class="anatomy-block">
+                <div class="anatomy-char">앙</div>
+                <div class="anatomy-legend">
+                  <div><strong>ㅇ (atas):</strong> Bisu / Silent (0)</div>
+                  <div><strong>ㅏ (tengah):</strong> Vokal "a"</div>
+                  <div><strong>ㅇ (bawah / batchim):</strong> Bunyi "NG"!</div>
+                  <div class="anatomy-result">👉 Dibaca: <strong>"ANG"</strong></div>
+                </div>
+              </div>
+              <button class="btn-audio" onclick="speak('앙', 'ko-KR')">🔊 Dengar: "ang"</button>
+            </div>
+            <div class="spotlight-examples">
+              <div class="ex-row">
+                <span class="ex-korean">강</span>
+                <span class="ex-breakdown">ㄱ (g) + ㅏ (a) + ㅇ (ng)</span>
+                <span class="ex-meaning">Sungai (gang)</span>
+                <button class="btn-micro-audio" onclick="speak('강', 'ko-KR')">🔊</button>
+              </div>
+              <div class="ex-row">
+                <span class="ex-korean">사랑</span>
+                <span class="ex-breakdown">사 (sa) + 랑 (r-a-ng)</span>
+                <span class="ex-meaning">Cinta (sa-rang)</span>
+                <button class="btn-micro-audio" onclick="speak('사랑', 'ko-KR')">🔊</button>
+              </div>
+              <div class="ex-row">
+                <span class="ex-korean">안녕</span>
+                <span class="ex-breakdown">안 (a-n) + 녕 (ny-eo-ng)</span>
+                <span class="ex-meaning">Halo (an-nyeong)</span>
+                <button class="btn-micro-audio" onclick="speak('안녕', 'ko-KR')">🔊</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeHangulGuideModal()" style="width: 100%;">Saya Sudah Mengerti! Mulai Latihan 👍</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Bootcamp TOEFL 14 Hari — Tembus 450 (Anti-Ngeblank) -->
+<div id="toefl-hack-modal" class="modal-overlay">
+  <div class="modal-card toefl-hack-modal-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">⚡</span>
+        <div>
+          <h3 class="modal-title">Cheat Codes TOEFL: Jurus Tembus 450+ 🎯</h3>
+          <div class="modal-subtitle">Didesain khusus untuk pemula yang males baca & sering nebak asal (Cukup 15 menit/hari!)</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeToeflHackModal()">✕</button>
+    </div>
+
+    <!-- Hack Tabs Navigation -->
+    <div class="hack-tabs-nav">
+      <button class="hack-tab-btn active" onclick="switchHackTab('listening')"><span class="tab-emoji">🎧</span><span>1. Anti-Bunyi Mirip</span></button>
+      <button class="hack-tab-btn" onclick="switchHackTab('structure')"><span class="tab-emoji">⚡</span><span>2. Rumus 3 Detik S+V</span></button>
+      <button class="hack-tab-btn" onclick="switchHackTab('written')"><span class="tab-emoji">🕵️</span><span>3. Detektif 4 Dosa</span></button>
+      <button class="hack-tab-btn" onclick="switchHackTab('reading')"><span class="tab-emoji">🥷</span><span>4. Ninja Scan Reading</span></button>
+      <button class="hack-tab-btn highlight" onclick="switchHackTab('roadmap')"><span class="tab-emoji">📅</span><span>5. Roadmap 14 Hari</span></button>
+    </div>
+
+    <div class="modal-body hack-modal-body">
+      
+      <!-- TAB 1: LISTENING HACK -->
+      <div id="hack-tab-listening" class="hack-tab-pane active">
+        <div class="hack-hero-alert warning">
+          <span class="hack-alert-icon">⚠️</span>
+          <div>
+            <strong>KUNCI NOMOR SATU: JANGAN PILIH KATA YANG BUNYINYA SAMA PERSIS!</strong>
+            <p>Pembuat soal TOEFL sengaja menaruh kata berbunyi mirip di pilihan ganda sebagai JEBAKAN untuk orang yang cuma nebak. Opsi yang bunyinya paling mirip <strong>90% PASTI SALAH</strong>!</p>
+          </div>
+        </div>
+
+        <div class="hack-demo-box">
+          <div class="demo-box-header">
+            <span class="badge-tag">Simulasi Jebakan Audio Asli</span>
+            <button class="btn-micro-audio" onclick="speakWithVoice('I was in serious pain during the chemistry lecture yesterday.', 'en-US', { pitch: 0.9, rate: 0.88 })">
+              🔊 Putar Audio Soal
+            </button>
+          </div>
+          <div class="demo-script-quote">
+            "I was in serious <strong>pain</strong> during the chemistry lecture yesterday."
+          </div>
+
+          <div class="compare-options-grid">
+            <div class="hack-option-card trap">
+              <div class="opt-badge bad">❌ OPSI JEBAKAN (Paling Sering Dipilih)</div>
+              <div class="opt-text">"He boarded a <strong>plane</strong> to the lecture."</div>
+              <div class="opt-reason">Kata <em>'plane'</em> (pesawat) sengaja dimunculkan karena bunyinya mirip <em>'pain'</em>! Jangan dipilih!</div>
+            </div>
+            <div class="hack-option-card correct">
+              <div class="opt-badge good">✅ JAWABAN BENAR (Sinonim)</div>
+              <div class="opt-text">"He was feeling very <strong>sick and hurting</strong>."</div>
+              <div class="opt-reason">Maknanya sama persis (sakit/pain), tapi kata-katanya diubah total (paraphrase). Ini kunci TOEFL!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hack-tip-card">
+          <div class="tip-card-icon">🎯</div>
+          <div class="tip-card-content">
+            <h4>Trik 80% Jawaban Ada di Pembicara KEDUA!</h4>
+            <p>Dalam dialog 2 orang (Part A), pembicara pertama (Pria/Wanita) hanya memberikan pancingan. Kunci jawaban dari pertanyaan <em>"What does the man/woman imply?"</em> hampir 80% berada di <strong>kalimat yang diucapkan oleh PEMBICARA KEDUA</strong>. Buka telingamu lebar-lebar saat giliran orang kedua bicara!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: STRUCTURE HACK -->
+      <div id="hack-tab-structure" class="hack-tab-pane">
+        <div class="hack-hero-alert info">
+          <span class="hack-alert-icon">⚡</span>
+          <div>
+            <strong>RUMUS 3 DETIK: SATU KLAUSA HANYA BUTUH [1 SUBJEK + 1 VERB]</strong>
+            <p>Jangan pusing mencoba mengartikan teks sains/sejarah yang rumit! Cukup cari: <em>Mana Subjeknya (S)? Mana Kata Kerjanya (V)?</em></p>
+          </div>
+        </div>
+
+        <div class="hack-formula-visual">
+          <div class="formula-title">✂️ JURUS CORET PREPOSISI (Object of Preposition)</div>
+          <p>Semua kata di dalam kurung setelah preposisi <em>(in, on, at, of, with, under, from, by)</em> <strong>BUKANLAH SUBJEK</strong>! Coret semuanya dari pikiranmu!</p>
+
+          <div class="equation-box">
+            <div class="eq-step">
+              <span class="step-num">Soal Asli:</span>
+              <span class="step-text">"The discovery <span class="strike">[of ancient fossils]</span> <span class="strike">[in the desert caves]</span> _____ surprising evidence."</span>
+            </div>
+            <div class="eq-arrow">⬇️ Coret semua preposisi</div>
+            <div class="eq-step highlight">
+              <span class="step-num">Tersisa:</span>
+              <span class="step-text">"The discovery <span class="badge-s">Subjek Tunggal</span> _____ <span class="badge-need">Butuh Kata Kerja (Verb)!</span> surprising evidence."</span>
+            </div>
+          </div>
+
+          <div class="compare-options-grid mt-3">
+            <div class="hack-option-card trap">
+              <div class="opt-badge bad">❌ OPSI SALAH: "providing" / "with tools"</div>
+              <div class="opt-reason">V-ing tanpa <em>to be</em> (is/was) BUKAN Verb! Preposisi juga bukan Verb!</div>
+            </div>
+            <div class="hack-option-card correct">
+              <div class="opt-badge good">✅ OPSI BENAR: "provided"</div>
+              <div class="opt-reason">Verb lampau (V2) murni yang langsung melengkapi Subjek "The discovery"!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: WRITTEN EXPRESSION HACK -->
+      <div id="hack-tab-written" class="hack-tab-pane">
+        <div class="hack-hero-alert purple">
+          <span class="hack-alert-icon">🕵️</span>
+          <div>
+            <strong>DETEKTIF SOAL 16–40: TEMUKAN KATA YANG "SALAH/TYPO"</strong>
+            <p>Di bagian Written Expression, jangan cari yang benar! Cari 1 kata bergaris bawah yang melanggar 4 aturan ini:</p>
+          </div>
+        </div>
+
+        <div class="sins-grid">
+          <div class="sin-card">
+            <div class="sin-num">Dosa 1</div>
+            <h4>Subjek vs Verb Gak Klop (Agreement)</h4>
+            <div class="sin-wrong">❌ "The results of the test <span class="strike">was</span> announced."</div>
+            <div class="sin-right">✅ Harusnya: <strong>were</strong> (karena "results" jamak, coret preposisi "of the test")!</div>
+          </div>
+          <div class="sin-card">
+            <div class="sin-num">Dosa 2</div>
+            <h4>Salah Bentuk Kata (Adjective vs Adverb)</h4>
+            <div class="sin-wrong">❌ "She made a <span class="strike">quickly</span> decision."</div>
+            <div class="sin-right">✅ Harusnya: <strong>quick decision</strong> (Kata benda/decision butuh kata sifat/quick, bukan adverb -ly)!</div>
+          </div>
+          <div class="sin-card">
+            <div class="sin-num">Dosa 3</div>
+            <h4>Pasangan Kembar Ditukar</h4>
+            <div class="sin-wrong">❌ "Both John <span class="strike">or</span> Mary..." / "Neither... <span class="strike">or</span>"</div>
+            <div class="sin-right">✅ Pasangan abadi: <strong>Both... and</strong>, <strong>Either... or</strong>, <strong>Neither... nor</strong>!</div>
+          </div>
+          <div class="sin-card">
+            <div class="sin-num">Dosa 4</div>
+            <h4>Bentuk Pasif Cacat</h4>
+            <div class="sin-wrong">❌ "The airplane was <span class="strike">invent</span> in 1903."</div>
+            <div class="sin-right">✅ Pasif wajib V3: was <strong>invented</strong>!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: READING NINJA SCAN -->
+      <div id="hack-tab-reading" class="hack-tab-pane">
+        <div class="hack-hero-alert cyan">
+          <span class="hack-alert-icon">🥷</span>
+          <div>
+            <strong>TRIK NINJA SCAN: JANGAN BACA TEKS DARI ATAS KE BAWAH!</strong>
+            <p>Teks Reading TOEFL sangat panjang dan bikin ngantuk. Selalu baca PERTANYAANNYA dulu, baru cari jawabannya di teks dengan trik ini:</p>
+          </div>
+        </div>
+
+        <div class="ninja-rules-list">
+          <div class="ninja-rule-item">
+            <span class="ninja-icon">🎯</span>
+            <div>
+              <strong>1. Pertanyaan Topik / Main Idea (Selesai 10 Detik)</strong>
+              <p>Cukup baca <strong>kalimat pertama</strong> dari Paragraf 1 dan Paragraf 2! Sebanyak 85% topik teks ilmiah ditaruh di kalimat pembuka paragraf.</p>
+            </div>
+          </div>
+          <div class="ninja-rule-item">
+            <span class="ninja-icon">👀</span>
+            <div>
+              <strong>2. Pertanyaan Detail Spesifik (Scanning Mata)</strong>
+              <p>Cari "Kata Kunci Unik": <strong>Angka Tahun (1920), Huruf Kapital (Nama Orang/Tempat)</strong>. Gerakkan mata cepat tanpa membaca kata lain sampai ketemu kata unik itu, lalu baca 1 kalimat di sekitarnya.</p>
+            </div>
+          </div>
+          <div class="ninja-rule-item">
+            <span class="ninja-icon">🧩</span>
+            <div>
+              <strong>3. Pertanyaan Kosakata (Vocabulary in Line X)</strong>
+              <p>Langsung lompat ke baris yang ditunjuk. Masukkan 4 opsi pilihan ke dalam kalimat, mana yang paling nyambung dan masuk akal secara konteks.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: ROADMAP 14 HARI -->
+      <div id="hack-tab-roadmap" class="hack-tab-pane">
+        <div class="roadmap-header-box">
+          <div class="roadmap-badge">TARGET: TEMBUS SKOR 450+</div>
+          <h4>Jadwal Latihan Harian 14 Hari (Cukup 15 Menit/Hari)</h4>
+          <p>Centang setiap kali kamu menyelesaikan misi harian. Konsisten 15 menit per hari jauh lebih efektif daripada belajar 5 jam semalam sebelum tes!</p>
+          <div class="roadmap-progress-wrap">
+            <div class="roadmap-progress-bar">
+              <div class="roadmap-progress-fill" id="roadmap-progress-fill" style="width: 0%;"></div>
+            </div>
+            <span class="roadmap-count" id="roadmap-progress-count">0 / 14 Hari Selesai</span>
+          </div>
+        </div>
+
+        <div class="roadmap-days-list" id="roadmap-days-container">
+          <!-- Populated by JS with checkboxes and persistence -->
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer hack-modal-footer">
+      <button class="btn-primary btn-large" onclick="closeToeflHackModal(); startLesson('toefl', 'toefl-u-hack', 'toefl-hack-l1');" style="width: 100%;">
+        🚀 Mulai Latihan Jurus 450 Sekarang! (5 Menit)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Login & Register (MySQL Database) -->
+<div id="auth-modal" class="modal-overlay">
+  <div class="modal-card auth-modal-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">🔐</span>
+        <h3 class="modal-title">Simpan Perkembangan Belajar</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+    </div>
+    <div class="modal-body auth-modal-body">
+      
+      <div class="auth-benefit-pill">
+        <span>☁️</span>
+        <span>Simpan streak, level, dan progres belajarmu secara otomatis & aman</span>
+      </div>
+
+      <!-- Google Sign In Button inside Modal -->
+      <button type="button" class="btn-google btn-large" onclick="openGoogleModal()" style="margin-bottom: 4px;">
+        <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span>Lanjutkan dengan Google</span>
+      </button>
+
+      <div class="onboarding-divider" style="margin: 4px 0 12px;">
+        <span>atau dengan email</span>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="auth-tab-login" onclick="switchAuthTab('login')">Masuk (Login)</button>
+        <button class="auth-tab-btn" id="auth-tab-register" onclick="switchAuthTab('register')">Daftar Akun Baru</button>
+      </div>
+
+      <!-- Alert Box -->
+      <div id="auth-alert" class="auth-alert hidden"></div>
+
+      <!-- Form: Login -->
+      <form id="auth-form-login" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Terdaftar</label>
+          <input type="email" id="login-email" class="form-input" placeholder="nama@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="Masukkan password kamu" required>
+        </div>
+        <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 12px;">
+          Masuk & Sinkronkan Progress 🚀
+        </button>
+      </form>
+
+      <!-- Form: Register -->
+      <form id="auth-form-register" class="hidden" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Nama Kamu (User Name)</label>
+          <input type="text" id="reg-username" class="form-input" placeholder="Nama panggilan kamu..." maxlength="30" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Buat Password (min. 6 karakter)</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="Minimal 6 karakter" minlength="6" required>
+        </div>
+        <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 12px;">
+          Buat Akun & Mulai Belajar 🎉
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Google Account Chooser -->
+<div id="google-modal" class="modal-overlay">
+  <div class="modal-card google-modal-card">
+    <div class="google-modal-header">
+      <svg class="google-icon-large" viewBox="0 0 24 24" width="32" height="32">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+      </svg>
+      <div>
+        <h3 class="google-modal-title">Pilih akun Google</h3>
+        <p class="google-modal-sub">untuk melanjutkan ke LinguaPlay</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeGoogleModal()">✕</button>
+    </div>
+    <div class="google-modal-body">
+      <!-- Quick user option -->
+      <div class="google-account-item" onclick="submitGoogleAuth('fadiyah@gmail.com', 'Fadiyah')">
+        <div class="google-avatar">F</div>
+        <div class="google-account-info">
+          <div class="google-account-name">Fadiyah</div>
+          <div class="google-account-email">fadiyah@gmail.com</div>
+        </div>
+        <span class="google-badge-fast">⚡ 1-Klik</span>
+      </div>
+
+      <div class="onboarding-divider" style="margin: 12px 0;">
+        <span>atau akun lain</span>
+      </div>
+
+      <!-- Custom Google Account input -->
+      <form onsubmit="handleCustomGoogleAuth(event)" class="google-custom-form">
+        <div class="form-group">
+          <label class="form-label" style="font-size: 0.85rem;">Email Google / Gmail kamu:</label>
+          <input type="email" id="google-custom-email" class="form-input" placeholder="contoh@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="font-size: 0.85rem;">Nama Panggilan:</label>
+          <input type="text" id="google-custom-name" class="form-input" placeholder="Nama kamu..." maxlength="25">
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; border-radius: var(--radius-md);">
+          Lanjutkan Masuk ✨
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Exam Submit Confirmation In-Page Modal -->
+<div id="exam-confirm-modal" class="modal-overlay hidden" style="display: none;">
+  <div class="modal-card" style="max-width: 440px;">
+    <div class="modal-header">
+      <h3 class="modal-title">🏁 Kumpulkan Ujian TOEFL</h3>
+      <button class="modal-close" onclick="closeExamModal()">✕</button>
+    </div>
+    <div style="padding: 16px 0;">
+      <p id="exam-confirm-message" style="color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem;"></p>
+    </div>
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px;">
+      <button class="btn-secondary" style="padding: 8px 16px;" onclick="closeExamModal()">Periksa Lagi</button>
+      <button class="btn-primary" style="padding: 8px 18px;" onclick="closeExamModal(); submitToeflSim();">Kumpulkan & Lihat Skor 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- Interactive Custom Notification & Confirm Modal -->
+<div id="interactive-popup-modal" class="modal-overlay" onclick="handlePopupBackdropClick(event)">
+  <div class="modal-card popup-modal-card">
+    <div class="popup-icon-badge" id="popup-icon-badge">
+      <span class="popup-icon" id="popup-icon">🚪</span>
+    </div>
+    <h3 class="popup-title" id="popup-title">Keluar dari Pelajaran?</h3>
+    <p class="popup-message" id="popup-message">Progress sesi latihan ini belum selesai dan tidak akan tersimpan.</p>
+    <div class="popup-actions" id="popup-actions">
+      <button class="btn-secondary popup-btn-cancel" id="popup-cancel-btn" onclick="closeInteractivePopup(false)">Tetap Lanjut Belajar</button>
+      <button class="btn-primary popup-btn-confirm" id="popup-confirm-btn" onclick="closeInteractivePopup(true)">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js?v=33"></script>
+<script src="js/app.js?v=33"></script>
+
+<script>
+// Failsafe direct handlers to ensure zero dead clicks
+function openGoogleModal() {
+  closeAuthModal();
+  const m = document.getElementById('google-modal');
+  if (m) {
+    m.classList.add('active');
+    m.style.setProperty('display', 'flex', 'important');
+  }
+}
+function closeGoogleModal() {
+  const m = document.getElementById('google-modal');
+  if (m) {
+    m.classList.remove('active');
+    m.style.setProperty('display', 'none', 'important');
+  }
+}
+function openAuthModal(mode) {
+  closeGoogleModal();
+  const m = document.getElementById('auth-modal');
+  if (m) {
+    m.classList.add('active');
+    m.style.setProperty('display', 'flex', 'important');
+    if (typeof switchAuthTab === 'function') switchAuthTab(mode || 'login');
+  }
+}
+function closeAuthModal() {
+  const m = document.getElementById('auth-modal');
+  if (m) {
+    m.classList.remove('active');
+    m.style.setProperty('display', 'none', 'important');
+  }
+}
+</script>
+
+</body>
+</html>
