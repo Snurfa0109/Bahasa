@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LinguaPlay — Belajar Bahasa Jadi Lebih Mudah</title>
-  <meta name="description" content="Platform belajar bahasa interaktif. Audio-visual, ramah, dan mudah dipahami langkah demi langkah.">
+  <title>BasaLoka — Jelajahi Dunia Bahasa (Korea, Inggris, & TOEFL)</title>
+  <meta name="description" content="BasaLoka — Platform belajar bahasa interaktif (Basa = Bahasa, Loka = Dunia). Jelajahi Bahasa Korea, Inggris, dan Fast Track TOEFL dengan mudah dan menyenangkan!">
+  <link rel="icon" type="image/png" href="images/IkonB.png">
+  <link rel="apple-touch-icon" href="images/IkonB.png">
   <meta name="theme-color" content="#080812">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -12,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=33">
+  <link rel="stylesheet" href="css/style.css?v=34">
 </head>
 <body>
 
@@ -20,9 +22,8 @@
 
   <!-- ═══════════ NAVIGATION ═══════════ -->
   <nav id="main-nav" class="hidden">
-    <div class="nav-brand" onclick="showView('dashboard')">
-      <span class="brand-icon">✨</span>
-      <span class="brand-name">LinguaPlay</span>
+    <div class="nav-brand" onclick="showView('dashboard')" title="BasaLoka — Kembali ke Dashboard">
+      <img src="images/LogoAtas.png" alt="BasaLoka — Play, Learn, Explore The World" class="nav-brand-logo">
     </div>
     <div class="nav-stats">
       <div class="stat-item" title="Streak harian">
@@ -50,18 +51,14 @@
     <div id="view-onboarding" class="view active">
       <div class="onboarding-container">
         <div class="onboarding-hero">
-          <div class="floating-emojis">
-            <span class="float-emoji" style="--delay: 0s">🌏</span>
-            <span class="float-emoji" style="--delay: 0.4s">⭐</span>
-            <span class="float-emoji" style="--delay: 0.8s">💬</span>
-            <span class="float-emoji" style="--delay: 1.2s">🌱</span>
-            <span class="float-emoji" style="--delay: 1.6s">✨</span>
+          <div class="onboarding-brand-badge">
+            <img src="images/LogoTengah.png" alt="BasaLoka Logo" class="onboarding-hero-logo">
           </div>
-          <h1 class="hero-title">
-            Belajar Bahasa<br>
-            <span class="gradient-text">Jadi Lebih Mudah ✨</span>
-          </h1>
-          <p class="hero-sub">Teman setia belajarmu setiap hari — santai, interaktif, dan bertumbuh langkah demi langkah 🌱</p>
+          <div class="onboarding-brand-meaning">
+            <span class="meaning-chip">✨ <strong>Basa</strong> (Sunda: Bahasa)</span>
+            <span class="meaning-chip">🌏 <strong>Loka</strong> (Sansekerta: Dunia)</span>
+          </div>
+          <p class="hero-sub">Jelajahi Dunia Bahasa (Korea, Inggris, & TOEFL) — Interaktif, Menyenangkan, dan Langkah demi Langkah 🌱</p>
         </div>
         <div class="onboarding-form">
           <!-- Google Sign In Button -->
@@ -118,8 +115,13 @@
 
         <div class="dashboard-header">
           <div class="greeting-section">
-            <h1 class="greeting" id="dashboard-greeting">Halo! 👋</h1>
-            <p class="greeting-sub" id="dashboard-sub">Yuk mulai belajar hari ini!</p>
+            <div class="greeting-mascot-row">
+              <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Mascot" class="dashboard-mascot-img">
+              <div>
+                <h1 class="greeting" id="dashboard-greeting">Halo! 👋</h1>
+                <p class="greeting-sub" id="dashboard-sub">Yuk mulai belajar hari ini!</p>
+              </div>
+            </div>
           </div>
           <div class="daily-goal" title="XP harian kamu">
             <div class="goal-ring">
@@ -530,7 +532,7 @@
             <div class="cert-emblem">🏛️</div>
             <div class="cert-title-group">
               <h2 class="cert-title">OFFICIAL TOEFL ITP® SCORE REPORT</h2>
-              <div class="cert-subtitle">Hasil Prediksi Simulasi Tes Diagnostik LinguaPlay</div>
+              <div class="cert-subtitle">Hasil Prediksi Simulasi Tes Diagnostik BasaLoka</div>
             </div>
           </div>
 
@@ -1091,7 +1093,7 @@
       </svg>
       <div>
         <h3 class="google-modal-title">Pilih akun Google</h3>
-        <p class="google-modal-sub">untuk melanjutkan ke LinguaPlay</p>
+        <p class="google-modal-sub">untuk melanjutkan ke BasaLoka</p>
       </div>
       <button class="modal-close-btn" onclick="closeGoogleModal()">✕</button>
     </div>
@@ -1160,8 +1162,8 @@
   </div>
 </div>
 
-<script src="js/data.js?v=33"></script>
-<script src="js/app.js?v=33"></script>
+<script src="js/data.js?v=34"></script>
+<script src="js/app.js?v=34"></script>
 
 <script>
 // Failsafe direct handlers to ensure zero dead clicks

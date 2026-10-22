@@ -373,6 +373,6 @@ app.post('/api/progress/:userId', async (req, res) => {
 // START SERVER
 initDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`🚀 LinguaPlay server running at http://localhost:${PORT}`);
+    console.log(`🚀 BasaLoka server running at http://localhost:${PORT}`);
   });
 });

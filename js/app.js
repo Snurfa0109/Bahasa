@@ -1,5 +1,5 @@
 // ============================================================
-// LinguaPlay — Main Application Logic
+// BasaLoka — Main Application Logic
 // ============================================================
 
 // ─── STATE ───────────────────────────────────────────────────
@@ -384,7 +384,8 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
 
 // ─── LOCAL STORAGE & MYSQL SYNC ───────────────────────────────
 function saveState() {
-  localStorage.setItem('linguaplay_state', JSON.stringify(state));
+  localStorage.setItem('basaloka_state', JSON.stringify(state));
+  localStorage.setItem('linguaplay_state', JSON.stringify(state)); // backwards-compatible
   syncProgressToMySQL();
 }
 
@@ -402,7 +403,7 @@ async function syncProgressToMySQL() {
 }
 
 function loadState() {
-  const saved = localStorage.getItem('linguaplay_state');
+  const saved = localStorage.getItem('basaloka_state') || localStorage.getItem('linguaplay_state');
   if (saved) {
     state = { ...state, ...JSON.parse(saved) };
     checkStreak();
@@ -2205,7 +2206,7 @@ function handleLogout() {
     icon: '👋',
     type: 'warning',
     title: 'Keluar dari Akun?',
-    message: 'Progres dan streak belajarmu tersimpan aman di LinguaPlay. Kamu bisa masuk kembali kapan saja!',
+    message: 'Progres dan streak belajarmu tersimpan aman di BasaLoka. Kamu bisa masuk kembali kapan saja!',
     confirmText: 'Ya, Keluar',
     cancelText: 'Tetap Masuk',
     onConfirm: () => {
@@ -3115,7 +3116,7 @@ window.submitToeflSim = submitToeflSim;
 const ROADMAP_14_DAYS = [
   { day: 1, title: '🎧 Listening: Trik Orang Kedua', focus: 'Buka telinga lebar-lebar untuk kalimat orang kedua.', time: '15 Menit' },
   { day: 2, title: '🎧 Listening: Eliminasi Bunyi Mirip', focus: 'Coret kata di opsi yang bunyinya sama persis dengan audio.', time: '15 Menit' },
-  { day: 3, title: '🎧 Listening: Mini Practice Part A', focus: 'Latihan 10 dialog pendek di LinguaPlay (Target: 7/10).', time: '15 Menit' },
+  { day: 3, title: '🎧 Listening: Mini Practice Part A', focus: 'Latihan 10 dialog pendek di BasaLoka (Target: 7/10).', time: '15 Menit' },
   { day: 4, title: '⚡ Structure: Rumus Sakti S + V', focus: 'Setiap klausa WAJIB punya 1 Subjek dan 1 Verb.', time: '15 Menit' },
   { day: 5, title: '✂️ Structure: Jurus Coret Preposisi', focus: 'Coret kata setelah in, on, at, of, with, under, from.', time: '15 Menit' },
   { day: 6, title: '⚡ Structure: Waspada Verb Palsu', focus: 'V-ing sendirian bukan Verb! Pilih Verb asli.', time: '15 Menit' },
@@ -3125,7 +3126,7 @@ const ROADMAP_14_DAYS = [
   { day: 10, title: '🕵️ Written: Dosa Pasangan Kembar', focus: 'Hafalkan: Both... and, Either... or, Neither... nor.', time: '15 Menit' },
   { day: 11, title: '🥷 Reading: Ninja Scan Main Idea', focus: 'Baca cuma kalimat pertama paragraf 1 dan 2.', time: '15 Menit' },
   { day: 12, title: '🥷 Reading: Ninja Scan Tahun & Nama', focus: 'Scan mata cepat cari angka tahun & huruf kapital.', time: '15 Menit' },
-  { day: 13, title: '🏆 Simulasi Tes TOEFL 25 Menit', focus: 'Kerjakan Simulasi Resmi 30 Soal di LinguaPlay!', time: '25 Menit' },
+  { day: 13, title: '🏆 Simulasi Tes TOEFL 25 Menit', focus: 'Kerjakan Simulasi Resmi 30 Soal di BasaLoka!', time: '25 Menit' },
   { day: 14, title: '🎯 Evaluasi & Siap Ujian Asli', focus: 'Pelajari pembahasan soal yang salah di Score Report.', time: '20 Menit' }
 ];
 

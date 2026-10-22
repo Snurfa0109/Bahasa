@@ -1,6 +1,6 @@
-# 📚 Panduan Kurikulum & Referensi Modul Resmi — LinguaPlay
+# 📚 Panduan Kurikulum & Referensi Modul Resmi — BasaLoka
 
-Dokumen ini memuat daftar modul yang diperlukan untuk melengkapi materi pembelajaran di platform **LinguaPlay**, beserta tautan sumber kurikulum terverifikasi dan aktif.
+Dokumen ini memuat daftar modul yang diperlukan untuk melengkapi materi pembelajaran di platform **BasaLoka** (*Basa* = Bahasa dalam bahasa Sunda, *Loka* = Dunia dalam bahasa Sansekerta), beserta tautan sumber kurikulum terverifikasi dan aktif.
 
 ---
 
@@ -8,7 +8,7 @@ Dokumen ini memuat daftar modul yang diperlukan untuk melengkapi materi pembelaj
 
 ### Hirarki Level:
 * **Level 1 (Dasar / TOPIK I Sublevel 1):**
-  - Hangul Dasar: Vokal (모음) & Konsonan (자음) — *Sudah ada di LinguaPlay*
+  - Hangul Dasar: Vokal (모음) & Konsonan (자음) — *Sudah ada di BasaLoka*
   - **Batchim (받침):** 7 bunyi konsonan akhir, konsonan ganda (ㄳ, ㄵ, ㄶ, ㄼ, ㅄ), dan aturan asimilasi bunyi (*Liaison / 연음*, *Nasalisasi*).
   - **Sistem Bilangan & Satuan:** Angka Sino-Korea (일, 이, 삼) vs Angka Asli Korea (하나, 둘, 셋) + Satuan penghitung (개, 명, 마리, 병, 잔, 권).
   - **Partikel Tata Bahasa Esensial:** Topik (`은/는`), Subjek (`이/가`), Objek (`을/를`), Lokasi/Waktu (`에/에서`), Arah (`(으)로`), Penegas (`도`, `만`).
