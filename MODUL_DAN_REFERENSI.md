@@ -66,18 +66,90 @@ Dokumen ini memuat daftar modul yang diperlukan untuk melengkapi materi pembelaj
 
 ---
 
-## 3. 📝 Kurikulum Fast Track 7 Hari TOEFL ITP (Target Skor 500 – 550+)
+## 3. 📝 Kurikulum TOEFL ITP Preparation (Target Skor 500 – 550+)
 
-| Hari | Fokus Materi Utama | Sub-Materi & Trik Cepat |
+Kurikulum TOEFL ITP di BasaLoka dipisahkan menjadi 2 jalur fleksibel agar pembelajar dapat memilih sesuai kebutuhan waktu dan target belajar:
+
+### A. ⚡ Jalur Fast Track 3 Hari (Sprint Intensif)
+Dirancang khusus untuk pembelajar yang membutuhkan persiapan kilat dalam 3 hari dengan fokus maksimal pada Listening, Structure & Reading esensial:
+
+| Hari | Fokus Utama | Materi & Jurus Cepat |
 | :--- | :--- | :--- |
-| **Day 1** | **Listening Part A (Short Dialogues)** | Trik sinonim/restatement, hindari jebakan bunyi mirip, makna negatif (*hardly, scarcely*), ekspresi ragu & persetujuan (*So do I, You can say that again*). |
-| **Day 2** | **Listening Part B & C (Long Talks & Lectures)** | Teknik *anticipating questions*, mencatat kata kunci topik akademis (arkeologi, astronomi, biologi), fokus pada kalimat pembuka pembicara. |
-| **Day 3** | **Structure (Soal 1–15): Pola Kalimat Baku** | Rumus *Subject + Verb*, jebakan *Appositive* (keterangan tambahan), konektor koordinatif (*FANBOYS*), dan konektor klausa adverbia/kata benda. |
-| **Day 4** | **Written Expression (Soal 16–40): Deteksi Error** | 5 Dosa Terbesar: *Subject-Verb Agreement*, *Parallel Structure* (A, B, and C harus setara), bentuk kata kerja V1/V2/V3/V-ing, kata sifat vs kata keterangan (*quick vs quickly*), *singular/plural agreement*. |
-| **Day 5** | **Advanced Grammar Traps (Pembeda Skor 450 ke 550)** | *Inversion* (inversi negatif & tempat), pengandaian tanpa 'if' (*Had I known...*), klausa partisipel yang disederhanakan (*Reduced clauses*), dan kata membingungkan (*Make vs Do, Like vs Alike*). |
-| **Day 6** | **Reading Comprehension Ninja** | Cara menjawab *Main Idea* tanpa baca seluruh paragraf (baca baris pertama tiap paragraf), soal *Negative Factual* (*EXCEPT / NOT mentioned*), mencari rujukan kata ganti (*pronoun referents*), dan tebak makna kosakata akademis dari konteks kalimat. |
-| **Day 7** | **Full Simulation & Time Management Strategy** | Simulasi penuh dengan timer ketat: Pacing 30 detik/soal di Section 2, eliminasi jawaban salah secara sistematis, dan pemetaan tabel konversi skor skala 310–677. |
+| **Hari 1** | **Listening Crash Course (Part A, B, C)** | Trik Second Speaker, eliminasi jebakan bunyi mirip, idiom kampus (*under the weather, cost an arm and a leg*), serta latihan audio 2 penutur (Pria 👨 & Wanita 👩). |
+| **Hari 2** | **Structure & Written Expression High-Yield** | Rumus 3 Detik S+V, eliminasi distraktor preposisi, konektor koordinatif (*FANBOYS*), dan deteksi 5 Dosa Error (*Subject-Verb Agreement, Parallel Structure, Word Forms*). |
+| **Hari 3** | **Reading Ninja & Full Simulation 310–677** | Teknik Skimming baris pertama kalimat topik (*Main Idea*), eliminasi *Negative Factual* (*EXCEPT*), tebak makna kata dari konteks, dan Simulasi Ujian Prediksi Skor. |
+
+---
+
+### B. 📚 Jalur Komprehensif (Modul Lengkap & Bank Latihan Listening + Reading Berlimpah)
+Jalur modul mandiri tanpa batasan hari kaku, diperkaya dengan bank latihan menyimak audio dua penutur dan pemahaman bacaan teks ilmiah:
+
+* **Modul 1: Listening Part A — Trik Second Speaker & Anti-Bunyi Mirip**  
+  *Aturan emas mendengarkan orang kedua, deteksi paraphrase & sinonim, serta drill percakapan situasi kampus dan reaksi sehari-hari.*
+* **Modul 2: Listening Part B & C — Percakapan Panjang & Kuliah Akademis**  
+  *Pola diskusi dosen-mahasiswa seputar tugas, negosiasi nilai, serta mini-lecture topik ilmu alam (biologi, geologi, astronomi).*
+* **Modul 3: Structure (Soal 1–15) — Rumus S+V & Konektor Klausa**  
+  *Subjek dan predikat wajib, konektor klausa adverbia, klausa nomina, dan konektor koordinatif.*
+* **Modul 4: Written Expression (Soal 16–40) — Detektif 5 Dosa Error**  
+  *Subject-verb agreement, paralelisme struktur, bentuk kata kerja V1/V2/V3/V-ing, adjektiva vs adverbia, singular/plural.*
+* **Modul 5: Jurus Lanjutan Skor 550+ — Inversi & Reduced Clauses**  
+  *Pola inversi kata negatif & tempat, pengandaian tanpa 'if' (*Had/Were/Should*), dan klausa partisipel ringkas.*
+* **Modul 6: Reading Ninja — Scan & Skim Cepat Tanpa Baca Semua**  
+  *Trik menjawab Main Idea dalam 10 detik, trik soal Negative Factual (*EXCEPT / NOT*), dan referensi kata ganti (*pronoun*).*
+* **Modul 7: Reading Comprehension Practice (Bank Teks Akademik)**  
+  *Latihan pemahaman teks lengkap lintas topik: Deforestasi, Revolusi Industri, Komunikasi Lebah Madu (*Waggle Dance*), Batu Rosetta, dan Energi Panas Bumi.*
+* **Modul 8: Bank Kosakata Akademik (Academic Word List - AWL)**  
+  *Penguasaan kosakata ilmiah frekuensi tinggi: kata kerja esensial, kata benda analisis, dan pencocokan makna.*
+* **Modul 9: Keterampilan Struktur Esai & Kalimat Akademik**  
+  *Struktur 5 paragraf, kata transisi argumentatif, dan latihan merangkai kalimat baku.*
+* **Modul 10: Simulasi Ujian Penuh & Evaluasi Skor Resmi (310–677)**  
+  *Manajemen waktu 37 detik/soal, eliminasi terarah, simulasi 30 soal CBT berwaktu ketat, dan laporan prediksi skor.*
 
 ### 🔗 Referensi Resmi Terverifikasi:
 * **ETS Official TOEFL ITP Test Preparation Portal:** [https://www.ets.org/toefl/itp/prepare.html](https://www.ets.org/toefl/itp/prepare.html)
 * **Victoria University of Wellington (Academic Word List - AWL):** [https://www.wgtn.ac.nz/lals/resources/academicwordlist](https://www.wgtn.ac.nz/lals/resources/academicwordlist)
+
+---
+
+## 4. 💡 Arsip Tambahan: Strategi Note-Taking Kuliah Panjang (Disimpan untuk Referensi Lanjutan)
+
+> **Catatan Penggunaan**: Materi ini diarsipkan sebagai referensi tambahan bagi pembelajar tingkat lanjut yang ingin menguasai teknik mencatat cepat pada tes TOEFL berbasis kertas / kuliah berbahasa Inggris. Pada kurikulum utama aplikasi, latihan difokuskan langsung pada simulasi mendengar audio komputer (*CBT Listening*).
+
+### A. Teknik Cornell TOEFL:
+* **Prinsip Utama**: Jangan pernah menulis kalimat utuh saat mendengar audio. Tulis simbol dan singkatan saja di kertas buram (*shorthand*).
+* **Topic Sentence (30 Detik Pertama)**: Dosen selalu menyebutkan topik utama di awal kalimat:  
+  *Contoh*: *"Today we will examine two primary causes of desertification..."* ➔ Catat: `T = Desertification` (Topik), `2 Causes` (Akan ada 2 penyebab).
+* **Kata Kunci Transisi Kritis**:
+  * **Sebab-Akibat**: *Consequently, As a result, Due to, For this reason* ➔ Menandakan pemicu soal ujian.
+  * **Urutan Proses**: *Initially (awal), Subsequently (berikutnya), Ultimately (pada akhirnya)* ➔ Kunci untuk menjawab soal urutan tahapan (*process questions*).
+  * **Kontras Ide Pokok**: *While X believed..., recent evidence shows Y* ➔ Ide pokok selalu berada pada fakta terbaru (Y).
+
+---
+
+## 5. 🎯 Standar Kelulusan Kampus & Sistem Ujian Real TOEFL ITP (140 Soal • 430 Threshold)
+
+* **Skor Minimal Kelulusan Kampus**: **430** (Skala Resmi TOEFL ITP 310–677).
+* **Pool Bank Soal (Total 243 Butir Soal Otentik)**:
+  - **Listening Bank (70 Soal)**: Audio percakapan 2 penutur (👨 Pria & 👩 Wanita), dialog kampus, perpustakaan, negosiasi kelas, riset lab, idiom spoken English.
+  - **Structure & Written Bank (103 Soal)**: Rumus Subjek-Predikat, Konektor Klausa, Inversi, Parallelism, Subject-Verb Agreement, Subjunctive, Word Choice.
+  - **Reading Comprehension Bank (70 Soal)**: 9 artikel akademik otentik (Rosetta Stone, Deforestasi, Geotermal, Waggle Dance Lebah, Revolusi Industri, Hubble Telescope, Ekosistem Karang, Runtuhnya Maya & Megadroughts, Kriptografi Kuantum & Post-RSA).
+* **Format Ujian Realistis Sesuai Ujian Asli**:
+  - **Ujian Penuh Resmi ETS (140 Soal)**:
+    - Section 1: 50 Soal Listening (Audio HANYA BISA DIPUTAR 1 KALI, tombol langsung terkunci otomatis persis seperti ujian komputer asli).
+    - Section 2: 40 Soal Structure & Written Expression.
+    - Section 3: 50 Soal Academic Reading Comprehension.
+  - **Pilihan Durasi**:
+    - **115 Menit (Standar Resmi ETS / 1 Jam 55 Menit)**.
+    - **90 Menit (Standar Kampus / 1 1/2 Jam)**.
+    - **25 Menit (Latihan Kilat / 30 Soal Diagnostic)**.
+* **Fitur Acak & Rotasi Ujian**:
+  - Soal diambil secara acak dari bank 243 soal pada setiap kali tes dimulai/diulang.
+  - Pilihan ganda (A, B, C, D) diacak posisinya setiap kali tes dibuka.
+* **Sistem Checkpoint Antar-Section**:
+  - Akhir Section 1 (Listening) ➔ Muncul modal Checkpoint Skor Listening (skala 31–68) & status target 430.
+  - Akhir Section 2 (Structure) ➔ Muncul modal Checkpoint Skor Structure (skala 31–68) & status target 430.
+* **Alert Wajib Remidi Kampus (< 430)**:
+  - Jika total skor < 430, sistem menampilkan alert modal darurat yang mengunci navigasi dan mewajibkan remidi ujian dengan set paket soal baru yang berbeda total.
+  - Jika $\ge 430$, sistem menerbitkan Sertifikat Kelulusan Resmi Syarat Kelulusan Kampus.
+
+

@@ -5,16 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BasaLoka — Jelajahi Dunia Bahasa (Korea, Inggris, & TOEFL)</title>
   <meta name="description" content="BasaLoka — Platform belajar bahasa interaktif (Basa = Bahasa, Loka = Dunia). Jelajahi Bahasa Korea, Inggris, dan Fast Track TOEFL dengan mudah dan menyenangkan!">
-  <link rel="icon" type="image/png" href="images/IkonB.png">
-  <link rel="apple-touch-icon" href="images/IkonB.png">
+  <link rel="icon" type="image/png" href="images/Ikon Bumi Kawaii 3D.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="images/Ikon Bumi Kawaii 3D.png">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#080812">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BasaLoka">
+  <meta name="application-name" content="BasaLoka">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=34">
+  <link rel="stylesheet" href="css/style.css?v=43">
 </head>
 <body>
 
@@ -38,6 +44,10 @@
       </div>
     </div>
     <div class="nav-auth-section" id="nav-auth-section">
+      <button class="btn-install-pwa" id="btn-install-pwa" onclick="triggerPwaInstall()" title="Pasang BasaLoka di HP agar bisa langsung tap!">
+        <span class="install-pwa-icon">📲</span>
+        <span class="install-pwa-text">Pasang di HP</span>
+      </button>
       <button class="btn-auth-nav" id="auth-nav-btn" onclick="openAuthModal('login')">
         Masuk / Daftar
       </button>
@@ -115,13 +125,8 @@
 
         <div class="dashboard-header">
           <div class="greeting-section">
-            <div class="greeting-mascot-row">
-              <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Mascot" class="dashboard-mascot-img">
-              <div>
-                <h1 class="greeting" id="dashboard-greeting">Halo! 👋</h1>
-                <p class="greeting-sub" id="dashboard-sub">Yuk mulai belajar hari ini!</p>
-              </div>
-            </div>
+            <h1 class="greeting" id="dashboard-greeting">Halo! 👋</h1>
+            <p class="greeting-sub" id="dashboard-sub">Yuk mulai belajar hari ini!</p>
           </div>
           <div class="daily-goal" title="XP harian kamu">
             <div class="goal-ring">
@@ -134,6 +139,22 @@
                 <span class="goal-label">/ 50 XP</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- 📲 PWA INSTALL BANNER (Shortcut ke Layar HP) -->
+        <div class="pwa-install-banner" id="pwa-install-banner">
+          <div class="pwa-banner-left">
+            <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Icon" class="pwa-banner-icon-img">
+            <div class="pwa-banner-text">
+              <div class="pwa-banner-badge">✨ RESMI & GRATIS</div>
+              <h3 class="pwa-banner-title">Pasang BasaLoka di Layar Depan HP 📲</h3>
+              <p class="pwa-banner-sub">Biar gausah cari-cari link lagi, langsung tap dari layar HP layaknya aplikasi biasa!</p>
+            </div>
+          </div>
+          <div class="pwa-banner-actions">
+            <button class="btn-pwa-install" onclick="triggerPwaInstall()">Pasang Sekarang ⚡</button>
+            <button class="btn-pwa-dismiss" onclick="dismissPwaBanner()" title="Sembunyikan">✕</button>
           </div>
         </div>
 
@@ -199,7 +220,7 @@
               <div class="card-badge" id="toefl-badge">Level 1</div>
             </div>
             <h2 class="card-title">TOEFL Fast Track ⚡</h2>
-            <p class="card-subtitle">Target 500–550+ dalam 7 hari (Listening, Structure & Reading)</p>
+            <p class="card-subtitle">Target 500–550+ Cepat & Terarah (Listening, Reading & Structure)</p>
             <div class="card-progress">
               <div class="progress-bar">
                 <div class="progress-fill toefl-progress" id="toefl-progress-bar" style="width: 0%"></div>
@@ -237,20 +258,20 @@
         </div>
 
         <!-- 🎯 TOEFL ITP Full Simulation & Score Predictor Banner -->
-        <div class="toefl-sim-cta-banner" onclick="startToeflSimulation()" role="button" tabindex="0">
+        <div class="toefl-sim-cta-banner" onclick="openExamSetupModal()" role="button" tabindex="0">
           <div class="toefl-sim-cta-content">
-            <div class="toefl-sim-cta-badge">🎓 Ujian Lengkap • Prediksi Skor 310 - 677</div>
+            <div class="toefl-sim-cta-badge">🎓 Standar Resmi ETS • Prediksi Skor 310 - 677</div>
             <h3 class="toefl-sim-cta-title">🎯 Simulasi Resmi Tes TOEFL ITP</h3>
-            <p class="toefl-sim-cta-desc">Uji kemampuanmu dengan 30 soal standar ETS (Listening Audio 2 Orang, Structure Grammar, & Academic Reading) lengkap dengan timer 25 menit dan prediksi skor resmi!</p>
+            <p class="toefl-sim-cta-desc">Uji kemampuanmu dengan 140 soal standar ETS (50 Listening Audio 1x Putar, 40 Structure Grammar, & 50 Academic Reading) dengan timer ujian resmi & syarat kampus 430!</p>
             <div class="toefl-sim-cta-tags">
-              <span>🎧 10 Soal Listening</span>
-              <span>📐 10 Soal Structure & Error ID</span>
-              <span>📖 10 Soal Reading Passage</span>
-              <span>⏱️ Timer 25 Menit</span>
-              <span>📊 Prediksi Skor & CEFR</span>
+              <span>🎧 50 Soal Listening (Audio 1x)</span>
+              <span>📐 40 Soal Structure & Error ID</span>
+              <span>📖 50 Soal Reading Passage</span>
+              <span>⏱️ Pilihan 115 Menit / 1,5 Jam</span>
+              <span>🎯 Syarat Kampus Min. 430</span>
             </div>
           </div>
-          <button class="btn-primary toefl-sim-cta-btn">Mulai Ujian ⏱️</button>
+          <button class="btn-primary toefl-sim-cta-btn" onclick="openExamSetupModal()">Mulai Ujian ⏱️</button>
         </div>
 
         <!-- Achievements -->
@@ -299,28 +320,46 @@
             <span class="back-arrow">←</span>
             <span>Kembali</span>
           </button>
-          <h2 class="map-title">📝 Fast Track 7 Hari TOEFL ITP</h2>
+          <h2 class="map-title">📝 TOEFL ITP Preparation & Fast Track</h2>
           <div class="map-xp">⚡ <span id="toefl-map-xp">0</span> XP</div>
         </div>
 
-        <!-- ⚡ FAST TRACK 7 HARI TEMBUS 500-550+ (METODE 30-45 MENIT/HARI) -->
+        <!-- ⚡ FAST TRACK & MASTER PATH TEMBUS 500-550+ -->
         <div class="toefl-hack-banner" onclick="openToeflHackModal()" role="button" tabindex="0">
-          <div class="hack-banner-badge">🔥 TARGET SKOR 500–550+ DALAM 7 HARI (30–45 MNT/HARI)</div>
+          <div class="hack-banner-badge">🔥 TARGET SKOR 500–550+ CEPAT & TERARAH</div>
           <div class="hack-banner-main">
             <div class="hack-banner-icon">⚡</div>
             <div class="hack-banner-text">
-              <h3 class="hack-banner-title">Jalur Kilat 7 Hari: Listening, Structure & Reading 🔑</h3>
-              <p class="hack-banner-sub">Kurikulum harian bertahap & bisa diulang bebas: Day 1 Second Speaker, Day 2 Note-Taking Kuliah, Day 3 Rumus S+V, Day 4 Detektif Error, Day 5 Inversi, Day 6 Reading, Day 7 Simulasi.</p>
+              <h3 class="hack-banner-title">Jalur Kilat TOEFL ITP: Listening, Reading & Structure 🔑</h3>
+              <p class="hack-banner-sub">Pilih jalurmu: Fast Track 3 Hari (Sprint Intensif) atau Jalur Komprehensif Lengkap. Kuasai trik Second Speaker, Rumus S+V, Detektif Error, Reading Ninja, dan Simulasi Skor Resmi.</p>
             </div>
             <button class="btn-hack-cta">Buka Panduan 🚀</button>
           </div>
           <div class="hack-pills-row">
-            <span class="hack-pill">🎧 Day 1-2: Listening</span>
-            <span class="hack-pill">📐 Day 3-5: Structure & Error</span>
-            <span class="hack-pill">📖 Day 6: Reading Ninja</span>
-            <span class="hack-pill highlight">🏆 Day 7: Full Sim 310-677</span>
-            <span class="hack-pill">🔄 Repeat Drill 100%</span>
+            <span class="hack-pill">⚡ Fast Track 3 Hari</span>
+            <span class="hack-pill">🎧 Listening Mastery</span>
+            <span class="hack-pill">📖 Reading Ninja</span>
+            <span class="hack-pill">📐 Structure & Error</span>
+            <span class="hack-pill highlight">🏆 Full Sim 310-677</span>
           </div>
+        </div>
+
+        <!-- 🔀 TOEFL TRACK SWITCHER: Jalur Komprehensif vs Mode Sprint 3 Hari -->
+        <div class="toefl-track-switcher" id="toefl-track-switcher">
+          <button class="toefl-track-btn active" id="track-btn-full" onclick="setToeflTrack('full')" type="button">
+            <span class="track-btn-icon">📚</span>
+            <div class="track-btn-info">
+              <strong>Jalur Komprehensif (Materi Lengkap)</strong>
+              <small>Semua modul lengkap: Bank latihan Listening, Reading, Structure & Tips berlimpah</small>
+            </div>
+          </button>
+          <button class="toefl-track-btn" id="track-btn-fast3" onclick="setToeflTrack('fast3')" type="button">
+            <span class="track-btn-icon">⚡</span>
+            <div class="track-btn-info">
+              <strong>Mode Sprint 3 Hari (Fast Track Cowo)</strong>
+              <small>Sprint intensif 3 hari fokus materi penentu skor</small>
+            </div>
+          </button>
         </div>
 
         <div class="toefl-info-banner">
@@ -330,13 +369,13 @@
             <p>Latih pendengaranmu dengan percakapan autentik 2 penutur (Pria 👨 & Wanita 👩) seputar tugas, idiom, dan kehidupan kampus lengkap dengan audio dua suara, naskah, dan pembahasan TOEFL.</p>
           </div>
         </div>
-        <div class="toefl-sim-map-cta" onclick="startToeflSimulation()" role="button" tabindex="0">
+        <div class="toefl-sim-map-cta" onclick="openExamSetupModal()" role="button" tabindex="0">
           <div class="sim-cta-icon">🏆</div>
           <div class="sim-cta-info">
-            <h4>Tes Simulasi Resmi TOEFL ITP (30 Soal • 25 Menit)</h4>
-            <p>Uji Listening 2 Orang, Structure Grammar, & Reading dengan prediksi skor 310–677!</p>
+            <h4>Tes Simulasi Resmi TOEFL ITP (140 Soal • Standar Ujian Asli)</h4>
+            <p>Uji 50 Listening (Audio 1x Putar), 40 Structure, & 50 Reading sesuai standar resmi ETS dengan timer 115 Menit / 1,5 Jam!</p>
           </div>
-          <button class="btn-primary" style="padding: 10px 18px; font-size: 0.88rem; flex-shrink: 0;">Mulai Simulasi ⏱️</button>
+          <button class="btn-primary" style="padding: 10px 18px; font-size: 0.88rem; flex-shrink: 0;" onclick="openExamSetupModal()">Mulai Simulasi ⏱️</button>
         </div>
         <div class="lesson-path" id="toefl-lesson-path">
           <!-- Populated by JS -->
@@ -485,14 +524,21 @@
           <button class="btn-submit-exam" onclick="confirmSubmitToeflSim()">Kumpulkan Ujian 🏁</button>
         </div>
 
-        <!-- Question Grid Navigator (1 - 30) -->
+        <!-- Question Grid Navigator -->
         <div class="exam-nav-drawer">
           <div class="exam-nav-header">
-            <span>Daftar Nomor Soal (Klik untuk lompat):</span>
-            <span class="exam-answered-count" id="exam-answered-count">0 / 30 Terjawab</span>
+            <span>Daftar Nomor Soal (Klik nomor untuk berpindah):</span>
+            <span class="exam-answered-count" id="exam-answered-count">0 / 140 Terjawab</span>
+          </div>
+          <!-- Section filter pills for fast navigation across 140 questions -->
+          <div class="exam-section-filter-bar">
+            <button class="exam-filter-btn active" id="filter-btn-all" onclick="filterExamGrid('all')">Semua (<span id="filter-all-count">140</span>)</button>
+            <button class="exam-filter-btn" id="filter-btn-listening" onclick="filterExamGrid('listening')">🎧 Listening (<span id="filter-l-count">50</span>)</button>
+            <button class="exam-filter-btn" id="filter-btn-structure" onclick="filterExamGrid('structure')">📐 Structure (<span id="filter-s-count">40</span>)</button>
+            <button class="exam-filter-btn" id="filter-btn-reading" onclick="filterExamGrid('reading')">📖 Reading (<span id="filter-r-count">50</span>)</button>
           </div>
           <div class="exam-grid-numbers" id="exam-grid-numbers">
-            <!-- 1 to 30 buttons populated by JS -->
+            <!-- Populated by JS -->
           </div>
         </div>
 
@@ -564,6 +610,7 @@
               <div class="cefr-code" id="report-cefr-code">CEFR B2</div>
               <div class="cefr-title" id="report-cefr-title">Upper Intermediate</div>
             </div>
+            <div id="report-campus-status"></div>
           </div>
 
           <!-- Section Breakdown Cards -->
@@ -617,8 +664,8 @@
         </div>
 
         <div class="report-actions-bar">
-          <button class="btn-primary" onclick="startToeflSimulation()">Ulangi Simulasi Tes 🔄</button>
-          <button class="btn-secondary" onclick="showView('toefl-map')">Kembali ke Jalur Inggris Lanjutan 📚</button>
+          <button class="btn-primary" onclick="restartToeflSimWithNewQuestions()">Ulangi Tes dengan Soal Baru & Diacak 🔄</button>
+          <button class="btn-secondary" onclick="showView('toefl-map')">Kembali ke Menu TOEFL 📚</button>
           <button class="btn-secondary" onclick="showView('dashboard')">Ke Dashboard 🏠</button>
         </div>
       </div>
@@ -1130,6 +1177,76 @@
   </div>
 </div>
 
+<!-- 🎓 TOEFL Exam Setup & Mode Selector Modal -->
+<div id="exam-setup-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card exam-setup-modal-card">
+    <div class="modal-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.5rem;">🏛️</span>
+        <div>
+          <h3 class="modal-title" style="margin: 0; font-size: 1.15rem;">Simulasi Resmi TOEFL ITP®</h3>
+          <small style="color: var(--text-muted); font-size: 0.78rem;">Pilih format pengerjaan & aturan resmi ujian</small>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeExamSetupModal()">✕</button>
+    </div>
+
+    <div class="exam-setup-body">
+      <div class="exam-rules-banner">
+        <div class="rule-item">
+          <span class="rule-icon">🔒</span>
+          <div>
+            <strong>Audio Listening Cuma 1x Putar</strong>
+            <p>Sesuai tes asli di komputer ujian, rekaman audio hanya dapat diputar satu kali dan tidak ada opsi dengar ulang!</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">🎯</span>
+          <div>
+            <strong>Standar Kampus: Minimal 430</strong>
+            <p>Total skor Listening + Structure + Reading harus mencapai minimal 430. Jika di bawah itu, wajib remidi paket baru!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="exam-mode-select-label">Pilih Format & Durasi Ujian:</div>
+      <div class="exam-mode-options">
+        <label class="exam-mode-card selected" id="opt-mode-real" onclick="selectExamModeOption('real')">
+          <input type="radio" name="exam-mode-choice" value="real" checked>
+          <div class="emc-content">
+            <div class="emc-badge recommended">⭐ Standar Resmi ETS</div>
+            <div class="emc-title">140 Soal Penuh • 115 Menit (~2 Jam)</div>
+            <div class="emc-desc">Format persis ujian asli: 50 Listening (35 mnt), 40 Structure (25 mnt), & 50 Reading (55 mnt).</div>
+          </div>
+        </label>
+
+        <label class="exam-mode-card" id="opt-mode-campus-90" onclick="selectExamModeOption('campus-90')">
+          <input type="radio" name="exam-mode-choice" value="campus-90">
+          <div class="emc-content">
+            <div class="emc-badge campus">⚡ Standar Kampus (1,5 Jam)</div>
+            <div class="emc-title">140 Soal Penuh • 90 Menit (1 1/2 Jam)</div>
+            <div class="emc-desc">140 Soal lengkap dengan batas waktu ketat 90 menit (1,5 jam) melatih kecepatan pengerjaan.</div>
+          </div>
+        </label>
+
+        <label class="exam-mode-card" id="opt-mode-quick" onclick="selectExamModeOption('quick')">
+          <input type="radio" name="exam-mode-choice" value="quick">
+          <div class="emc-content">
+            <div class="emc-badge">⏱️ Latihan Kilat</div>
+            <div class="emc-title">30 Soal Diagnostic • 25 Menit</div>
+            <div class="emc-desc">10 Listening, 10 Structure, & 10 Reading untuk cek kemampuan awal secara cepat.</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="exam-setup-actions">
+      <button class="btn-secondary" onclick="closeExamSetupModal()">Batal</button>
+      <button class="btn-primary" style="padding: 12px 24px; font-weight: 800;" onclick="confirmStartToeflExam()">Mulai Ujian Sekarang 🚀</button>
+    </div>
+  </div>
+</div>
+
 <!-- Exam Submit Confirmation In-Page Modal -->
 <div id="exam-confirm-modal" class="modal-overlay hidden" style="display: none;">
   <div class="modal-card" style="max-width: 440px;">
@@ -1162,8 +1279,147 @@
   </div>
 </div>
 
-<script src="js/data.js?v=34"></script>
-<script src="js/app.js?v=34"></script>
+<!-- ───────── MODAL: PWA INSTALL GUIDE (Untuk Android & iPhone) ───────── -->
+<div id="pwa-guide-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card pwa-guide-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">📲</span>
+        <div>
+          <h3 class="modal-title">Pasang BasaLoka di Layar HP</h3>
+          <div class="modal-subtitle">Buka langsung lewat ikon di HP tanpa perlu cari di browser</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closePwaGuideModal()">✕</button>
+    </div>
+    <div class="modal-body pwa-guide-body">
+      <div class="pwa-device-tabs">
+        <button class="pwa-tab-btn active" id="tab-pwa-android" onclick="switchPwaTab('android')">
+          <span>🤖 Android (Chrome)</span>
+        </button>
+        <button class="pwa-tab-btn" id="tab-pwa-ios" onclick="switchPwaTab('ios')">
+          <span>🍎 iPhone / iPad (Safari)</span>
+        </button>
+      </div>
+
+      <!-- Android Guide Content -->
+      <div class="pwa-guide-content" id="pwa-content-android">
+        <div class="pwa-step-card">
+          <div class="step-num">1</div>
+          <div class="step-info">
+            <h4>Tap Tombol "Pasang Otomatis"</h4>
+            <p>Klik tombol pasang di bawah untuk membuka dialog instalasi resmi Google Chrome.</p>
+          </div>
+        </div>
+        <div class="pwa-step-card">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <h4>Atau Lewat Menu Titik Tiga (⋮)</h4>
+            <p>Jika tombol tidak merespon, buka menu titik tiga <strong>(⋮)</strong> di pojok kanan atas Chrome, lalu pilih <strong>"Install aplikasi"</strong> atau <strong>"Tambahkan ke Layar Utama"</strong>.</p>
+          </div>
+        </div>
+        <div class="pwa-step-card">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <h4>Konfirmasi & Selesai!</h4>
+            <p>Tap <strong>"Install / Tambah"</strong>. Ikon Bumi Kawaii BasaLoka langsung muncul di layar depan HP-mu.</p>
+          </div>
+        </div>
+        <button class="btn-primary pwa-action-btn" onclick="executeNativeInstall()">
+          ⚡ Pasang Otomatis Sekarang
+        </button>
+      </div>
+
+      <!-- iOS Guide Content -->
+      <div class="pwa-guide-content" id="pwa-content-ios" style="display: none;">
+        <div class="pwa-step-card">
+          <div class="step-num">1</div>
+          <div class="step-info">
+            <h4>Buka di Browser Safari & Tap Ikon Share</h4>
+            <p>Di bagian bawah layar Safari, tap tombol <strong>Bagikan / Share (ikon kotak dengan panah atas ⎋)</strong>.</p>
+          </div>
+        </div>
+        <div class="pwa-step-card">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <h4>Pilih "Add to Home Screen" ➕</h4>
+            <p>Gulir menu ke bawah lalu pilih opsi <strong>"Tambahkan ke Layar Utama" (Add to Home Screen)</strong>.</p>
+          </div>
+        </div>
+        <div class="pwa-step-card">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <h4>Tap "Tambah" (Add) di Pojok Kanan Atas</h4>
+            <p>Selesai! Ikon BasaLoka langsung terpasang di homescreen iPhone kamu dan bisa dibuka satu tap layaknya aplikasi biasa.</p>
+          </div>
+        </div>
+        <button class="btn-primary pwa-action-btn" onclick="closePwaGuideModal()">
+          👍 Siap, Saya Mengerti!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: SECTION CHECKPOINT (Per-Section Score Update) ───────── -->
+<div id="section-checkpoint-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card section-checkpoint-card">
+    <div class="checkpoint-hero">
+      <div class="checkpoint-icon" id="checkpoint-icon">🎧</div>
+      <div class="checkpoint-badge" id="checkpoint-badge">SECTION 1 SELESAI</div>
+      <h3 class="checkpoint-title" id="checkpoint-title">Hasil Section 1: Listening</h3>
+      <p class="checkpoint-sub" id="checkpoint-sub">Berikut estimasi nilai performamu di bagian ini:</p>
+
+      <div class="checkpoint-score-box">
+        <div class="checkpoint-stat-item">
+          <div class="checkpoint-stat-label">Jawaban Benar</div>
+          <div class="checkpoint-stat-val" id="checkpoint-raw">8 / 10</div>
+        </div>
+        <div class="checkpoint-stat-item">
+          <div class="checkpoint-stat-label">Skala Section</div>
+          <div class="checkpoint-stat-val highlight" id="checkpoint-scale">56 <span style="font-size: 0.85rem; color: #94a3b8;">/ 68</span></div>
+        </div>
+        <div class="checkpoint-stat-item">
+          <div class="checkpoint-stat-label">Estimasi Skor</div>
+          <div class="checkpoint-stat-val" id="checkpoint-equiv" style="color: #f59e0b;">560</div>
+        </div>
+      </div>
+
+      <div class="checkpoint-campus-status" id="checkpoint-campus-status">
+        <!-- Filled by JS -->
+      </div>
+
+      <button class="btn-primary" id="checkpoint-next-btn" onclick="continueToNextExamSection()" style="width: 100%; padding: 13px; font-weight: 800; font-size: 0.96rem;">
+        Lanjut ke Section Berikutnya →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: CAMPUS SCORE 430 ALERT (Lulus / Gagal Wajib Ulang) ───────── -->
+<div id="campus-score-alert-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card campus-alert-modal-card" id="campus-alert-card-inner">
+    <div class="campus-alert-icon" id="campus-alert-icon">🚨</div>
+    <div class="campus-alert-badge" id="campus-alert-badge">STANDAR KELULUSAN KAMPUS: MINIMAL 430</div>
+    <h2 class="campus-alert-title" id="campus-alert-title">SKOR ANDA: 390 (BELUM LULUS)</h2>
+    <p class="campus-alert-sub" id="campus-alert-sub">Kampus mewajibkan skor minimal 430 untuk syarat kelulusan sidang & yudisium.</p>
+
+    <div class="campus-section-breakdown" id="campus-breakdown-pills">
+      <!-- Section pills injected by JS -->
+    </div>
+
+    <div class="campus-alert-instruction" id="campus-alert-instruction">
+      <!-- Instruction text injected by JS -->
+    </div>
+
+    <div class="campus-alert-actions" id="campus-alert-actions">
+      <!-- Buttons injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js?v=43"></script>
+<script src="js/app.js?v=43"></script>
 
 <script>
 // Failsafe direct handlers to ensure zero dead clicks

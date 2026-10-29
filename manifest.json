@@ -1,0 +1,32 @@
+{
+  "name": "BasaLoka — Jelajahi Dunia Bahasa & TOEFL",
+  "short_name": "BasaLoka",
+  "description": "Platform Belajar Bahasa Interaktif Korea, Inggris, & TOEFL ITP Preparation",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080812",
+  "theme_color": "#080812",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "images/Ikon Bumi Kawaii 3D.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/Ikon Bumi Kawaii 3D.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "images/IkonB.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

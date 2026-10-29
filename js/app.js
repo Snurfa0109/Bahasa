@@ -21,7 +21,8 @@ let state = {
   koreanLessons: 0,
   englishLessons: 0,
   toeflLessons: 0,
-  perfectScores: 0
+  perfectScores: 0,
+  toeflActiveTrack: 'full'
 };
 
 let currentView = 'onboarding';
@@ -597,9 +598,15 @@ if (initialNameInput) {
 function renderDashboard() {
   const hour = new Date().getHours();
   let greeting = '☀️ Selamat pagi';
-  if (hour >= 12 && hour < 17) greeting = '🌤️ Selamat siang';
-  if (hour >= 17 && hour < 20) greeting = '🌅 Selamat sore';
-  if (hour >= 20) greeting = '🌙 Selamat malam';
+  if (hour >= 11 && hour < 15) {
+    greeting = '🌤️ Selamat siang';
+  } else if (hour >= 15 && hour < 18) {
+    greeting = '🌅 Selamat sore';
+  } else if (hour >= 18 || hour < 5) {
+    greeting = '🌙 Selamat malam';
+  } else {
+    greeting = '☀️ Selamat pagi';
+  }
 
   document.getElementById('dashboard-greeting').textContent = `${greeting}, ${state.userName}! 👋`;
   const dayNum = state.totalLessons || 0;
@@ -710,6 +717,14 @@ function renderAchievements() {
 }
 
 // ─── LESSON MAP ───────────────────────────────────────────────
+function setToeflTrack(track) {
+  state.toeflActiveTrack = track;
+  saveState();
+  renderLessonMap('toefl');
+  if (typeof playClickSound === 'function') playClickSound();
+}
+window.setToeflTrack = setToeflTrack;
+
 function renderLessonMap(lang) {
   const data = APP_DATA[lang];
   const pathEl = document.getElementById(`${lang}-lesson-path`);
@@ -721,14 +736,24 @@ function renderLessonMap(lang) {
   }
   if (!pathEl) return;
 
-  pathEl.innerHTML = data.units.map((unit, ui) => {
+  let unitsToRender = data.units;
+  if (lang === 'toefl') {
+    const activeTrack = state.toeflActiveTrack || 'full';
+    const btnFast3 = document.getElementById('track-btn-fast3');
+    const btnFull = document.getElementById('track-btn-full');
+    if (btnFast3) btnFast3.classList.toggle('active', activeTrack === 'fast3');
+    if (btnFull) btnFull.classList.toggle('active', activeTrack === 'full');
+    unitsToRender = data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both');
+  }
+
+  pathEl.innerHTML = unitsToRender.map((unit, ui) => {
     const unitLessons = unit.lessons;
     const doneLessons = unitLessons.filter(l => state.completedLessons.includes(l.id));
     const unitDone = doneLessons.length;
     const unitTotal = unitLessons.length;
     const unitPct = Math.round((unitDone / unitTotal) * 100);
     const unitComplete = state.completedUnits.includes(unit.id);
-    const prevUnit = ui > 0 ? data.units[ui - 1] : null;
+    const prevUnit = ui > 0 ? unitsToRender[ui - 1] : null;
     const isLocked = prevUnit && !state.completedUnits.includes(prevUnit.id);
 
     return `
@@ -793,14 +818,10 @@ function showLockedMsg() {
 // ─── DYNAMIC QUESTION POOL & OPTION SHUFFLE ENGINE ────────────
 function prepareLessonQuiz(rawQuiz) {
   if (!rawQuiz || !rawQuiz.length) return [];
-  // 1. Shuffle the question pool so each repeat gets fresh question order
+  // Shuffle the question pool so each repeat gets fresh order, testing ALL questions in the bank
   const pool = shuffle([...rawQuiz]);
-  // 2. Sample 4 to 5 questions if pool is large (e.g. 6-8 questions), giving varied rounds
-  const count = pool.length > 5 ? 5 : pool.length;
-  const sampled = pool.slice(0, count);
 
-  // 3. Shuffle options for each question so correct answer position changes dynamically
-  return sampled.map(q => {
+  return pool.map(q => {
     const correctText = q.options[q.answer];
     const shuffledOpts = shuffle([...q.options]);
     const newAnswer = shuffledOpts.indexOf(correctText);
@@ -815,9 +836,7 @@ function prepareLessonQuiz(rawQuiz) {
 function prepareFillBlankQuestions(rawQuestions) {
   if (!rawQuestions || !rawQuestions.length) return [];
   const pool = shuffle([...rawQuestions]);
-  const count = pool.length > 5 ? 5 : pool.length;
-  const sampled = pool.slice(0, count);
-  return sampled.map(q => {
+  return pool.map(q => {
     return {
       ...q,
       options: shuffle([...q.options])
@@ -828,9 +847,7 @@ function prepareFillBlankQuestions(rawQuestions) {
 function prepareConversationQuestions(rawConvos) {
   if (!rawConvos || !rawConvos.length) return [];
   const pool = shuffle([...rawConvos]);
-  const count = pool.length > 4 ? 4 : pool.length;
-  const sampled = pool.slice(0, count);
-  return sampled.map(c => {
+  return pool.map(c => {
     if (!c.options) return c;
     const correctText = c.options[c.answer];
     const shuffledOpts = shuffle([...c.options]);
@@ -851,9 +868,11 @@ function startLesson(lang, unitId, lessonId) {
   const lesson = unit.lessons.find(l => l.id === lessonId);
   if (!lesson) return;
 
-  // Strict Lock Guard: verify previous unit & lesson are completed 100%
-  const ui = data.units.findIndex(u => u.id === unitId);
-  const prevUnit = ui > 0 ? data.units[ui - 1] : null;
+  // Strict Lock Guard: verify previous unit & lesson are completed 100% within current track
+  const activeTrack = (lang === 'toefl') ? (state.toeflActiveTrack || 'full') : null;
+  const trackUnits = activeTrack ? data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both') : data.units;
+  const ui = trackUnits.findIndex(u => u.id === unitId);
+  const prevUnit = ui > 0 ? trackUnits[ui - 1] : null;
   const isUnitLocked = prevUnit && !state.completedUnits.includes(prevUnit.id);
   const li = unit.lessons.findIndex(l => l.id === lessonId);
   const prevLesson = li > 0 ? unit.lessons[li - 1] : null;
@@ -1161,6 +1180,7 @@ function answerQuiz(selected, correct) {
   const qi = Math.max(0, lessonStep - totalCards);
   const currentQ = (currentLesson.quiz && currentLesson.quiz[qi]) || null;
   const correctText = (currentQ && currentQ.options && currentQ.options[correct]) || (opts[correct] ? opts[correct].innerText : '');
+  const selectedText = (currentQ && currentQ.options && currentQ.options[selected]) || (opts[selected] ? opts[selected].innerText : '');
   const explanation = currentQ?.explanation || currentQ?.tip || currentLesson?.tip || '';
 
   if (isCorrect) {
@@ -1171,6 +1191,7 @@ function answerQuiz(selected, correct) {
     playSuccessEffect();
     showQuizFeedback({
       isCorrect: true,
+      selectedText,
       correctText,
       explanation,
       xpReward
@@ -1181,6 +1202,7 @@ function answerQuiz(selected, correct) {
     loseHeart();
     showQuizFeedback({
       isCorrect: false,
+      selectedText,
       correctText,
       explanation,
       xpReward: 0
@@ -1188,7 +1210,7 @@ function answerQuiz(selected, correct) {
   }
 }
 
-function showQuizFeedback({ isCorrect, correctText, explanation, xpReward }) {
+function showQuizFeedback({ isCorrect, selectedText, correctText, explanation, xpReward }) {
   const container = document.getElementById('quiz-feedback-container');
   if (!container) return;
 
@@ -1201,16 +1223,30 @@ function showQuizFeedback({ isCorrect, correctText, explanation, xpReward }) {
   container.innerHTML = `
     <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}">
       <div class="fb-header">
-        <span class="fb-icon">${isCorrect ? '🎉' : '💡'}</span>
+        <span class="fb-icon">${isCorrect ? '🎉' : '⚠️'}</span>
         <div class="fb-text-wrap">
-          <div class="fb-title">${isCorrect ? 'Luar Biasa, Jawabanmu Benar!' : 'Jawaban Belum Tepat'}</div>
-          ${!isCorrect ? `<div class="fb-answer">Jawaban yang benar: <strong>${escapeHtml(correctText)}</strong></div>` : ''}
-          ${explanation ? `<div class="fb-explanation">📖 <em>Catatan Materi:</em> ${escapeHtml(explanation)}</div>` : ''}
+          <div class="fb-title">${isCorrect ? 'Keren, Jawabanmu Benar!' : 'Jawaban Kurang Tepat!'}</div>
+          ${!isCorrect ? `
+            <div class="fb-breakdown-row">
+              <span class="fb-tag wrong">❌ Pilihanmu: ${escapeHtml(selectedText)}</span>
+              <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+            </div>
+          ` : `
+            <div class="fb-breakdown-row">
+              <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+            </div>
+          `}
+          ${explanation ? `
+            <div class="fb-explanation-detail">
+              <div class="fb-exp-title">🔍 Letak Kesalahan & Trik Cepat Menjawab:</div>
+              <div class="fb-exp-text">${escapeHtml(explanation)}</div>
+            </div>
+          ` : ''}
         </div>
         ${isCorrect ? `<div class="fb-xp">+${xpReward} XP</div>` : ''}
       </div>
       <button class="btn-primary fb-next-btn" id="quiz-continue-btn" onclick="nextQuizStep()">
-        ${isLastQuestion ? 'Lihat Hasil Latihan 🏆' : 'Lanjut →'}
+        ${isLastQuestion ? 'Lihat Hasil Latihan 🏆' : 'Lanjut ke Soal Berikutnya →'}
       </button>
     </div>
   `;
@@ -1310,49 +1346,95 @@ function checkMatchPair() {
 // ─── FILL IN BLANK ────────────────────────────────────────────
 function renderFillBlank(q) {
   const content = document.getElementById('lesson-content');
+  const sentenceText = q.sentence || q.text || '';
+  const correctVal = typeof q.answer === 'number' ? q.options[q.answer] : (q.answer || '');
+  const hintText = q.hint || '';
+  const contextText = q.context || 'Lengkapi kalimat baku di bawah ini sesuai kaidah Structure TOEFL:';
+  const safeAnswer = String(correctVal).replace(/'/g, "\\'");
+  const safeExp = String(q.explanation || q.tip || '').replace(/'/g, "\\'");
+
   content.innerHTML = `
     <div class="fill-wrapper">
       <div class="fill-label">✏️ Pilih Jawaban yang Tepat</div>
-      <div class="fill-context">${q.context}</div>
+      <div class="fill-context">${contextText}</div>
       <div class="fill-sentence">
-        ${q.sentence.replace('_________', '<span class="fill-blank">_________</span>')}
+        ${sentenceText.replace(/___________|_________/g, '<span class="fill-blank">_________</span>')}
       </div>
-      <div class="fill-hint">💡 Petunjuk: ${q.hint}</div>
+      ${hintText ? `<div class="fill-hint">💡 Petunjuk: ${hintText}</div>` : ''}
       <div class="fill-options" id="fill-options">
-        ${q.options.map(opt => `
-          <button class="fill-option" onclick="answerFill('${opt.replace(/'/g, "\\'")}', '${q.answer.replace(/'/g, "\\'")}', '${q.ttsText.replace(/'/g, "\\'")}', '${q.ttsLang}')">
+        ${(q.options || []).map(opt => `
+          <button class="fill-option" onclick="answerFill('${opt.replace(/'/g, "\\'")}', '${safeAnswer}', '${(q.ttsText || sentenceText).replace(/'/g, "\\'")}', '${q.ttsLang || 'en-US'}', '${safeExp}')">
             ${opt}
           </button>`).join('')}
       </div>
+      <div id="fill-feedback-area"></div>
     </div>`;
 }
 
-function answerFill(selected, correct, ttsText, ttsLang) {
+function answerFill(selected, correct, ttsText, ttsLang, explanation) {
   const opts = document.querySelectorAll('.fill-option');
   opts.forEach(o => o.disabled = true);
   totalAnswers++;
+  const isCorrect = selected.trim() === correct.trim();
 
   opts.forEach(o => {
-    if (o.textContent.trim() === correct) o.classList.add('correct');
-    if (o.textContent.trim() === selected && selected !== correct) o.classList.add('wrong');
+    if (o.textContent.trim() === correct.trim()) o.classList.add('correct');
+    if (o.textContent.trim() === selected.trim() && !isCorrect) o.classList.add('wrong');
   });
 
-  if (selected === correct) {
+  if (isCorrect) {
     correctAnswers++;
     lessonXpEarned += Math.round(currentLesson.xpReward / currentLesson.questions.length);
     showToast('✅ Benar!', 'success');
     playSuccessEffect();
-    setTimeout(() => speak(ttsText, ttsLang), 300);
+    if (ttsText) setTimeout(() => speak(ttsText, ttsLang), 300);
   } else {
     loseHeart();
-    showToast(`❌ Jawaban: ${correct}`, 'error');
+    showToast('❌ Kurang tepat, periksa pembahasannya', 'error');
   }
 
-  setTimeout(() => {
-    fillBlankStep++;
-    lessonStep++;
-    renderLessonStep();
-  }, 1500);
+  const feedbackArea = document.getElementById('fill-feedback-area');
+  const isLast = (fillBlankStep + 1 >= currentLesson.questions.length);
+
+  if (feedbackArea) {
+    feedbackArea.innerHTML = `
+      <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}" style="margin-top: 18px;">
+        <div class="fb-header">
+          <span class="fb-icon">${isCorrect ? '🎯' : '⚠️'}</span>
+          <div class="fb-text-wrap">
+            <div class="fb-title">${isCorrect ? 'Struktur Kalimat Tepat!' : 'Struktur Kalimat Belum Tepat!'}</div>
+            ${!isCorrect ? `
+              <div class="fb-breakdown-row">
+                <span class="fb-tag wrong">❌ Pilihanmu: ${escapeHtml(selected)}</span>
+                <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correct)}</span>
+              </div>
+            ` : `
+              <div class="fb-breakdown-row">
+                <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correct)}</span>
+              </div>
+            `}
+            ${explanation ? `
+              <div class="fb-explanation-detail">
+                <div class="fb-exp-title">🔍 Letak Kesalahan & Trik Grammar TOEFL:</div>
+                <div class="fb-exp-text">${escapeHtml(explanation)}</div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <button class="btn-primary fb-next-btn" style="margin-top: 14px;" onclick="nextFillBlank()">
+          ${isLast ? 'Selesaikan Pelajaran 🏆' : 'Lanjut ke Soal Berikutnya →'}
+        </button>
+      </div>
+    `;
+  } else {
+    setTimeout(nextFillBlank, 1500);
+  }
+}
+
+function nextFillBlank() {
+  fillBlankStep++;
+  lessonStep++;
+  renderLessonStep();
 }
 
 // ─── READING QUIZ (TOEFL) ─────────────────────────────────────
@@ -1398,6 +1480,10 @@ function answerReadingQuiz(selectedIndex, correctIndex, explanation) {
 
   totalAnswers++;
   const isCorrect = selectedIndex === correctIndex;
+  const letters = ['A', 'B', 'C', 'D'];
+  const qObj = currentLesson.questions[readingStep] || {};
+  const selectedText = (qObj.options && qObj.options[selectedIndex]) ? `${letters[selectedIndex]}. ${qObj.options[selectedIndex]}` : `Opsi ${letters[selectedIndex]}`;
+  const correctText = (qObj.options && qObj.options[correctIndex]) ? `${letters[correctIndex]}. ${qObj.options[correctIndex]}` : `Opsi ${letters[correctIndex]}`;
 
   if (isCorrect) {
     btns[selectedIndex].classList.add('correct');
@@ -1414,14 +1500,34 @@ function answerReadingQuiz(selectedIndex, correctIndex, explanation) {
 
   const feedbackEl = document.getElementById('reading-feedback');
   feedbackEl.innerHTML = `
-    <div class="explanation-box">
-      <strong>${isCorrect ? '✅ Analisis Tepat!' : '❌ Kunci Jawaban & Analisis:'}</strong><br>
-      ${explanation ? `💡 <em>Penjelasan TOEFL:</em> ${explanation}` : ''}
-    </div>
-    <div class="reading-next-bar">
-      <button class="btn-primary" onclick="nextReadingQuiz()">
-        ${readingStep + 1 < currentLesson.questions.length ? 'Pertanyaan Berikutnya →' : 'Selesaikan Pelajaran 🏆'}
-      </button>
+    <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}" style="margin-top: 16px;">
+      <div class="fb-header">
+        <span class="fb-icon">${isCorrect ? '🎯' : '⚠️'}</span>
+        <div class="fb-text-wrap">
+          <div class="fb-title">${isCorrect ? 'Analisis Tepat! Jawabanmu Benar!' : 'Jawaban Belum Tepat!'}</div>
+          ${!isCorrect ? `
+            <div class="fb-breakdown-row">
+              <span class="fb-tag wrong">❌ Pilihanmu: ${escapeHtml(selectedText)}</span>
+              <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+            </div>
+          ` : `
+            <div class="fb-breakdown-row">
+              <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+            </div>
+          `}
+          ${explanation ? `
+            <div class="fb-explanation-detail">
+              <div class="fb-exp-title">🔍 Letak Kesalahan & Trik Membaca TOEFL:</div>
+              <div class="fb-exp-text">${explanation}</div>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+      <div class="reading-next-bar" style="margin-top: 14px;">
+        <button class="btn-primary" onclick="nextReadingQuiz()">
+          ${readingStep + 1 < currentLesson.questions.length ? 'Pertanyaan Berikutnya →' : 'Selesaikan Pelajaran 🏆'}
+        </button>
+      </div>
     </div>
   `;
 }
@@ -1693,6 +1799,9 @@ function answerConversationListening(selectedIndex, correctIndex, explanation) {
 
   totalAnswers++;
   const isCorrect = selectedIndex === correctIndex;
+  const currentConvo = currentLesson.conversations[convoListeningStep] || {};
+  const selectedText = (currentConvo.options && currentConvo.options[selectedIndex]) ? currentConvo.options[selectedIndex] : 'Jawaban Anda';
+  const correctText = (currentConvo.options && currentConvo.options[correctIndex]) ? currentConvo.options[correctIndex] : 'Kunci Jawaban';
 
   if (isCorrect) {
     btns[selectedIndex].classList.add('correct');
@@ -1710,14 +1819,34 @@ function answerConversationListening(selectedIndex, correctIndex, explanation) {
   const feedbackEl = document.getElementById('convo-feedback-area');
   if (feedbackEl) {
     feedbackEl.innerHTML = `
-      <div class="explanation-box" style="margin-top: 16px;">
-        <strong>${isCorrect ? '✅ Analisis Tepat!' : '❌ Kunci Jawaban & Analisis:'}</strong><br>
-        <div style="margin-top: 6px; line-height: 1.5;">${explanation}</div>
-      </div>
-      <div class="reading-next-bar" style="margin-top: 14px;">
-        <button class="btn-primary" onclick="nextConversationListening()">
-          ${convoListeningStep + 1 < currentLesson.conversations.length ? 'Soal Percakapan Berikutnya →' : 'Selesaikan Pelajaran 🏆'}
-        </button>
+      <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}" style="margin-top: 16px;">
+        <div class="fb-header">
+          <span class="fb-icon">${isCorrect ? '🎧' : '⚠️'}</span>
+          <div class="fb-text-wrap">
+            <div class="fb-title">${isCorrect ? 'Pendengaran Tajam! Jawaban Benar!' : 'Kurang Tepat, Cek Analisisnya!'}</div>
+            ${!isCorrect ? `
+              <div class="fb-breakdown-row">
+                <span class="fb-tag wrong">❌ Pilihanmu: ${escapeHtml(selectedText)}</span>
+                <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+              </div>
+            ` : `
+              <div class="fb-breakdown-row">
+                <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+              </div>
+            `}
+            ${explanation ? `
+              <div class="fb-explanation-detail">
+                <div class="fb-exp-title">🔍 Letak Kesalahan & Trik Menyimak TOEFL:</div>
+                <div class="fb-exp-text">${explanation}</div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <div class="reading-next-bar" style="margin-top: 14px;">
+          <button class="btn-primary" onclick="nextConversationListening()">
+            ${convoListeningStep + 1 < currentLesson.conversations.length ? 'Soal Percakapan Berikutnya →' : 'Selesaikan Pelajaran 🏆'}
+          </button>
+        </div>
       </div>
     `;
   }
@@ -2556,35 +2685,155 @@ window.nextConversationListening = nextConversationListening;
 // ─── TOEFL ITP SIMULATION & SCORE PREDICTOR ENGINE ───────────
 let toeflSimState = {
   active: false,
+  examMode: 'real',
   timerInterval: null,
-  durationSec: 25 * 60,
-  remainingSec: 25 * 60,
+  durationSec: 115 * 60,
+  remainingSec: 115 * 60,
   currentIndex: 0,
   answers: {}, // index: chosenOption (0 - 3)
+  playedAudios: {}, // tracks which questions had audio played
   isPlayingAudio: false,
-  audioTimeout: null
+  audioTimeout: null,
+  sec1End: 49,
+  sec2End: 89,
+  section1Shown: false,
+  section2Shown: false,
+  activeFilter: 'all'
 };
 
-function startToeflSimulation() {
+let selectedExamMode = 'real';
+window.selectedExamMode = selectedExamMode;
+window.toeflSimState = toeflSimState;
+
+function openExamSetupModal() {
+  const m = document.getElementById('exam-setup-modal');
+  if (m) {
+    m.classList.add('active');
+    m.style.display = 'flex';
+  }
+}
+window.openExamSetupModal = openExamSetupModal;
+
+function closeExamSetupModal() {
+  const m = document.getElementById('exam-setup-modal');
+  if (m) {
+    m.classList.remove('active');
+    m.style.display = 'none';
+  }
+}
+window.closeExamSetupModal = closeExamSetupModal;
+
+function selectExamModeOption(mode) {
+  selectedExamMode = mode;
+  window.selectedExamMode = mode;
+  document.querySelectorAll('.exam-mode-card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById(`opt-mode-${mode}`);
+  if (card) {
+    card.classList.add('selected');
+    const radio = card.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+  }
+}
+window.selectExamModeOption = selectExamModeOption;
+
+function confirmStartToeflExam() {
+  closeExamSetupModal();
+  startToeflSimulation(selectedExamMode);
+}
+window.confirmStartToeflExam = confirmStartToeflExam;
+
+function generateRandomizedToeflExam(mode = 'real') {
+  const bank = APP_DATA.toeflQuestionBank;
+  if (!bank) return;
+
+  const rawL = (bank.listening && bank.listening.length) ? bank.listening : (APP_DATA.toeflSimulation.questions || []).filter(q => q.section === 'listening');
+  const rawS = (bank.structure && bank.structure.length) ? bank.structure : (APP_DATA.toeflSimulation.questions || []).filter(q => q.section === 'structure');
+  const rawR = (bank.reading && bank.reading.length) ? bank.reading : (APP_DATA.toeflSimulation.questions || []).filter(q => q.section === 'reading');
+
+  let targetL = 50;
+  let targetS = 40;
+  let targetR = 50;
+
+  if (mode === 'quick') {
+    targetL = 10;
+    targetS = 10;
+    targetR = 10;
+  }
+
+  // Randomly sample distinct questions from each section pool
+  const pickL = shuffle([...rawL]).slice(0, targetL);
+  const pickS = shuffle([...rawS]).slice(0, targetS);
+  const pickR = shuffle([...rawR]).slice(0, targetR);
+
+  // Randomize answer choices for each question so answers A/B/C/D change dynamically
+  const randomizeOpts = (q, newNumber) => {
+    if (!q.options || !q.options.length) return { ...q, number: newNumber };
+    const correctText = q.options[q.answer];
+    const shuffledOpts = shuffle([...q.options]);
+    return {
+      ...q,
+      number: newNumber,
+      options: shuffledOpts,
+      answer: shuffledOpts.indexOf(correctText)
+    };
+  };
+
+  let num = 1;
+  const finalQuestions = [
+    ...pickL.map(q => randomizeOpts(q, num++)),
+    ...pickS.map(q => randomizeOpts(q, num++)),
+    ...pickR.map(q => randomizeOpts(q, num++))
+  ];
+
+  APP_DATA.toeflSimulation.questions = finalQuestions;
+  APP_DATA.toeflSimulation.totalQuestions = finalQuestions.length;
+}
+
+function startToeflSimulation(mode = 'real') {
+  generateRandomizedToeflExam(mode);
   const simData = APP_DATA.toeflSimulation;
   if (!simData) return;
 
+  let durationMinutes = 115;
+  if (mode === 'campus-90') durationMinutes = 90;
+  else if (mode === 'quick') durationMinutes = 25;
+
+  const totalQuestions = (simData.questions || []).length;
+  const countL = (simData.questions || []).filter(q => q.section === 'listening').length;
+  const countS = (simData.questions || []).filter(q => q.section === 'structure').length;
+
   toeflSimState = {
     active: true,
+    examMode: mode,
     timerInterval: null,
-    durationSec: (simData.durationMinutes || 25) * 60,
-    remainingSec: (simData.durationMinutes || 25) * 60,
+    durationSec: durationMinutes * 60,
+    remainingSec: durationMinutes * 60,
     currentIndex: 0,
     answers: {},
+    playedAudios: {},
     isPlayingAudio: false,
-    audioTimeout: null
+    audioTimeout: null,
+    sec1End: countL - 1,
+    sec2End: countL + countS - 1,
+    section1Shown: false,
+    section2Shown: false,
+    activeFilter: 'all'
   };
+  window.toeflSimState = toeflSimState;
 
   showView('toefl-sim');
   renderExamNavGrid();
   renderExamQuestion(0);
   startExamTimer();
 }
+
+function restartToeflSimWithNewQuestions() {
+  closeCampusAlertAndShowReport();
+  closeExamModal();
+  startToeflSimulation(toeflSimState.examMode || 'real');
+  showToast('🔄 Paket Soal Baru & Diacak Berhasil Dimuat!', 'info');
+}
+window.restartToeflSimWithNewQuestions = restartToeflSimWithNewQuestions;
 
 function startExamTimer() {
   if (toeflSimState.timerInterval) clearInterval(toeflSimState.timerInterval);
@@ -2605,7 +2854,7 @@ function startExamTimer() {
         icon: '⏰',
         type: 'info',
         title: 'Waktu Ujian Telah Habis!',
-        message: 'Waktu pengerjaan 25 menit telah selesai. Lembar jawabanmu akan dikumpulkan dan prediksi skor TOEFL resmi akan dihitung sekarang.',
+        message: 'Batas waktu pengerjaan ujian telah selesai. Lembar jawabanmu akan dikumpulkan dan prediksi skor TOEFL resmi akan dihitung sekarang.',
         buttonText: 'Lihat Skor Ujian 🚀',
         onClose: () => { submitToeflSim(); }
       });
@@ -2622,28 +2871,54 @@ function updateExamTimerDisplay() {
   const s = Math.max(0, toeflSimState.remainingSec) % 60;
   el.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 
-  if (toeflSimState.remainingSec <= 180) { // < 3 minutes
+  if (toeflSimState.remainingSec <= 300) { // < 5 minutes
     if (badge) badge.classList.add('urgent-warning');
   } else {
     if (badge) badge.classList.remove('urgent-warning');
   }
 }
 
+function filterExamGrid(filter) {
+  toeflSimState.activeFilter = filter;
+  const buttons = document.querySelectorAll('.exam-filter-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`filter-btn-${filter}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  renderExamNavGrid();
+}
+window.filterExamGrid = filterExamGrid;
+
 function renderExamNavGrid() {
   const grid = document.getElementById('exam-grid-numbers');
   const countEl = document.getElementById('exam-answered-count');
   if (!grid) return;
 
-  const questions = APP_DATA.toeflSimulation.questions;
+  const questions = APP_DATA.toeflSimulation.questions || [];
   const answeredCount = Object.keys(toeflSimState.answers).length;
   if (countEl) countEl.textContent = `${answeredCount} / ${questions.length} Terjawab`;
 
+  // Update counts in filter bar
+  const lCount = questions.filter(q => q.section === 'listening').length;
+  const sCount = questions.filter(q => q.section === 'structure').length;
+  const rCount = questions.filter(q => q.section === 'reading').length;
+  const elAll = document.getElementById('filter-all-count');
+  const elL = document.getElementById('filter-l-count');
+  const elS = document.getElementById('filter-s-count');
+  const elR = document.getElementById('filter-r-count');
+  if (elAll) elAll.textContent = questions.length;
+  if (elL) elL.textContent = lCount;
+  if (elS) elS.textContent = sCount;
+  if (elR) elR.textContent = rCount;
+
+  const filter = toeflSimState.activeFilter || 'all';
+
   grid.innerHTML = questions.map((q, idx) => {
+    if (filter !== 'all' && q.section !== filter) return '';
     const isAnswered = toeflSimState.answers[idx] !== undefined;
     const isCurrent = idx === toeflSimState.currentIndex;
     return `
       <button class="exam-num-btn ${isAnswered ? 'answered' : ''} ${isCurrent ? 'current' : ''}"
-              onclick="jumpToExamQuestion(${idx})">
+              onclick="jumpToExamQuestion(${idx})" title="Nomor ${idx + 1} (${q.section})">
         ${idx + 1}
       </button>
     `;
@@ -2661,7 +2936,7 @@ function renderExamQuestion(index) {
   // Update Section Header
   const secNameEl = document.getElementById('exam-section-name');
   if (secNameEl) {
-    if (q.section === 'listening') secNameEl.textContent = 'Section 1: Listening Comprehension (Audio 2 Orang)';
+    if (q.section === 'listening') secNameEl.textContent = 'Section 1: Listening Comprehension (Audio 1x Putar)';
     else if (q.section === 'structure') secNameEl.textContent = 'Section 2: Structure & Written Expression';
     else if (q.section === 'reading') secNameEl.textContent = 'Section 3: Reading Comprehension';
   }
@@ -2696,25 +2971,39 @@ function renderExamQuestion(index) {
     const safeManText = (manLine ? manLine.text : '').replace(/'/g, "\\'");
     const safeWomanText = (womanLine ? womanLine.text : '').replace(/'/g, "\\'");
     const safeNarratorText = (q.narrator || q.question || '').replace(/'/g, "\\'");
+    const hasPlayed = !!(toeflSimState.playedAudios && toeflSimState.playedAudios[index]);
 
     card.innerHTML = `
       <div class="exam-listening-layout">
         <div class="exam-audio-box">
           <div class="eab-header">
-            <span class="exam-sec-badge">🎧 TOEFL Listening • Short Conversation</span>
+            <span class="exam-sec-badge">🎧 Section 1: Listening • Short Conversation</span>
             <span style="font-size: 0.82rem; color: var(--text-muted);">Nomor ${index + 1}</span>
           </div>
           <div class="eab-prompt">
-            Klik tombol di bawah untuk mendengarkan percakapan dua orang (Pria 👨 & Wanita 👩) beserta narator:
+            Dengarkan percakapan dua penutur (Pria 👨 & Wanita 👩) beserta narator di bawah:
           </div>
           <div class="eab-action-row">
-            <button class="btn-exam-play" id="btn-exam-audio" onclick="playExamConvoAudio('${safeManText}', '${safeWomanText}', '${safeNarratorText}')">
-              <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Audio Percakapan</span>
-            </button>
+            ${hasPlayed ? `
+              <button class="btn-exam-play played-locked" id="btn-exam-audio" disabled>
+                <span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Ujian Asli)</span>
+              </button>
+            ` : `
+              <button class="btn-exam-play" id="btn-exam-audio" onclick="playExamConvoAudio(${index}, '${safeManText}', '${safeWomanText}', '${safeNarratorText}')">
+                <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Audio Percakapan (Hanya 1x)</span>
+              </button>
+            `}
             <div class="exam-wave" id="exam-wave-anim" style="display: none;">
               <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
               <span class="exam-audio-speaker-label" id="exam-speaker-status">Memutar...</span>
             </div>
+          </div>
+
+          <div class="exam-audio-notice ${hasPlayed ? 'locked' : ''}">
+            ${hasPlayed 
+              ? `<span>🔒</span> <strong>Audio Selesai:</strong> Sesuai aturan ujian resmi TOEFL, rekaman percakapan hanya dapat didengarkan SATU KALI dan tidak dapat diulang.`
+              : `<span>⚠️</span> <strong>Aturan Resmi TOEFL:</strong> Rekaman percakapan hanya dapat diputar <strong>1 KALI</strong>. Dengarkan dengan konsentrasi penuh!`
+            }
           </div>
 
           <div class="exam-speakers-mini-grid">
@@ -2743,9 +3032,9 @@ function renderExamQuestion(index) {
   } else if (q.section === 'structure') {
     card.innerHTML = `
       <div class="exam-structure-layout">
-        <div class="exam-sec-badge" style="width: fit-content; margin-bottom: 12px;">📐 Section 2 • ${q.part}</div>
+        <div class="exam-sec-badge" style="width: fit-content; margin-bottom: 12px;">📐 Section 2 • ${q.part || 'Structure & Written Expression'}</div>
         <div class="exam-instruction-text" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 14px;">
-          ${q.part.includes('Completion') 
+          ${(q.part && q.part.includes('Completion')) 
             ? 'Pilihlah satu kata atau frasa yang paling tepat untuk melengkapi kalimat berikut sesuai kaidah tata bahasa Inggris resmi:' 
             : 'Pilihlah salah satu bagian bergaris bawah (A, B, C, atau D) yang memuat KESALAHAN tata bahasa:'}
         </div>
@@ -2818,7 +3107,17 @@ function renderExamQuestion(index) {
   renderExamNavGrid();
 }
 
-function playExamConvoAudio(manText, womanText, narratorText) {
+function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
+  if (toeflSimState.playedAudios && toeflSimState.playedAudios[qIndex]) {
+    showToast('🔒 Aturan Ujian TOEFL: Audio percakapan hanya dapat diputar 1 kali!', 'warning');
+    return;
+  }
+
+  // Mark played immediately
+  if (!toeflSimState.playedAudios) toeflSimState.playedAudios = {};
+  toeflSimState.playedAudios[qIndex] = true;
+  toeflSimState.isPlayingAudio = true;
+
   const btn = document.getElementById('btn-exam-audio');
   const icon = document.getElementById('exam-play-icon');
   const text = document.getElementById('exam-play-text');
@@ -2827,22 +3126,12 @@ function playExamConvoAudio(manText, womanText, narratorText) {
   const cardMan = document.getElementById('mini-card-man');
   const cardWoman = document.getElementById('mini-card-woman');
 
-  if (toeflSimState.isPlayingAudio) {
-    if (speechSynth) speechSynth.cancel();
-    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-    if (toeflSimState.audioTimeout) clearTimeout(toeflSimState.audioTimeout);
-    toeflSimState.isPlayingAudio = false;
-    if (icon) icon.textContent = '▶️';
-    if (text) text.textContent = 'Putar Audio Percakapan';
-    if (wave) wave.style.display = 'none';
-    if (cardMan) cardMan.classList.remove('active');
-    if (cardWoman) cardWoman.classList.remove('active');
-    return;
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('playing');
   }
-
-  toeflSimState.isPlayingAudio = true;
-  if (icon) icon.textContent = '⏹️';
-  if (text) text.textContent = 'Hentikan Audio';
+  if (icon) icon.textContent = '🔊';
+  if (text) text.textContent = 'Sedang Memutar... (Hanya 1x)';
   if (wave) wave.style.display = 'inline-flex';
 
   // Step 1: Man
@@ -2873,9 +3162,18 @@ function playExamConvoAudio(manText, womanText, narratorText) {
 
           speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
             toeflSimState.isPlayingAudio = false;
-            if (icon) icon.textContent = '▶️';
-            if (text) text.textContent = 'Putar Ulang Audio';
+            if (btn) {
+              btn.disabled = true;
+              btn.classList.remove('playing');
+              btn.classList.add('played-locked');
+              btn.innerHTML = '<span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Ujian Asli)</span>';
+            }
             if (wave) wave.style.display = 'none';
+            const notice = document.querySelector('.exam-audio-notice');
+            if (notice) {
+              notice.classList.add('locked');
+              notice.innerHTML = '<span>🔒</span> <strong>Audio Selesai:</strong> Sesuai aturan ujian resmi TOEFL, rekaman percakapan hanya dapat didengarkan SATU KALI dan tidak dapat diulang.';
+            }
           });
         }, 500);
       });
@@ -2896,16 +3194,138 @@ function selectExamOption(optIndex) {
 }
 
 function navExamQuestion(direction) {
-  const next = toeflSimState.currentIndex + direction;
+  // Cancel speech immediately if navigating away
+  if (toeflSimState.isPlayingAudio) {
+    if (speechSynth) speechSynth.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if (toeflSimState.audioTimeout) clearTimeout(toeflSimState.audioTimeout);
+    toeflSimState.isPlayingAudio = false;
+  }
+
+  const current = toeflSimState.currentIndex;
+  const next = current + direction;
   const questions = APP_DATA.toeflSimulation.questions;
+
+  // Checkpoint 1: Moving past Section 1 Listening
+  if (current === toeflSimState.sec1End && next === (toeflSimState.sec1End + 1) && !toeflSimState.section1Shown) {
+    showSectionCheckpoint(1);
+    return;
+  }
+
+  // Checkpoint 2: Moving past Section 2 Structure
+  if (current === toeflSimState.sec2End && next === (toeflSimState.sec2End + 1) && !toeflSimState.section2Shown) {
+    showSectionCheckpoint(2);
+    return;
+  }
+
   if (next >= 0 && next < questions.length) {
     renderExamQuestion(next);
   }
 }
 
 function jumpToExamQuestion(index) {
+  if (toeflSimState.isPlayingAudio) {
+    if (speechSynth) speechSynth.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if (toeflSimState.audioTimeout) clearTimeout(toeflSimState.audioTimeout);
+    toeflSimState.isPlayingAudio = false;
+  }
   renderExamQuestion(index);
 }
+
+function showSectionCheckpoint(sectionNum) {
+  const modal = document.getElementById('section-checkpoint-modal');
+  if (!modal) return;
+
+  const iconEl = document.getElementById('checkpoint-icon');
+  const badgeEl = document.getElementById('checkpoint-badge');
+  const titleEl = document.getElementById('checkpoint-title');
+  const subEl = document.getElementById('checkpoint-sub');
+  const rawEl = document.getElementById('checkpoint-raw');
+  const scaleEl = document.getElementById('checkpoint-scale');
+  const equivEl = document.getElementById('checkpoint-equiv');
+  const statusEl = document.getElementById('checkpoint-campus-status');
+  const nextBtn = document.getElementById('checkpoint-next-btn');
+
+  let correctCount = 0;
+  let sectionName = '';
+  let scaleScore = 31;
+  let nextSectionName = '';
+  let totalInSection = 10;
+  let startIndex = 0;
+  let endIndex = 0;
+
+  if (sectionNum === 1) {
+    startIndex = 0;
+    endIndex = toeflSimState.sec1End;
+    totalInSection = endIndex - startIndex + 1;
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (toeflSimState.answers[i] === APP_DATA.toeflSimulation.questions[i].answer) {
+        correctCount++;
+      }
+    }
+    scaleScore = Math.min(68, Math.max(31, Math.round(31 + (correctCount / totalInSection) * 37)));
+    sectionName = 'Section 1: Listening Comprehension';
+    nextSectionName = 'Section 2: Structure & Written Expression';
+    if (iconEl) iconEl.textContent = '🎧';
+    if (badgeEl) badgeEl.textContent = 'SECTION 1 SELESAI';
+    toeflSimState.section1Shown = true;
+  } else if (sectionNum === 2) {
+    startIndex = toeflSimState.sec1End + 1;
+    endIndex = toeflSimState.sec2End;
+    totalInSection = endIndex - startIndex + 1;
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (toeflSimState.answers[i] === APP_DATA.toeflSimulation.questions[i].answer) {
+        correctCount++;
+      }
+    }
+    scaleScore = Math.min(68, Math.max(31, Math.round(31 + (correctCount / totalInSection) * 37)));
+    sectionName = 'Section 2: Structure & Written Expression';
+    nextSectionName = 'Section 3: Reading Comprehension';
+    if (iconEl) iconEl.textContent = '📐';
+    if (badgeEl) badgeEl.textContent = 'SECTION 2 SELESAI';
+    toeflSimState.section2Shown = true;
+  }
+
+  const equivScore = scaleScore * 10;
+  const isSafe = scaleScore >= 43; // 430 campus target threshold
+
+  if (titleEl) titleEl.textContent = `Hasil ${sectionName}`;
+  if (subEl) subEl.textContent = `Estimasi nilai bagian ini dari ${totalInSection} soal yang sudah kamu kerjakan:`;
+  if (rawEl) rawEl.textContent = `${correctCount} / ${totalInSection}`;
+  if (scaleEl) scaleEl.innerHTML = `${scaleScore} <span style="font-size: 0.85rem; color: #94a3b8;">/ 68</span>`;
+  if (equivEl) equivEl.textContent = equivScore;
+
+  if (statusEl) {
+    if (isSafe) {
+      statusEl.className = 'checkpoint-campus-status safe';
+      statusEl.innerHTML = `✅ <strong>Aman!</strong> Estimasi bagian ini (${equivScore}) sudah di atas batas minimal kampus (430). Pertahankan!`;
+    } else {
+      statusEl.className = 'checkpoint-campus-status danger';
+      statusEl.innerHTML = `⚠️ <strong>Peringatan!</strong> Estimasi bagian ini (${equivScore}) di bawah standar kampus (430). Harus kamu kejar di section berikutnya!`;
+    }
+  }
+
+  if (nextBtn) {
+    nextBtn.textContent = `Mulai ${nextSectionName} →`;
+    nextBtn.onclick = () => {
+      closeSectionCheckpoint();
+      renderExamQuestion(sectionNum === 1 ? (toeflSimState.sec1End + 1) : (toeflSimState.sec2End + 1));
+    };
+  }
+
+  modal.classList.add('active');
+  modal.style.display = 'flex';
+}
+
+function closeSectionCheckpoint() {
+  const modal = document.getElementById('section-checkpoint-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
+}
+window.continueToNextExamSection = closeSectionCheckpoint;
 
 function confirmQuitToeflSim() {
   showConfirmPopup({
@@ -2936,7 +3356,7 @@ function confirmSubmitToeflSim() {
     if (unanswered > 0) {
       msgEl.innerHTML = `Kamu telah menjawab <strong>${answeredCount}</strong> dari ${questions.length} soal.<br><span style="color: #f59e0b; display:inline-block; margin-top: 6px;">⚠️ Masih ada ${unanswered} nomor soal yang belum kamu jawab.</span><br><br>Yakin ingin mengumpulkan ujian sekarang dan melihat hasil sertifikat prediksimu?`;
     } else {
-      msgEl.innerHTML = `Semua <strong>30 soal</strong> telah kamu jawab lengkap! Siap untuk melihat hasil skor dan sertifikat prediksimu?`;
+      msgEl.innerHTML = `Semua <strong>${questions.length} soal</strong> telah kamu jawab lengkap! Siap untuk melihat hasil skor dan sertifikat prediksimu?`;
     }
     modal.classList.remove('hidden');
     modal.style.display = 'flex';
@@ -3054,6 +3474,24 @@ function submitToeflSim() {
 
   document.getElementById('report-analysis-box').innerHTML = analysisHtml;
 
+  // Campus 430 Requirement Check & Badge Update
+  const CAMPUS_MIN_SCORE = 430;
+  const passedCampus = totalScore >= CAMPUS_MIN_SCORE;
+  const campusStatusEl = document.getElementById('report-campus-status');
+  if (campusStatusEl) {
+    if (passedCampus) {
+      campusStatusEl.innerHTML = `
+        <div class="campus-status-pill pass">
+          🎓 Syarat Minimal Kampus (430): <strong>LULUS RESMI (${totalScore} / 430) ✅</strong>
+        </div>`;
+    } else {
+      campusStatusEl.innerHTML = `
+        <div class="campus-status-pill fail">
+          ⚠️ Syarat Minimal Kampus (430): <strong>BELUM LULUS (${totalScore} / 430) ❌ — WAJIB MENGULANG</strong>
+        </div>`;
+    }
+  }
+
   // Render Full Review List (All 30 Questions)
   const letters = ['A', 'B', 'C', 'D'];
   const reviewList = document.getElementById('report-review-list');
@@ -3071,7 +3509,7 @@ function submitToeflSim() {
           </div>
 
           <div class="review-question-title">
-            ${q.section === 'listening' ? `🎧 ${q.question}` : (q.questionText || q.question)}
+            ${q.section === 'listening' ? `🎧 ${q.question}` : (q.sentence || q.prompt || q.question)}
           </div>
 
           <div class="review-choices-compare">
@@ -3098,11 +3536,114 @@ function submitToeflSim() {
   }
 
   showView('toefl-report');
-  playSuccessEffect();
-  launchConfetti();
+  if (passedCampus) {
+    playSuccessEffect();
+    launchConfetti();
+  }
+
+  // Pop up the prominent Campus 430 Alert Modal
+  showCampusScoreAlertModal({
+    totalScore,
+    scaleL,
+    scaleS,
+    scaleR,
+    passedCampus
+  });
 }
 
+function showCampusScoreAlertModal({ totalScore, scaleL, scaleS, scaleR, passedCampus }) {
+  const modal = document.getElementById('campus-score-alert-modal');
+  if (!modal) return;
+
+  const cardInner = document.getElementById('campus-alert-card-inner');
+  const iconEl = document.getElementById('campus-alert-icon');
+  const titleEl = document.getElementById('campus-alert-title');
+  const subEl = document.getElementById('campus-alert-sub');
+  const pillsEl = document.getElementById('campus-breakdown-pills');
+  const instEl = document.getElementById('campus-alert-instruction');
+  const actionsEl = document.getElementById('campus-alert-actions');
+
+  const equivL = scaleL * 10;
+  const equivS = scaleS * 10;
+  const equivR = scaleR * 10;
+
+  if (cardInner) cardInner.className = `modal-card campus-alert-modal-card ${passedCampus ? 'pass' : 'fail'}`;
+  if (iconEl) iconEl.textContent = passedCampus ? '🎉' : '🚨';
+
+  if (titleEl) {
+    titleEl.textContent = passedCampus
+      ? `SELAMAT! SKOR KAMU: ${totalScore} (RESMI LULUS SYARAT KAMPUS! ✅)`
+      : `SKOR KAMU: ${totalScore} (BELUM LULUS SYARAT KAMPUS! ❌)`;
+  }
+
+  if (subEl) {
+    subEl.innerHTML = passedCampus
+      ? `Skor kamu <strong>${totalScore}</strong> telah melampaui batas minimal kelulusan kampus (<strong>430</strong>). Dokumen skormu siap diajukan untuk syarat sidang skripsi & yudisium!`
+      : `Kampus mewajibkan skor minimal <strong>430</strong> untuk syarat sidang skripsi & kelulusan. Skor kamu saat ini <strong>${totalScore}</strong> (kurang <strong>${430 - totalScore} poin</strong> lagi!).`;
+  }
+
+  if (pillsEl) {
+    pillsEl.innerHTML = `
+      <div class="sec-stat-pill ${equivL >= 430 ? 'safe' : 'danger'}">
+        <span>🎧 Listening</span>
+        <strong>${equivL}</strong>
+        <small>${equivL >= 430 ? '✅ Lolos' : '⚠️ Di Bawah 430'}</small>
+      </div>
+      <div class="sec-stat-pill ${equivS >= 430 ? 'safe' : 'danger'}">
+        <span>📐 Structure</span>
+        <strong>${equivS}</strong>
+        <small>${equivS >= 430 ? '✅ Lolos' : '⚠️ Di Bawah 430'}</small>
+      </div>
+      <div class="sec-stat-pill ${equivR >= 430 ? 'safe' : 'danger'}">
+        <span>📖 Reading</span>
+        <strong>${equivR}</strong>
+        <small>${equivR >= 430 ? '✅ Lolos' : '⚠️ Di Bawah 430'}</small>
+      </div>
+    `;
+  }
+
+  if (instEl) {
+    const lowestSec = equivL <= equivS && equivL <= equivR ? 'Listening Comprehension' : (equivS <= equivR ? 'Structure & Written Expression' : 'Reading Comprehension');
+    instEl.innerHTML = passedCampus
+      ? `Kerja kerasmu terbayar! Kamu sudah menguasai materi kunci TOEFL ITP. Tekan tombol di bawah untuk melihat rincian pembahasan setiap nomor soal.`
+      : `Bagian yang paling menarik nilaimu ke bawah adalah <strong>${lowestSec}</strong>. Sesuai ketentuan, kamu <strong>WAJIB MENGULANG TES</strong> sampai mencapai minimal 430! Soal ujian akan diganti otomatis dengan <strong>PAKET SOAL BARU & DIACAK</strong>.`;
+  }
+
+  if (actionsEl) {
+    if (passedCampus) {
+      actionsEl.innerHTML = `
+        <button class="btn-primary" onclick="closeCampusAlertAndShowReport()" style="padding: 13px; font-size: 0.96rem; font-weight: 800;">
+          Buka Sertifikat & Pembahasan Lengkap 🏆
+        </button>
+      `;
+    } else {
+      actionsEl.innerHTML = `
+        <button class="btn-repeat-test" onclick="restartToeflSimWithNewQuestions()">
+          🔄 Ulangi Tes Sekarang (Paket Soal Baru & Diacak)
+        </button>
+        <button class="btn-secondary" onclick="closeCampusAlertAndShowReport()" style="padding: 11px; font-weight: 700;">
+          Lihat Pembahasan Soal yang Salah Dulu 📖
+        </button>
+      `;
+    }
+  }
+
+  modal.classList.add('active');
+  modal.style.display = 'flex';
+}
+
+function closeCampusAlertAndShowReport() {
+  const modal = document.getElementById('campus-score-alert-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
+}
+window.closeCampusAlertAndShowReport = closeCampusAlertAndShowReport;
+window.closeCampusAlert = closeCampusAlertAndShowReport;
+
 window.startToeflSimulation = startToeflSimulation;
+window.generateRandomizedToeflExam = generateRandomizedToeflExam;
 window.jumpToExamQuestion = jumpToExamQuestion;
 window.selectExamOption = selectExamOption;
 window.navExamQuestion = navExamQuestion;
@@ -3111,6 +3652,8 @@ window.confirmQuitToeflSim = confirmQuitToeflSim;
 window.confirmSubmitToeflSim = confirmSubmitToeflSim;
 window.closeExamModal = closeExamModal;
 window.submitToeflSim = submitToeflSim;
+window.showSectionCheckpoint = showSectionCheckpoint;
+window.closeSectionCheckpoint = closeSectionCheckpoint;
 
 // ─── TOEFL HACK 450 BOOTCAMP & ROADMAP ────────────────────────
 const ROADMAP_14_DAYS = [
@@ -3271,4 +3814,118 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// ─── PWA (PROGRESSIVE WEB APP) & INSTALL PROMPT SYSTEM ────────
+let deferredPwaPrompt = null;
+
+// Listen for native browser install prompt (Android Chrome & Desktop Chrome/Edge)
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+
+  const installBtn = document.getElementById('btn-install-pwa');
+  if (installBtn) installBtn.style.display = 'inline-flex';
+
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner && !localStorage.getItem('pwa_banner_dismissed')) {
+    banner.style.display = 'flex';
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPwaPrompt = null;
+  const installBtn = document.getElementById('btn-install-pwa');
+  if (installBtn) installBtn.style.display = 'none';
+
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) banner.style.display = 'none';
+
+  if (typeof showToast === 'function') {
+    showToast('🎉 BasaLoka berhasil terpasang di HP kamu! Selamat belajar!', 'success');
+  }
+});
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('BasaLoka SW registered. Scope:', reg.scope))
+      .catch(err => console.log('BasaLoka SW registration error:', err));
+  });
+}
+
+function triggerPwaInstall() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    deferredPwaPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        if (typeof showToast === 'function') {
+          showToast('🚀 Menginstall BasaLoka ke Layar HP...', 'success');
+        }
+      }
+      deferredPwaPrompt = null;
+    });
+  } else {
+    // Show guide modal for iOS or manual browsers
+    openPwaGuideModal(isIOS ? 'ios' : 'android');
+  }
+}
+
+function executeNativeInstall() {
+  if (deferredPwaPrompt) {
+    closePwaGuideModal();
+    deferredPwaPrompt.prompt();
+    deferredPwaPrompt.userChoice.then(() => {
+      deferredPwaPrompt = null;
+    });
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('Buka menu titik tiga (⋮) di Chrome lalu pilih "Install aplikasi"', 'info');
+    }
+  }
+}
+
+function openPwaGuideModal(device = 'android') {
+  const modal = document.getElementById('pwa-guide-modal');
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+  }
+  switchPwaTab(device);
+}
+
+function closePwaGuideModal() {
+  const modal = document.getElementById('pwa-guide-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
+}
+
+function switchPwaTab(device) {
+  const tabAndroid = document.getElementById('tab-pwa-android');
+  const tabIos = document.getElementById('tab-pwa-ios');
+  const contentAndroid = document.getElementById('pwa-content-android');
+  const contentIos = document.getElementById('pwa-content-ios');
+
+  if (tabAndroid) tabAndroid.classList.toggle('active', device === 'android');
+  if (tabIos) tabIos.classList.toggle('active', device === 'ios');
+  if (contentAndroid) contentAndroid.style.display = device === 'android' ? 'block' : 'none';
+  if (contentIos) contentIos.style.display = device === 'ios' ? 'block' : 'none';
+}
+
+function dismissPwaBanner() {
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) banner.style.display = 'none';
+  localStorage.setItem('pwa_banner_dismissed', '1');
+}
+
+window.triggerPwaInstall = triggerPwaInstall;
+window.executeNativeInstall = executeNativeInstall;
+window.openPwaGuideModal = openPwaGuideModal;
+window.closePwaGuideModal = closePwaGuideModal;
+window.switchPwaTab = switchPwaTab;
+window.dismissPwaBanner = dismissPwaBanner;
 
