@@ -18,6 +18,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=43">
+  <!-- Google Identity Services (GIS) Library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -1151,6 +1153,9 @@
       <button class="modal-close-btn" onclick="closeGoogleModal()">✕</button>
     </div>
     <div class="google-modal-body">
+      <!-- Wadah Tombol Google Resmi (One-Tap / Official Button) -->
+      <div id="google-official-btn-container" style="display: flex; justify-content: center; margin-bottom: 16px; min-height: 44px;"></div>
+
       <!-- Container akun dinamis di perangkat ini (tanpa akun hardcoded orang lain) -->
       <div id="google-recent-account-container"></div>
 

@@ -2306,13 +2306,82 @@ async function handleRegister(e) {
   updateNavStats();
 }
 
-// ─── GOOGLE AUTH ──────────────────────────────────────────────
+// ─── GOOGLE AUTH & GIS INTEGRATION ────────────────────────────
+const GOOGLE_CLIENT_ID = "860315695715-k5mg1bfsuq5l7rmrc2k74giksujh18p3.apps.googleusercontent.com";
+
+function decodeJwtResponse(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (err) {
+    console.error('Error decoding JWT token:', err);
+    return null;
+  }
+}
+
+function handleGoogleCredentialResponse(response) {
+  if (!response || !response.credential) return;
+  const payload = decodeJwtResponse(response.credential);
+  if (!payload || !payload.email) {
+    showToast('❌ Gagal membaca profil akun Google.', 'error');
+    return;
+  }
+  const email = payload.email;
+  const name = payload.name || payload.given_name || email.split('@')[0];
+  submitGoogleAuth(email, name);
+}
+
+function initGoogleGIS() {
+  if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) return;
+  try {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredentialResponse,
+      auto_select: false,
+      cancel_on_tap_outside: true
+    });
+    
+    // Render official Google button inside modal container if exists
+    const container = document.getElementById('google-official-btn-container');
+    if (container) {
+      container.innerHTML = '';
+      google.accounts.id.renderButton(container, {
+        theme: 'filled_blue',
+        size: 'large',
+        shape: 'pill',
+        text: 'continue_with',
+        logo_alignment: 'left',
+        width: 280
+      });
+    }
+  } catch (err) {
+    console.warn('GIS init error:', err);
+  }
+}
+
+// Auto-init GIS on window load or script load
+if (document.readyState === 'complete') {
+  setTimeout(initGoogleGIS, 500);
+} else {
+  window.addEventListener('load', () => setTimeout(initGoogleGIS, 500));
+}
+
 function openGoogleModal() {
   closeAuthModal();
   const m = document.getElementById('google-modal');
   if (m) {
     m.classList.add('active');
     m.style.display = 'flex';
+  }
+
+  // Coba tampilkan popup One Tap resmi jika didukung
+  if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+    initGoogleGIS();
+    google.accounts.id.prompt();
   }
 
   // Render akun yang tersimpan KHUSUS di perangkat ini (jika pernah masuk sebelumnya)
