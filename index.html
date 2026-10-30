@@ -14,9 +14,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BasaLoka">
   <meta name="application-name" content="BasaLoka">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -29,7 +26,10 @@
   <!-- ═══════════ NAVIGATION ═══════════ -->
   <nav id="main-nav" class="hidden">
     <div class="nav-brand" onclick="showView('dashboard')" title="BasaLoka — Kembali ke Dashboard">
-      <img src="images/LogoAtas.png" alt="BasaLoka — Play, Learn, Explore The World" class="nav-brand-logo">
+      <picture>
+        <source srcset="images/LogoAtas.webp" type="image/webp">
+        <img src="images/LogoAtas.png" alt="BasaLoka — Play, Learn, Explore The World" class="nav-brand-logo">
+      </picture>
     </div>
     <div class="nav-stats">
       <div class="stat-item" title="Streak harian">
@@ -62,7 +62,10 @@
       <div class="onboarding-container">
         <div class="onboarding-hero">
           <div class="onboarding-brand-badge">
-            <img src="images/LogoTengah.png" alt="BasaLoka Logo" class="onboarding-hero-logo">
+            <picture>
+              <source srcset="images/LogoTengah.webp" type="image/webp">
+              <img src="images/LogoTengah.png" alt="BasaLoka Logo" class="onboarding-hero-logo" fetchpriority="high">
+            </picture>
           </div>
           <div class="onboarding-brand-meaning">
             <span class="meaning-chip">✨ <strong>Basa</strong> (Sunda: Bahasa)</span>
@@ -145,7 +148,10 @@
         <!-- 📲 PWA INSTALL BANNER (Shortcut ke Layar HP) -->
         <div class="pwa-install-banner" id="pwa-install-banner">
           <div class="pwa-banner-left">
-            <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Icon" class="pwa-banner-icon-img">
+            <picture>
+              <source srcset="images/Ikon Bumi Kawaii 3D.webp" type="image/webp">
+              <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Icon" class="pwa-banner-icon-img">
+            </picture>
             <div class="pwa-banner-text">
               <div class="pwa-banner-badge">✨ RESMI & GRATIS</div>
               <h3 class="pwa-banner-title">Pasang BasaLoka di Layar Depan HP 📲</h3>
