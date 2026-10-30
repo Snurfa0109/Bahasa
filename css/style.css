@@ -2389,6 +2389,41 @@ body::before {
   font-weight: 700;
 }
 
+/* ─── LANGUAGE INLINE DIALOGUE SECTION ──────────────────────── */
+.lang-dialogue-section {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  width: 100%;
+}
+.lang-dialogue-header {
+  margin-bottom: 20px;
+}
+.lang-dialogue-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  color: #fff;
+  margin-bottom: 8px;
+}
+.lang-dialogue-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.lang-dialogue-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
 /* Dialogue Hub */
 .dialogue-hub-container {
   max-width: 900px;
@@ -3519,6 +3554,8 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 8px;
 }
 .eab-prompt {
@@ -5796,10 +5833,18 @@ body::before {
   border: 1px solid rgba(245, 158, 11, 0.3);
   color: #fef3c7;
   font-size: 0.82rem;
-  line-height: 1.4;
+  line-height: 1.5;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 10px;
+}
+.exam-audio-notice .ean-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.exam-audio-notice .ean-text {
+  flex: 1;
 }
 .exam-audio-notice.locked {
   background: rgba(239, 68, 68, 0.1);
@@ -6155,6 +6200,115 @@ body::before {
     width: 100% !important;
     min-height: 46px !important;
   }
+
+  .korean-hangul-rule-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    padding: 16px 14px !important;
+  }
+  .hangul-banner-left {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .hangul-banner-icon {
+    font-size: 1.8rem !important;
+    line-height: 1 !important;
+  }
+  .hangul-banner-title {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+  }
+  .hangul-banner-sub {
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+  }
+  .hangul-banner-btn {
+    width: 100% !important;
+    text-align: center !important;
+    display: block !important;
+    padding: 10px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .dialogue-cta-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 18px 16px !important;
+    gap: 14px !important;
+  }
+  .dialogue-cta-btn {
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+
+  .btn-quiz-audio {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+  }
+}
+
+/* 🎧 QUIZ AUDIO PLAYER CARD (Interactive Listening in Quizzes) */
+.quiz-audio-player-card {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1.5px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.qap-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+.qap-tag {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+.qap-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.qap-speakers-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-quiz-audio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 40px;
+}
+.btn-quiz-audio:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+.btn-quiz-audio.primary {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: #f59e0b;
+  color: #ffffff;
+  font-weight: 700;
+}
+.btn-quiz-audio.primary:hover {
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
 }
 
 

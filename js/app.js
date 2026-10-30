@@ -756,6 +756,8 @@ function renderLessonMap(lang) {
     const prevUnit = ui > 0 ? unitsToRender[ui - 1] : null;
     const isLocked = prevUnit && !state.completedUnits.includes(prevUnit.id);
 
+    const cleanTitle = (unit.title || '').replace(/^[\p{Extended_Pictographic}\u200d\uFE0F\uD800-\uDFFF\s]+/u, '').trim();
+
     return `
       <div class="unit-section ${isLocked ? 'unit-locked' : ''}" style="--unit-color: ${unit.color}">
         <div class="unit-header">
@@ -764,7 +766,7 @@ function renderLessonMap(lang) {
             ${unitComplete ? '<span class="unit-check">✓</span>' : ''}
           </div>
           <div class="unit-meta">
-            <h3 class="unit-title">${unit.title}</h3>
+            <h3 class="unit-title">${cleanTitle}</h3>
             <div class="unit-subtitle">${unit.titleNative}</div>
             <div class="unit-desc">${unit.description}</div>
             <div class="unit-progress-bar">
@@ -791,6 +793,12 @@ function renderLessonMap(lang) {
         </div>
       </div>`;
   }).join('');
+
+  if (lang === 'korean') {
+    renderDialogueList('korean-dialogue-cards', 'korean');
+  } else if (lang === 'english') {
+    renderDialogueList('english-dialogue-cards', 'english');
+  }
 }
 
 function getTypeIcon(type) {
@@ -1154,9 +1162,60 @@ function renderQuiz(q) {
   const qi = lessonStep - totalCards + 1;
   const totalQ = currentLesson.quiz ? currentLesson.quiz.length : 1;
 
+  // Check if question contains conversation or audio prompt
+  const hasAudioPrompt = !!(q.audioText || q.dialogue || (q.q && (q.q.includes('Audio') || q.q.includes('Man:') || q.q.includes('Woman:'))));
+  let audioPlayerHtml = '';
+
+  if (hasAudioPrompt) {
+    let manSpeech = '';
+    let womanSpeech = '';
+    let narratorSpeech = '';
+
+    if (q.dialogue && Array.isArray(q.dialogue)) {
+      const manObj = q.dialogue.find(d => d.speaker === 'man');
+      const womanObj = q.dialogue.find(d => d.speaker === 'woman');
+      if (manObj) manSpeech = manObj.text;
+      if (womanObj) womanSpeech = womanObj.text;
+      narratorSpeech = q.narrator || q.questionText || '';
+    } else {
+      // Parse dialogue from q.q if available
+      const manMatch = q.q.match(/Man:\s*["“]([^"”]+)["”]/i);
+      const womanMatch = q.q.match(/Woman:\s*["“]([^"”]+)["”]/i);
+      const audioMatch = q.q.match(/Audio(?:[^:"]*):\s*["“]([^"”]+)["”]/i);
+
+      if (manMatch && womanMatch) {
+        manSpeech = manMatch[1];
+        womanSpeech = womanMatch[1];
+      } else if (audioMatch) {
+        womanSpeech = audioMatch[1];
+      } else {
+        womanSpeech = q.q.replace(/Audio.*?:\s*/i, '').replace(/—.*$/i, '').trim();
+      }
+    }
+
+    const safeMan = manSpeech.replace(/'/g, "\\'");
+    const safeWoman = womanSpeech.replace(/'/g, "\\'");
+    const safeNarrator = (narratorSpeech || '').replace(/'/g, "\\'");
+
+    audioPlayerHtml = `
+      <div class="quiz-audio-player-card">
+        <div class="qap-header">
+          <span class="qap-tag">🎧 Rekaman Suara Percakapan</span>
+          <span class="qap-sub">Dengarkan audio percakapan di bawah ini dengan saksama:</span>
+        </div>
+        <div class="qap-speakers-row">
+          <button type="button" class="btn-quiz-audio primary" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeMan}', '${safeWoman}', '${safeNarrator}')">
+            ▶️ Putar Percakapan
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   content.innerHTML = `
     <div class="quiz-wrapper">
       <div class="quiz-label">🎯 Quiz ${qi}/${totalQ}</div>
+      ${audioPlayerHtml}
       ${q.char ? `<div class="quiz-char-display">${escapeHtml(q.char)}</div>` : ''}
       <div class="quiz-question">${escapeHtml(q.q)}</div>
       <div class="quiz-options" id="quiz-options">
@@ -1168,6 +1227,53 @@ function renderQuiz(q) {
       <div id="quiz-feedback-container"></div>
     </div>`;
 }
+
+function playQuizCombinedAudio(manText, womanText, narratorText) {
+  const btn = document.getElementById('btn-quiz-convo-play');
+  if (isPlayingConvo) {
+    if (speechSynth) speechSynth.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    isPlayingConvo = false;
+    if (btn) btn.innerHTML = '▶️ Putar Percakapan';
+    return;
+  }
+  isPlayingConvo = true;
+  if (btn) btn.innerHTML = '🔊 Memutar Percakapan...';
+
+  const resetBtn = () => {
+    isPlayingConvo = false;
+    if (btn) btn.innerHTML = '▶️ Putar Percakapan';
+  };
+
+  if (manText && womanText) {
+    speakWithVoice(manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
+      if (!isPlayingConvo) return;
+      setTimeout(() => {
+        if (!isPlayingConvo) return;
+        speakWithVoice(womanText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
+          if (!isPlayingConvo) return;
+          if (narratorText) {
+            setTimeout(() => {
+              if (!isPlayingConvo) return;
+              speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+                resetBtn();
+              });
+            }, 500);
+          } else {
+            resetBtn();
+          }
+        });
+      }, 450);
+    });
+  } else if (womanText || manText) {
+    speakWithVoice(womanText || manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female' }, () => {
+      resetBtn();
+    });
+  } else {
+    resetBtn();
+  }
+}
+window.playQuizCombinedAudio = playQuizCombinedAudio;
 
 function answerQuiz(selected, correct) {
   const opts = document.querySelectorAll('.quiz-option');
@@ -1566,20 +1672,20 @@ function renderConversationListening(convo, qIndex, totalQ) {
         </div>
 
         <div class="convo-hero-body">
-          <div class="convo-scenario-title">${convo.title || 'Percakapan Kampus 2 Penutur'}</div>
+          <div class="convo-scenario-title">${convo.title || 'Percakapan Kampus Standar TOEFL'}</div>
           <p class="convo-instruction">
-            Dengarkan percakapan antara <strong>Pria (Man 👨)</strong> dan <strong>Wanita (Woman 👩)</strong>, lalu jawab pertanyaan pemahaman di bawah:
+            Dengarkan percakapan audio di bawah ini dengan saksama, lalu jawab pertanyaan pemahaman:
           </p>
 
           <!-- Audio Action Bar -->
           <div class="convo-audio-controls">
             <button class="btn-play-all" id="btn-play-convo" onclick="playFullConversation()">
               <span class="play-icon" id="play-all-icon">▶️</span>
-              <span id="play-all-text">Putar Percakapan Lengkap (2 Orang)</span>
+              <span id="play-all-text">Putar Percakapan</span>
             </button>
             <button class="btn-transcript-toggle" id="btn-transcript-toggle" onclick="toggleConvoTranscript()">
               <span id="transcript-btn-icon">👁️</span>
-              <span id="transcript-btn-text">Buka Naskah & Arti</span>
+              <span id="transcript-btn-text">Buka Naskah & Terjemahan</span>
             </button>
           </div>
 
@@ -1589,35 +1695,6 @@ function renderConversationListening(convo, qIndex, totalQ) {
               <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
             </div>
             <span class="soundwave-label" id="soundwave-status">Sedang memutar audio...</span>
-          </div>
-        </div>
-
-        <!-- Speaker Cards Display (Visual Indicators) -->
-        <div class="convo-speakers-grid">
-          <div class="convo-speaker-card speaker-man" id="speaker-card-man">
-            <div class="speaker-avatar">👨</div>
-            <div class="speaker-info">
-              <div class="speaker-role">Pria (Man)</div>
-              <div class="speaker-snippet" id="speaker-snippet-man">
-                <span class="snippet-masked">🔊 Dengarkan suaranya</span>
-              </div>
-            </div>
-            <button class="btn-line-audio" onclick="playSpeakerVoice('man', '${safeManText}', 'speaker-card-man')" title="Dengarkan suara Pria saja">
-              🔊
-            </button>
-          </div>
-
-          <div class="convo-speaker-card speaker-woman" id="speaker-card-woman">
-            <div class="speaker-avatar">👩</div>
-            <div class="speaker-info">
-              <div class="speaker-role">Wanita (Woman)</div>
-              <div class="speaker-snippet" id="speaker-snippet-woman">
-                <span class="snippet-masked">🔊 Dengarkan suaranya</span>
-              </div>
-            </div>
-            <button class="btn-line-audio" onclick="playSpeakerVoice('woman', '${safeWomanText}', 'speaker-card-woman')" title="Dengarkan suara Wanita saja">
-              🔊
-            </button>
           </div>
         </div>
 
@@ -1695,7 +1772,7 @@ function playFullConversation() {
     if (cardWoman) cardWoman.classList.remove('active-speaking');
     if (waveBar) waveBar.style.display = 'none';
     if (playBtnIcon) playBtnIcon.textContent = '▶️';
-    if (playBtnText) playBtnText.textContent = 'Putar Percakapan Lengkap (2 Orang)';
+    if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
     return;
   }
 
@@ -1704,10 +1781,10 @@ function playFullConversation() {
   if (playBtnIcon) playBtnIcon.textContent = '⏹️';
   if (playBtnText) playBtnText.textContent = 'Hentikan Pemutaran';
 
-  // Step 1: Speaker Man
+  // Step 1: Speaker 1
   if (cardMan) cardMan.classList.add('active-speaking');
   if (cardWoman) cardWoman.classList.remove('active-speaking');
-  if (waveStatus) waveStatus.textContent = '👨 Pria (Man) sedang berbicara...';
+  if (waveStatus) waveStatus.textContent = '🔊 Memutar pembicara 1...';
 
   speakWithVoice(manLine.text, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
     if (!isPlayingConvo) return;
@@ -1717,9 +1794,9 @@ function playFullConversation() {
     convoAudioQueueTimeout = setTimeout(() => {
       if (!isPlayingConvo) return;
 
-      // Step 2: Speaker Woman
+      // Step 2: Speaker 2
       if (cardWoman) cardWoman.classList.add('active-speaking');
-      if (waveStatus) waveStatus.textContent = '👩 Wanita (Woman) sedang berbicara...';
+      if (waveStatus) waveStatus.textContent = '🔊 Memutar pembicara 2...';
 
       speakWithVoice(womanLine.text, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
         if (!isPlayingConvo) return;
@@ -1737,7 +1814,7 @@ function playFullConversation() {
             isPlayingConvo = false;
             if (waveBar) waveBar.style.display = 'none';
             if (playBtnIcon) playBtnIcon.textContent = '▶️';
-            if (playBtnText) playBtnText.textContent = 'Putar Ulang Percakapan Lengkap';
+            if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
           });
         }, 500);
       });
@@ -2526,10 +2603,10 @@ let dialogueTurnIndex = 0;
 let dialogueShowRom = true;
 let dialogueAnswersRecord = [];
 
-function renderDialogueHub() {
-  const grid = document.getElementById('dialogue-cards-grid');
+function renderDialogueList(targetElementId, langFilter = null) {
+  const grid = document.getElementById(targetElementId);
   if (!grid) return;
-  const list = APP_DATA.dialogues || [];
+  const list = (APP_DATA.dialogues || []).filter(item => !langFilter || item.lang === langFilter);
 
   grid.innerHTML = list.map(item => `
     <div class="dialogue-card" onclick="startDialogue('${item.id}')" role="button" tabindex="0">
@@ -2557,6 +2634,10 @@ function renderDialogueHub() {
       </button>
     </div>
   `).join('');
+}
+
+function renderDialogueHub() {
+  renderDialogueList('dialogue-cards-grid');
 }
 
 function startDialogue(dialogueId) {
@@ -2759,16 +2840,17 @@ function toggleDialogueRomanization() {
 }
 
 function quitDialogue() {
+  const returnTarget = (currentDialogue && currentDialogue.lang === 'english') ? 'english-map' : 'korean-map';
   showConfirmPopup({
     icon: '💬',
     type: 'warning',
     title: 'Keluar dari Percakapan?',
-    message: 'Sesi latihan percakapan dua arah ini belum selesai. Apakah kamu ingin kembali ke menu skenario?',
+    message: 'Sesi latihan percakapan dua arah ini belum selesai. Apakah kamu ingin kembali ke jalur belajar?',
     confirmText: 'Ya, Keluar',
     cancelText: 'Lanjutkan Latihan',
     onConfirm: () => {
       currentDialogue = null;
-      showView('dialogue-hub');
+      showView(returnTarget);
     }
   });
 }
@@ -2817,8 +2899,8 @@ function finishDialogue() {
         <button class="btn-secondary" style="flex: 1;" onclick="startDialogue('${d.id}')">
           Ulangi Lagi 🔄
         </button>
-        <button class="btn-primary" style="flex: 1;" onclick="showView('dialogue-hub')">
-          Skenario Lain 🚀
+        <button class="btn-primary" style="flex: 1;" onclick="showView('${d.lang === 'english' ? 'english-map' : 'korean-map'}')">
+          Kembali ke Jalur 🚀
         </button>
       </div>
     </div>
@@ -3097,6 +3179,12 @@ function renderExamNavGrid() {
       </button>
     `;
   }).join('');
+
+  if (lang === 'korean') {
+    renderDialogueList('korean-dialogue-cards', 'korean');
+  } else if (lang === 'english') {
+    renderDialogueList('english-dialogue-cards', 'english');
+  }
 }
 
 function renderExamQuestion(index) {
@@ -3155,37 +3243,31 @@ function renderExamQuestion(index) {
             <span style="font-size: 0.82rem; color: var(--text-muted);">Nomor ${index + 1}</span>
           </div>
           <div class="eab-prompt">
-            Dengarkan percakapan dua penutur (Pria 👨 & Wanita 👩) beserta narator di bawah:
+            Dengarkan rekaman percakapan audio di bawah ini dengan saksama:
           </div>
           <div class="eab-action-row">
             ${hasPlayed ? `
               <button class="btn-exam-play played-locked" id="btn-exam-audio" disabled>
-                <span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Ujian Asli)</span>
+                <span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Sesuai Aturan Ujian)</span>
               </button>
             ` : `
               <button class="btn-exam-play" id="btn-exam-audio" onclick="playExamConvoAudio(${index}, '${safeManText}', '${safeWomanText}', '${safeNarratorText}')">
-                <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Audio Percakapan (Hanya 1x)</span>
+                <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Percakapan</span>
               </button>
             `}
             <div class="exam-wave" id="exam-wave-anim" style="display: none;">
               <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
-              <span class="exam-audio-speaker-label" id="exam-speaker-status">Memutar...</span>
+              <span class="exam-audio-speaker-label" id="exam-speaker-status">Memutar audio...</span>
             </div>
           </div>
 
           <div class="exam-audio-notice ${hasPlayed ? 'locked' : ''}">
-            ${hasPlayed 
-              ? `<span>🔒</span> <strong>Audio Selesai:</strong> Sesuai aturan ujian resmi TOEFL, rekaman percakapan hanya dapat didengarkan SATU KALI dan tidak dapat diulang.`
-              : `<span>⚠️</span> <strong>Aturan Resmi TOEFL:</strong> Rekaman percakapan hanya dapat diputar <strong>1 KALI</strong>. Dengarkan dengan konsentrasi penuh!`
-            }
-          </div>
-
-          <div class="exam-speakers-mini-grid">
-            <div class="exam-speaker-mini" id="mini-card-man">
-              <span>👨 <strong>Pria (Man)</strong></span>
-            </div>
-            <div class="exam-speaker-mini" id="mini-card-woman">
-              <span>👩 <strong>Wanita (Woman)</strong></span>
+            <span class="ean-icon">${hasPlayed ? '🔒' : 'ℹ️'}</span>
+            <div class="ean-text">
+              ${hasPlayed 
+                ? `<strong>Audio Selesai:</strong> Sesuai simulasi resmi TOEFL, rekaman percakapan hanya dapat didengarkan satu kali.`
+                : `<strong>Aturan Resmi TOEFL:</strong> Rekaman percakapan hanya dapat diputar <strong>1 KALI</strong>. Dengarkan dengan konsentrasi penuh!`
+              }
             </div>
           </div>
         </div>
@@ -3308,10 +3390,10 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
   if (text) text.textContent = 'Sedang Memutar... (Hanya 1x)';
   if (wave) wave.style.display = 'inline-flex';
 
-  // Step 1: Man
+  // Step 1: Speaker 1
   if (cardMan) cardMan.classList.add('active');
   if (cardWoman) cardWoman.classList.remove('active');
-  if (status) status.textContent = 'Pria berbicara...';
+  if (status) status.textContent = 'Memutar pembicara 1...';
 
   speakWithVoice(manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
     if (!toeflSimState.isPlayingAudio) return;
@@ -3320,9 +3402,9 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
     toeflSimState.audioTimeout = setTimeout(() => {
       if (!toeflSimState.isPlayingAudio) return;
 
-      // Step 2: Woman
+      // Step 2: Speaker 2
       if (cardWoman) cardWoman.classList.add('active');
-      if (status) status.textContent = 'Wanita berbicara...';
+      if (status) status.textContent = 'Memutar pembicara 2...';
 
       speakWithVoice(womanText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
         if (!toeflSimState.isPlayingAudio) return;
@@ -3332,7 +3414,7 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
           if (!toeflSimState.isPlayingAudio) return;
 
           // Step 3: Narrator
-          if (status) status.textContent = 'Narator membacakan soal...';
+          if (status) status.textContent = 'Narator membacakan pertanyaan...';
 
           speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
             toeflSimState.isPlayingAudio = false;
@@ -3340,13 +3422,13 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
               btn.disabled = true;
               btn.classList.remove('playing');
               btn.classList.add('played-locked');
-              btn.innerHTML = '<span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Ujian Asli)</span>';
+              btn.innerHTML = '<span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Aturan Ujian)</span>';
             }
             if (wave) wave.style.display = 'none';
             const notice = document.querySelector('.exam-audio-notice');
             if (notice) {
               notice.classList.add('locked');
-              notice.innerHTML = '<span>🔒</span> <strong>Audio Selesai:</strong> Sesuai aturan ujian resmi TOEFL, rekaman percakapan hanya dapat didengarkan SATU KALI dan tidak dapat diulang.';
+              notice.innerHTML = '<span class="ean-icon">🔒</span><div class="ean-text"><strong>Audio Selesai:</strong> Sesuai simulasi resmi TOEFL, rekaman percakapan hanya dapat didengarkan satu kali.</div>';
             }
           });
         }, 500);

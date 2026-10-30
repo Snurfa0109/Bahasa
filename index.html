@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BasaLoka — Jelajahi Dunia Bahasa (Korea, Inggris, & TOEFL)</title>
   <meta name="description" content="BasaLoka — Platform belajar bahasa interaktif (Basa = Bahasa, Loka = Dunia). Jelajahi Bahasa Korea, Inggris, dan Fast Track TOEFL dengan mudah dan menyenangkan!">
-  <link rel="icon" type="image/png" href="images/Ikon Bumi Kawaii 3D.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="images/Ikon Bumi Kawaii 3D.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="images/icon-192.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#080812">
   <meta name="mobile-web-app-capable" content="yes">
@@ -154,10 +155,7 @@
         <!-- 📲 PWA INSTALL BANNER (Shortcut ke Layar HP) -->
         <div class="pwa-install-banner" id="pwa-install-banner">
           <div class="pwa-banner-left">
-            <picture>
-              <source srcset="images/Ikon Bumi Kawaii 3D.webp" type="image/webp">
-              <img src="images/Ikon Bumi Kawaii 3D.png" alt="BasaLoka Icon" class="pwa-banner-icon-img">
-            </picture>
+            <img src="images/icon-192.png" alt="BasaLoka Icon" class="pwa-banner-icon-img" width="48" height="48">
             <div class="pwa-banner-text">
               <div class="pwa-banner-badge">✨ RESMI & GRATIS</div>
               <h3 class="pwa-banner-title">Pasang BasaLoka di Layar Depan HP 📲</h3>
@@ -253,22 +251,6 @@
 
         </div>
 
-        <!-- 💬 Mini-Dialogue Real-World Chat Banner -->
-        <div class="dialogue-cta-banner" onclick="showView('dialogue-hub')" role="button" tabindex="0">
-          <div class="dialogue-cta-content">
-            <div class="dialogue-cta-badge">✨ Fitur Baru • Interaktif</div>
-            <h3 class="dialogue-cta-title">💬 Simulasi Percakapan Nyata</h3>
-            <p class="dialogue-cta-desc">Latih respon spontanmu dalam obrolan dua arah dengan penutur asli: pesan kopi di Seoul, belanja di GS25, arah jalan di New York & kafe London!</p>
-            <div class="dialogue-cta-tags">
-              <span>☕ Kafe Hongdae</span>
-              <span>🏪 Minimarket GS25</span>
-              <span>🥐 London Coffee</span>
-              <span>🗽 Arah Jalan NYC</span>
-            </div>
-          </div>
-          <button class="btn-primary dialogue-cta-btn">Mulai Ngobrol 🚀</button>
-        </div>
-
         <!-- 🎯 TOEFL ITP Full Simulation & Score Predictor Banner -->
         <div class="toefl-sim-cta-banner" onclick="openExamSetupModal()" role="button" tabindex="0">
           <div class="toefl-sim-cta-content">
@@ -321,6 +303,16 @@
         <div class="lesson-path" id="korean-lesson-path">
           <!-- Populated by JS -->
         </div>
+
+        <!-- 💬 Latihan Percakapan Nyata di Korea -->
+        <div class="lang-dialogue-section" id="korean-dialogue-section">
+          <div class="lang-dialogue-header">
+            <span class="lang-dialogue-badge">💬 Fitur Interaktif</span>
+            <h3 class="lang-dialogue-title">Latihan Percakapan Nyata di Korea</h3>
+            <p class="lang-dialogue-desc">Uji kemampuan Hangul & respon spontanmu dalam situasi nyata penutur asli di Seoul:</p>
+          </div>
+          <div class="dialogue-cards-grid" id="korean-dialogue-cards"></div>
+        </div>
       </div>
     </div>
 
@@ -368,19 +360,12 @@
           <button class="toefl-track-btn" id="track-btn-fast3" onclick="setToeflTrack('fast3')" type="button">
             <span class="track-btn-icon">⚡</span>
             <div class="track-btn-info">
-              <strong>Mode Sprint 3 Hari (Fast Track Cowo)</strong>
+              <strong>Mode Sprint 3 Hari</strong>
               <small>Sprint intensif 3 hari fokus materi penentu skor</small>
             </div>
           </button>
         </div>
 
-        <div class="toefl-info-banner">
-          <span class="toefl-banner-icon">🎧</span>
-          <div>
-            <strong>Baru: TOEFL Listening — Percakapan 2 Orang (Short Conversations)</strong>
-            <p>Latih pendengaranmu dengan percakapan autentik 2 penutur (Pria 👨 & Wanita 👩) seputar tugas, idiom, dan kehidupan kampus lengkap dengan audio dua suara, naskah, dan pembahasan TOEFL.</p>
-          </div>
-        </div>
         <div class="toefl-sim-map-cta" onclick="openExamSetupModal()" role="button" tabindex="0">
           <div class="sim-cta-icon">🏆</div>
           <div class="sim-cta-info">
@@ -408,6 +393,16 @@
         </div>
         <div class="lesson-path" id="english-lesson-path">
           <!-- Populated by JS -->
+        </div>
+
+        <!-- 💬 Latihan Percakapan Nyata Bahasa Inggris -->
+        <div class="lang-dialogue-section" id="english-dialogue-section">
+          <div class="lang-dialogue-header">
+            <span class="lang-dialogue-badge">💬 Fitur Interaktif</span>
+            <h3 class="lang-dialogue-title">Latihan Percakapan Nyata Bahasa Inggris</h3>
+            <p class="lang-dialogue-desc">Latih kelancaran speaking & respon situasional di berbagai situasi nyata luar negeri:</p>
+          </div>
+          <div class="dialogue-cards-grid" id="english-dialogue-cards"></div>
         </div>
       </div>
     </div>
@@ -703,10 +698,6 @@
       <span class="mobile-nav-icon">📝</span>
       <span class="mobile-nav-label">TOEFL</span>
     </button>
-    <button class="mobile-nav-item" data-view="dialogue-hub" onclick="showView('dialogue-hub')">
-      <span class="mobile-nav-icon">💬</span>
-      <span class="mobile-nav-label">Dialog</span>
-    </button>
   </nav>
 
 </div><!-- end #app -->
@@ -915,7 +906,7 @@
           <div class="tip-card-icon">🎯</div>
           <div class="tip-card-content">
             <h4>Trik 80% Jawaban Ada di Pembicara KEDUA!</h4>
-            <p>Dalam dialog 2 orang (Part A), pembicara pertama (Pria/Wanita) hanya memberikan pancingan. Kunci jawaban dari pertanyaan <em>"What does the man/woman imply?"</em> hampir 80% berada di <strong>kalimat yang diucapkan oleh PEMBICARA KEDUA</strong>. Buka telingamu lebar-lebar saat giliran orang kedua bicara!</p>
+            <p>Dalam dialog 2 orang (Part A), pembicara pertama hanya memberikan stimulus awal. Kunci jawaban dari pertanyaan pemahaman hampir 80% berada di <strong>kalimat yang diucapkan oleh PEMBICARA KEDUA</strong>. Fokuskan konsentrasi penuh saat giliran pembicara kedua bicara!</p>
           </div>
         </div>
       </div>
