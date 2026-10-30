@@ -2336,7 +2336,11 @@ function handleGoogleCredentialResponse(response) {
 }
 
 function initGoogleGIS() {
-  if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) return;
+  if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+    const fallback = document.getElementById('google-hero-fallback-btn');
+    if (fallback) fallback.style.display = 'flex';
+    return;
+  }
   try {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
@@ -2345,6 +2349,22 @@ function initGoogleGIS() {
       cancel_on_tap_outside: true
     });
     
+    // Render official Google button directly on Hero Page
+    const heroBtn = document.getElementById('google-hero-btn');
+    if (heroBtn) {
+      heroBtn.innerHTML = '';
+      google.accounts.id.renderButton(heroBtn, {
+        theme: 'filled_blue',
+        size: 'large',
+        shape: 'pill',
+        text: 'continue_with',
+        logo_alignment: 'left',
+        width: 300
+      });
+      const fallback = document.getElementById('google-hero-fallback-btn');
+      if (fallback) fallback.style.display = 'none';
+    }
+
     // Render official Google button inside modal container if exists
     const container = document.getElementById('google-official-btn-container');
     if (container) {
@@ -2358,8 +2378,22 @@ function initGoogleGIS() {
         width: 280
       });
     }
+
+    // Prompt One Tap automatically on page load if appropriate
+    google.accounts.id.prompt();
   } catch (err) {
     console.warn('GIS init error:', err);
+    const fallback = document.getElementById('google-hero-fallback-btn');
+    if (fallback) fallback.style.display = 'flex';
+  }
+}
+
+function triggerGoogleSignIn() {
+  if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+    initGoogleGIS();
+    google.accounts.id.prompt();
+  } else {
+    openGoogleModal();
   }
 }
 
@@ -2801,6 +2835,7 @@ window.handleLogin = handleLogin;
 window.handleRegister = handleRegister;
 window.openGoogleModal = openGoogleModal;
 window.closeGoogleModal = closeGoogleModal;
+window.triggerGoogleSignIn = triggerGoogleSignIn;
 window.submitGoogleAuth = submitGoogleAuth;
 window.handleCustomGoogleAuth = handleCustomGoogleAuth;
 window.handleLogout = handleLogout;
