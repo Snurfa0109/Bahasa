@@ -942,6 +942,7 @@ function startLesson(lang, unitId, lessonId) {
 
 function renderLessonStep() {
   const lesson = currentLesson;
+  if (!lesson) return;
   const content = document.getElementById('lesson-content');
   updateLessonProgress();
 
@@ -1166,48 +1167,61 @@ function renderQuiz(q) {
   // Check if question contains conversation or audio prompt
   const hasAudioPrompt = !!(q.audioText || q.dialogue || (q.q && (q.q.includes('Audio') || q.q.includes('Man:') || q.q.includes('Woman:'))));
   let audioPlayerHtml = '';
+  let displayQuestion = q.q;
 
   if (hasAudioPrompt) {
-    let manSpeech = '';
-    let womanSpeech = '';
+    const parsed = parseQuizDialogue(q);
+    let spk1Role = 'man';
+    let spk1Label = 'Pria';
+    let spk1Text = '';
+    let spk2Role = 'woman';
+    let spk2Label = 'Wanita';
+    let spk2Text = '';
     let narratorSpeech = '';
 
-    if (q.dialogue && Array.isArray(q.dialogue)) {
-      const manObj = q.dialogue.find(d => d.speaker === 'man');
-      const womanObj = q.dialogue.find(d => d.speaker === 'woman');
-      if (manObj) manSpeech = manObj.text;
-      if (womanObj) womanSpeech = womanObj.text;
-      narratorSpeech = q.narrator || q.questionText || '';
-    } else {
-      // Parse dialogue from q.q if available
-      const manMatch = q.q.match(/Man:\s*["“]([^"”]+)["”]/i);
-      const womanMatch = q.q.match(/Woman:\s*["“]([^"”]+)["”]/i);
-      const audioMatch = q.q.match(/Audio(?:[^:"]*):\s*["“]([^"”]+)["”]/i);
-
-      if (manMatch && womanMatch) {
-        manSpeech = manMatch[1];
-        womanSpeech = womanMatch[1];
-      } else if (audioMatch) {
-        womanSpeech = audioMatch[1];
-      } else {
-        womanSpeech = q.q.replace(/Audio.*?:\s*/i, '').replace(/—.*$/i, '').trim();
+    if (parsed && parsed.hasDialogue) {
+      spk1Role = parsed.speaker1.role;
+      spk1Label = parsed.speaker1.label;
+      spk1Text = parsed.speaker1.text;
+      if (parsed.speaker2) {
+        spk2Role = parsed.speaker2.role;
+        spk2Label = parsed.speaker2.label;
+        spk2Text = parsed.speaker2.text;
       }
+      displayQuestion = parsed.questionText;
+      narratorSpeech = getEnglishNarratorPrompt(parsed.questionText);
+    } else {
+      spk2Text = q.audioText || q.q.replace(/Audio.*?:\s*/i, '').replace(/—.*$/i, '').trim();
+      narratorSpeech = 'Listen carefully to the audio and choose the correct answer.';
     }
 
-    const safeMan = manSpeech.replace(/'/g, "\\'");
-    const safeWoman = womanSpeech.replace(/'/g, "\\'");
-    const safeNarrator = (narratorSpeech || '').replace(/'/g, "\\'");
+    const safeSpk1Role = spk1Role.replace(/'/g, "\\'");
+    const safeSpk1Label = spk1Label.replace(/'/g, "\\'");
+    const safeSpk1Text = spk1Text.replace(/'/g, "\\'");
+    const safeSpk2Role = spk2Role.replace(/'/g, "\\'");
+    const safeSpk2Label = spk2Label.replace(/'/g, "\\'");
+    const safeSpk2Text = spk2Text.replace(/'/g, "\\'");
+    const safeNarrator = narratorSpeech.replace(/'/g, "\\'");
 
     audioPlayerHtml = `
       <div class="quiz-audio-player-card">
         <div class="qap-header">
           <span class="qap-tag">🎧 Rekaman Suara Percakapan</span>
-          <span class="qap-sub">Dengarkan audio percakapan di bawah ini dengan saksama:</span>
+          <span class="qap-sub">Dengarkan audio dialog dengan saksama sebelum menjawab:</span>
         </div>
-        <div class="qap-speakers-row">
-          <button type="button" class="btn-quiz-audio primary" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeMan}', '${safeWoman}', '${safeNarrator}')">
+        <div class="qap-action-row">
+          <button type="button" class="btn-quiz-audio primary" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeSpk1Role}', '${safeSpk1Text}', '${safeSpk2Role}', '${safeSpk2Text}', '${safeNarrator}')">
             ▶️ Putar Percakapan
           </button>
+          <button type="button" class="btn-quiz-transcript-toggle" id="btn-quiz-transcript-toggle" onclick="toggleQuizTranscript()">
+            👁️ Buka Naskah & Arti
+          </button>
+        </div>
+        <div class="quiz-transcript-drawer" id="quiz-transcript-drawer" style="display: none;">
+          <div class="qtd-header">📜 Naskah Percakapan (Transkrip):</div>
+          <div class="qtd-line"><strong>${escapeHtml(spk1Label)}:</strong> "${escapeHtml(spk1Text)}"</div>
+          ${spk2Text ? `<div class="qtd-line"><strong>${escapeHtml(spk2Label)}:</strong> "${escapeHtml(spk2Text)}"</div>` : ''}
+          ${narratorSpeech ? `<div class="qtd-line" style="color: #94a3b8; font-style: italic;"><strong>🎙️ Narator:</strong> "${escapeHtml(narratorSpeech)}"</div>` : ''}
         </div>
       </div>
     `;
@@ -1218,7 +1232,7 @@ function renderQuiz(q) {
       <div class="quiz-label">🎯 Quiz ${qi}/${totalQ}</div>
       ${audioPlayerHtml}
       ${q.char ? `<div class="quiz-char-display">${escapeHtml(q.char)}</div>` : ''}
-      <div class="quiz-question">${escapeHtml(q.q)}</div>
+      <div class="quiz-question">${escapeHtml(displayQuestion)}</div>
       <div class="quiz-options" id="quiz-options">
         ${q.options.map((opt, i) => `
           <button class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i}, ${q.answer})">
@@ -1229,7 +1243,105 @@ function renderQuiz(q) {
     </div>`;
 }
 
-function playQuizCombinedAudio(manText, womanText, narratorText) {
+function parseQuizDialogue(q) {
+  if (q.dialogue && Array.isArray(q.dialogue)) {
+    const manObj = q.dialogue.find(d => d.speaker === 'man');
+    const womanObj = q.dialogue.find(d => d.speaker === 'woman');
+    const firstIsMan = q.dialogue[0] && q.dialogue[0].speaker === 'man';
+    const s1 = firstIsMan ? (manObj || q.dialogue[0]) : (womanObj || q.dialogue[0]);
+    const s2 = firstIsMan ? (womanObj || q.dialogue[1]) : (manObj || q.dialogue[1]);
+    return {
+      hasDialogue: true,
+      speaker1: { role: s1 ? s1.speaker : 'man', label: s1 ? (s1.speaker === 'man' ? 'Pria' : 'Wanita') : 'Pria', text: s1 ? s1.text : '' },
+      speaker2: s2 ? { role: s2.speaker, label: s2.speaker === 'man' ? 'Pria' : 'Wanita', text: s2.text } : null,
+      questionText: q.questionText || q.narrator || 'What does the speaker imply?'
+    };
+  }
+
+  const rawQ = q.q || '';
+  const manMatch = rawQ.match(/\bMan:\s*["“]([^"”\n\r]+)["”]/i);
+  const womanMatch = rawQ.match(/\bWoman:\s*["“]([^"”\n\r]+)["”]/i);
+
+  if (manMatch && womanMatch) {
+    const manText = manMatch[1].trim();
+    const womanText = womanMatch[1].trim();
+
+    const manIdx = rawQ.toLowerCase().search(/\bman:/);
+    const womanIdx = rawQ.toLowerCase().search(/\bwoman:/);
+    const firstIsMan = manIdx < womanIdx;
+
+    let questionText = rawQ
+      .replace(/\bWoman:\s*["“][^"”\n\r]+["”]/gi, '')
+      .replace(/\bMan:\s*["“][^"”\n\r]+["”]/gi, '')
+      .replace(/^[/\s\n\r—\-]+/, '')
+      .replace(/[/\s\n\r—\-]+$/, '')
+      .replace(/^[/\s\n\r—\-]+/, '')
+      .trim();
+
+    if (!questionText) {
+      questionText = 'What does the speaker imply? (Apa yang disiratkan oleh pembicara?)';
+    }
+
+    return {
+      hasDialogue: true,
+      firstSpeaker: firstIsMan ? 'man' : 'woman',
+      speaker1: firstIsMan ? { role: 'man', label: 'Pria', text: manText } : { role: 'woman', label: 'Wanita', text: womanText },
+      speaker2: firstIsMan ? { role: 'woman', label: 'Wanita', text: womanText } : { role: 'man', label: 'Pria', text: manText },
+      questionText
+    };
+  }
+
+  const audioMatch = rawQ.match(/\bAudio(?:[^:"]*):\s*["“]([^"”\n\r]+)["”]/i);
+  if (audioMatch) {
+    const audioText = audioMatch[1].trim();
+    let questionText = rawQ
+      .replace(/\bAudio(?:[^:"]*):\s*["“][^"”\n\r]+["”]/gi, '')
+      .replace(/^[/\s\n\r—\-]+/, '')
+      .trim();
+    if (!questionText) questionText = 'Dengarkan audio dan tentukan makna yang paling tepat:';
+    return {
+      hasDialogue: true,
+      firstSpeaker: 'audio',
+      speaker1: { role: 'speaker', label: 'Audio', text: audioText },
+      speaker2: null,
+      questionText
+    };
+  }
+
+  return null;
+}
+
+function getEnglishNarratorPrompt(questionText) {
+  const clean = (questionText || '').trim();
+  if (/^(what|who|where|how|which|why)\b/i.test(clean)) {
+    return clean;
+  }
+  const lower = clean.toLowerCase();
+  if (lower.includes('woman') || lower.includes('wanita') || lower.includes('cewe')) {
+    return 'What does the woman mean?';
+  }
+  if (lower.includes('man') || lower.includes('pria') || lower.includes('cowo')) {
+    return 'What does the man mean?';
+  }
+  if (lower.includes('mark')) {
+    return 'What does the speaker say about Mark?';
+  }
+  return 'What does the speaker imply?';
+}
+
+function toggleQuizTranscript() {
+  const drawer = document.getElementById('quiz-transcript-drawer');
+  const btn = document.getElementById('btn-quiz-transcript-toggle');
+  if (!drawer) return;
+  const isHidden = drawer.style.display === 'none' || drawer.style.display === '';
+  drawer.style.display = isHidden ? 'block' : 'none';
+  if (btn) {
+    btn.innerHTML = isHidden ? '🙈 Sembunyikan Naskah' : '👁️ Buka Naskah & Arti';
+  }
+}
+window.toggleQuizTranscript = toggleQuizTranscript;
+
+function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorText) {
   const btn = document.getElementById('btn-quiz-convo-play');
   if (isPlayingConvo) {
     if (speechSynth) speechSynth.cancel();
@@ -1246,12 +1358,15 @@ function playQuizCombinedAudio(manText, womanText, narratorText) {
     if (btn) btn.innerHTML = '▶️ Putar Percakapan';
   };
 
-  if (manText && womanText) {
-    speakWithVoice(manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
+  const spk1Gender = (spk1Role === 'woman' || spk1Role === 'female') ? 'female' : 'male';
+  const spk2Gender = (spk2Role === 'woman' || spk2Role === 'female') ? 'female' : 'male';
+
+  if (spk1Text && spk2Text) {
+    speakWithVoice(spk1Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk1Gender }, () => {
       if (!isPlayingConvo) return;
       setTimeout(() => {
         if (!isPlayingConvo) return;
-        speakWithVoice(womanText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
+        speakWithVoice(spk2Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk2Gender, cancelPrevious: false }, () => {
           if (!isPlayingConvo) return;
           if (narratorText) {
             setTimeout(() => {
@@ -1266,9 +1381,19 @@ function playQuizCombinedAudio(manText, womanText, narratorText) {
         });
       }, 450);
     });
-  } else if (womanText || manText) {
-    speakWithVoice(womanText || manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female' }, () => {
-      resetBtn();
+  } else if (spk1Text) {
+    speakWithVoice(spk1Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk1Gender }, () => {
+      if (!isPlayingConvo) return;
+      if (narratorText) {
+        setTimeout(() => {
+          if (!isPlayingConvo) return;
+          speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+            resetBtn();
+          });
+        }, 500);
+      } else {
+        resetBtn();
+      }
     });
   } else {
     resetBtn();
@@ -1279,6 +1404,14 @@ window.playQuizCombinedAudio = playQuizCombinedAudio;
 function answerQuiz(selected, correct) {
   const opts = document.querySelectorAll('.quiz-option');
   opts.forEach(o => o.disabled = true);
+
+  // Automatically reveal transcript drawer upon answering so learners can review the full dialogue
+  const drawer = document.getElementById('quiz-transcript-drawer');
+  const transcriptBtn = document.getElementById('btn-quiz-transcript-toggle');
+  if (drawer && (drawer.style.display === 'none' || drawer.style.display === '')) {
+    drawer.style.display = 'block';
+    if (transcriptBtn) transcriptBtn.innerHTML = '🙈 Sembunyikan Naskah';
+  }
 
   totalAnswers++;
   const isCorrect = selected === correct;

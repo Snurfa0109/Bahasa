@@ -6321,6 +6321,11 @@ body::before {
     justify-content: center !important;
     min-height: 44px !important;
   }
+  .btn-quiz-transcript-toggle {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 40px !important;
+  }
 }
 
 /* 🎧 QUIZ AUDIO PLAYER CARD (Interactive Listening in Quizzes) */
@@ -6347,10 +6352,11 @@ body::before {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
-.qap-speakers-row {
+.qap-action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  align-items: center;
 }
 .btn-quiz-audio {
   display: inline-flex;
@@ -6360,12 +6366,12 @@ body::before {
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   border-radius: var(--radius-full);
-  padding: 8px 14px;
-  font-size: 0.82rem;
+  padding: 8px 16px;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  min-height: 40px;
+  min-height: 42px;
 }
 .btn-quiz-audio:hover {
   background: rgba(255, 255, 255, 0.18);
@@ -6379,6 +6385,56 @@ body::before {
 }
 .btn-quiz-audio.primary:hover {
   box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+.btn-quiz-transcript-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 42px;
+}
+.btn-quiz-transcript-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.quiz-transcript-drawer {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  animation: fadeIn 0.2s ease;
+}
+.qtd-header {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.qtd-line {
+  margin-bottom: 6px;
+  color: #f1f5f9;
+}
+.qtd-line:last-child {
+  margin-bottom: 0;
+}
+.qtd-line strong {
+  color: #93c5fd;
+  margin-right: 4px;
 }
 
 
