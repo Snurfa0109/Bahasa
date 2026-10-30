@@ -1151,19 +1151,8 @@
       <button class="modal-close-btn" onclick="closeGoogleModal()">✕</button>
     </div>
     <div class="google-modal-body">
-      <!-- Quick user option -->
-      <div class="google-account-item" onclick="submitGoogleAuth('fadiyah@gmail.com', 'Fadiyah')">
-        <div class="google-avatar">F</div>
-        <div class="google-account-info">
-          <div class="google-account-name">Fadiyah</div>
-          <div class="google-account-email">fadiyah@gmail.com</div>
-        </div>
-        <span class="google-badge-fast">⚡ 1-Klik</span>
-      </div>
-
-      <div class="onboarding-divider" style="margin: 12px 0;">
-        <span>atau akun lain</span>
-      </div>
+      <!-- Container akun dinamis di perangkat ini (tanpa akun hardcoded orang lain) -->
+      <div id="google-recent-account-container"></div>
 
       <!-- Custom Google Account input -->
       <form onsubmit="handleCustomGoogleAuth(event)" class="google-custom-form">

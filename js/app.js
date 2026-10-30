@@ -2314,6 +2314,35 @@ function openGoogleModal() {
     m.classList.add('active');
     m.style.display = 'flex';
   }
+
+  // Render akun yang tersimpan KHUSUS di perangkat ini (jika pernah masuk sebelumnya)
+  const container = document.getElementById('google-recent-account-container');
+  if (container) {
+    const saved = localStorage.getItem('basaloka_last_user');
+    if (saved) {
+      try {
+        const u = JSON.parse(saved);
+        if (u && u.email) {
+          const initial = (u.username || u.email)[0].toUpperCase();
+          container.innerHTML = `
+            <div class="google-account-item" onclick="submitGoogleAuth('${u.email.replace(/'/g, "\\'")}', '${(u.username || '').replace(/'/g, "\\'")}')">
+              <div class="google-avatar">${initial}</div>
+              <div class="google-account-info">
+                <div class="google-account-name">${u.username || 'Pengguna'}</div>
+                <div class="google-account-email">${u.email}</div>
+              </div>
+              <span class="google-badge-fast">⚡ 1-Klik</span>
+            </div>
+            <div class="onboarding-divider" style="margin: 12px 0;">
+              <span>atau gunakan email lain</span>
+            </div>
+          `;
+          return;
+        }
+      } catch (err) {}
+    }
+    container.innerHTML = '';
+  }
 }
 
 function closeGoogleModal() {
@@ -2347,6 +2376,7 @@ async function submitGoogleAuth(email, name) {
         state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
       }
       saveState();
+      localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: data.user.username }));
       closeGoogleModal();
       closeAuthModal();
       showToast(`✨ Berhasil masuk via Google! Halo, ${data.user.username}!`, 'success');
@@ -2362,6 +2392,7 @@ async function submitGoogleAuth(email, name) {
   state.currentUser = localUser;
   state.userName = localUser.username;
   saveState();
+  localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: localUser.username }));
   closeGoogleModal();
   closeAuthModal();
   showToast(`✨ Berhasil masuk via Google! Halo, ${localUser.username}!`, 'success');
