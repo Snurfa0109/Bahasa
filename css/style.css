@@ -1025,11 +1025,10 @@ body::before {
   background: var(--bg-card);
   border: 2px solid var(--border);
   border-radius: var(--radius-xl);
-  padding: 28px 24px;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
@@ -1039,14 +1038,14 @@ body::before {
   scrollbar-width: none;
 }
 
-.fc-front::-webkit-scrollbar,
-.fc-back::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
+.fc-front {
+  justify-content: center;
 }
 
-.fc-back { transform: rotateY(180deg); }
+.fc-back {
+  justify-content: flex-start;
+  transform: rotateY(180deg);
+}
 
 .flashcard.flipped .fc-front { transform: rotateY(-180deg); }
 .flashcard.flipped .fc-back { transform: rotateY(0deg); }
@@ -6199,6 +6198,77 @@ body::before {
   .popup-btn-cancel, .popup-btn-confirm {
     width: 100% !important;
     min-height: 46px !important;
+  }
+
+  /* Lesson View & Flashcards on Mobile */
+  .lesson-container {
+    padding: 12px 14px 20px !important;
+    min-height: 100dvh !important;
+    justify-content: flex-start !important;
+  }
+  .lesson-header {
+    margin-bottom: 12px !important;
+    padding: 4px 0 !important;
+  }
+  .lesson-content {
+    align-items: flex-start !important;
+    width: 100% !important;
+  }
+  .flashcard-wrapper {
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .flashcard-label {
+    font-size: 0.78rem !important;
+  }
+  .flashcard {
+    min-height: 380px !important;
+    height: 54vh !important;
+    max-height: 430px !important;
+  }
+  .fc-back {
+    padding: 18px 14px 16px !important;
+  }
+  .fc-char-sm {
+    font-size: 1.15rem !important;
+    margin-bottom: 6px !important;
+  }
+  .fc-pronunciation {
+    font-size: 0.88rem !important;
+    margin-bottom: 8px !important;
+  }
+  .fc-example {
+    padding: 10px 12px !important;
+    margin: 8px 0 !important;
+  }
+  .fc-ex-text {
+    font-size: 0.88rem !important;
+  }
+  .fc-ex-meaning {
+    font-size: 0.8rem !important;
+  }
+  .fc-actions {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .fc-actions button {
+    padding: 10px 6px !important;
+    font-size: 0.82rem !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+  .btn-prev-fc {
+    flex: 1 !important;
+  }
+  .fc-actions .btn-audio {
+    flex: 1.1 !important;
+  }
+  .btn-next-fc {
+    flex: 1.2 !important;
   }
 
   .korean-hangul-rule-banner {

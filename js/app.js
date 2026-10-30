@@ -521,7 +521,7 @@ function showView(viewName, pushHistory = true) {
 
   const nav = document.getElementById('main-nav');
   if (nav) {
-    if (viewName === 'onboarding' || viewName === 'dialogue' || viewName === 'toefl-sim') {
+    if (viewName === 'onboarding' || viewName === 'dialogue' || viewName === 'toefl-sim' || viewName === 'lesson') {
       nav.classList.add('hidden');
       nav.style.display = 'none';
     } else {
@@ -996,6 +996,7 @@ function renderLessonStep() {
 
 function updateLessonProgress() {
   const lesson = currentLesson;
+  if (!lesson) return;
   let total = 1;
   let current = 0;
 
