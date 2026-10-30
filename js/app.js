@@ -2193,6 +2193,18 @@ function showAuthAlert(msg, type = 'error') {
   alertEl.className = `auth-alert ${type}`;
 }
 
+function getLocalUsers() {
+  try {
+    return JSON.parse(localStorage.getItem('basaloka_local_users') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLocalUsers(users) {
+  localStorage.setItem('basaloka_local_users', JSON.stringify(users));
+}
+
 async function handleLogin(e) {
   if (e) e.preventDefault();
   const email = document.getElementById('login-email').value.trim();
@@ -2207,25 +2219,39 @@ async function handleLogin(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const data = await res.json();
-    if (!res.ok) {
-      return showAuthAlert(data.error || 'Login gagal!', 'error');
+    if (res.ok) {
+      const data = await res.json();
+      state.currentUser = data.user;
+      state.userName = data.user.username;
+      if (data.progress) {
+        state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
+      }
+      saveState();
+      closeAuthModal();
+      showToast(`👋 Selamat datang kembali, ${data.user.username}!`, 'success');
+      showView('dashboard');
+      updateNavStats();
+      return;
     }
+  } catch (err) {
+    // Fallback to local storage for static hosting
+  }
 
-    state.currentUser = data.user;
-    state.userName = data.user.username;
-    if (data.progress) {
-      // Restore MySQL saved progress
-      state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
-    }
+  // Check local users database fallback
+  const localUsers = getLocalUsers();
+  const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+  if (found) {
+    state.currentUser = found;
+    state.userName = found.username;
     saveState();
     closeAuthModal();
-    showToast(`👋 Selamat datang kembali, ${data.user.username}!`, 'success');
+    showToast(`👋 Selamat datang kembali, ${found.username}!`, 'success');
     showView('dashboard');
     updateNavStats();
-  } catch (err) {
-    showAuthAlert('Tidak dapat menghubungi server. Pastikan koneksi internet/server aktif.', 'error');
+    return;
   }
+
+  showAuthAlert('Email atau password salah! Jika belum punya akun, silakan daftar dulu.', 'error');
 }
 
 async function handleRegister(e) {
@@ -2246,21 +2272,38 @@ async function handleRegister(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
     });
-    const data = await res.json();
-    if (!res.ok) {
-      return showAuthAlert(data.error || 'Registrasi gagal!', 'error');
+    if (res.ok) {
+      const data = await res.json();
+      state.currentUser = data.user;
+      state.userName = data.user.username;
+      saveState();
+      closeAuthModal();
+      showToast(`🎉 Akun berhasil dibuat! Selamat belajar, ${data.user.username}!`, 'success');
+      showView('dashboard');
+      updateNavStats();
+      return;
     }
-
-    state.currentUser = data.user;
-    state.userName = data.user.username;
-    saveState();
-    closeAuthModal();
-    showToast(`🎉 Akun berhasil dibuat! Selamat belajar, ${data.user.username}!`, 'success');
-    showView('dashboard');
-    updateNavStats();
   } catch (err) {
-    showAuthAlert('Tidak dapat menghubungi server. Pastikan koneksi internet/server aktif.', 'error');
+    // Fallback to local storage for static hosting
   }
+
+  // Local fallback registration
+  const localUsers = getLocalUsers();
+  if (localUsers.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    return showAuthAlert('Email sudah terdaftar. Silakan login!', 'error');
+  }
+
+  const newUser = { id: 'local_' + Date.now(), username, email, password };
+  localUsers.push(newUser);
+  saveLocalUsers(localUsers);
+
+  state.currentUser = newUser;
+  state.userName = username;
+  saveState();
+  closeAuthModal();
+  showToast(`🎉 Akun berhasil dibuat! Selamat belajar, ${username}!`, 'success');
+  showView('dashboard');
+  updateNavStats();
 }
 
 // ─── GOOGLE AUTH ──────────────────────────────────────────────
@@ -2296,38 +2339,34 @@ async function submitGoogleAuth(email, name) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, name })
     });
-    const data = await res.json();
-    if (!res.ok) {
-      showAlertPopup({
-        icon: '⚠️',
-        type: 'danger',
-        title: 'Gagal Masuk',
-        message: data.error || 'Gagal login dengan akun Google. Silakan periksa kembali email kamu.',
-        buttonText: 'Tutup'
-      });
+    if (res.ok) {
+      const data = await res.json();
+      state.currentUser = data.user;
+      state.userName = data.user.username;
+      if (data.progress) {
+        state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
+      }
+      saveState();
+      closeGoogleModal();
+      closeAuthModal();
+      showToast(`✨ Berhasil masuk via Google! Halo, ${data.user.username}!`, 'success');
+      showView('dashboard');
+      updateNavStats();
       return;
     }
-
-    state.currentUser = data.user;
-    state.userName = data.user.username;
-    if (data.progress) {
-      state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
-    }
-    saveState();
-    closeGoogleModal();
-    closeAuthModal();
-    showToast(`✨ Berhasil masuk via Google! Halo, ${data.user.username}!`, 'success');
-    showView('dashboard');
-    updateNavStats();
   } catch (err) {
-    showAlertPopup({
-      icon: '📡',
-      type: 'warning',
-      title: 'Koneksi Terputus',
-      message: 'Tidak dapat menghubungi server lokal. Pastikan server tetap aktif di latar belakang.',
-      buttonText: 'Mengerti'
-    });
+    // Fallback to local storage
   }
+
+  const localUser = { id: 'google_' + Date.now(), username: name || email.split('@')[0], email };
+  state.currentUser = localUser;
+  state.userName = localUser.username;
+  saveState();
+  closeGoogleModal();
+  closeAuthModal();
+  showToast(`✨ Berhasil masuk via Google! Halo, ${localUser.username}!`, 'success');
+  showView('dashboard');
+  updateNavStats();
 }
 
 function handleLogout() {
