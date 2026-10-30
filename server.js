@@ -26,6 +26,11 @@ app.use(express.static(__dirname, {
   }
 }));
 
+// Explicit root route to serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // MySQL Connection Configuration
 const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
@@ -370,9 +375,19 @@ app.post('/api/progress/:userId', async (req, res) => {
   }
 });
 
+// Catch-all route to serve index.html for any SPA routes
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // START SERVER
 initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 BasaLoka server running at http://localhost:${PORT}`);
-  });
+  if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+      console.log(`🚀 BasaLoka server running at http://localhost:${PORT}`);
+    });
+  }
 });
+
+module.exports = app;
