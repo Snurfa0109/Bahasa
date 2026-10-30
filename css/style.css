@@ -5822,6 +5822,339 @@ body::before {
     font-size: 0.72rem;
     padding: 4px 8px;
   }
+
+  /* 📱 MOBILE ERGONOMIC & OVERFLOW PREVENTION TWEAKS */
+  .toefl-exam-container {
+    padding: 0 4px 90px 4px !important;
+    gap: 12px !important;
+  }
+  .exam-top-bar {
+    top: 4px !important;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+  }
+  .exam-section-name {
+    font-size: 0.85rem !important;
+    line-height: 1.25 !important;
+  }
+  .exam-test-name {
+    font-size: 0.72rem !important;
+  }
+  .exam-timer-wrapper {
+    padding: 4px 10px !important;
+    font-size: 0.95rem !important;
+    justify-content: center !important;
+  }
+  .btn-submit-exam {
+    padding: 10px 14px !important;
+    font-size: 0.86rem !important;
+    min-height: 44px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .exam-question-card {
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+    min-height: 280px !important;
+  }
+  .exam-opt-btn {
+    padding: 12px 14px !important;
+    min-height: 48px !important;
+    font-size: 0.88rem !important;
+    gap: 10px !important;
+  }
+  .opt-letter {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+  }
+  .exam-bottom-bar {
+    gap: 12px !important;
+    padding: 10px 0 !important;
+  }
+  .btn-exam-nav {
+    min-height: 46px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 0.92rem !important;
+  }
+  .exam-current-indicator {
+    text-align: center !important;
+    font-size: 0.8rem !important;
+    order: -1 !important;
+  }
+  .exam-num-btn {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.8rem !important;
+  }
+  .exam-grid-numbers {
+    max-height: 180px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .modal-overlay {
+    padding: 10px !important;
+  }
+  .modal-card {
+    max-height: 94vh !important;
+    border-radius: 16px !important;
+    padding: 18px 14px !important;
+  }
+  .section-checkpoint-card {
+    max-width: 100% !important;
+    padding: 16px 12px !important;
+  }
+  .checkpoint-score-box {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .checkpoint-stat-item:last-child {
+    grid-column: span 2 !important;
+  }
+  .campus-alert-modal-card {
+    max-width: 100% !important;
+    padding: 16px 14px !important;
+  }
+  .campus-alert-title {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+  }
+  .campus-alert-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .campus-alert-actions button {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+
+  /* 📱 COMPREHENSIVE MOBILE RESPONSIVENESS & OVERFLOW ELIMINATOR */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  #views-container {
+    padding: 12px 10px 96px 10px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Top Navigation Bar on Mobile */
+  #main-nav {
+    padding: 8px 12px !important;
+    min-height: 58px !important;
+    gap: 8px !important;
+  }
+  .nav-brand-logo {
+    height: 38px !important;
+    max-width: 150px !important;
+  }
+  .nav-auth-section {
+    gap: 6px !important;
+  }
+  .btn-install-pwa {
+    padding: 5px 9px !important;
+    font-size: 0.75rem !important;
+    gap: 4px !important;
+  }
+  .install-pwa-text {
+    display: inline-block !important;
+  }
+  .btn-auth-nav {
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Onboarding & Hero on Mobile */
+  .onboarding-container {
+    max-width: 100% !important;
+    padding: 0 4px !important;
+  }
+  .onboarding-hero-logo {
+    max-width: 250px !important;
+    width: 85% !important;
+  }
+  .onboarding-brand-meaning {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+  .meaning-chip {
+    padding: 4px 10px !important;
+    font-size: 0.78rem !important;
+  }
+  .hero-sub {
+    font-size: 0.92rem !important;
+    max-width: 100% !important;
+    line-height: 1.4 !important;
+    padding: 0 6px !important;
+  }
+  .guest-start-box {
+    padding: 14px 12px !important;
+  }
+  .guest-input-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .guest-input-row .form-input {
+    width: 100% !important;
+  }
+  .btn-guest-start {
+    width: 100% !important;
+    min-height: 46px !important;
+  }
+
+  /* Dashboard & TOEFL Banners */
+  .dashboard-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .toefl-sim-cta-banner {
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+  .toefl-sim-cta-badge {
+    font-size: 0.72rem !important;
+  }
+  .toefl-sim-cta-title {
+    font-size: 1.15rem !important;
+  }
+  .toefl-sim-cta-desc {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+  }
+  .toefl-sim-cta-tags {
+    gap: 6px !important;
+  }
+  .toefl-sim-cta-tags .tag {
+    font-size: 0.72rem !important;
+    padding: 3px 8px !important;
+  }
+  .toefl-sim-cta-btn {
+    width: 100% !important;
+    min-height: 46px !important;
+    margin-top: 8px !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* Map and Tracks on Mobile */
+  .toefl-sim-map-cta {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px 12px !important;
+    gap: 10px !important;
+  }
+  .toefl-sim-map-btn {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  /* Score Report Certificate Card Mobile */
+  .toefl-report-container {
+    max-width: 100% !important;
+    padding: 0 2px 90px 2px !important;
+  }
+  .report-certificate-card {
+    padding: 18px 12px !important;
+    border-radius: 18px !important;
+  }
+  .cert-header {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 8px !important;
+    padding-bottom: 14px !important;
+  }
+  .cert-logo {
+    font-size: 2.2rem !important;
+  }
+  .cert-title {
+    font-size: 1.18rem !important;
+    line-height: 1.25 !important;
+  }
+  .cert-subtitle {
+    font-size: 0.78rem !important;
+  }
+  .cert-meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .cert-score-hero {
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+  .cert-score-display {
+    font-size: 2.6rem !important;
+  }
+  .cert-sections-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .cert-sec-card {
+    padding: 14px 12px !important;
+  }
+  .review-item {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+  .review-item-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+  .review-choices-compare {
+    padding: 8px 10px !important;
+  }
+  .choice-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+  }
+  .cr-label {
+    min-width: unset !important;
+    font-size: 0.78rem !important;
+  }
+  .cr-val {
+    word-break: break-word !important;
+  }
+  .report-actions-bar {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .report-actions-bar button {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+
+  /* Interactive Popups & Modal Confirmation */
+  .popup-modal-card {
+    padding: 24px 16px 18px !important;
+    border-radius: 20px !important;
+  }
+  .popup-title {
+    font-size: 1.15rem !important;
+  }
+  .popup-message {
+    font-size: 0.88rem !important;
+    line-height: 1.4 !important;
+  }
+  .popup-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .popup-btn-cancel, .popup-btn-confirm {
+    width: 100% !important;
+    min-height: 46px !important;
+  }
 }
 
 
