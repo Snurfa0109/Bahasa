@@ -165,35 +165,41 @@ const TTS_LANG_MAP = {
   'en-GB': 'en'
 };
 
-function speak(text, lang = 'ko-KR', rate = 0.85) {
+function speak(text, lang = 'ko-KR', rate = 0.88) {
   // Stop any currently playing audio
   if (currentAudio) {
     currentAudio.pause();
     currentAudio = null;
   }
 
-  const ttsLang = TTS_LANG_MAP[lang] || lang.split('-')[0];
-  const encoded = encodeURIComponent(text);
+  const cleanText = (text || '')
+    .replace(/["“”'‘’]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-  // Google Translate TTS URL — free, no API key needed
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${ttsLang}&client=tw-ob&ttsspeed=${rate}`;
+  if (!cleanText) return;
 
-  const audio = new Audio(url);
-  audio.volume = 1;
-  currentAudio = audio;
+  // 1. PRIMARY: Web Speech API (runs locally inside user-gesture click, zero latency, offline-capable)
+  if (speechSynth) {
+    speakWithWebSpeech(cleanText, lang, rate);
+    return;
+  }
 
-  audio.onerror = () => {
-    // Fallback to Web Speech API if Google TTS fails (offline / blocked)
-    speakWithWebSpeech(text, lang, rate);
-  };
+  // 2. FALLBACK ONLY: If Web Speech API is completely unavailable
+  try {
+    const ttsLang = TTS_LANG_MAP[lang] || lang.split('-')[0];
+    const encoded = encodeURIComponent(cleanText);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${ttsLang}&client=tw-ob&ttsspeed=${rate}`;
 
-  audio.oncanplaythrough = () => {
-    audio.play().catch(() => {
-      speakWithWebSpeech(text, lang, rate);
+    const audio = new Audio(url);
+    audio.volume = 1;
+    currentAudio = audio;
+    audio.play().catch(e => {
+      console.warn('Audio fallback error:', e);
     });
-  };
-
-  audio.load();
+  } catch (err) {
+    console.warn('Audio fallback exception:', err);
+  }
 }
 
 // ─── AUDIO ENGINE (High-Fidelity Chrome/Windows Multi-Speaker TTS) ───
@@ -268,13 +274,19 @@ function getBestVoice(gender = 'neutral', lang = 'en-US') {
   return voices.find(v => v.lang === lang) || voices.find(v => v.lang.startsWith(lang.split('-')[0])) || null;
 }
 
-function speakWithWebSpeech(text, lang, rate = 0.88) {
+function speakWithWebSpeech(text, lang = 'en-US', rate = 0.88) {
   if (!speechSynth) {
-    showToast('⚠️ Tidak ada koneksi internet & browser tidak support TTS', 'warning');
     return;
   }
+
+  if (speechSynth.paused) {
+    speechSynth.resume();
+  }
+
+  // Cancel any running speech cleanly
+  speechSynth.cancel();
+
   loadVoices();
-  if (speechSynth.speaking) speechSynth.cancel();
 
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = lang;
@@ -287,13 +299,23 @@ function speakWithWebSpeech(text, lang, rate = 0.88) {
   window.__speechUtterances.add(utter);
   startSpeechHeartbeat();
 
-  utter.onend = () => window.__speechUtterances.delete(utter);
-  utter.onerror = () => {
+  utter.onend = () => {
     window.__speechUtterances.delete(utter);
-    showToast('❌ Audio gagal. Cek koneksi internet kamu.', 'error');
+  };
+  utter.onerror = (e) => {
+    window.__speechUtterances.delete(utter);
+    // Ignore benign canceled/interrupted events from cancel()
+    if (e && (e.error === 'canceled' || e.error === 'interrupted')) {
+      return;
+    }
+    console.warn('Speech error:', e ? e.error : 'unknown');
   };
 
-  speechSynth.speak(utter);
+  // Small delay ensures previous cancel() is cleared before speaking
+  setTimeout(() => {
+    if (speechSynth.paused) speechSynth.resume();
+    speechSynth.speak(utter);
+  }, 35);
 }
 
 function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
@@ -321,6 +343,7 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
 
   if (speechSynth) {
     loadVoices();
+    if (speechSynth.paused) speechSynth.resume();
     if (shouldCancel && speechSynth.speaking) {
       speechSynth.cancel();
     }
@@ -347,6 +370,9 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
 
     utter.onend = finish;
     utter.onerror = (err) => {
+      if (err && (err.error === 'canceled' || err.error === 'interrupted')) {
+        return;
+      }
       console.warn('TTS playback error:', err);
       finish();
     };
@@ -364,7 +390,10 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
       finish();
     };
 
-    speechSynth.speak(utter);
+    setTimeout(() => {
+      if (speechSynth.paused) speechSynth.resume();
+      speechSynth.speak(utter);
+    }, 25);
     return;
   }
 
@@ -1053,7 +1082,7 @@ function renderFlashcard(card) {
         <div class="fc-front">
           <div class="${charClass}">${card.front}</div>
           <div class="fc-romanization">${card.romanization}</div>
-          <div class="fc-tap-hint">👆 Ketuk untuk lihat detail</div>
+          <div class="fc-tap-hint"><span>👆</span> <strong>Tap kartu untuk pembahasan & contoh</strong> <span>↷</span></div>
         </div>
         <div class="fc-back">
           <div class="fc-char-sm">${card.front}</div>
@@ -1076,6 +1105,7 @@ function renderFlashcard(card) {
             </div>
           ` : ''}
           <div class="fc-tip">${(card.tip.startsWith('💡') || card.tip.startsWith('🎯') || card.tip.startsWith('✅')) ? card.tip : '💡 ' + card.tip}</div>
+          <div class="fc-back-tap-hint"><span>↩️</span> Tap kartu untuk kembali</div>
         </div>
       </div>
       <div class="fc-actions">
