@@ -2491,34 +2491,34 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Reading Hack: Di mana letak ide pokok (Main Idea) paling sering ditemukan dalam teks akademik TOEFL?",
+                "q": "Reading Hack: Where is the main idea most frequently found in an academic TOEFL passage? (Di manakah letak ide pokok paling sering ditemukan dalam teks akademik TOEFL?)",
                 "options": [
-                  "Di kalimat terakhir pada paragraf paling bawah.",
-                  "Di kalimat pertama paragraf pertama dan kalimat topik awal tiap paragraf.",
-                  "Di catatan kaki (footnote) pada bagian akhir naskah.",
-                  "Tersebar acak di tengah-tengah tabel data."
+                  "In the last sentence of the bottom-most paragraph.",
+                  "In the first sentence of the introduction and topic sentences of each paragraph.",
+                  "In the footnotes at the very end of the manuscript.",
+                  "Scattered randomly throughout statistical data tables."
                 ],
                 "answer": 1,
                 "explanation": "💡 Trik Emas Reading: Paragraf esai akademik TOEFL dirancang deduktif. Kalimat pertama paragraf pengantar selalu memuat thesis statement atau ide pokok utama."
               },
               {
-                "q": "Reading Hack: Jika menemukan soal 'Which of the following is NOT true according to paragraph 3?', strategi paling efisien adalah:",
+                "q": "Reading Hack: What is the most efficient strategy when facing a 'Which of the following is NOT true according to paragraph 3?' question? (Bagaimana strategi paling efisien saat menghadapi soal 'NOT true'?)",
                 "options": [
-                  "Membaca ulang seluruh teks dari judul sampai akhir.",
-                  "Memilih opsi terpanjang tanpa memeriksa teks.",
-                  "Mencari dan mencocokkan tiap opsi ke paragraf 3, lalu memilih satu-satunya opsi yang tidak didukung teks.",
-                  "Menebak huruf C karena biasanya huruf C paling sering benar."
+                  "Rereading the entire passage from title to conclusion.",
+                  "Choosing the longest option without checking the passage.",
+                  "Matching each option against paragraph 3 and eliminating the one unsupported by the text.",
+                  "Guessing letter C because C is statistically most frequent."
                 ],
                 "answer": 2,
                 "explanation": "💡 Trik Eliminasi: Tipe soal Negative Factual diselesaikan dengan eliminasi 3 opsi yang benar berdasarkan paragraf 3; opsi sisanya adalah kunci jawaban."
               },
               {
-                "q": "Reading Hack: Pada soal kosakata 'The word \"pivotal\" in line 4 is closest in meaning to:', bagaimana cara menebak jika kamu lupa artinya?",
+                "q": "Reading Hack: For vocabulary questions like 'The word \"pivotal\" in line 4 is closest in meaning to:', how should you guess if you do not know the definition? (Bagaimana cara menebak arti kata jika lupa artinya?)",
                 "options": [
-                  "Gantikan kata tersebut dengan masing-masing pilihan jawaban dan lihat mana yang paling logis dalam konteks kalimat.",
-                  "Cari kata yang ejaannya paling mirip dengan kata 'pivotal'.",
-                  "Hitung jumlah suku kata dalam kata tersebut.",
-                  "Pilih sinonim yang paling jarang digunakan dalam bahasa sehari-hari."
+                  "Substitute each choice into the sentence and select the one that makes the most logical sense.",
+                  "Choose the word with the closest spelling to 'pivotal'.",
+                  "Count the number of syllables in the target word.",
+                  "Select the synonym that is least commonly used in daily conversation."
                 ],
                 "answer": 0,
                 "explanation": "💡 Context Clue Hack: Masukkan satu per satu pilihan (crucial, minor, decorative, rapid) ke dalam kalimat asli. Opsi yang mempertahankan makna utuh kalimat adalah jawaban tepat."
@@ -2621,23 +2621,23 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Manajemen Waktu: Jika kamu kehabisan waktu pada 1 menit terakhir dan masih ada 4 soal belum terisi, apa tindakan terbaik?",
+                "q": "Time Management: If you have only 1 minute left and 4 unanswered questions remain, what is the best strategy? (Jika waktu tersisa 1 menit dan masih ada 4 soal kosong, apa tindakan terbaik?)",
                 "options": [
-                  "Membiarkan soal tersebut kosong karena takut ada penalti nilai minus.",
-                  "Mengisi semua nomor yang tersisa dengan satu pilihan konsisten karena TOEFL tidak memiliki sistem nilai minus.",
-                  "Menutup layar aplikasi sebelum waktu ujian habis.",
-                  "Meminta pengawas memundurkan waktu ujian."
+                  "Leaving the remaining questions blank for fear of penalty scores.",
+                  "Filling in all remaining blanks with one consistent letter because TOEFL has no negative scoring.",
+                  "Closing the exam interface before the countdown timer expires.",
+                  "Asking the exam proctor to extend the official test timer."
                 ],
                 "answer": 1,
                 "explanation": "💡 Aturan Emas TOEFL: Tidak ada penalti salah di TOEFL ITP! Selalu isi seluruh soal sampai 100% tuntas."
               },
               {
-                "q": "Strategi Eliminasi: Dari 4 pilihan ganda, kamu yakin opsi A dan C salah total, tapi ragu antara B dan D. Apa yang harus kamu lakukan?",
+                "q": "Elimination Strategy: You are confident that options A and C are incorrect, but unsure between B and D. What should you do? (Kamu yakin A dan C salah, tapi ragu antara B dan D. Apa yang harus dilakukan?)",
                 "options": [
-                  "Berhenti membaca soal lain sampai menemukan kepastian 100%.",
-                  "Pilih salah satu di antara B atau D dengan insting tercepat, lalu segera beralih ke soal berikutnya agar waktu tidak habis.",
-                  "Mengosongkan lembar jawaban.",
-                  "Mengulangi audio dari awal."
+                  "Stop working on other questions until you reach absolute 100% certainty.",
+                  "Quickly select either B or D based on instinct, then immediately move forward to save time.",
+                  "Leave the answer bubble completely blank.",
+                  "Request the audio recording to replay from the beginning."
                 ],
                 "answer": 1,
                 "explanation": "💡 Trik Eliminasi 50:50: Mempersempit pilihan ke 2 opsi melipatgandakan peluang benar menjadi 50%. Jangan buang waktu lebih dari 30 detik pada satu soal."
@@ -2694,78 +2694,78 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Audio: \"The professor's lecture was really heavy.\" — Manakah yang merupakan JEBAKAN bunyi mirip yang HARUS DIHINDARI?",
+                "q": "Audio: \"The professor's lecture was really heavy.\"\nWhich option is a deceptive similar-sound trap? (Manakah opsi yang merupakan jebakan bunyi mirip yang harus dihindari?)",
                 "options": [
-                  "He carried a heavy suitcase.",
-                  "The course content was difficult to understand.",
-                  "The professor explained complex topics.",
-                  "The material required a lot of study."
+                  "The professor carried a heavy bag.",
+                  "The lecture was intellectually demanding.",
+                  "The material was difficult to grasp.",
+                  "The presentation covered serious topics."
                 ],
                 "answer": 0,
                 "explanation": "💡 Opsi A (\"heavy suitcase\") adalah jebakan bunyi mirip! Di audio \"heavy lecture\" artinya materi berat/sulit, bukan koper yang berat."
               },
               {
-                "q": "Audio Pembicara Kedua: \"I wouldn't miss the concert for the world!\" — Apa arti sebenarnya?",
+                "q": "Woman: \"I wouldn't miss the concert for the world!\"\nWhat does the woman mean? (Apa arti sebenarnya dari ucapan wanita?)",
                 "options": [
-                  "Dia ingin berkeliling dunia.",
-                  "Dia pasti akan datang ke konser itu karena sangat ingin nonton.",
-                  "Dia tersesat saat menuju konser.",
-                  "Dia merindukan dunia musik."
+                  "She wants to travel around the world.",
+                  "She will definitely attend the concert because she wants to see it very much.",
+                  "She got lost on her way to the concert venue.",
+                  "She misses the live music industry."
                 ],
                 "answer": 1,
                 "explanation": "💡 Idiom \"not miss something for the world\" artinya tidak akan melewatkannya demi apa pun (pasti datang)."
               },
               {
-                "q": "Audio Pembicara Kedua: \"Under the weather today.\" — Manakah jawaban yang benar tanpa kata jebakan?",
+                "q": "Man: \"I'm feeling a bit under the weather today.\"\nWhat does the man mean? (Manakah makna yang tepat tanpa kata jebakan?)",
                 "options": [
-                  "Dia sedang memeriksa ramalan cuaca (weather).",
-                  "Dia sedang berada di bawah payung.",
-                  "Dia sedang merasa kurang enak badan / sakit ringan (feeling sick).",
-                  "Cuaca hari ini sangat dingin."
+                  "He is checking the atmospheric weather report.",
+                  "He is standing sheltered under an umbrella.",
+                  "He feels slightly ill or unwell.",
+                  "The temperature is freezing outside."
                 ],
                 "answer": 2,
                 "explanation": "💡 \"Under the weather\" adalah idiom TOEFL populer yang berarti tidak enak badan (sick/unwell). Hindari kata \"weather\"!"
               },
               {
-                "q": "Man: \"Are you going to the seminar today?\" / Woman: \"I'll say!\" — Apa maksud ucapan wanita?",
+                "q": "Man: \"Are you going to the seminar today?\"\nWoman: \"I'll say!\"\nWhat does the woman mean? (Apa maksud ucapan wanita?)",
                 "options": [
-                  "Dia ingin memberikan ceramah.",
-                  "Dia sangat setuju dan antusias untuk hadir.",
-                  "Dia lupa apa yang ingin dikatakan.",
-                  "Dia belum memutuskan apakah akan hadir."
+                  "She wishes to give a public speech at the seminar.",
+                  "She enthusiastically agrees and looks forward to attending.",
+                  "She has forgotten what she intended to present.",
+                  "She remains undecided about whether to participate."
                 ],
                 "answer": 1,
                 "explanation": "💡 Idiom persetujuan singkat: \"I'll say!\" artinya \"Saya sangat setuju / Tentu saja!\". Pembicara kedua sangat antusias."
               },
               {
-                "q": "Man: \"This textbook was surprisingly affordable.\" / Woman: \"You can say that again!\" — Apa makna respon wanita?",
+                "q": "Man: \"This textbook was surprisingly affordable.\"\nWoman: \"You can say that again!\"\nWhat does the woman mean? (Apa makna respons wanita?)",
                 "options": [
-                  "Meminta pria mengulang kalimatnya karena suaranya kecil.",
-                  "Menyetujui bahwa buku teks tersebut memang murah harganya.",
-                  "Mengeluh bahwa harga buku terlalu mahal.",
-                  "Mengatakan bahwa dia tidak mendengar apa yang dikatakan pria."
+                  "She asks the man to repeat his statement more loudly.",
+                  "She strongly agrees that the textbook was indeed inexpensive.",
+                  "She complains that educational textbooks are too costly.",
+                  "She was unable to hear the man's comment."
                 ],
                 "answer": 1,
                 "explanation": "💡 Trik Ekspresi Sepakat: \"You can say that again!\" di TOEFL TIDAK BERARTI minta diulang, melainkan bermakna \"Aku sangat setuju denganmu!\"."
               },
               {
-                "q": "Audio: \"The plane arrived late due to dense fog.\" — Manakah opsi yang merupakan PARAPHRASE BENAR (tanpa jebakan bunyi)?",
+                "q": "Audio: \"The plane arrived late due to dense fog.\"\nWhich option is the correct paraphrase? (Manakah opsi yang merupakan parafrasa yang benar?)",
                 "options": [
-                  "The flight was delayed because of poor weather visibility.",
-                  "The man felt a lot of pain during the fog.",
-                  "The plain coffee tasted very dense.",
-                  "The crane arrived late at the docks."
+                  "The flight was delayed because of poor atmospheric visibility.",
+                  "The airplane crashed into a dense forest.",
+                  "The pilot intentionally fogged up the cockpit windshield.",
+                  "The aircraft departed and landed right on schedule."
                 ],
                 "answer": 0,
                 "explanation": "💡 Paraphrase benar: \"plane arrived late\" -> \"flight delayed\", \"dense fog\" -> \"poor weather visibility\". Opsi B (pain), C (plain), D (crane) adalah jebakan bunyi mirip!"
               },
               {
-                "q": "Woman: \"Did Mark finish the assignment?\" / Man: \"Hardly! He hasn't even opened the book.\" — Apa yang dimaksud pria?",
+                "q": "Woman: \"Did Mark finish the assignment?\"\nMan: \"Hardly! He hasn't even opened the book.\"\nWhat does the man say about Mark? (Apa yang dimaksud oleh pria?)",
                 "options": [
-                  "Mark bekerja sangat keras untuk tugas itu.",
-                  "Mark hampir tidak mengerjakan sama sekali tugasnya.",
-                  "Tugas Mark sangat sulit dipahami.",
-                  "Mark sudah selesai membaca bukunya."
+                  "Mark put tremendous effort into finishing the assignment.",
+                  "Mark has barely worked on his assignment at all.",
+                  "Mark's assignment was exceedingly difficult to understand.",
+                  "Mark has already finished reading his textbook."
                 ],
                 "answer": 1,
                 "explanation": "💡 Kata \"Hardly!\" bermakna negatif halus (hampir tidak sama sekali). Opsi \"bekerja keras\" adalah jebakan kata \"hardly\" vs \"hard\"!"
@@ -3959,23 +3959,23 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Listening Strategy: Mengapa mencatat kalimat utuh kata-per-kata saat menyimak kuliah dosen TOEFL adalah kesalahan fatal?",
+                "q": "Listening Hack: Why should you NOT transcribe lectures word-for-word while listening? (Mengapa tidak boleh mencatat kata demi kata saat mendengarkan kuliah?)",
                 "options": [
-                  "Karena pengawas ujian akan menyita lembar coretanmu.",
-                  "Karena tanganmu tidak akan mampu mengejar kecepatan bicara dosen, sehingga kamu kehilangan poin-poin berikutnya.",
-                  "Karena di TOEFL dilarang menggunakan pena hitam.",
-                  "Karena semua soal TOEFL hanya menguji nama dan tanggal."
+                  "Because test invigilators will confiscate your scratch paper.",
+                  "Because you cannot keep up with the professor's speech speed and will miss key ideas.",
+                  "Because black pens are strictly prohibited on the TOEFL.",
+                  "Because TOEFL questions only test specific names and dates."
                 ],
                 "answer": 1,
                 "explanation": "💡 Note-Taking Hack: Menulis kalimat lengkap memecah konsentrasi pendengaran. Gunakan simbol dan kata kunci (keywords) saja!"
               },
               {
-                "q": "Listening Strategy: Jika dosen berkata: \"Although early astronomers believed the canals on Mars were artificial, modern spectral data completely disproved this.\", apa ide pokoknya?",
+                "q": "Lecture Main Idea: The professor states, 'Although 19th-century astronomers believed Mars had artificial canals, modern spectral data proves they are natural geological fissures.' What is the main idea? (Apa ide pokok dari pernyataan kuliah tersebut?)",
                 "options": [
-                  "Kanal di Mars memang dibangun oleh peradaban purba.",
-                  "Data spektral modern membuktikan bahwa kanal di Mars bukan buatan (ide pokok selalu pada fakta terbaru).",
-                  "Astronom purba memiliki teleskop yang lebih canggih daripada teleskop modern.",
-                  "Planet Mars tidak memiliki atmosfer."
+                  "Canals on Mars were indeed engineered by ancient extraterrestrial civilizations.",
+                  "Modern spectral analysis proves that Martian canals are natural geological formations.",
+                  "Nineteenth-century astronomers possessed instruments superior to modern telescopes.",
+                  "Mars lacks an atmosphere capable of sustaining geological activity."
                 ],
                 "answer": 1,
                 "explanation": "💡 Trik Kontras Ide Pokok: Pada kalimat kontras ('Although X believed..., recent evidence shows Y'), ide pokok dan kunci jawaban SELALU berada pada bukti terbaru (Y)."
@@ -4033,7 +4033,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Soal TOEFL: \"The collection of rare Mesoamerican artifacts ________ on display at the national museum.\" — Manakah pilihan yang melengkapi kalimat?",
+                "q": "\"The collection of rare Mesoamerican artifacts ________ on display at the national museum.\"\nWhich option correctly completes the sentence? (Manakah pilihan yang melengkapi kalimat?)",
                 "options": [
                   "is",
                   "are",
@@ -4044,7 +4044,7 @@ const APP_DATA = {
                 "explanation": "💡 Rumus S+V: Subject kalimat ini adalah kata tunggal \"The collection\" (bukan artifacts!). Prepositional phrase \"of rare Mesoamerican artifacts\" hanya pengecoh. Subject tunggal butuh Verb tunggal (\"is\")."
               },
               {
-                "q": "Soal TOEFL: \"________, Thomas Edison invented the phonograph and the incandescent light bulb.\" — Manakah pengisi posisi sebelum koma?",
+                "q": "\"________, Thomas Edison invented the phonograph and the incandescent light bulb.\"\nWhich option correctly completes the clause before the comma? (Manakah pengisi posisi sebelum koma?)",
                 "options": [
                   "A prolific American inventor",
                   "He was a prolific American inventor",
@@ -4529,7 +4529,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Kalimat manakah yang memiliki struktur paralel (parallel structure) yang BENAR?",
+                "q": "Which sentence demonstrates correct parallel structure? (Pilihlah kalimat dengan struktur paralel yang paling tepat:)",
                 "char": null,
                 "options": [
                   "He enjoys swimming, to hike, and cycling.",
@@ -4537,10 +4537,11 @@ const APP_DATA = {
                   "He enjoys swim, hiking, and to cycle.",
                   "He enjoys to swim, to hiking, and cycle."
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kunci Struktur Paralel: Jika menghubungkan unsur-unsur setara dengan kata \"and\", bentuk tata bahasanya harus seragam. Di sini semuanya harus berupa Gerund (-ing): \"swimming, hiking, and cycling\"."
               },
               {
-                "q": "Pilihlah kalimat dengan struktur paralel yang PALING TEPAT:",
+                "q": "Which sentence demonstrates correct parallel structure? (Pilihlah kalimat dengan struktur paralel yang paling tepat:)",
                 "char": null,
                 "options": [
                   "The policy aims to reduce pollution, creating jobs, and to improve infrastructure.",
@@ -4548,10 +4549,11 @@ const APP_DATA = {
                   "The policy aims reducing pollution, to create jobs, and improved infrastructure.",
                   "The policy aims to reduce pollution, creating jobs, and improved infrastructure."
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kunci Struktur Paralel: Semua kata kerja yang dihubungkan harus berbentuk infinitive (to + verb 1): \"to reduce..., to create..., and to improve...\"."
               },
               {
-                "q": "\"Not only is she intelligent, ___ she is also hardworking.\"",
+                "q": "\"Not only is she intelligent, ___ she is also hardworking.\" (Pilihlah kata sambung berpasangan yang tepat:)",
                 "char": null,
                 "options": [
                   "and",
@@ -4559,10 +4561,11 @@ const APP_DATA = {
                   "or",
                   "nor"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Pasangan Konjungsi Korelatif: Pasangan tetap dari \"Not only...\" adalah \"...but also\". Jadi kata yang tepat melengkapi kalimat tersebut adalah \"but\"."
               },
               {
-                "q": "Manakah dari pilihan berikut yang strukturnya SALAH (tidak paralel)?",
+                "q": "Which of the following sentences contains INCORRECT (non-parallel) structure? (Manakah dari pilihan berikut yang strukturnya SALAH / tidak paralel?)",
                 "char": null,
                 "options": [
                   "Both reading and writing are important.",
@@ -4570,7 +4573,8 @@ const APP_DATA = {
                   "Neither they nor we are ready.",
                   "Both study and to practice are needed."
                 ],
-                "answer": 3
+                "answer": 3,
+                "explanation": "💡 Analisis Kesalahan Paralel: Pilihan D salah karena menggabungkan bare verb \"study\" dengan infinitive \"to practice\" setelah \"Both... and...\". Bentuk yang benar adalah \"Both studying and practicing\" atau \"Both study and practice\"."
               }
             ]
           },
@@ -5120,62 +5124,62 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Trik Cepat Reading: Di manakah letak jawaban dari pertanyaan \"What is the main topic of the passage?\" pada 90% teks TOEFL?",
+                "q": "Main Idea Strategy: Where is the primary topic sentence most frequently located in an academic TOEFL passage? (Di manakah letak ide utama paling sering ditemukan?)",
                 "options": [
-                  "1–2 kalimat pertama pada paragraf pertama.",
-                  "Di baris paling bawah teks.",
-                  "Di tengah-tengah paragraf kedua.",
-                  "Harus membaca seluruh teks dari kata pertama sampai terakhir."
+                  "The first one or two sentences of the introductory paragraph.",
+                  "The bottom-most line of the final concluding paragraph.",
+                  "The middle sentence of the second supporting paragraph.",
+                  "Evenly dispersed from the first word to the very last word."
                 ],
                 "answer": 0,
                 "explanation": "💡 Trik Paragraf Akademik: Paragraf akademik bahasa Inggris selalu menganut struktur deduktif. Ide utama selalu diletakkan di kalimat 1 atau 2 paragraf pertama (Topic Sentence)."
               },
               {
-                "q": "Jika ada soal vocabulary: \"The word 'ubiquitous' in line 12 is closest in meaning to...\", apa langkah tercepat tanpa menghafal kamus?",
+                "q": "Vocabulary Strategy: If you encounter an unfamiliar vocabulary word on the TOEFL, what is the best strategy? (Jika tidak tahu arti kata sulit, langkah terbaik apa?)",
                 "options": [
-                  "Membaca 1 kalimat sebelum dan 1 kalimat sesudah untuk menemukan kata petunjuk konteks (context clues).",
-                  "Memilih kata yang bunyinya paling rumit dan panjang.",
-                  "Menerjemahkan kata demi kata ke bahasa Indonesia.",
-                  "Melewatkan soal karena tidak pernah menghafal kata itu."
+                  "Read one sentence before and one sentence after to identify surrounding context clues.",
+                  "Select the option that sounds the longest and most sophisticated.",
+                  "Translate every individual word into your native language literally.",
+                  "Skip the question entirely without attempting any deduction."
                 ],
                 "answer": 0,
                 "explanation": "💡 Jurus Context Clues: Baca kalimat tempat kata itu berada! Konteks teks TOEFL selalu memberi petunjuk sinonim atau contoh di sekitarnya."
               },
               {
-                "q": "Pertanyaan: \"The pronoun 'it' in line 8 refers to...\" — Cara paling akurat untuk menjawab:",
+                "q": "Pronoun Reference: When a question asks what the pronoun 'it' in line 10 refers to, what is the fastest method? (Cara tercepat menemukan rujukan kata ganti 'it'?)",
                 "options": [
-                  "Mencari kata benda tunggal (singular noun) yang muncul tepat sebelum kata ganti tersebut.",
-                  "Mencari kata benda jamak di akhir paragraf.",
-                  "Memilih kata benda pertama yang ada di judul teks.",
-                  "Menebak secara acak."
+                  "Locate the singular noun mentioned in the immediately preceding clause.",
+                  "Search for a plural noun at the very end of the paragraph.",
+                  "Select the first noun that appears in the passage's title.",
+                  "Pick an answer option completely at random."
                 ],
                 "answer": 0,
                 "explanation": "💡 Pronoun Reference Hack: Pronoun \"it\" merujuk pada kata benda tunggal (singular) yang baru saja disebutkan pada klausa tepat sebelumnya."
               },
               {
-                "q": "Dalam soal \"Which of the following is NOT mentioned in the passage?\" — Trik terbaik menghemat waktu adalah:",
+                "q": "Negative Factual Strategy ('Which of the following is NOT true...?'): What is the fastest method to solve this question? (Strategi tercepat menyelesaikan soal 'NOT true'?)",
                 "options": [
-                  "Gunakan Scanning (cari kata kunci di 4 opsi secara cepat dalam teks, opsi yang tidak ada adalah jawabannya).",
-                  "Membaca ulang seluruh teks dengan perlahan.",
-                  "Memilih opsi yang paling panjang tulisannya.",
-                  "Memilih opsi A secara otomatis."
+                  "Scan the passage for keywords from all four options to eliminate the three mentioned facts.",
+                  "Reread the entire passage slowly from start to finish.",
+                  "Select whichever option contains the longest character count.",
+                  "Automatically choose option A without verification."
                 ],
                 "answer": 0,
                 "explanation": "💡 Scanning Strategy: Cari kata kunci spesifik (nama tokoh, angka, tahun, istilah teknis) dari opsi ke dalam paragraf untuk mencocokkan mana yang disebutkan."
               },
               {
-                "q": "Jika soal menanyakan: \"Why does the author mention 'ancient Roman aqueducts' in paragraph 3?\" — Jawaban benar biasanya adalah:",
+                "q": "Author's Purpose ('Why does the author mention...'): Why does the author cite a specific example such as 'the Roman aqueducts'? (Mengapa penulis menyebutkan contoh spesifik?)",
                 "options": [
-                  "Sebagai ilustrasi atau contoh pendukung untuk memperkuat argumen utama di paragraf tersebut.",
-                  "Karena penulis ingin beralih membahas sejarah kekaisaran Romawi.",
-                  "Untuk membantah bahwa Roma pernah membangun saluran air.",
-                  "Hanya sebagai pengisi ruang tulisan."
+                  "To provide supporting evidence for the primary argument in that paragraph.",
+                  "Because the author intends to diverge into Roman imperial history.",
+                  "To refute that Rome ever constructed water supply networks.",
+                  "Merely to occupy additional typographical space in the article."
                 ],
                 "answer": 0,
                 "explanation": "💡 Author's Purpose Hack: Contoh spesifik (nama kota, nama alat, peradaban) hampir selalu berfungsi sebagai BUKTI / CONTOH PENDUKUNG untuk ide pokok paragraf tersebut."
               },
               {
-                "q": "Kata \"plausible\" dalam teks ilmiah TOEFL paling sering bersinonim dengan:",
+                "q": "In academic TOEFL passages, the word \"plausible\" is closest in meaning to... (Kata \"plausible\" paling sering bersinonim dengan:)",
                 "options": [
                   "believable / reasonable (masuk akal)",
                   "impossible (mustahil)",
@@ -5246,59 +5250,64 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Pertanyaan \"The word X is closest in meaning to...\" adalah tipe soal:",
+                "q": "A question asking \"The word X is closest in meaning to...\" tests which question type? (Pertanyaan \"The word X is closest in meaning to...\" menguji tipe soal apa?)",
                 "char": null,
                 "options": [
-                  "Main idea",
-                  "Vocabulary in context",
-                  "Inference",
-                  "Factual detail"
+                  "Vocabulary in Context",
+                  "Main Idea",
+                  "Stated Detail",
+                  "Inference"
                 ],
-                "answer": 1
+                "answer": 0,
+                "explanation": "💡 Tipe Soal Vocabulary in Context: Frasa \"closest in meaning to\" menanyakan makna sinonim dari kata tertentu berdasarkan konteks kalimat di dalam teks akademik."
               },
               {
-                "q": "Untuk soal INFERENCE, jawabannya:",
+                "q": "What is the primary difference between a 'stated detail' and an 'inferred detail'? (Apa perbedaan utama antara stated detail dan inferred detail?)",
                 "char": null,
                 "options": [
-                  "Dinyatakan langsung di teks",
-                  "Harus disimpulkan secara logis dari teks",
-                  "Ada di kamus",
-                  "Selalu di paragraf pertama"
+                  "Stated details are found in footnotes; inferred details are in titles.",
+                  "Stated details are explicitly mentioned; inferred details must be logically deduced.",
+                  "Stated details require a dictionary; inferred details require a calculator.",
+                  "Stated details always appear in paragraph 1; inferred details in paragraph 4."
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Stated vs Inferred: Stated detail tertulis secara eksplisit di dalam bacaan (biasanya diparaphrase), sedangkan inferred detail menuntut pembaca menarik kesimpulan logis dari fakta yang ada."
               },
               {
-                "q": "\"According to paragraph 2...\" adalah tipe soal:",
+                "q": "A question beginning with \"According to paragraph 2...\" tests which question type? (Pertanyaan berawalan \"According to paragraph 2...\" adalah tipe soal apa?)",
                 "char": null,
                 "options": [
-                  "Inference",
-                  "Purpose",
+                  "Stated Detail",
+                  "Negative Factual",
                   "Vocabulary",
-                  "Factual detail"
+                  "Author Purpose"
                 ],
-                "answer": 3
+                "answer": 0,
+                "explanation": "💡 Stated Detail Question: Pola \"According to paragraph X...\" menanyakan fakta spesifik yang disebutkan langsung di paragraf tersebut."
               },
               {
-                "q": "Strategi TERBAIK untuk soal ide pokok (main idea):",
+                "q": "Where do you typically find the topic sentence in an academic TOEFL passage? (Di mana biasanya menemukan topic sentence dalam teks TOEFL?)",
                 "char": null,
                 "options": [
-                  "Baca seluruh teks kata per kata",
-                  "Baca kalimat pertama dan terakhir tiap paragraf",
-                  "Pilih jawaban terpanjang",
-                  "Pilih jawaban pertama"
+                  "Scattered across every sentence equally.",
+                  "In the first or last sentences of each paragraph.",
+                  "In whichever option contains the most technical jargon.",
+                  "Exclusively in the bibliography citations."
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kunci Skimming Reading: Gagasan utama (topic sentence) teks akademik TOEFL hampir selalu diletakkan di kalimat pembuka (pertama) atau kalimat penutup paragraf."
               },
               {
-                "q": "\"Why does the author mention X?\" adalah soal tipe:",
+                "q": "A question asking \"Why does the author mention X?\" tests which question type? (Pertanyaan \"Why does the author mention X?\" menguji tipe soal apa?)",
                 "char": null,
                 "options": [
-                  "Factual detail",
-                  "Vocabulary",
-                  "Rhetorical function / Purpose",
-                  "Main idea"
+                  "Author's Purpose",
+                  "Vocabulary in Context",
+                  "Main Idea",
+                  "Negative Factual"
                 ],
-                "answer": 2
+                "answer": 0,
+                "explanation": "💡 Purpose Question: Menanyakan alasan mengapa penulis menyertakan data, contoh, atau kutipan X (menjelaskan fungsi retoris dalam paragraf)."
               }
             ]
           },
@@ -5331,7 +5340,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Teks: \"Honeybees communicate navigation data through an elaborate waggle dance. This ritual conveys both the direction and distance to nectar sources, enabling fellow foragers to locate blossoms efficiently.\"\n\nPertanyaan: The word \"This ritual\" refers to:",
+                "q": "Passage: \"Honeybees communicate navigation data through an elaborate waggle dance. This ritual conveys both the direction and distance to nectar sources, enabling fellow foragers to locate blossoms efficiently.\"\n\nThe phrase \"This ritual\" refers to... (Frasa \"This ritual\" merujuk pada:)",
                 "options": [
                   "Navigation data",
                   "An elaborate waggle dance",
@@ -5342,12 +5351,12 @@ const APP_DATA = {
                 "explanation": "💡 Analisis TOEFL: Kata ganti demonstratif \"This ritual\" merujuk ke tindakan tarian komunikasi yang baru saja disebutkan pada kalimat sebelumnya: \"an elaborate waggle dance\"."
               },
               {
-                "q": "Dalam soal bertipe \"Which of the following is NOT true according to paragraph 2?\", langkah taktis pertama yang harus dilakukan adalah:",
+                "q": "What is the fastest way to solve 'Which of the following is NOT true according to paragraph 2?' without rereading the whole text? (Cara tercepat menyelesaikan soal 'NOT true'?)",
                 "options": [
-                  "Membaca seluruh teks dari paragraf 1 sampai akhir kata demi kata.",
-                  "Membaca 4 opsi pilihan, mengidentifikasi kata kunci unik tiap opsi, lalu mencocokkan ke paragraf 2.",
-                  "Memilih opsi yang paling panjang kalimatnya.",
-                  "Menebak secara acak karena teks terlalu panjang."
+                  "Reread the entire passage word-for-word from paragraph 1.",
+                  "Identify unique keywords in the four choices, then scan paragraph 2 to eliminate verified facts.",
+                  "Select the longest option because test writers make correct answers longer.",
+                  "Guess randomly because the passage is too long."
                 ],
                 "answer": 1,
                 "explanation": "💡 Analisis TOEFL: Efisiensi waktu membaca adalah kunci. Ambil kata kunci unik di opsi A, B, C, D lalu scan langsung ke Paragraf 2 untuk mengeliminasi opsi yang terbukti ada di teks."
@@ -5403,34 +5412,34 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Reading Hack: Di antara pilihan berikut, manakah opsi yang PALING MUNGKIN BENAR dalam soal Reading sains TOEFL?",
+                "q": "Reading Strategy: Among the following options, which one is MOST likely to be correct in TOEFL science reading? (Manakah opsi yang paling mungkin benar dalam soal Reading sains TOEFL?)",
                 "options": [
-                  "The climate change entirely eliminated all mammalian life in North America.",
-                  "The fossil evidence suggests that climate variations may have influenced mammal distribution.",
-                  "Ancient mammals always migrated south regardless of geographical barriers.",
-                  "Geologists have conclusively proven that temperature never changed during the Pleistocene."
+                  "An extreme statement using words like \"always\", \"never\", or \"completely\".",
+                  "A moderate statement using qualifying words like \"may\", \"often\", or \"suggests\".",
+                  "A personal emotional statement not grounded in experimental data.",
+                  "A speculative statement lacking any peer-reviewed scientific citations."
                 ],
                 "answer": 1,
                 "explanation": "💡 Jurus Anti-Opsi Ekstrem: Opsi B memakai bahasa ilmiah berhati-hati ('suggests', 'may have influenced'). Opsi A, C, dan D memakai kata mutlak yang tidak ilmiah ('entirely eliminated all', 'always', 'never')."
               },
               {
-                "q": "Reading Hack: Soal menanyakan: \"The word 'they' in line 8 refers to:\". Apa langkah tercepat untuk menemukan jawabannya?",
+                "q": "If a question asks 'The word \"they\" in line 8 refers to...', what is the first strategy you should use? (Jika soal menanyakan kata rujukan 'they', apa strategi pertama?)",
                 "options": [
-                  "Mencari kata benda jamak (plural noun) pada kalimat tepat sebelum baris 8 dan mencocokkannya ke dalam kalimat.",
-                  "Membaca paragraf terakhir teks.",
-                  "Memilih kata benda pertama yang ada di baris 1 teks.",
-                  "Mencari kata benda tunggal yang berawalan huruf vokal."
+                  "Identify plural nouns in the sentence immediately preceding line 8 and verify grammatical fit.",
+                  "Read the concluding paragraph of the passage.",
+                  "Choose the very first noun that appears in line 1 of the text.",
+                  "Look for a singular noun starting with a vowel."
                 ],
                 "answer": 0,
                 "explanation": "💡 Jurus Pronoun Reference: Kata ganti jamak 'they' WAJIB merujuk pada kata benda jamak (plural noun) di kalimat sebelumnya."
               },
               {
-                "q": "Reading Hack: Jika sebuah kata sulit diikuti oleh frasa dalam tanda kurung atau dua tanda koma (misal: 'The lichen, a symbiotic organism composed of fungi and algae, ...'), fungsi frasa tersebut adalah:",
+                "q": "In the sentence 'Lichens—composite organisms consisting of algae and fungi—thrive in harsh climates,' what do the dashes (—) indicate? (Apa fungsi tanda strip pada kalimat tersebut?)",
                 "options": [
-                  "Membantah keberadaan lichen.",
-                  "Memberikan definisi atau penjelasan langsung makna kata sulit tersebut (Appositive).",
-                  "Menandakan bahwa kalimat tersebut mengandung kesalahan ketik.",
-                  "Mengindikasikan opini pengarang yang tidak dapat dipercaya."
+                  "Disproving the biological existence of lichens.",
+                  "Providing an immediate appositive definition for the unfamiliar term.",
+                  "Signaling typographical errors in the manuscript.",
+                  "Indicating unreliable personal opinions of the author."
                 ],
                 "answer": 1,
                 "explanation": "💡 Jurus Context Clue: Frasa di antara koma atau tanda strip memberikan definisi langsung kata sulit tanpa perlu menebak-nebak."
@@ -5460,56 +5469,56 @@ const APP_DATA = {
             },
             "questions": [
               {
-                "q": "What is the main idea of the passage? (Apa ide pokok bacaan di atas?)",
+                "q": "What is the main idea of the passage? (Apa ide pokok dari bacaan tersebut?)",
                 "options": [
-                  "Hutan hujan tropis memiliki banyak spesies",
-                  "Deforestasi mengancam ekosistem global dan terus terjadi meski berdampak buruk",
-                  "Pemerintah harus melarang semua aktivitas penebangan pohon",
-                  "Karbon dioksida adalah penyebab utama perubahan iklim"
+                  "Tropical rainforests harbor diverse ecological species.",
+                  "Deforestation threatens global ecosystems and continues despite its severe consequences.",
+                  "Governments should prohibit all timber and logging operations.",
+                  "Carbon dioxide is the sole driver of global climate change."
                 ],
                 "answer": 1,
                 "explanation": "💡 Penjelasan: Bacaan membahas berbagai dampak kerusakan akibat deforestasi DAN menegaskan bahwa aktivitas ini masih terus meningkat — menjadikan opsi ke-2 sebagai ide pokok (main idea) yang paling lengkap dan akurat."
               },
               {
-                "q": "The word \"crucial\" in paragraph 1 is closest in meaning to:",
+                "q": "The word 'crucial' in paragraph 1 is closest in meaning to... (Kata 'crucial' pada paragraf 1 paling dekat artinya dengan...)",
                 "options": [
-                  "minor (kecil/sepele)",
-                  "essential / critical (sangat penting / krusial)",
-                  "difficult (sulit)",
-                  "surprising (mengejutkan)"
+                  "minor",
+                  "essential / critical",
+                  "difficult",
+                  "surprising"
                 ],
                 "answer": 1,
                 "explanation": "💡 Penjelasan: \"Crucial\" bermakna sangat penting / vital (extremely important/essential). Pohon memainkan peran penting dalam menyerap gas karbon dioksida di atmosfer."
               },
               {
-                "q": "According to the passage, what percentage of Earth's surface do tropical rainforests cover?",
+                "q": "According to the passage, what percentage of Earth's surface is covered by tropical rainforests? (Berapa persen permukaan Bumi yang tertutup hutan hujan tropis?)",
                 "options": [
                   "18%",
-                  "More than half (Lebih dari separuh)",
+                  "More than half",
                   "6%",
-                  "Less than 1% (Kurang dari 1%)"
+                  "Less than 1%"
                 ],
                 "answer": 2,
                 "explanation": "💡 Penjelasan: Paragraf 2 menyatakan secara langsung: \"Tropical rainforests, which cover only 6% of Earth's surface...\" (Hutan hujan tropis hanya menutupi 6% permukaan Bumi)."
               },
               {
-                "q": "It can be inferred from the passage that the author believes: (Dapat disimpulkan bahwa penulis meyakini:)",
+                "q": "What can be inferred from the final paragraph? (Apa kesimpulan yang dapat diambil dari paragraf terakhir?)",
                 "options": [
-                  "Deforestasi mustahil untuk dihentikan",
-                  "Ekspansi pertanian adalah satu-satunya penyebab deforestasi",
-                  "Tindakan dan regulasi yang lebih tegas sangat diperlukan untuk mengatasi deforestasi",
-                  "Kehilangan keanekaragaman hayati bukan masalah serius"
+                  "Deforestation is inherently impossible to stop.",
+                  "Agricultural expansion is the sole driver of forest clearing.",
+                  "Stricter regulations and sustainable policies are urgently required to combat deforestation.",
+                  "Loss of biodiversity is not a pressing environmental issue."
                 ],
                 "answer": 2,
                 "explanation": "💡 Penjelasan: Kalimat penutup \"...calling for stricter regulations and sustainable land-use practices\" (mendesak regulasi yang lebih ketat) mengindikasikan bahwa penulis mendukung adanya tindakan nyata yang lebih tegas."
               },
               {
-                "q": "Why does the author mention \"18 million acres\" in paragraph 1? (Mengapa penulis menyebutkan angka ini?)",
+                "q": "Why does the author mention the figure '18 million hectares' in paragraph 1? (Mengapa penulis menyebutkan angka '18 juta hektar'?)",
                 "options": [
-                  "Untuk membandingkan luas hutan di berbagai negara",
-                  "Untuk memberikan bukti data nyata mengenai besarnya skala deforestasi",
-                  "Untuk menjelaskan mengapa keanekaragaman hayati itu penting",
-                  "Untuk menggambarkan ukuran hutan hujan tropis"
+                  "To compare national forest reserves across continents.",
+                  "To provide empirical evidence illustrating the immense scale of deforestation.",
+                  "To explain why ecological biodiversity is necessary.",
+                  "To describe the geographical perimeter of rainforests."
                 ],
                 "answer": 1,
                 "explanation": "💡 Penjelasan: Angka statistik 18 juta hektar hutan disajikan sebagai bukti konkret (evidence) untuk mendukung pernyataan bahwa deforestasi terjadi dalam skala yang luar biasa besar."
@@ -5527,12 +5536,12 @@ const APP_DATA = {
             },
             "questions": [
               {
-                "q": "What is the passage primarily about? (Apa topik utama bacaan ini?)",
+                "q": "What is the primary topic of the passage? (Apa topik utama dari teks tersebut?)",
                 "options": [
-                  "Cara memprogram kecerdasan buatan",
-                  "Keuntungan sekaligus kekhawatiran seputar perkembangan AI",
-                  "Mengapa AI lebih unggul daripada kecerdasan manusia",
-                  "Sejarah komputer dan teknologi digital"
+                  "Methods for programming neural network systems.",
+                  "Both the beneficial advances and serious concerns surrounding artificial intelligence.",
+                  "Why artificial intelligence surpasses human capabilities in every domain.",
+                  "The technological chronology of digital computing."
                 ],
                 "answer": 1,
                 "explanation": "💡 Penjelasan: Teks menyajikan KEDUA sisi secara objektif: manfaat positif AI (efisiensi, medis) dan kekhawatiran yang dihadapi (hilangnya lapangan kerja, etika keputusan mandiri)."
@@ -5549,34 +5558,34 @@ const APP_DATA = {
                 "explanation": "💡 Penjelasan: \"Proponents\" artinya para pendukung / advokat ide tersebut (supporters/advocates). Mereka berargumen mengenai dampak positif peningkatan efisiensi."
               },
               {
-                "q": "According to the passage, what concern do critics have about AI?",
+                "q": "According to the passage, what is one of the primary concerns critics raise regarding AI? (Apa kekhawatiran utama para kritikus terhadap AI?)",
                 "options": [
-                  "AI tidak dapat mendeteksi penyakit secara akurat",
-                  "Biaya pengembangan sistem AI terlalu mahal",
-                  "AI dapat menggantikan tenaga kerja manusia dan memicu masalah etika",
-                  "AI hanya bermanfaat di bidang transportasi"
+                  "AI systems are incapable of accurate diagnostic analysis.",
+                  "The economic cost of developing algorithms is excessively high.",
+                  "AI may displace human labor and introduce ethical dilemmas.",
+                  "AI is applicable exclusively within automated transportation."
                 ],
                 "answer": 2,
                 "explanation": "💡 Penjelasan: Paragraf 3 secara eksplisit menyebutkan ancaman hilangnya lapangan pekerjaan (job displacement) dan dilema etika sebagai kekhawatiran utama para kritikus."
               },
               {
-                "q": "The word \"obsolete\" in paragraph 3 is closest in meaning to:",
+                "q": "The word 'obsolete' in paragraph 3 is closest in meaning to... (Kata 'obsolete' pada paragraf 3 paling dekat artinya dengan...)",
                 "options": [
-                  "lebih berharga",
-                  "ketinggalan zaman / tidak lagi terpakai (out of date / no longer useful)",
-                  "sangat kompetitif",
-                  "tumbuh dengan cepat"
+                  "more valuable",
+                  "outdated / no longer in use",
+                  "highly competitive",
+                  "expanding rapidly"
                 ],
                 "answer": 1,
                 "explanation": "💡 Penjelasan: \"Obsolete\" berarti usang, ketinggalan zaman, atau tidak lagi digunakan karena tergantikan oleh teknologi baru."
               },
               {
-                "q": "It can be inferred that the author's attitude toward AI is: (Sikap penulis terhadap AI:)",
+                "q": "What is the author's overall tone toward artificial intelligence? (Bagaimana sikap/pandangan penulis terhadap AI?)",
                 "options": [
-                  "Sangat negatif — AI harus dilarang sepenuhnya",
-                  "Sangat positif — AI selalu bermanfaat tanpa risiko",
-                  "Berimbang (balanced) — menyajikan sisi manfaat dan tantangan etika",
-                  "Netral tanpa pemahaman materi"
+                  "Overwhelmingly negative, urging a total prohibition.",
+                  "Uncritically positive, claiming zero potential risk.",
+                  "Balanced and objective, presenting both benefits and ethical challenges.",
+                  "Detached and lacking fundamental domain knowledge."
                 ],
                 "answer": 2,
                 "explanation": "💡 Penjelasan: Penulis memaparkan sudut pandang para pendukung (proponents) dan kritikus (critics) dengan porsi adil tanpa memihak secara ekstrem, sehingga sikapnya adalah berimbang (balanced)."
@@ -5999,7 +6008,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "\"The scientist ___ the experiment results carefully.\" (analyze)",
+                "q": "\"The scientist ___ the experiment results carefully.\" (analyze) (Pilihlah bentuk kata kerja yang tepat:)",
                 "char": null,
                 "options": [
                   "analyzes",
@@ -6007,21 +6016,23 @@ const APP_DATA = {
                   "analytical",
                   "analyzed into"
                 ],
-                "answer": 0
+                "answer": 0,
+                "explanation": "💡 Subject-Verb Agreement: Subjek tunggal (\"The scientist\") membutuhkan kata kerja orang ketiga tunggal (\"analyzes\" / Present Simple) atau Verb-2 (\"analyzed\"). Opsi \"analyzation\" adalah kata benda (noun), dan \"analytical\" adalah kata sifat (adjective)."
               },
               {
-                "q": "Apa arti dari kata \"assess\"?",
+                "q": "The academic word \"assess\" is closest in meaning to... (Kata akademik \"assess\" paling dekat maknanya dengan:)",
                 "char": null,
                 "options": [
-                  "Menciptakan (to create)",
-                  "Menilai / mengevaluasi (to evaluate/judge)",
-                  "Menghancurkan (to destroy)",
-                  "Menghindari (to avoid)"
+                  "to create or formulate",
+                  "to evaluate, judge, or appraise",
+                  "to destroy completely",
+                  "to evade or avoid"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kosakata Akademik: \"Assess\" berarti menilai, mengevaluasi, atau menakar mutu (\"to evaluate, judge, or appraise\")."
               },
               {
-                "q": "Bentuk kata benda (noun) dari \"assume\" adalah:",
+                "q": "What is the noun form of the verb \"assume\"? (Bentuk kata benda / noun dari kata kerja \"assume\" adalah:)",
                 "char": null,
                 "options": [
                   "assumtion",
@@ -6029,7 +6040,8 @@ const APP_DATA = {
                   "assumed",
                   "assuming"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Word Formation: Kata kerja \"assume\" (mengasumsikan) berubah menjadi kata benda (noun) berakhiran -tion yaitu \"assumption\" (asumsi)."
               },
               {
                 "q": "\"The theory was ___ by Newton in 1687.\" (establish)",
@@ -6040,18 +6052,20 @@ const APP_DATA = {
                   "established",
                   "establishes"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Passive Voice: Pola pasif lampau adalah \"was/were + Verb 3 (Past Participle)\". Bentuk V3 dari \"establish\" adalah \"established\" (\"Teori tersebut didirikan/ditetapkan oleh Newton\")."
               },
               {
-                "q": "Arti kata \"derive\" yang paling tepat:",
+                "q": "The word 'derive' in academic English is closest in meaning to... (Kata 'derive' dalam bahasa Inggris akademik paling dekat artinya dengan...)",
                 "char": null,
                 "options": [
-                  "Menyetir cepat",
-                  "Berasal dari / memperoleh (to come from / obtain)",
-                  "Mengurangi",
-                  "Merusak"
+                  "to drive rapidly",
+                  "to obtain from or originate from",
+                  "to decrease significantly",
+                  "to destroy deliberately"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kosakata Akademik: \"Derive\" (biasanya \"derive from\") berarti berasal dari atau memperoleh dari sumber tertentu (\"to obtain or originate from\")."
               }
             ]
           },
@@ -6124,40 +6138,43 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Arti kata \"evidence\" dalam bahasa Inggris:",
+                "q": "In academic writing, the term \"evidence\" refers to... (Arti kata \"evidence\" dalam konteks akademik adalah:)",
                 "char": null,
                 "options": [
-                  "Jenis teori baru",
-                  "Bukti / fakta pendukung suatu klaim (proof)",
-                  "Faktor pengganggu",
-                  "Kebijakan pemerintah"
+                  "an untested personal belief",
+                  "factual information and proof supporting a claim",
+                  "a distracting theoretical obstacle",
+                  "an official government mandate"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Kosakata Akademik: \"Evidence\" berarti bukti atau fakta pendukung (\"factual information or proof supporting a claim\")."
               },
               {
-                "q": "Makna yang tepat untuk kata \"theory\" adalah:",
+                "q": "In scientific and academic contexts, a 'theory' is best defined as... (Dalam konteks ilmiah, 'theory' paling tepat didefinisikan sebagai:)",
                 "char": null,
                 "options": [
-                  "Tebakan semata",
-                  "Ide tanpa dasar",
-                  "Penjelasan sistematis berdasarkan prinsip dan bukti",
-                  "Opini pribadi"
+                  "an unsubstantiated guess",
+                  "a baseless speculation",
+                  "a systematic explanation supported by empirical principles and evidence",
+                  "a subjective personal opinion"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Definisi Akademik: Dalam konteks sains TOEFL, \"theory\" bukanlah tebakan sembarangan, melainkan penjelasan sistematis yang didukung prinsip empiris dan bukti ilmiah."
               },
               {
-                "q": "Kata \"significant\" paling dekat maknanya dengan:",
+                "q": "The academic word \"significant\" is closest in meaning to... (Kata \"significant\" paling dekat maknanya dengan:)",
                 "char": null,
                 "options": [
-                  "Kecil (small)",
-                  "Penting / bermakna nyata (important / notable)",
-                  "Umum (common)",
-                  "Sulit (difficult)"
+                  "minor and negligible",
+                  "important, notable, and meaningful",
+                  "ordinary and commonplace",
+                  "unusually difficult to solve"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Sinonim TOEFL: \"Significant\" berarti bermakna besar, nyata, atau sangat penting (\"important, notable, or meaningful\")."
               },
               {
-                "q": "\"Pollution is a major ___ in climate change.\"",
+                "q": "\"Pollution is a major ___ in climate change.\" (Pilihlah kata benda yang paling tepat:)",
                 "char": null,
                 "options": [
                   "policy",
@@ -6165,10 +6182,11 @@ const APP_DATA = {
                   "factor",
                   "theory"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Kolokasi Akademik: Frasa standar dalam bahasa ilmiah adalah \"a major factor in...\" yang berarti faktor atau pemicu utama."
               },
               {
-                "q": "Bentuk kata sifat (adjective) dari \"significance\" adalah:",
+                "q": "What is the adjective form of the noun \"significance\"? (Bentuk kata sifat / adjective dari \"significance\" adalah:)",
                 "char": null,
                 "options": [
                   "signify",
@@ -6176,7 +6194,8 @@ const APP_DATA = {
                   "significantly",
                   "signification"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Word Formation: \"Significance\" (noun) -> \"Significant\" (adjective) -> \"Significantly\" (adverb) -> \"Signify\" (verb)."
               }
             ]
           },
@@ -6271,7 +6290,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "\"The data ___ a strong correlation between the two variables.\"",
+                "q": "\"The data ___ a strong correlation between the two variables.\" (Pilihlah bentuk kata kerja yang tepat:)",
                 "char": null,
                 "options": [
                   "indicates",
@@ -6279,21 +6298,23 @@ const APP_DATA = {
                   "indicative",
                   "indicate to"
                 ],
-                "answer": 0
+                "answer": 0,
+                "explanation": "💡 Subject-Verb: Kalimat membutuhkan finite verb. \"The data indicates...\" (atau indicate) menyatakan bahwa data tersebut menunjukkan korelasi kuat."
               },
               {
-                "q": "Makna kata \"vary\" paling dekat dengan:",
+                "q": "The academic verb \"vary\" is closest in meaning to... (Makna kata kerja \"vary\" paling dekat dengan:)",
                 "char": null,
                 "options": [
-                  "Tetap sama (remain the same)",
-                  "Berbeda / berubah-ubah (differ / change)",
-                  "Meningkat cepat",
-                  "Mengurangi"
+                  "remain completely unchanged",
+                  "differ, fluctuate, or change",
+                  "increase at a rapid pace",
+                  "diminish gradually"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Sinonim TOEFL: \"Vary\" berarti berbeda-beda, bervariasi, atau berubah-ubah (\"to differ, fluctuate, or change\")."
               },
               {
-                "q": "\"Several factors ___ to climate change.\" (contribute)",
+                "q": "\"Several factors ___ to climate change.\" (contribute) (Pilihlah bentuk kata kerja yang tepat:)",
                 "char": null,
                 "options": [
                   "contributes",
@@ -6301,10 +6322,11 @@ const APP_DATA = {
                   "contribute",
                   "contribution"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Subject-Verb Agreement: Subjek jamak (\"Several factors\") harus berpasangan dengan bentuk kata kerja jamak (\"contribute\", tanpa akhiran -s)."
               },
               {
-                "q": "Kata yang memiliki makna \"tujuan atau peran (purpose or role)\":",
+                "q": "Which academic word refers to \"a special purpose, role, or duty\"? (Kata akademik yang bermakna tujuan atau peran adalah:)",
                 "char": null,
                 "options": [
                   "factor",
@@ -6312,10 +6334,11 @@ const APP_DATA = {
                   "function",
                   "policy"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Kosakata Akademik: \"Function\" bermakna tugas pokok, peran, atau tujuan kerja spesifik (\"purpose, role, or duty\")."
               },
               {
-                "q": "\"The study ___ over 1,000 participants.\" (involve)",
+                "q": "\"The study ___ over 1,000 participants.\" (involve) (Pilihlah bentuk kata kerja yang tepat:)",
                 "char": null,
                 "options": [
                   "involving",
@@ -6323,7 +6346,8 @@ const APP_DATA = {
                   "involves in",
                   "involvement"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Verb Tense: Kalimat membutuhkan kata kerja utama (finite verb). \"Involved\" (Past tense) menyatakan bahwa riset tersebut telah melibatkan lebih dari 1.000 partisipan."
               }
             ]
           }
@@ -6388,7 +6412,7 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Bagian tulisan yang berisi \"thesis statement\" adalah:",
+                "q": "Which section of an academic essay contains the \"thesis statement\"? (Bagian esai yang memuat \"thesis statement\" adalah:)",
                 "char": null,
                 "options": [
                   "Body paragraph",
@@ -6396,21 +6420,23 @@ const APP_DATA = {
                   "Conclusion",
                   "Transition"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Struktur Esai TOEFL: \"Thesis statement\" (pernyataan gagasan utama esai) selalu ditempatkan di paragraf pengantar (Introduction), biasanya di kalimat terakhir introduction."
               },
               {
-                "q": "PIE method untuk body paragraph = Point, Illustration, dan:",
+                "q": "In the PIE paragraph method (Point, Illustration, ...), what does the \"E\" stand for? (Dalam metode paragraf PIE, huruf \"E\" mewakili:)",
                 "char": null,
                 "options": [
-                  "Introduction",
+                  "Evaluation",
                   "Explanation",
                   "Evidence only",
                   "Example only"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Metode PIE: P = Point (gagasan topik), I = Illustration (contoh/bukti), E = Explanation (penjelasan mendalam bagaimana bukti mendukung poin tersebut)."
               },
               {
-                "q": "Mana transition word untuk KONTRAS/pertentangan?",
+                "q": "Which transition word indicates CONTRAST? (Manakah kata transisi yang menyatakan pertentangan/kontras?)",
                 "char": null,
                 "options": [
                   "Furthermore",
@@ -6418,21 +6444,23 @@ const APP_DATA = {
                   "However",
                   "Consequently"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Transisi Hubungan Kontras: \"However\" (namun / akan tetapi) digunakan untuk menunjukkan kontras atau sanggahan antara dua gagasan."
               },
               {
-                "q": "Kesalahan yang HARUS dihindari di conclusion:",
+                "q": "Which mistake MUST be avoided in an essay conclusion? (Kesalahan apa yang wajib dihindari pada kesimpulan esai?)",
                 "char": null,
                 "options": [
-                  "Meringkas argumen",
-                  "Mengulangi thesis",
-                  "Memasukkan ide baru",
-                  "Menggunakan transition"
+                  "Summarizing the central thesis arguments",
+                  "Rephrasing the initial thesis statement",
+                  "Introducing brand new supporting arguments",
+                  "Using cohesive paragraph transitions"
                 ],
-                "answer": 2
+                "answer": 2,
+                "explanation": "💡 Aturan Penulisan Conclusion: Bagian kesimpulan hanya boleh merangkum dan menegaskan kembali poin yang sudah dibahas. Jangan pernah memasukkan argumen atau bukti baru (brand new arguments) di bagian penutup."
               },
               {
-                "q": "Urutan esai atau artikel 5 paragraf yang BENAR:",
+                "q": "What is the CORRECT organization for a standard 5-paragraph academic essay? (Urutan susunan esai standar 5 paragraf yang tepat adalah:)",
                 "char": null,
                 "options": [
                   "Body → Intro → Conclusion",
@@ -6440,7 +6468,8 @@ const APP_DATA = {
                   "Intro → Conclusion → Body",
                   "Body → Conclusion → Intro"
                 ],
-                "answer": 1
+                "answer": 1,
+                "explanation": "💡 Struktur Esai Standar: Format klasik 5-paragraf terdiri dari: Paragraf 1 (Introduction), Paragraf 2, 3, 4 (Tiga Paragraf Body Isi), dan Paragraf 5 (Conclusion)."
               }
             ]
           },
@@ -6567,56 +6596,56 @@ const APP_DATA = {
             ],
             "quiz": [
               {
-                "q": "Strategi Manajemen Waktu TOEFL ITP: Berapa detik waktu ideal maksimal yang boleh kamu habiskan untuk 1 soal Structure (nomor 1–15)?",
+                "q": "What is the ideal average time allocation per question in Section 2 (Structure & Written Expression)? (Berapa alokasi waktu ideal per soal di Section 2?)",
                 "options": [
-                  "Maksimal 30–35 detik per soal (agar sisa waktu cukup untuk Error Identification).",
-                  "2 menit per soal.",
-                  "5 menit per soal sampai benar-benar yakin.",
-                  "Bebas tanpa batas waktu."
+                  "Maximum 30–35 seconds per question to reserve time for Written Expression.",
+                  "2 minutes per question.",
+                  "5 minutes per question until completely confident.",
+                  "Unlimited time per question."
                 ],
                 "answer": 0,
                 "explanation": "💡 Aturan Kecepatan 35 Detik: Bagian Structure memiliki 40 soal dalam 25 menit. Rata-rata kamu hanya punya waktu 37 detik per soal! Jangan pernah terjebak lebih dari 45 detik di satu soal."
               },
               {
-                "q": "Golden Rule TOEFL ETS: Jika waktu ujian tinggal 1 menit dan kamu masih memiliki 5 soal kosong yang belum sempat dibaca, apa yang HARUS kamu lakukan?",
+                "q": "If only 1 minute remains on the exam timer and 5 questions are blank, what MUST you do? (Jika sisa 1 menit dan ada 5 soal kosong, apa yang wajib dilakukan?)",
                 "options": [
-                  "Tembak/isi SEMUA nomor dengan satu huruf konsisten (misal: semua B atau semua C), JANGAN PERNAH kosongkan lembar jawaban!",
-                  "Biarkan lembar jawaban kosong karena takut kena nilai minus.",
-                  "Mengisi secara pola zigzag A-B-C-D.",
-                  "Menangis dan pasrah."
+                  "Fill ALL remaining blanks with one consistent letter (e.g. all B or all C); never leave blanks!",
+                  "Leave them blank for fear of minus penalty marks.",
+                  "Fill in a zigzag pattern A-B-C-D.",
+                  "Give up and close the test window."
                 ],
                 "answer": 0,
                 "explanation": "💡 NO PENALTY RULE: TOEFL ITP TIDAK ADA SISTEM MINUS! Jawaban salah bernilai 0, bukan -1. Mengosongkan jawaban adalah kesalahan paling fatal!"
               },
               {
-                "q": "Trik Eliminasi Soal Sulit: Jika kamu ragu antara 4 pilihan, langkah pertama yang meningkatkan peluang benar hingga 50% adalah:",
+                "q": "If you are torn between the final two choices, what is the most effective technique? (Jika ragu antara 2 opsi jawaban tersisa, jurus apa yang paling efektif?)",
                 "options": [
-                  "Eliminasi 2 opsi yang jelas-jelas melanggar rumus dasar (misal double subject atau salah bentuk verb).",
-                  "Pilih opsi yang paling panjang tanpa dibaca.",
-                  "Pilih opsi yang memiliki kata paling akrab.",
-                  "Tutup mata dan gunakan intuisi."
+                  "Eliminate options violating grammatical rules (such as double subject or incorrect verb forms).",
+                  "Choose the longest option without reading.",
+                  "Choose the word that looks most familiar.",
+                  "Close your eyes and pick at random."
                 ],
                 "answer": 0,
                 "explanation": "💡 50-50 Elimination: Buang 2 opsi sampah yang jelas melanggar kaidah S+V atau ada jebakan bunyi. Memilih di antara 2 opsi sisa meningkatkan peluang benar dari 25% menjadi 50%!"
               },
               {
-                "q": "Di bagian Listening Part A, jika kamu tidak mendengar kalimat pembicara pertama sama sekali karena terdistraksi, apa yang harus kamu lakukan?",
+                "q": "In Listening Part A, if you completely missed the first speaker's sentence, what should you do? (Jika ketinggalan ucapan pembicara pertama di Listening Part A, apa yang harus dilakukan?)",
                 "options": [
-                  "Tenang, fokus dengarkan kalimat PEMBICARA KEDUA karena 80% kunci jawaban ada di orang kedua!",
-                  "Menyerah dan tidak mendengarkan pembicara kedua.",
-                  "Meminta pengawas memutar ulang kaset rekaman.",
-                  "Menebak jawaban pembicara pertama."
+                  "Stay calm and focus intently on the SECOND speaker, as 80% of answers are found there.",
+                  "Give up and stop listening to the second speaker.",
+                  "Ask the invigilator to replay the audio recording.",
+                  "Guess what the first speaker said."
                 ],
                 "answer": 0,
                 "explanation": "💡 Second Speaker Savior: Jangan panik jika ketinggalan orang pertama! Jawaban pertanyaan hampir selalu merupakan parafrasa dari apa yang diucapkan ORANG KEDUA."
               },
               {
-                "q": "Dalam sesi Reading Comprehension (50 soal dalam 55 menit), urutan pengerjaan yang paling efektif adalah:",
+                "q": "In Section 3 (Reading Comprehension), which strategy saves the MOST time? (Strategi mana yang paling menghemat waktu di Section 3?)",
                 "options": [
-                  "Baca soal terlebih dahulu untuk menemukan kata kunci / nomor baris, baru lakukan scanning ke dalam teks.",
-                  "Baca seluruh bacaan dari awal sampai selesai dengan sangat teliti, baru lihat soal.",
-                  "Kerjakan soal nomor 50 terlebih dahulu mundur ke nomor 1.",
-                  "Lewati semua teks bergambar."
+                  "Read the question first to identify keywords and line numbers, then scan the passage.",
+                  "Read the entire passage thoroughly from start to finish before opening questions.",
+                  "Start from question 50 and work backwards to question 1.",
+                  "Skip all passages that do not contain diagrams."
                 ],
                 "answer": 0,
                 "explanation": "💡 Question-First Reading: Baca pertanyaannya dulu! Soal kosakata dan rujukan baris bisa dijawab dalam 15 detik tanpa harus membaca seluruh teks."
@@ -6738,12 +6767,12 @@ const APP_DATA = {
                 "explanation": "💡 Analisis TOEFL: Skor 450–500 (setara CEFR B1/B2) adalah syarat baku mayoritas universitas negeri dan kementerian di Indonesia."
               },
               {
-                "q": "Bagaimana cara terbaik mengevaluasi hasil tes simulasi agar skormu naik pesat pada tes ulang?",
+                "q": "After completing a full practice exam and viewing your score, what is the smartest next step? (Setelah selesai simulasi dan melihat skor, apa langkah paling cerdas?)",
                 "options": [
-                  "Hanya melihat skor total lalu melupakannya.",
-                  "Melihat bagian (section) yang skornya paling rendah, lalu membuka kembali trik materi hari terkait untuk latihan ulang.",
-                  "Menghafal kunci jawaban tanpa memahami konsep kenapa opsi itu benar.",
-                  "Membeli buku baru yang tebal tanpa pernah dibaca."
+                  "Look only at the total score and forget about it.",
+                  "Identify your lowest-scoring section, then review that specific day's lessons and drills.",
+                  "Memorize the answer key without understanding the underlying concepts.",
+                  "Buy a thick new textbook without reading it."
                 ],
                 "answer": 1,
                 "explanation": "💡 Analisis TOEFL: Pendekatan diagnostik berbasis kelemahan adalah cara tercepat: jika nilai Section 2 paling rendah, drill ulang Day 3 & Day 4!"
@@ -12577,5 +12606,4 @@ const APP_DATA = {
   }
 };
 
-if (typeof window !== 'undefined') window.APP_DATA = APP_DATA;
-if (typeof module !== 'undefined' && module.exports) module.exports = APP_DATA;
+if (typeof module !== "undefined") module.exports = { APP_DATA };

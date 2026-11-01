@@ -1918,6 +1918,8 @@ body::before {
   justify-content: center;
   z-index: 99999 !important;
   padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .modal-overlay.active {
   display: flex;
@@ -5687,18 +5689,51 @@ body::before {
 /* ───────── TOEFL SETUP MODAL & 140 EXAM CONTROLS ───────── */
 .exam-setup-modal-card {
   max-width: 540px;
-  width: 92%;
-  background: #111827;
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-}
-.exam-setup-body {
-  padding: 18px 0;
+  width: 94%;
+  height: 86vh;
+  height: 86dvh;
+  max-height: 720px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  background: #111827;
+  border: 1.5px solid rgba(99, 102, 241, 0.4);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  padding: 0 !important;
+  margin: auto;
+}
+.exam-setup-modal-card .modal-header {
+  padding: 16px 20px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #111827;
+}
+.exam-setup-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.exam-setup-body::-webkit-scrollbar {
+  width: 6px;
+}
+.exam-setup-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+.exam-setup-body::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 4px;
+}
+.exam-setup-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
 }
 .exam-rules-banner {
   background: rgba(245, 158, 11, 0.08);
@@ -5708,6 +5743,8 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  touch-action: pan-y;
+}
 }
 .exam-rules-banner .rule-item {
   display: flex;
@@ -5805,7 +5842,10 @@ body::before {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0f172a;
+  flex-shrink: 0;
 }
 
 /* ───────── EXAM GRID SECTION FILTERS (140 SOAL) ───────── */
@@ -6014,6 +6054,89 @@ body::before {
   .campus-alert-actions button {
     width: 100% !important;
     min-height: 48px !important;
+  }
+  .exam-setup-modal-card {
+    width: 95% !important;
+    max-width: 440px !important;
+    height: 86dvh !important;
+    max-height: 86dvh !important;
+    border-radius: 18px !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin: auto !important;
+  }
+  .exam-setup-modal-card .modal-header {
+    padding: 10px 14px !important;
+    flex-shrink: 0 !important;
+  }
+  .exam-setup-modal-card .modal-title {
+    font-size: 1.05rem !important;
+  }
+  .exam-setup-body {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+  }
+  .exam-rules-banner {
+    padding: 10px 12px !important;
+    gap: 6px !important;
+    touch-action: pan-y !important;
+  }
+  .exam-rules-banner .rule-item {
+    gap: 8px !important;
+  }
+  .exam-rules-banner .rule-item strong {
+    font-size: 0.82rem !important;
+  }
+  .exam-rules-banner .rule-item p {
+    font-size: 0.76rem !important;
+    line-height: 1.3 !important;
+  }
+  .exam-mode-card {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    touch-action: pan-y !important;
+  }
+  .emc-title {
+    font-size: 0.88rem !important;
+  }
+  .emc-desc {
+    font-size: 0.76rem !important;
+    line-height: 1.3 !important;
+  }
+  .exam-setup-actions {
+    padding: 10px 12px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    background: #0f172a !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  .exam-setup-actions .btn-secondary {
+    width: auto !important;
+    min-width: 75px !important;
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+  }
+  .exam-setup-actions .btn-primary {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    padding: 11px 14px !important;
+    font-size: 0.88rem !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
   }
 
   /* 📱 COMPREHENSIVE MOBILE RESPONSIVENESS & OVERFLOW ELIMINATOR */
@@ -6261,16 +6384,21 @@ body::before {
     font-size: 0.78rem !important;
   }
   .flashcard {
-    min-height: 380px !important;
-    height: 54vh !important;
-    max-height: 430px !important;
+    min-height: 400px !important;
+    height: 58vh !important;
+    max-height: 520px !important;
   }
-  .fc-back {
-    padding: 18px 14px 16px !important;
+  .fc-front, .fc-back {
+    padding: 22px 16px 20px !important;
+    scroll-padding: 16px 0 !important;
+    -webkit-overflow-scrolling: touch;
   }
   .fc-char-sm {
-    font-size: 1.15rem !important;
-    margin-bottom: 6px !important;
+    font-size: 1.18rem !important;
+    line-height: 1.3 !important;
+    margin-top: 2px !important;
+    margin-bottom: 8px !important;
+    padding-top: 2px !important;
   }
   .fc-pronunciation {
     font-size: 0.88rem !important;

@@ -239,24 +239,24 @@ function getBestVoice(gender = 'neutral', lang = 'en-US') {
 
   if (lang.startsWith('en')) {
     if (gender === 'male') {
-      // 1. Windows Native David (highest quality on Windows, zero stutter)
-      const david = voices.find(v => /david/i.test(v.name));
-      if (david) return david;
-      // 2. Google UK English Male or other English male
+      // 1. Windows Native David / Mark
+      const winMale = voices.find(v => /david|mark/i.test(v.name));
+      if (winMale) return winMale;
+      // 2. Google UK English Male or names containing male
       const googleMale = voices.find(v => /male/i.test(v.name) && v.lang.startsWith('en'));
       if (googleMale) return googleMale;
-      // 3. Mark, Guy, George
-      const otherMale = voices.find(v => /mark|guy|george/i.test(v.name));
+      // 3. iOS, Android & macOS male voices: Daniel, Fred, Oliver, Arthur, Rishi, Tom, Alex, Guy, George, Aaron
+      const otherMale = voices.find(v => /daniel|fred|oliver|arthur|rishi|tom|alex|guy|george|aaron/i.test(v.name));
       if (otherMale) return otherMale;
     } else if (gender === 'female') {
-      // 1. Windows Native Zira (matches David perfectly, zero stutter)
+      // 1. Windows Native Zira
       const zira = voices.find(v => /zira/i.test(v.name));
       if (zira) return zira;
       // 2. Google US English (natural female)
       const googleUS = voices.find(v => /Google US English/i.test(v.name));
       if (googleUS) return googleUS;
-      // 3. Jenny, Samantha, Victoria
-      const otherFemale = voices.find(v => /female|jenny|samantha|victoria/i.test(v.name));
+      // 3. iOS & Android female voices: Jenny, Samantha, Victoria, Karen, Moira, Tessa, Ava, Susan, Serena
+      const otherFemale = voices.find(v => /female|jenny|samantha|victoria|karen|moira|tessa|ava|susan|serena/i.test(v.name));
       if (otherFemale) return otherFemale;
     } else {
       // Narrator: prefer clear female or male
@@ -335,10 +335,15 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
     return;
   }
 
-  // Keep natural pitch (1.0) so SAPI / Web Audio resampler does NOT stutter or introduce robotic clipping
-  const pitch = opts.pitch || 1.0;
-  const rate = opts.rate || 0.92;
   const gender = opts.gender || 'neutral';
+  // Pitch modulation ensures strong male vs female contrast even on single-voice devices (like Android/iOS)
+  let defaultPitch = 1.0;
+  if (gender === 'male') defaultPitch = 0.82;
+  else if (gender === 'female') defaultPitch = 1.15;
+  else if (gender === 'neutral') defaultPitch = 0.98;
+
+  const pitch = opts.pitch !== undefined ? opts.pitch : defaultPitch;
+  const rate = opts.rate || 0.92;
   const shouldCancel = opts.cancelPrevious !== false;
 
   if (speechSynth) {
@@ -532,6 +537,10 @@ function showView(viewName, pushHistory = true) {
   }
   window.scrollTo(0, 0);
 
+  if (viewName !== 'onboarding' && viewName !== 'result' && viewName !== 'lesson') {
+    try { localStorage.setItem('basaloka_last_view', viewName); } catch (_) {}
+  }
+
   // Maintain browser history for mobile hardware back button / swipe back gestures
   if (pushHistory) {
     if (navHistory[navHistory.length - 1] !== viewName) {
@@ -539,7 +548,10 @@ function showView(viewName, pushHistory = true) {
     }
     if (window.history && window.history.pushState) {
       try {
-        window.history.pushState({ view: viewName }, '', '#' + viewName);
+        const hashTarget = (viewName === 'lesson' && currentLang && currentUnit && currentLesson)
+          ? `lesson?lang=${currentLang}&unit=${currentUnit.id}&lesson=${currentLesson.id}`
+          : viewName;
+        window.history.pushState({ view: viewName }, '', '#' + hashTarget);
       } catch (e) {
         // Safe fallback in restricted environments
       }
@@ -959,10 +971,15 @@ function startLesson(lang, unitId, lessonId) {
       confirmText: 'Ya, Keluar',
       cancelText: 'Tetap Lanjut Belajar',
       onConfirm: () => {
+        try { sessionStorage.removeItem('basaloka_active_lesson'); } catch (_) {}
         showView(lang === 'korean' ? 'korean-map' : (lang === 'english' ? 'english-map' : 'toefl-map'));
       }
     });
   };
+
+  try {
+    sessionStorage.setItem('basaloka_active_lesson', JSON.stringify({ lang, unitId, lessonId }));
+  } catch (_) {}
 
   showView('lesson');
   updateHeartsDisplay('lesson-hearts-display');
@@ -1321,6 +1338,42 @@ function parseQuizDialogue(q) {
     };
   }
 
+  // Single speaker: Man
+  if (manMatch && !womanMatch) {
+    const manText = manMatch[1].trim();
+    let questionText = rawQ
+      .replace(/\bMan:\s*["“][^"”\n\r]+["”]/gi, '')
+      .replace(/^[/\s\n\r—\-]+/, '')
+      .replace(/[/\s\n\r—\-]+$/, '')
+      .trim();
+    if (!questionText) questionText = 'What does the man mean? (Apa maksud ucapan pria?)';
+    return {
+      hasDialogue: true,
+      firstSpeaker: 'man',
+      speaker1: { role: 'man', label: 'Pria', text: manText },
+      speaker2: null,
+      questionText
+    };
+  }
+
+  // Single speaker: Woman
+  if (womanMatch && !manMatch) {
+    const womanText = womanMatch[1].trim();
+    let questionText = rawQ
+      .replace(/\bWoman:\s*["“][^"”\n\r]+["”]/gi, '')
+      .replace(/^[/\s\n\r—\-]+/, '')
+      .replace(/[/\s\n\r—\-]+$/, '')
+      .trim();
+    if (!questionText) questionText = 'What does the woman mean? (Apa maksud ucapan wanita?)';
+    return {
+      hasDialogue: true,
+      firstSpeaker: 'woman',
+      speaker1: { role: 'woman', label: 'Wanita', text: womanText },
+      speaker2: null,
+      questionText
+    };
+  }
+
   const audioMatch = rawQ.match(/\bAudio(?:[^:"]*):\s*["“]([^"”\n\r]+)["”]/i);
   if (audioMatch) {
     const audioText = audioMatch[1].trim();
@@ -1390,18 +1443,20 @@ function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorT
 
   const spk1Gender = (spk1Role === 'woman' || spk1Role === 'female') ? 'female' : 'male';
   const spk2Gender = (spk2Role === 'woman' || spk2Role === 'female') ? 'female' : 'male';
+  const spk1Pitch = spk1Gender === 'female' ? 1.15 : 0.80;
+  const spk2Pitch = spk2Gender === 'female' ? 1.15 : 0.80;
 
   if (spk1Text && spk2Text) {
-    speakWithVoice(spk1Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk1Gender }, () => {
+    speakWithVoice(spk1Text, 'en-US', { pitch: spk1Pitch, rate: 0.92, gender: spk1Gender }, () => {
       if (!isPlayingConvo) return;
       setTimeout(() => {
         if (!isPlayingConvo) return;
-        speakWithVoice(spk2Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk2Gender, cancelPrevious: false }, () => {
+        speakWithVoice(spk2Text, 'en-US', { pitch: spk2Pitch, rate: 0.92, gender: spk2Gender, cancelPrevious: false }, () => {
           if (!isPlayingConvo) return;
           if (narratorText) {
             setTimeout(() => {
               if (!isPlayingConvo) return;
-              speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+              speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
                 resetBtn();
               });
             }, 500);
@@ -1412,12 +1467,12 @@ function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorT
       }, 450);
     });
   } else if (spk1Text) {
-    speakWithVoice(spk1Text, 'en-US', { pitch: 1.0, rate: 0.92, gender: spk1Gender }, () => {
+    speakWithVoice(spk1Text, 'en-US', { pitch: spk1Pitch, rate: 0.92, gender: spk1Gender }, () => {
       if (!isPlayingConvo) return;
       if (narratorText) {
         setTimeout(() => {
           if (!isPlayingConvo) return;
-          speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+          speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
             resetBtn();
           });
         }, 500);
@@ -1891,7 +1946,7 @@ function renderConversationListening(convo, qIndex, totalQ) {
         <h3 class="convo-question-text">${convo.question}</h3>
 
         <div class="convo-options-list" id="convo-options-list">
-          ${convo.options.map((opt, i) => `
+          ${(convo.options || []).map((opt, i) => `
             <button class="convo-option-btn" id="copt-${i}" onclick="answerConversationListening(${i}, ${convo.answer}, '${(convo.explanation || '').replace(/'/g, "\\'")}')">
               <span class="convo-opt-letter">${letters[i]}</span>
               <span class="convo-opt-text">${opt}</span>
@@ -1913,18 +1968,12 @@ function renderConversationListening(convo, qIndex, totalQ) {
 function playFullConversation() {
   if (!currentLesson || !currentLesson.conversations) return;
   const convo = currentLesson.conversations[convoListeningStep];
-  if (!convo) return;
-
-  const manLine = (convo.dialogue || []).find(d => d.speaker === 'man') || convo.dialogue[0];
-  const womanLine = (convo.dialogue || []).find(d => d.speaker === 'woman') || convo.dialogue[1];
-  const narratorLine = convo.narrator || convo.question || '';
+  if (!convo || !convo.dialogue || !convo.dialogue.length) return;
 
   const playBtnText = document.getElementById('play-all-text');
   const playBtnIcon = document.getElementById('play-all-icon');
   const waveBar = document.getElementById('convo-soundwave');
   const waveStatus = document.getElementById('soundwave-status');
-  const cardMan = document.getElementById('speaker-card-man');
-  const cardWoman = document.getElementById('speaker-card-woman');
 
   if (isPlayingConvo) {
     // Stop playing
@@ -1932,8 +1981,6 @@ function playFullConversation() {
     if (currentAudio) { currentAudio.pause(); currentAudio = null; }
     if (convoAudioQueueTimeout) clearTimeout(convoAudioQueueTimeout);
     isPlayingConvo = false;
-    if (cardMan) cardMan.classList.remove('active-speaking');
-    if (cardWoman) cardWoman.classList.remove('active-speaking');
     if (waveBar) waveBar.style.display = 'none';
     if (playBtnIcon) playBtnIcon.textContent = '▶️';
     if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
@@ -1945,44 +1992,67 @@ function playFullConversation() {
   if (playBtnIcon) playBtnIcon.textContent = '⏹️';
   if (playBtnText) playBtnText.textContent = 'Hentikan Pemutaran';
 
-  // Step 1: Speaker 1
-  if (cardMan) cardMan.classList.add('active-speaking');
-  if (cardWoman) cardWoman.classList.remove('active-speaking');
-  if (waveStatus) waveStatus.textContent = '🔊 Memutar pembicara 1...';
+  const resetBtn = () => {
+    isPlayingConvo = false;
+    if (waveBar) waveBar.style.display = 'none';
+    if (playBtnIcon) playBtnIcon.textContent = '▶️';
+    if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
+  };
 
-  speakWithVoice(manLine.text, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
+  // Play lines in strictly CHRONOLOGICAL order (turn 1 then turn 2)!
+  const line1 = convo.dialogue[0];
+  const line2 = convo.dialogue.length > 1 ? convo.dialogue[1] : null;
+  const narratorLine = convo.narrator || convo.question || '';
+
+  const getVoiceOpts = (line) => {
+    const isWoman = line && (line.speaker === 'woman' || line.speaker === 'female');
+    return {
+      gender: isWoman ? 'female' : 'male',
+      pitch: isWoman ? 1.15 : 0.80,
+      rate: 0.92,
+      cancelPrevious: false
+    };
+  };
+
+  // Step 1: Speaker 1 in chronological sequence
+  const line1Label = line1.label || (line1.speaker === 'woman' ? 'Wanita' : 'Pria');
+  if (waveStatus) waveStatus.textContent = `🔊 Memutar ${line1Label} (Pembicara 1)...`;
+
+  speakWithVoice(line1.text, 'en-US', getVoiceOpts(line1), () => {
     if (!isPlayingConvo) return;
-    if (cardMan) cardMan.classList.remove('active-speaking');
 
-    // Safe gap between speakers to let audio buffer settle cleanly
     convoAudioQueueTimeout = setTimeout(() => {
       if (!isPlayingConvo) return;
 
-      // Step 2: Speaker 2
-      if (cardWoman) cardWoman.classList.add('active-speaking');
-      if (waveStatus) waveStatus.textContent = '🔊 Memutar pembicara 2...';
+      // Step 2: Speaker 2 in chronological sequence
+      if (line2 && line2.text) {
+        const line2Label = line2.label || (line2.speaker === 'woman' ? 'Wanita' : 'Pria');
+        if (waveStatus) waveStatus.textContent = `🔊 Memutar ${line2Label} (Pembicara 2)...`;
 
-      speakWithVoice(womanLine.text, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
-        if (!isPlayingConvo) return;
-        if (cardWoman) cardWoman.classList.remove('active-speaking');
-
-        // Gap before narrator
-        convoAudioQueueTimeout = setTimeout(() => {
+        speakWithVoice(line2.text, 'en-US', getVoiceOpts(line2), () => {
           if (!isPlayingConvo) return;
 
-          // Step 3: Narrator
+          // Step 3: Narrator reads question
+          if (narratorLine) {
+            convoAudioQueueTimeout = setTimeout(() => {
+              if (!isPlayingConvo) return;
+              if (waveStatus) waveStatus.textContent = '🎙️ Narator membacakan pertanyaan...';
+              speakWithVoice(narratorLine, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, resetBtn);
+            }, 600);
+          } else {
+            resetBtn();
+          }
+        });
+      } else if (narratorLine) {
+        convoAudioQueueTimeout = setTimeout(() => {
+          if (!isPlayingConvo) return;
           if (waveStatus) waveStatus.textContent = '🎙️ Narator membacakan pertanyaan...';
-
-          speakWithVoice(narratorLine, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
-            // Finished full cycle
-            isPlayingConvo = false;
-            if (waveBar) waveBar.style.display = 'none';
-            if (playBtnIcon) playBtnIcon.textContent = '▶️';
-            if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
-          });
-        }, 500);
-      });
-    }, 450);
+          speakWithVoice(narratorLine, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, resetBtn);
+        }, 600);
+      } else {
+        resetBtn();
+      }
+    }, 500);
   });
 }
 
@@ -2106,6 +2176,9 @@ function loseHeart() {
 
 // ─── FINISH LESSON ────────────────────────────────────────────
 function finishLesson() {
+  try {
+    sessionStorage.removeItem('basaloka_active_lesson');
+  } catch (_) {}
   try {
     const timeSec = Math.round((Date.now() - (lessonStartTime || Date.now())) / 1000);
     const accuracy = totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 100;
@@ -2818,6 +2891,8 @@ function startDialogue(dialogueId) {
   document.getElementById('dialogue-chat-stream').innerHTML = '';
   document.getElementById('dialogue-action-area').innerHTML = '';
 
+  try { sessionStorage.setItem('basaloka_active_dialogue', dialogueId); } catch (_) {}
+
   showView('dialogue');
 
   // Add initial context toast or header note
@@ -3014,12 +3089,14 @@ function quitDialogue() {
     cancelText: 'Lanjutkan Latihan',
     onConfirm: () => {
       currentDialogue = null;
+      try { sessionStorage.removeItem('basaloka_active_dialogue'); } catch (_) {}
       showView(returnTarget);
     }
   });
 }
 
 function finishDialogue() {
+  try { sessionStorage.removeItem('basaloka_active_dialogue'); } catch (_) {}
   const xp = currentDialogue.xpReward || 35;
   state.totalXp += xp;
   state.todayXp += xp;
@@ -3392,10 +3469,12 @@ function renderExamQuestion(index) {
   const chosenOpt = toeflSimState.answers[index];
 
   if (q.section === 'listening') {
-    const manLine = (q.dialogue || []).find(d => d.speaker === 'man') || q.dialogue[0];
-    const womanLine = (q.dialogue || []).find(d => d.speaker === 'woman') || q.dialogue[1];
-    const safeManText = (manLine ? manLine.text : '').replace(/'/g, "\\'");
-    const safeWomanText = (womanLine ? womanLine.text : '').replace(/'/g, "\\'");
+    const line1 = q.dialogue && q.dialogue[0] ? q.dialogue[0] : { speaker: 'man', text: '' };
+    const line2 = q.dialogue && q.dialogue[1] ? q.dialogue[1] : null;
+    const safeLine1Text = (line1.text || '').replace(/'/g, "\\'");
+    const safeLine1Speaker = line1.speaker || 'man';
+    const safeLine2Text = (line2 ? line2.text : '').replace(/'/g, "\\'");
+    const safeLine2Speaker = line2 ? line2.speaker : 'woman';
     const safeNarratorText = (q.narrator || q.question || '').replace(/'/g, "\\'");
     const hasPlayed = !!(toeflSimState.playedAudios && toeflSimState.playedAudios[index]);
 
@@ -3415,7 +3494,7 @@ function renderExamQuestion(index) {
                 <span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Sesuai Aturan Ujian)</span>
               </button>
             ` : `
-              <button class="btn-exam-play" id="btn-exam-audio" onclick="playExamConvoAudio(${index}, '${safeManText}', '${safeWomanText}', '${safeNarratorText}')">
+              <button class="btn-exam-play" id="btn-exam-audio" onclick="playExamConvoAudio(${index}, '${safeLine1Speaker}', '${safeLine1Text}', '${safeLine2Speaker}', '${safeLine2Text}', '${safeNarratorText}')">
                 <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Percakapan</span>
               </button>
             `}
@@ -3527,7 +3606,7 @@ function renderExamQuestion(index) {
   renderExamNavGrid();
 }
 
-function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
+function playExamConvoAudio(qIndex, spk1Role, spk1Text, spk2Role, spk2Text, narratorText) {
   if (toeflSimState.playedAudios && toeflSimState.playedAudios[qIndex]) {
     showToast('🔒 Aturan Ujian TOEFL: Audio percakapan hanya dapat diputar 1 kali!', 'warning');
     return;
@@ -3543,8 +3622,6 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
   const text = document.getElementById('exam-play-text');
   const wave = document.getElementById('exam-wave-anim');
   const status = document.getElementById('exam-speaker-status');
-  const cardMan = document.getElementById('mini-card-man');
-  const cardWoman = document.getElementById('mini-card-woman');
 
   if (btn) {
     btn.disabled = true;
@@ -3554,33 +3631,58 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
   if (text) text.textContent = 'Sedang Memutar... (Hanya 1x)';
   if (wave) wave.style.display = 'inline-flex';
 
-  // Step 1: Speaker 1
-  if (cardMan) cardMan.classList.add('active');
-  if (cardWoman) cardWoman.classList.remove('active');
-  if (status) status.textContent = 'Memutar pembicara 1...';
+  const isWoman1 = (spk1Role === 'woman' || spk1Role === 'female');
+  const gender1 = isWoman1 ? 'female' : 'male';
+  const pitch1 = isWoman1 ? 1.15 : 0.80;
 
-  speakWithVoice(manText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'male' }, () => {
+  const isWoman2 = (spk2Role === 'woman' || spk2Role === 'female');
+  const gender2 = isWoman2 ? 'female' : 'male';
+  const pitch2 = isWoman2 ? 1.15 : 0.80;
+
+  // Step 1: Speaker 1 in chronological sequence
+  if (status) status.textContent = `Memutar pembicara 1 (${isWoman1 ? 'Wanita' : 'Pria'})...`;
+
+  speakWithVoice(spk1Text, 'en-US', { pitch: pitch1, rate: 0.92, gender: gender1 }, () => {
     if (!toeflSimState.isPlayingAudio) return;
-    if (cardMan) cardMan.classList.remove('active');
 
     toeflSimState.audioTimeout = setTimeout(() => {
       if (!toeflSimState.isPlayingAudio) return;
 
-      // Step 2: Speaker 2
-      if (cardWoman) cardWoman.classList.add('active');
-      if (status) status.textContent = 'Memutar pembicara 2...';
+      // Step 2: Speaker 2 in chronological sequence
+      if (spk2Text) {
+        if (status) status.textContent = `Memutar pembicara 2 (${isWoman2 ? 'Wanita' : 'Pria'})...`;
 
-      speakWithVoice(womanText, 'en-US', { pitch: 1.0, rate: 0.92, gender: 'female', cancelPrevious: false }, () => {
-        if (!toeflSimState.isPlayingAudio) return;
-        if (cardWoman) cardWoman.classList.remove('active');
-
-        toeflSimState.audioTimeout = setTimeout(() => {
+        speakWithVoice(spk2Text, 'en-US', { pitch: pitch2, rate: 0.92, gender: gender2, cancelPrevious: false }, () => {
           if (!toeflSimState.isPlayingAudio) return;
 
-          // Step 3: Narrator
-          if (status) status.textContent = 'Narator membacakan pertanyaan...';
+          toeflSimState.audioTimeout = setTimeout(() => {
+            if (!toeflSimState.isPlayingAudio) return;
 
-          speakWithVoice(narratorText, 'en-US', { pitch: 1.0, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+            // Step 3: Narrator
+            if (status) status.textContent = 'Narator membacakan pertanyaan...';
+
+            speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+              toeflSimState.isPlayingAudio = false;
+              if (btn) {
+                btn.disabled = true;
+                btn.classList.remove('playing');
+                btn.classList.add('played-locked');
+                btn.innerHTML = '<span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Aturan Ujian)</span>';
+              }
+              if (wave) wave.style.display = 'none';
+              const notice = document.querySelector('.exam-audio-notice');
+              if (notice) {
+                notice.classList.add('locked');
+                notice.innerHTML = '<span class="ean-icon">🔒</span><div class="ean-text"><strong>Audio Selesai:</strong> Sesuai simulasi resmi TOEFL, rekaman percakapan hanya dapat didengarkan satu kali.</div>';
+              }
+            });
+          }, 600);
+        });
+      } else {
+        toeflSimState.audioTimeout = setTimeout(() => {
+          if (!toeflSimState.isPlayingAudio) return;
+          if (status) status.textContent = 'Narator membacakan pertanyaan...';
+          speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
             toeflSimState.isPlayingAudio = false;
             if (btn) {
               btn.disabled = true;
@@ -3589,14 +3691,9 @@ function playExamConvoAudio(qIndex, manText, womanText, narratorText) {
               btn.innerHTML = '<span id="exam-play-icon">🔒</span> <span id="exam-play-text">Audio Selesai (Hanya 1x Putar Sesuai Aturan Ujian)</span>';
             }
             if (wave) wave.style.display = 'none';
-            const notice = document.querySelector('.exam-audio-notice');
-            if (notice) {
-              notice.classList.add('locked');
-              notice.innerHTML = '<span class="ean-icon">🔒</span><div class="ean-text"><strong>Audio Selesai:</strong> Sesuai simulasi resmi TOEFL, rekaman percakapan hanya dapat didengarkan satu kali.</div>';
-            }
           });
-        }, 500);
-      });
+        }, 600);
+      }
     }, 450);
   });
 }
@@ -4199,13 +4296,109 @@ window.closeToeflHackModal = closeToeflHackModal;
 window.switchHackTab = switchHackTab;
 window.toggleRoadmapDay = toggleRoadmapDay;
 
+// ─── ROUTING & PERSISTENCE ────────────────────────────────────
+function resolveInitialRoute() {
+  if (!state.userName) {
+    showView('onboarding', false);
+    return;
+  }
+
+  const rawHash = (window.location.hash || '').replace(/^#/, '').trim();
+  let route = rawHash;
+  let queryParams = {};
+
+  if (rawHash.includes('?')) {
+    const parts = rawHash.split('?');
+    route = parts[0];
+    try {
+      const searchParams = new URLSearchParams(parts[1]);
+      searchParams.forEach((val, key) => { queryParams[key] = val; });
+    } catch (_) {}
+  }
+
+  // 1. Resume active lesson if requested via hash or saved session
+  if (route === 'lesson') {
+    let lang = queryParams.lang;
+    let unitId = queryParams.unit;
+    let lessonId = queryParams.lesson;
+
+    if (!lang || !unitId || !lessonId) {
+      const savedLessonStr = sessionStorage.getItem('basaloka_active_lesson');
+      if (savedLessonStr) {
+        try {
+          const parsed = JSON.parse(savedLessonStr);
+          lang = parsed.lang;
+          unitId = parsed.unitId;
+          lessonId = parsed.lessonId;
+        } catch (_) {}
+      }
+    }
+
+    if (lang && unitId && lessonId && APP_DATA[lang]) {
+      startLesson(lang, unitId, lessonId);
+      return;
+    }
+  }
+
+  // 2. Resume active dialogue
+  if (route === 'dialogue') {
+    const dialogueId = queryParams.id || sessionStorage.getItem('basaloka_active_dialogue');
+    if (dialogueId && (APP_DATA.dialogues || []).some(d => d.id === dialogueId)) {
+      startDialogue(dialogueId);
+      return;
+    }
+    showView('dialogue-hub', false);
+    return;
+  }
+
+  // 3. Known views
+  const validViews = ['dashboard', 'korean-map', 'toefl-map', 'english-map', 'dialogue-hub', 'toefl-sim'];
+  if (validViews.includes(route)) {
+    showView(route, false);
+    return;
+  }
+
+  // 4. Fallback to last saved view from localStorage or default dashboard
+  const lastView = localStorage.getItem('basaloka_last_view');
+  if (lastView && validViews.includes(lastView) && lastView !== 'onboarding') {
+    showView(lastView, false);
+  } else {
+    showView('dashboard', false);
+  }
+}
+
+window.resolveInitialRoute = resolveInitialRoute;
+
+window.addEventListener('hashchange', () => {
+  if (currentView === 'lesson' || currentView === 'toefl-sim') return;
+  resolveInitialRoute();
+});
+
 // ─── INIT ─────────────────────────────────────────────────────
 function initApp() {
   loadState();
-  if (state.userName) {
-    showView('dashboard');
+  let hasValidUser = !!state.userName;
+  if (!hasValidUser) {
+    try {
+      const rawUser = localStorage.getItem('basaloka_user');
+      if (rawUser) {
+        const parsed = JSON.parse(rawUser);
+        if (parsed && (parsed.name || parsed.email)) {
+          state.userName = parsed.name || parsed.email.split('@')[0];
+          hasValidUser = true;
+        }
+      }
+    } catch (_) {}
+  }
+  if (!hasValidUser && typeof currentUser !== 'undefined' && currentUser) {
+    state.userName = currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Sobat Loka');
+    hasValidUser = true;
+  }
+
+  if (hasValidUser) {
+    resolveInitialRoute();
   } else {
-    showView('onboarding');
+    showView('onboarding', false);
   }
 }
 
