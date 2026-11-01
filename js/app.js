@@ -437,6 +437,48 @@ async function syncProgressToMySQL() {
   }
 }
 
+async function syncProgressFromCloud() {
+  if (!state.currentUser || !state.currentUser.id) return;
+  const uid = state.currentUser.id;
+  if (typeof uid === 'string' && (uid.startsWith('local_') || uid.startsWith('guest_'))) return;
+
+  try {
+    const res = await fetch(`/api/progress/${uid}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.progress) {
+        const cloud = data.progress;
+        // Merge completed lessons & units
+        const localLessons = new Set(state.completedLessons || []);
+        (cloud.completedLessons || []).forEach(l => localLessons.add(l));
+
+        const localUnits = new Set(state.completedUnits || []);
+        (cloud.completedUnits || []).forEach(u => localUnits.add(u));
+
+        const localBadges = new Set(state.unlockedAchievements || []);
+        (cloud.unlockedAchievements || []).forEach(b => localBadges.add(b));
+
+        state.completedLessons = Array.from(localLessons);
+        state.completedUnits = Array.from(localUnits);
+        state.unlockedAchievements = Array.from(localBadges);
+        state.totalXp = Math.max(state.totalXp || 0, cloud.totalXp || 0);
+        state.todayXp = Math.max(state.todayXp || 0, cloud.todayXp || 0);
+        state.streak = Math.max(state.streak || 0, cloud.streak || 0);
+        if (cloud.toeflActiveTrack) state.toeflActiveTrack = cloud.toeflActiveTrack;
+
+        localStorage.setItem('basaloka_state', JSON.stringify(state));
+        localStorage.setItem('linguaplay_state', JSON.stringify(state));
+        updateNavStats();
+        if (currentView === 'dashboard') {
+          renderDashboard();
+        }
+      }
+    }
+  } catch (err) {
+    // Offline or network error - continue silently with local cache
+  }
+}
+
 function loadState() {
   const saved = localStorage.getItem('basaloka_state') || localStorage.getItem('linguaplay_state');
   if (saved) {
@@ -719,6 +761,66 @@ function updateNavStats() {
 function updateHeartsDisplay(containerId) {
   // Hearts system disabled: learners can practice freely without penalty
 }
+
+// Achievements List & Unlock Rules
+const ACHIEVEMENTS = [
+  {
+    id: 'first_lesson',
+    icon: '🌱',
+    title: 'Langkah Pertama',
+    desc: 'Selesaikan 1 pelajaran pertamamu di BasaLoka',
+    condition: (s) => (s.totalLessons || 0) >= 1
+  },
+  {
+    id: 'streak_3',
+    icon: '🔥',
+    title: 'Api Semangat',
+    desc: 'Capai streak belajar selama 3 hari berturut-turut',
+    condition: (s) => (s.streak || 0) >= 3
+  },
+  {
+    id: 'streak_7',
+    icon: '⚡',
+    title: 'Pahlawan Konsisten',
+    desc: 'Capai streak belajar selama 7 hari berturut-turut',
+    condition: (s) => (s.streak || 0) >= 7
+  },
+  {
+    id: 'xp_100',
+    icon: '✨',
+    title: 'Pengumpul XP',
+    desc: 'Kumpulkan total 100 XP dari latihanmu',
+    condition: (s) => (s.totalXp || 0) >= 100
+  },
+  {
+    id: 'xp_500',
+    icon: '🌟',
+    title: 'Bintang Prestasi',
+    desc: 'Kumpulkan total 500 XP belajar',
+    condition: (s) => (s.totalXp || 0) >= 500
+  },
+  {
+    id: 'perfect_master',
+    icon: '🎯',
+    title: 'Skor Sempurna',
+    desc: 'Selesaikan kuis dengan nilai 100% tanpa salah',
+    condition: (s) => (s.perfectScores || 0) >= 1
+  },
+  {
+    id: 'polyglot',
+    icon: '🌍',
+    title: 'Penjelajah Bahasa',
+    desc: 'Pelajari Bahasa Korea, Inggris, & TOEFL',
+    condition: (s) => (s.koreanLessons || 0) >= 1 && (s.englishLessons || 0) >= 1
+  },
+  {
+    id: 'unit_champion',
+    icon: '🏆',
+    title: 'Juara Modul',
+    desc: 'Tuntaskan seluruh pelajaran dalam 1 modul',
+    condition: (s) => (s.completedUnits || []).length >= 1
+  }
+];
 
 function renderAchievements() {
   const grid = document.getElementById('achievements-grid');
@@ -1099,7 +1201,7 @@ function renderFlashcard(card) {
         <div class="fc-front">
           <div class="${charClass}">${card.front}</div>
           <div class="fc-romanization">${card.romanization}</div>
-          <div class="fc-tap-hint"><span>👆</span> <strong>Tap kartu untuk pembahasan & contoh</strong> <span>↷</span></div>
+          <div class="fc-tap-hint"><span>👆</span> <strong>Tap untuk Pembahasan</strong> <span>💡</span></div>
         </div>
         <div class="fc-back">
           <div class="fc-char-sm">${card.front}</div>
@@ -1122,7 +1224,7 @@ function renderFlashcard(card) {
             </div>
           ` : ''}
           <div class="fc-tip">${(card.tip.startsWith('💡') || card.tip.startsWith('🎯') || card.tip.startsWith('✅')) ? card.tip : '💡 ' + card.tip}</div>
-          <div class="fc-back-tap-hint"><span>↩️</span> Tap kartu untuk kembali</div>
+          <div class="fc-back-tap-hint"><span>↩️</span> Tap untuk Balik</div>
         </div>
       </div>
       <div class="fc-actions">
@@ -4397,6 +4499,7 @@ function initApp() {
 
   if (hasValidUser) {
     resolveInitialRoute();
+    syncProgressFromCloud();
   } else {
     showView('onboarding', false);
   }

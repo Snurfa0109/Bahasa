@@ -7,6 +7,10 @@
     "dev": "node server.js",
     "start": "node server.js",
     "build": "echo 'Static build ready'"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.9",
+    "mysql2": "^3.24.6"
   }
 }
-

@@ -807,14 +807,20 @@ body::before {
 .toefl-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
 /* Achievements */
+.achievements-section {
+  margin-top: 36px;
+  padding-top: 6px;
+}
+
 .section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
   margin-bottom: 16px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
 }
 
 .achievements-grid {
@@ -5428,15 +5434,34 @@ body::before {
   .pwa-install-banner {
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
-    gap: 14px;
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+  .pwa-banner-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+  .pwa-banner-title {
+    font-size: 0.95rem;
+  }
+  .pwa-banner-desc {
+    font-size: 0.78rem;
+    line-height: 1.35;
   }
   .pwa-banner-actions {
     width: 100%;
+    gap: 8px;
     justify-content: space-between;
   }
   .btn-pwa-install {
     flex: 1;
+    min-height: 40px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 800;
     text-align: center;
   }
 }
@@ -6155,28 +6180,67 @@ body::before {
 
   /* Top Navigation Bar on Mobile */
   #main-nav {
-    padding: 8px 12px !important;
-    min-height: 58px !important;
-    gap: 8px !important;
+    padding: 6px 10px !important;
+    min-height: 52px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
+  }
+  .nav-brand {
+    gap: 6px !important;
+    flex-shrink: 0 !important;
   }
   .nav-brand-logo {
-    height: 38px !important;
-    max-width: 150px !important;
+    height: 30px !important;
+    max-width: 105px !important;
+    object-fit: contain !important;
+  }
+  .nav-stats {
+    gap: 6px !important;
+    flex-shrink: 1 !important;
+  }
+  .nav-stats .stat-item {
+    padding: 4px 8px !important;
+    font-size: 0.78rem !important;
+    gap: 4px !important;
   }
   .nav-auth-section {
     gap: 6px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .user-pill {
+    padding: 3px 8px !important;
+    gap: 5px !important;
+    font-size: 0.76rem !important;
+    max-width: 135px !important;
+  }
+  .user-pill-icon {
+    font-size: 0.85rem !important;
+  }
+  .user-pill-name {
+    max-width: 65px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.76rem !important;
+  }
+  .btn-logout-nav {
+    padding: 2px 6px !important;
+    font-size: 0.7rem !important;
   }
   .btn-install-pwa {
-    padding: 5px 9px !important;
-    font-size: 0.75rem !important;
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
     gap: 4px !important;
   }
   .install-pwa-text {
     display: inline-block !important;
   }
   .btn-auth-nav {
-    padding: 6px 10px !important;
-    font-size: 0.78rem !important;
+    padding: 5px 9px !important;
+    font-size: 0.75rem !important;
     white-space: nowrap !important;
   }
 
@@ -6222,7 +6286,13 @@ body::before {
   /* Dashboard & TOEFL Banners */
   .dashboard-container {
     max-width: 100% !important;
-    padding: 0 !important;
+    padding: 12px 14px 110px !important;
+  }
+  .dashboard-header {
+    margin-bottom: 24px !important;
+  }
+  .greeting {
+    font-size: 1.45rem !important;
   }
   .toefl-sim-cta-banner {
     padding: 16px 14px !important;
@@ -6384,14 +6454,27 @@ body::before {
     font-size: 0.78rem !important;
   }
   .flashcard {
-    min-height: 400px !important;
-    height: 58vh !important;
-    max-height: 520px !important;
+    min-height: 310px !important;
+    height: 44vh !important;
+    height: 44dvh !important;
+    max-height: 385px !important;
   }
   .fc-front, .fc-back {
-    padding: 22px 16px 20px !important;
-    scroll-padding: 16px 0 !important;
+    padding: 18px 16px 16px !important;
+    scroll-padding: 14px 0 !important;
     -webkit-overflow-scrolling: touch;
+  }
+  .fc-tap-hint {
+    padding: 7px 16px !important;
+    font-size: 0.82rem !important;
+    margin-top: 14px !important;
+    white-space: nowrap !important;
+  }
+  .fc-back-tap-hint {
+    margin-top: 10px !important;
+    padding: 4px 12px !important;
+    font-size: 0.76rem !important;
+    white-space: nowrap !important;
   }
   .fc-char-sm {
     font-size: 1.18rem !important;
