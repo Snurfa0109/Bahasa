@@ -2432,6 +2432,181 @@ function nextVerbDrill() {
   renderLessonStep();
 }
 
+// ─── TOEFL ACADEMIC VOCABULARY DICTIONARY (Tap-to-Translate) ────
+const TOEFL_VOCAB_DICT = {
+  // Structure & Grammar
+  "appointed": "ditunjuk / diangkat resmi",
+  "ambassador": "duta besar negara",
+  "dominant": "dominan / paling berpengaruh",
+  "architectural": "tata bangunan / arsitektur",
+  "cathedrals": "katedral (gereja agung besar)",
+  "centuries": "abad (rentang 100 tahun)",
+  "preposition": "kata depan (in, on, at, by)",
+  "connectors": "kata hubung antar klausa",
+  "parallel": "sejajar / setara bentuknya",
+  "inversion": "pembalikan posisi kata kerja mendahului subjek",
+  "adverb": "kata keterangan waktu/tempat/cara",
+  "clause": "klausa (kelompok kata ber-Subjek & Predikat)",
+  "subject": "subjek / pelaku utama kalimat",
+  "verb": "kata kerja / predikat kalimat",
+  "conjunction": "kata sambung penghubung",
+  "subordinate": "anak kalimat / klausa bawahan",
+  "coordinates": "posisi koordinat geografis",
+  "redundant": "berlebihan / mubazir",
+  "omitted": "dihilangkan / dihapus",
+  "ambiguous": "bermakna ganda / ambigu",
+  "appositive": "keterangan penjelas subjek (diapit koma)",
+  "prepositional": "frasa kata depan (misal: in the room)",
+  "predicate": "predikat kalimat",
+  "singular": "tunggal (hanya 1)",
+  "plural": "jamak (lebih dari 1)",
+  "noun": "kata benda",
+  "adjective": "kata sifat",
+  "pronoun": "kata ganti orang/benda",
+
+  // Reading & Science Terms
+  "photosynthesis": "fotosintesis (proses tumbuhan membuat makanan)",
+  "chloroplasts": "kloroplas (organel hijau sel tumbuhan)",
+  "biochemical": "biokimiawi (proses kimiawi makhluk hidup)",
+  "glucose": "glukosa (zat gula sederhana)",
+  "molecules": "molekul (ikatan partikel atom)",
+  "industrial": "industri / perindustrian",
+  "revolution": "revolusi (perubahan besar mendasar)",
+  "mechanized": "digerakkan oleh mesin otomatis",
+  "agrarian": "agraris / berbasis pertanian",
+  "bioluminescence": "bioluminesensi (kemampuan alami memancarkan cahaya)",
+  "abyssal": "abisal (zona laut terdalam yang gelap gulita)",
+  "oceanic": "samudra / lautan",
+  "predatory": "bersifat pemangsa / predator",
+  "anglerfish": "ikan sungut ganda (penghuni laut dalam)",
+  "luminous": "bercahaya / berpendar terang",
+  "dorsal": "bagian punggung",
+  "lures": "umpan penarik perhatian",
+  "tectonics": "tektonik (pergerakan lempeng kulit bumi)",
+  "lithospheric": "litosfer (kerak batuan terluar bumi)",
+  "asthenosphere": "astenosfer (lapisan semi-cair mantel bumi)",
+  "seismic": "seismik / getaran gempa bumi",
+  "orogeny": "orogenesa (proses pembentukan pegunungan)",
+  "hieroglyphic": "hieroglif (aksara simbol kuno)",
+  "decipherment": "penerjemahan / pemecahan sandi teks kuno",
+  "logosyllabic": "sistem aksara berbasis suku kata dan lambang",
+  "geothermal": "panas bumi / geotermal",
+  "hydrothermal": "air panas alami dari dalam kerak bumi",
+  "boreholes": "lubang bor pengeboran dalam",
+  "periodic": "berkala / terjadi berulang",
+  "gravitation": "gravitasi (daya tarik menarik benda)",
+  "serendipitously": "ditemukan secara kebetulan yang menguntungkan",
+  "bacteriologist": "ahli bakteri / mikrobiolog",
+  "contaminant": "zat / kuman pencemar",
+  "biogenic": "dihasilkan oleh proses biologis makhluk hidup",
+  "polyps": "polip (hewan karang mikroskopis)",
+  "scleractinian": "karang keras pembuat terumbu",
+  "movable": "dapat digerakkan / dipindah-pindah",
+  "vellum": "perkamen kulit hewan untuk naskah",
+  "humanism": "humanisme (gerakan penghargaan akal & budaya)",
+  "foragers": "lebah pekerja pencari makan",
+  "nectar": "nektar (cairan manis bunga)",
+  "spatial": "keruangan / jarak spasial",
+  "nutritional": "kandungan nutrisi / gizi",
+  "xerophytic": "tanaman tahan kering / gurun",
+  "cuticles": "lapisan lilin pelindung daun",
+  "transpiration": "transpirasi (penguapan air lewat daun)",
+  "aquifers": "lapisan batuan penyimpan air tanah",
+  "nocturnal": "aktif di malam hari",
+  "acidification": "pengasaman (penurunan derajat pH)",
+  "calcification": "kalsifikasi (pembentukan cangkang kapur)",
+  "invertebrates": "hewan avertebrata (tidak bertulang belakang)",
+  "resilient": "tangguh / cepat pulih kembali",
+  "volcanic": "vulkanik / berhubungan dengan gunung api",
+  "erosion": "pengikisan tanah oleh air atau angin",
+  "unprecedented": "belum pernah terjadi sebelumnya",
+  "transform": "mengubah bentuk / merombak",
+  "transformed": "mengubah secara drastis",
+  "essential": "sangat mendasar / esensial",
+  "profoundly": "secara mendalam / signifikan",
+  "spurred": "memicu / mempercepat",
+  "bustling": "ramai padat / sibuk",
+  "phenomena": "fenomena / gejala ilmiah",
+  "remarkable": "luar biasa mengagumkan",
+  "presumed": "diduga / diasumsikan",
+  "harnesses": "memanfaatkan / mendayagunakan",
+  "reservoir": "tempat penampungan cadangan alam",
+  "baseload": "beban dasar energi stabil",
+  "emissions": "emisi / pembuangan gas",
+  "triumphant": "penuh kemenangan / sukses besar",
+  "pioneering": "merintis / kepeloporan",
+  "investigations": "penyelidikan mendalam",
+  "isolating": "mengisolasi / memisahkan zat murni",
+  "intricate": "rumit mendetail",
+  "morphological": "morfologi (bentuk susunan fisik)",
+  "sustained": "berkelanjutan / terus menerus",
+  "delicate": "rapuh / sangat peka",
+  "repository": "gudang penyimpanan naskah / ilmu",
+  "patronage": "perlindungan / sokongan dana resmi",
+  "collaborative": "kolaboratif / kerja sama",
+  "demonstrated": "membuktikan secara nyata",
+  "abrasion": "pengikisan / pengasahan batuan",
+  "spectrometer": "alat pengukur spektrum zat/cahaya",
+  "ascertain": "memastikan kepastian",
+  "fertile": "subur",
+  "equatorial": "khatulistiwa / ekuatorial"
+};
+
+function renderInteractiveToeflText(rawText) {
+  if (!rawText) return '';
+  const escaped = escapeHtml(rawText);
+
+  return escaped.replace(/\b([a-zA-Z]{3,})\b/g, (match, word) => {
+    const key = word.toLowerCase();
+    const meaning = TOEFL_VOCAB_DICT[key];
+    if (meaning) {
+      const safeMeaning = escapeHtml(meaning).replace(/'/g, "\\'");
+      const safeWord = escapeHtml(word).replace(/'/g, "\\'");
+      return `<span class="toefl-vocab-word" onclick="handleVocabWordClick(event, this, '${safeWord}', '${safeMeaning}')" data-word="${safeWord}" data-meaning="${safeMeaning}" title="Ketuk untuk arti">${word}</span>`;
+    }
+    return match;
+  });
+}
+
+function handleVocabWordClick(event, el, word, meaning) {
+  if (event) event.stopPropagation();
+
+  const existing = document.getElementById('toefl-vocab-active-tooltip');
+  if (existing) existing.remove();
+
+  const tooltip = document.createElement('div');
+  tooltip.id = 'toefl-vocab-active-tooltip';
+  tooltip.className = 'vocab-micro-tooltip';
+  tooltip.innerHTML = `
+    <div class="vmt-header">
+      <span class="vmt-word">${escapeHtml(word)}</span>
+      <button type="button" class="vmt-close" onclick="event.stopPropagation(); document.getElementById('toefl-vocab-active-tooltip')?.remove();">✕</button>
+    </div>
+    <div class="vmt-meaning">➔ ${escapeHtml(meaning)}</div>
+  `;
+
+  document.body.appendChild(tooltip);
+
+  const rect = el.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const top = rect.top - tooltipRect.height - 8;
+  const left = Math.max(12, Math.min(window.innerWidth - tooltipRect.width - 12, rect.left + (rect.width / 2) - (tooltipRect.width / 2)));
+
+  tooltip.style.top = `${window.scrollY + (top > 40 ? top : rect.bottom + 8)}px`;
+  tooltip.style.left = `${left}px`;
+}
+window.handleVocabWordClick = handleVocabWordClick;
+
+// Global dismiss for vocab tooltip
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#toefl-vocab-active-tooltip') && !e.target.closest('.toefl-vocab-word')) {
+      const existing = document.getElementById('toefl-vocab-active-tooltip');
+      if (existing) existing.remove();
+    }
+  });
+}
+
 // ─── QUIZ ─────────────────────────────────────────────────────
 function renderQuiz(q) {
   const content = document.getElementById('lesson-content');
@@ -2518,11 +2693,12 @@ function renderQuiz(q) {
           <div class="qrpb-header">
             <span class="qrpb-tag">📖 Teks Bacaan Singkat</span>
           </div>
-          <div class="qrpb-content">${escapeHtml(q.passage)}</div>
+          <div class="qrpb-content">${currentLang === 'toefl' ? renderInteractiveToeflText(q.passage) : escapeHtml(q.passage)}</div>
         </div>
       ` : ''}
       ${q.char ? `<div class="quiz-char-display">${escapeHtml(q.char)}</div>` : ''}
-      <div class="quiz-question">${escapeHtml(displayQuestion)}</div>
+      <div class="quiz-question">${currentLang === 'toefl' ? renderInteractiveToeflText(displayQuestion) : escapeHtml(displayQuestion)}</div>
+      ${currentLang === 'toefl' ? `<div class="toefl-vocab-hint">💡 <em>Ketuk kata yang digarisbawahi titik halus untuk intip artinya</em></div>` : ''}
       <div class="quiz-options" id="quiz-options">
         ${q.options.map((opt, i) => `
           <button class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i}, ${q.answer})">

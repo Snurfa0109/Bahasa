@@ -7053,6 +7053,24 @@ body::before {
   box-shadow: 0 6px 24px rgba(99, 102, 241, 0.55);
 }
 .btn-wr-skip {
+  width: 100%;
+  padding: 11px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+.btn-wr-skip:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.btn-wr-skip {
   background: transparent;
   border: none;
   color: #94a3b8;
@@ -9666,4 +9684,76 @@ body::before {
   padding: 12px 14px;
   border-radius: 8px;
   border-left: 3px solid #10b981;
+}
+
+/* TOEFL Tap-to-Translate Vocab Tooltip (Concept A) */
+.toefl-vocab-word {
+  cursor: pointer;
+  border-bottom: 1.5px dotted rgba(56, 189, 248, 0.45);
+  color: inherit;
+  transition: all 0.15s ease;
+  position: relative;
+  display: inline;
+  padding: 0 1px;
+}
+.toefl-vocab-word:hover,
+.toefl-vocab-word:active {
+  color: #38bdf8;
+  border-bottom-color: #38bdf8;
+}
+.toefl-vocab-hint {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-top: 4px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.vocab-micro-tooltip {
+  position: absolute;
+  z-index: 99999;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.2);
+  min-width: 140px;
+  max-width: 260px;
+  animation: vmtFadeIn 0.18s ease-out;
+  pointer-events: auto;
+}
+@keyframes vmtFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.vmt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+.vmt-word {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #38bdf8;
+}
+.vmt-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.vmt-close:hover {
+  color: #fff;
+}
+.vmt-meaning {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.4;
 }
