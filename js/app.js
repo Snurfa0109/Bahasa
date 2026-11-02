@@ -22,7 +22,12 @@ let state = {
   englishLessons: 0,
   toeflLessons: 0,
   perfectScores: 0,
-  toeflActiveTrack: 'full'
+  toeflActiveTrack: 'full',
+  toeflTargetScore: 500,
+  toeflTargetMode: null,
+  toeflTargetDate: null,
+  toeflTargetPace: null,
+  toeflRecUnitId: null
 };
 
 let currentView = 'onboarding';
@@ -165,48 +170,31 @@ const TTS_LANG_MAP = {
   'en-GB': 'en'
 };
 
-function speak(text, lang = 'ko-KR', rate = 0.88) {
-  // Stop any currently playing audio
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
-  }
-
-  const cleanText = (text || '')
-    .replace(/["“”'‘’]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (!cleanText) return;
-
-  // 1. PRIMARY: Web Speech API (runs locally inside user-gesture click, zero latency, offline-capable)
-  if (speechSynth) {
-    speakWithWebSpeech(cleanText, lang, rate);
-    return;
-  }
-
-  // 2. FALLBACK ONLY: If Web Speech API is completely unavailable
-  try {
-    const ttsLang = TTS_LANG_MAP[lang] || lang.split('-')[0];
-    const encoded = encodeURIComponent(cleanText);
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${ttsLang}&client=tw-ob&ttsspeed=${rate}`;
-
-    const audio = new Audio(url);
-    audio.volume = 1;
-    currentAudio = audio;
-    audio.play().catch(e => {
-      console.warn('Audio fallback error:', e);
-    });
-  } catch (err) {
-    console.warn('Audio fallback exception:', err);
-  }
+function speak(text, lang = 'ko-KR', rate = 0.88, gender = 'neutral') {
+  speakWithVoice(text, lang, { rate, gender });
 }
 
-// ─── AUDIO ENGINE (High-Fidelity Chrome/Windows Multi-Speaker TTS) ───
+// ─── AUDIO ENGINE (High-Fidelity Chrome/Windows/Mobile Multi-Speaker TTS) ───
 let speechSynth = window.speechSynthesis;
 let availableVoices = [];
 window.__speechUtterances = window.__speechUtterances || new Set();
 let speechHeartbeatTimer = null;
+
+const FEMALE_VOICE_NAMES = /female|woman|zira|jenny|samantha|victoria|karen|moira|tessa|ava|susan|serena|aria|cathy|alice|clara|fiona|katherine|linda|stephanie|ayumi|sfg|Google US English/i;
+const MALE_VOICE_NAMES = /(^|\b|_|-)(male|man|david|mark|guy|george|daniel|fred|oliver|arthur|rishi|tom|alex|aaron|christopher|eric|roger|ryan|steffan|brian|john|james|andrew|richard|charles|matthew|anthony|steven|paul|ken|lee|nathan|joshua|jacob|adam|evan|iob|iom|rjs|fis)(\b|_|-|$)/i;
+
+function isVoiceFemale(v) {
+  if (!v) return false;
+  const str = `${v.name || ''} ${v.voiceURI || ''}`;
+  return FEMALE_VOICE_NAMES.test(str) && !/(^|\b)male(\b|$)/i.test(str.replace(/female/gi, ''));
+}
+
+function isVoiceMale(v) {
+  if (!v) return false;
+  const str = `${v.name || ''} ${v.voiceURI || ''}`;
+  if (isVoiceFemale(v)) return false;
+  return MALE_VOICE_NAMES.test(str);
+}
 
 function startSpeechHeartbeat() {
   if (speechHeartbeatTimer) clearInterval(speechHeartbeatTimer);
@@ -237,85 +225,42 @@ function getBestVoice(gender = 'neutral', lang = 'en-US') {
   const voices = availableVoices;
   if (!voices || !voices.length) return null;
 
-  if (lang.startsWith('en')) {
-    if (gender === 'male') {
-      // 1. Windows Native David / Mark
-      const winMale = voices.find(v => /david|mark/i.test(v.name));
-      if (winMale) return winMale;
-      // 2. Google UK English Male or names containing male
-      const googleMale = voices.find(v => /male/i.test(v.name) && v.lang.startsWith('en'));
-      if (googleMale) return googleMale;
-      // 3. iOS, Android & macOS male voices: Daniel, Fred, Oliver, Arthur, Rishi, Tom, Alex, Guy, George, Aaron
-      const otherMale = voices.find(v => /daniel|fred|oliver|arthur|rishi|tom|alex|guy|george|aaron/i.test(v.name));
-      if (otherMale) return otherMale;
-    } else if (gender === 'female') {
-      // 1. Windows Native Zira
-      const zira = voices.find(v => /zira/i.test(v.name));
-      if (zira) return zira;
-      // 2. Google US English (natural female)
-      const googleUS = voices.find(v => /Google US English/i.test(v.name));
-      if (googleUS) return googleUS;
-      // 3. iOS & Android female voices: Jenny, Samantha, Victoria, Karen, Moira, Tessa, Ava, Susan, Serena
-      const otherFemale = voices.find(v => /female|jenny|samantha|victoria|karen|moira|tessa|ava|susan|serena/i.test(v.name));
-      if (otherFemale) return otherFemale;
-    } else {
-      // Narrator: prefer clear female or male
-      const zira = voices.find(v => /zira/i.test(v.name));
-      if (zira) return zira;
-      const david = voices.find(v => /david/i.test(v.name));
-      if (david) return david;
-    }
+  const langPrefix = (lang || 'en').split('-')[0].toLowerCase();
+  const langVoices = voices.filter(v => (v.lang || '').toLowerCase().startsWith(langPrefix));
+  const candidatePool = langVoices.length ? langVoices : voices;
 
-    // Fallback: any en-US or en voice
-    return voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en')) || null;
+  if (gender === 'male') {
+    // 1. Confirmed authentic male voice
+    const maleVoice = candidatePool.find(v => isVoiceMale(v));
+    if (maleVoice) return maleVoice;
+
+    // 2. Any voice that is not confirmed female
+    const nonFemale = candidatePool.find(v => !isVoiceFemale(v));
+    if (nonFemale) return nonFemale;
+
+    // Fallback: will receive deep formant pitch modulation
+    return candidatePool[0] || null;
   }
 
-  // Non-English (e.g. ko-KR)
-  return voices.find(v => v.lang === lang) || voices.find(v => v.lang.startsWith(lang.split('-')[0])) || null;
+  if (gender === 'female') {
+    // 1. Confirmed authentic female voice
+    const femaleVoice = candidatePool.find(v => isVoiceFemale(v));
+    if (femaleVoice) return femaleVoice;
+
+    // 2. Any voice that is not confirmed male
+    const nonMale = candidatePool.find(v => !isVoiceMale(v));
+    if (nonMale) return nonMale;
+
+    return candidatePool[0] || null;
+  }
+
+  // Neutral / Narrator:
+  const neutralVoice = candidatePool.find(v => isVoiceMale(v) || isVoiceFemale(v));
+  return neutralVoice || candidatePool[0] || null;
 }
 
-function speakWithWebSpeech(text, lang = 'en-US', rate = 0.88) {
-  if (!speechSynth) {
-    return;
-  }
-
-  if (speechSynth.paused) {
-    speechSynth.resume();
-  }
-
-  // Cancel any running speech cleanly
-  speechSynth.cancel();
-
-  loadVoices();
-
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = lang;
-  utter.rate = rate;
-  utter.pitch = 1.0;
-
-  const voice = getBestVoice('neutral', lang);
-  if (voice) utter.voice = voice;
-
-  window.__speechUtterances.add(utter);
-  startSpeechHeartbeat();
-
-  utter.onend = () => {
-    window.__speechUtterances.delete(utter);
-  };
-  utter.onerror = (e) => {
-    window.__speechUtterances.delete(utter);
-    // Ignore benign canceled/interrupted events from cancel()
-    if (e && (e.error === 'canceled' || e.error === 'interrupted')) {
-      return;
-    }
-    console.warn('Speech error:', e ? e.error : 'unknown');
-  };
-
-  // Small delay ensures previous cancel() is cleared before speaking
-  setTimeout(() => {
-    if (speechSynth.paused) speechSynth.resume();
-    speechSynth.speak(utter);
-  }, 35);
+function speakWithWebSpeech(text, lang = 'en-US', rate = 0.88, gender = 'neutral') {
+  speakWithVoice(text, lang, { rate, gender });
 }
 
 function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
@@ -324,11 +269,18 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
     currentAudio = null;
   }
 
-  // Sanitize text for smooth TTS flow (remove annoying punctuation marks, quotes, brackets)
-  const cleanText = (text || '')
+  // Sanitize text for smooth TTS flow (remove Indonesian translations in parentheses, annoying punctuation, quotes)
+  let cleanText = (text || '')
+    .replace(/\([^)]*\)/g, '')   // Strip Indonesian translations like (Apa yang disiratkan...)
+    .replace(/\[[^\]]*\]/g, '')
     .replace(/["“”'‘’]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+
+  // Natural trailing cadence cushion: ensures final syllable (e.g. "imply", "mean") resonates fully without abrupt cutoff
+  if (cleanText && !/[.!?]$/.test(cleanText)) {
+    cleanText += '.';
+  }
 
   if (!cleanText) {
     if (onEnd) onEnd();
@@ -336,14 +288,30 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
   }
 
   const gender = opts.gender || 'neutral';
-  // Pitch modulation ensures strong male vs female contrast even on single-voice devices (like Android/iOS)
+  const matchedVoice = getBestVoice(gender, lang);
+  const isRealMale = matchedVoice && isVoiceMale(matchedVoice);
+  const isRealFemale = matchedVoice && isVoiceFemale(matchedVoice);
+
+  // Unmistakable pitch modulation ensures 100% distinct male vs female sound across ALL devices:
+  // - Male: 0.88 with authentic male voice, 0.60 with fallback voice (drops pitch deep into baritone register!)
+  // - Female: 1.05 with authentic female voice, 1.25 with fallback voice (bright feminine tone)
+  // - Neutral: 0.98 standard narrator
   let defaultPitch = 1.0;
-  if (gender === 'male') defaultPitch = 0.82;
-  else if (gender === 'female') defaultPitch = 1.15;
-  else if (gender === 'neutral') defaultPitch = 0.98;
+  let defaultRate = 0.92;
+
+  if (gender === 'male') {
+    defaultPitch = isRealMale ? 0.88 : 0.60;
+    defaultRate = 0.90;
+  } else if (gender === 'female') {
+    defaultPitch = isRealFemale ? 1.05 : 1.25;
+    defaultRate = 0.95;
+  } else {
+    defaultPitch = 0.98;
+    defaultRate = 0.92;
+  }
 
   const pitch = opts.pitch !== undefined ? opts.pitch : defaultPitch;
-  const rate = opts.rate || 0.92;
+  const rate = opts.rate !== undefined ? opts.rate : defaultRate;
   const shouldCancel = opts.cancelPrevious !== false;
 
   if (speechSynth) {
@@ -353,12 +321,14 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
       speechSynth.cancel();
     }
 
-    const utter = new SpeechSynthesisUtterance(cleanText);
+    // Pre-roll silent micro-breath (", ") ensures audio context wakes up fully BEFORE 1st syllable.
+    // Trailing dot-space (" . ") allows final question inflection to decay smoothly without hardware cut.
+    const paddedSpokenText = ', ' + cleanText + ' . ';
+    const utter = new SpeechSynthesisUtterance(paddedSpokenText);
     utter.lang = lang;
     utter.rate = rate;
     utter.pitch = pitch;
 
-    const matchedVoice = getBestVoice(gender, lang);
     if (matchedVoice) utter.voice = matchedVoice;
 
     // SOLVE CHROMIUM GC BUG: Keep strong reference so Chrome doesn't kill audio mid-sentence
@@ -373,7 +343,6 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
       if (onEnd) onEnd();
     };
 
-    utter.onend = finish;
     utter.onerror = (err) => {
       if (err && (err.error === 'canceled' || err.error === 'interrupted')) {
         return;
@@ -392,7 +361,11 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
 
     utter.onend = () => {
       clearTimeout(failsafeTimer);
-      finish();
+      // Soft audio decay grace period (350ms): Keeps utterance alive in memory so hardware audio buffer
+      // finishes streaming the final rising inflection syllable completely to silence.
+      setTimeout(() => {
+        finish();
+      }, 350);
     };
 
     setTimeout(() => {
@@ -405,9 +378,26 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
   // Fallback to Google Translate TTS
   const ttsLang = TTS_LANG_MAP[lang] || lang.split('-')[0];
   const encoded = encodeURIComponent(cleanText);
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${ttsLang}&client=tw-ob&ttsspeed=${rate}`;
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${ttsLang}&client=tw-ob&ttsspeed=1`;
   const audio = new Audio(url);
   currentAudio = audio;
+
+  // Modulate pitch via playbackRate when pitch preservation is disabled
+  if (gender === 'male') {
+    audio.preservesPitch = false;
+    audio.mozPreservesPitch = false;
+    audio.webkitPreservesPitch = false;
+    audio.playbackRate = 0.80;
+  } else if (gender === 'female') {
+    audio.preservesPitch = false;
+    audio.mozPreservesPitch = false;
+    audio.webkitPreservesPitch = false;
+    audio.playbackRate = 1.10;
+  } else {
+    audio.preservesPitch = true;
+    audio.playbackRate = 0.92;
+  }
+
   if (onEnd) {
     audio.onended = () => onEnd();
     audio.onerror = () => onEnd();
@@ -421,6 +411,7 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
 function saveState() {
   localStorage.setItem('basaloka_state', JSON.stringify(state));
   localStorage.setItem('linguaplay_state', JSON.stringify(state)); // backwards-compatible
+  if (typeof window !== 'undefined') window.state = state;
   syncProgressToMySQL();
 }
 
@@ -485,6 +476,7 @@ function loadState() {
     state = { ...state, ...JSON.parse(saved) };
     checkStreak();
   }
+  if (typeof window !== 'undefined') window.state = state;
 }
 
 function checkStreak() {
@@ -567,6 +559,9 @@ function navigateBack() {
 }
 
 function showView(viewName, pushHistory = true) {
+  if (viewName !== 'lesson' && typeof stopQuestionTimer === 'function') {
+    stopQuestionTimer();
+  }
   document.querySelectorAll('.view').forEach(v => {
     v.classList.remove('active');
     v.style.display = 'none';
@@ -677,6 +672,780 @@ if (initialNameInput) {
   });
 }
 
+// ─── TOEFL LIVE SCORE PREDICTOR & PEMBANGKIT SEMANGAT ENGINE ─
+const TOEFL_PREDICTOR_LESSONS = {
+  listening: [
+    'toefl-fast3-l1', 'toefl-fast3-l2', 'toefl-fast3-l3', 'toefl-hack-l1',
+    'toefl-u0-l1', 'toefl-u0-l2', 'toefl-list-extra1', 'toefl-list-extra3',
+    'toefl-d2-l1', 'toefl-u0-l3', 'toefl-d2-l3', 'toefl-list-extra2',
+    'toefl-list-extra4', 'toefl-d2-l4', 'toefl-d7-l1'
+  ],
+  structure: [
+    'toefl-fast3-l4', 'toefl-fast3-l5', 'toefl-fast3-l6', 'toefl-hack-l2',
+    'toefl-d3-l2', 'toefl-u3-l3', 'toefl-d3-extra', 'toefl-hack-l3',
+    'toefl-u3-l2', 'toefl-d4-l3', 'toefl-d4-extra', 'toefl-d5-l1',
+    'toefl-d5-l2', 'toefl-d5-l3', 'toefl-d5-extra', 'toefl-u4-l1',
+    'toefl-u4-l2', 'toefl-u4-l3', 'toefl-d7-l2'
+  ],
+  reading: [
+    'toefl-fast3-l7', 'toefl-fast3-l8', 'toefl-fast3-l9', 'toefl-hack-l4',
+    'toefl-u2-l1', 'toefl-d6-l2', 'toefl-d6-l3', 'toefl-u2-l2',
+    'toefl-u2-l3', 'toefl-u2-l4', 'toefl-u2-l5', 'toefl-u2-l6',
+    'toefl-u2-l7', 'toefl-u2-l8', 'toefl-u1-l1', 'toefl-u1-l2',
+    'toefl-u1-l3', 'toefl-u1-l4', 'toefl-d7-l3'
+  ]
+};
+
+function calculatePredictedToeflScore(targetState) {
+  const curState = targetState || state;
+  const completed = curState.completedLessons || [];
+
+  const lIds = TOEFL_PREDICTOR_LESSONS.listening;
+  const sIds = TOEFL_PREDICTOR_LESSONS.structure;
+  const rIds = TOEFL_PREDICTOR_LESSONS.reading;
+
+  const doneL = lIds.filter(id => completed.includes(id)).length;
+  const doneS = sIds.filter(id => completed.includes(id)).length;
+  const doneR = rIds.filter(id => completed.includes(id)).length;
+  const totalDone = doneL + doneS + doneR;
+  const totalLessons = lIds.length + sIds.length + rIds.length;
+
+  // Base ETS scaled range: Listening (31-68), Structure (31-68), Reading (31-67)
+  let scaleL = 31 + Math.round((doneL / lIds.length) * 37);
+  let scaleS = 31 + Math.round((doneS / sIds.length) * 37);
+  let scaleR = 31 + Math.round((doneR / rIds.length) * 36);
+
+  // If user has taken official ETS simulation exam, anchor with simulation benchmark
+  if (curState.lastExamScore) {
+    const exam = curState.lastExamScore;
+    if (exam.scaleL) scaleL = Math.max(scaleL, exam.scaleL);
+    if (exam.scaleS) scaleS = Math.max(scaleS, exam.scaleS);
+    if (exam.scaleR) scaleR = Math.max(scaleR, exam.scaleR);
+  }
+
+  // Bounds check
+  scaleL = Math.min(68, Math.max(31, scaleL));
+  scaleS = Math.min(68, Math.max(31, scaleS));
+  scaleR = Math.min(67, Math.max(31, scaleR));
+
+  // Official ETS Total Score Formula: ((scaleL + scaleS + scaleR) * 10) / 3
+  const totalScore = Math.min(677, Math.max(310, Math.round(((scaleL + scaleS + scaleR) * 10) / 3)));
+
+  // Milestones: Dasar (310+), Menengah (450+), BUMN & S2 (500+), Beasiswa LPDP (550+), Master (600+)
+  let milestoneId = 'foundation';
+  let milestoneBadge = '🌱 Level Dasar (310+)';
+  let targetScore = 450;
+  let targetLabel = 'Skor 450 (Menengah)';
+  let motivation = 'Setiap modul yang kamu selesaikan menambah prediksimu! Mulai dari Listening Fast Track untuk dongkrak skor pertamamu! 🚀';
+
+  if (totalScore >= 600) {
+    milestoneId = 'master';
+    milestoneBadge = '🌟 Master Class (600+)';
+    targetScore = 677;
+    targetLabel = 'Skor Maksimal ETS (677)';
+    motivation = 'Luar biasa! Skor prediksimu setara mahasiswa berprestasi global. Pertahankan konsistensi belajarmu! 👑';
+  } else if (totalScore >= 550) {
+    milestoneId = 'lpdp';
+    milestoneBadge = '🏆 Standar Beasiswa (550+)';
+    targetScore = 600;
+    targetLabel = 'Master Class (600)';
+    motivation = 'Hebat! Skor 550+ membuka pintu beasiswa bergengsi dalam & luar negeri! Sedikit lagi menuju 600+! 🚀';
+  } else if (totalScore >= 500) {
+    milestoneId = 'bumn';
+    milestoneBadge = '💼 Standar Profesional & BUMN (500+)';
+    targetScore = 550;
+    targetLabel = 'Standar Beasiswa (550)';
+    motivation = 'Mantap! Skor 500+ sudah memenuhi standar rekrutmen BUMN & jenjang karir profesional!';
+  } else if (totalScore >= 450) {
+    milestoneId = 'intermediate';
+    milestoneBadge = '📈 Level Menengah (450+)';
+    targetScore = 500;
+    targetLabel = 'Standar Profesional & BUMN (500)';
+    motivation = 'Kemampuanmu makin meningkat! Lanjutkan latihan untuk menembus target skor 500! 💪';
+  } else {
+    milestoneId = 'foundation';
+    milestoneBadge = '🌱 Level Dasar (310+)';
+    targetScore = 450;
+    targetLabel = 'Skor 450 (Menengah)';
+    motivation = 'Setiap modul yang kamu selesaikan menambah prediksimu! Terus selesaikan modul harianmu! 🚀';
+  }
+
+  // Dynamic tip based on weakest section if score is below 550
+  if (totalScore < 550 && totalDone > 0) {
+    if (scaleL <= scaleS && scaleL <= scaleR) {
+      motivation = 'Tips Luca: Listening Part A paling cepat nambah poin! Fokus dengarkan ucapan orang kedua dan hindari jebakan kata mirip! 🎧';
+    } else if (scaleS <= scaleL && scaleS <= scaleR) {
+      motivation = 'Tips Luca: Structure punya bobot penentu! Cari Subjek & Verb di tiap kalimat, lalu periksa kesesuaian jamak-tunggal! 📐';
+    } else {
+      motivation = 'Tips Luca: Jangan baca seluruh teks bacaan! Gunakan trik Skimming kalimat pertama tiap paragraf untuk temukan ide pokok! 📖';
+    }
+  }
+
+  const pointsToTarget = Math.max(0, targetScore - totalScore);
+  const progressPct = Math.min(100, Math.max(0, Math.round(((totalScore - 310) / (677 - 310)) * 100)));
+  const pctL = Math.min(100, Math.max(0, Math.round(((scaleL - 31) / (68 - 31)) * 100)));
+  const pctS = Math.min(100, Math.max(0, Math.round(((scaleS - 31) / (68 - 31)) * 100)));
+  const pctR = Math.min(100, Math.max(0, Math.round(((scaleR - 31) / (67 - 31)) * 100)));
+
+  return {
+    totalScore,
+    scaleL,
+    scaleS,
+    scaleR,
+    doneL,
+    doneS,
+    doneR,
+    totalDone,
+    totalLessons,
+    pctL,
+    pctS,
+    pctR,
+    milestoneId,
+    milestoneBadge,
+    targetScore,
+    targetLabel,
+    pointsToTarget,
+    progressPct,
+    motivation
+  };
+}
+window.calculatePredictedToeflScore = calculatePredictedToeflScore;
+
+function updateToeflPredictorUI() {
+  const pred = calculatePredictedToeflScore(state);
+
+  // 1. Dashboard TOEFL Card Pill
+  const cardScoreEl = document.getElementById('toefl-card-pred-score');
+  const cardBadgeEl = document.getElementById('toefl-card-pred-badge');
+  if (cardScoreEl) cardScoreEl.textContent = pred.totalScore;
+  if (cardBadgeEl) cardBadgeEl.textContent = pred.milestoneBadge;
+
+  // 2. Dashboard Pembangkit Semangat Card
+  const tpcScoreNum = document.getElementById('tpc-score-number');
+  const tpcMilestone = document.getElementById('tpc-milestone-badge');
+  const tpcTargetTag = document.getElementById('tpc-target-tag');
+  const tpcPointsLeft = document.getElementById('tpc-points-left');
+  const tpcMeterFill = document.getElementById('tpc-meter-fill');
+  const tpcMeterPercent = document.getElementById('tpc-meter-percent');
+  const tpcScoreL = document.getElementById('tpc-score-l');
+  const tpcFillL = document.getElementById('tpc-fill-l');
+  const tpcScoreS = document.getElementById('tpc-score-s');
+  const tpcFillS = document.getElementById('tpc-fill-s');
+  const tpcScoreR = document.getElementById('tpc-score-r');
+  const tpcFillR = document.getElementById('tpc-fill-r');
+  const tpcBoosterMsg = document.getElementById('tpc-booster-msg');
+
+  if (tpcScoreNum) tpcScoreNum.textContent = pred.totalScore;
+  if (tpcMilestone) tpcMilestone.textContent = pred.milestoneBadge;
+  if (tpcTargetTag) tpcTargetTag.textContent = `Target: ${pred.targetLabel}`;
+  if (tpcPointsLeft) {
+    tpcPointsLeft.textContent = pred.pointsToTarget > 0
+      ? `Kurang ${pred.pointsToTarget} poin`
+      : 'Target Terlampaui! 🎉';
+  }
+  if (tpcMeterFill) tpcMeterFill.style.width = `${pred.progressPct}%`;
+  if (tpcMeterPercent) tpcMeterPercent.textContent = `${pred.progressPct}% Menuju Skor Maksimal`;
+
+  if (tpcScoreL) tpcScoreL.textContent = pred.scaleL;
+  if (tpcFillL) tpcFillL.style.width = `${pred.pctL}%`;
+  if (tpcScoreS) tpcScoreS.textContent = pred.scaleS;
+  if (tpcFillS) tpcFillS.style.width = `${pred.pctS}%`;
+  if (tpcScoreR) tpcScoreR.textContent = pred.scaleR;
+  if (tpcFillR) tpcFillR.style.width = `${pred.pctR}%`;
+
+  if (tpcBoosterMsg) tpcBoosterMsg.textContent = pred.motivation;
+
+  // 3. TOEFL Map Sticky Strip
+  const mapScore = document.getElementById('map-toefl-pred-score');
+  const mapBadge = document.getElementById('map-toefl-milestone-badge');
+  const mapMeter = document.getElementById('map-toefl-meter-fill');
+  const mapQuote = document.getElementById('map-toefl-luca-text');
+
+  if (mapScore) mapScore.textContent = pred.totalScore;
+  if (mapBadge) mapBadge.textContent = pred.milestoneBadge;
+  if (mapMeter) mapMeter.style.width = `${pred.progressPct}%`;
+  if (mapQuote) mapQuote.textContent = `Luca: "${pred.motivation}"`;
+
+  const trigBtn = document.getElementById('btn-toefl-diagnostic-trigger');
+  if (trigBtn) {
+    if (state.toeflDiagnosticTaken && state.toeflDiagnosticScore) {
+      trigBtn.innerHTML = `🎯 Tes Diagnostik Ulang (Skor: ${state.toeflDiagnosticScore})`;
+    } else {
+      trigBtn.innerHTML = `🎯 Tes Diagnostik 10 Menit (Cek Skor Awal)`;
+    }
+  }
+
+  // Update Study Plan Card & Countdown
+  if (typeof renderToeflStudyPlanCard === 'function') {
+    renderToeflStudyPlanCard();
+  }
+}
+window.updateToeflPredictorUI = updateToeflPredictorUI;
+
+// ══════════════════════════════════════════════════════════
+// 🎯 TOEFL EXAM TARGET & ADAPTIVE STUDY PLAN CONTROLLER
+// ══════════════════════════════════════════════════════════
+
+let selectedToeflScoreTarget = 500;
+let selectedToeflTargetMode = 'date';
+let selectedToeflTargetPace = 'standard';
+
+function openToeflExamTargetModal() {
+  selectedToeflScoreTarget = state.toeflTargetScore || 500;
+  selectedToeflTargetMode = state.toeflTargetMode || (state.toeflTargetDate ? 'date' : (state.toeflTargetPace ? 'pace' : 'date'));
+  selectedToeflTargetPace = state.toeflTargetPace || 'standard';
+
+  selectTargetScoreChip(selectedToeflScoreTarget);
+  selectTargetMode(selectedToeflTargetMode);
+  selectTargetPace(selectedToeflTargetPace);
+
+  const dateInput = document.getElementById('tetm-date-input');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+    if (state.toeflTargetDate) {
+      dateInput.value = state.toeflTargetDate;
+    } else {
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() + 30);
+      dateInput.value = defaultDate.toISOString().split('T')[0];
+    }
+  }
+
+  const modal = document.getElementById('toefl-exam-target-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeToeflExamTargetModal() {
+  const modal = document.getElementById('toefl-exam-target-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function selectTargetScoreChip(score) {
+  selectedToeflScoreTarget = Number(score) || 500;
+  [450, 500, 550, 600].forEach(s => {
+    const chip = document.getElementById(`tchip-${s}`);
+    if (chip) chip.classList.toggle('active', s === selectedToeflScoreTarget);
+  });
+}
+
+function selectTargetMode(mode) {
+  selectedToeflTargetMode = mode;
+  const radioDate = document.getElementById('tetm-mode-date');
+  const radioPace = document.getElementById('tetm-mode-pace');
+  const dateWrap = document.getElementById('tetm-date-input-wrap');
+  const paceChips = document.getElementById('tetm-pace-chips');
+  const lucaDesc = document.getElementById('tetm-luca-desc');
+
+  if (mode === 'date') {
+    if (radioDate) radioDate.checked = true;
+    if (dateWrap) dateWrap.style.display = 'block';
+    if (paceChips) paceChips.style.display = 'none';
+    if (lucaDesc) {
+      lucaDesc.textContent = 'Memasang tanggal ujian resmi mengaktifkan hitung mundur H-X dan membagi beban materi per hari secara presisi!';
+    }
+  } else {
+    if (radioPace) radioPace.checked = true;
+    if (dateWrap) dateWrap.style.display = 'none';
+    if (paceChips) paceChips.style.display = 'flex';
+    if (lucaDesc) {
+      lucaDesc.textContent = 'Pilihan fleksibel bagi kamu yang belum daftar tes resmi. Pilih ritme agar tetap konsisten tanpa tekanan tanggal!';
+    }
+  }
+}
+
+function selectTargetPace(pace) {
+  selectedToeflTargetPace = pace;
+  ['sprint', 'standard', 'flexible'].forEach(p => {
+    const btn = document.getElementById(`tpace-${p}`);
+    if (btn) btn.classList.toggle('active', p === pace);
+  });
+}
+
+function saveToeflExamTarget() {
+  state.toeflTargetScore = selectedToeflScoreTarget;
+  state.toeflTargetMode = selectedToeflTargetMode;
+
+  if (selectedToeflTargetMode === 'date') {
+    const dateInput = document.getElementById('tetm-date-input');
+    const pickedDate = dateInput ? dateInput.value : '';
+    if (!pickedDate) {
+      showToast('Silakan pilih tanggal ujianmu terlebih dahulu!', 'warning');
+      return;
+    }
+    state.toeflTargetDate = pickedDate;
+  } else {
+    state.toeflTargetPace = selectedToeflTargetPace;
+  }
+
+  saveState();
+  closeToeflExamTargetModal();
+  updateToeflPredictorUI();
+  renderToeflStudyPlanCard();
+  showToast('Target ujian TOEFL berhasil disimpan! Rencana belajar diperbarui 🎯', 'success');
+}
+
+function renderToeflStudyPlanCard() {
+  const cardEl = document.getElementById('toefl-study-plan-card');
+  if (!cardEl) return;
+
+  const toeflData = APP_DATA.toefl;
+  if (!toeflData || !toeflData.units) {
+    cardEl.style.display = 'none';
+    return;
+  }
+
+  let totalLessons = 0;
+  let doneLessons = 0;
+  toeflData.units.forEach(u => {
+    (u.lessons || []).forEach(l => {
+      totalLessons++;
+      if (state.completedLessons && state.completedLessons.includes(l.id)) doneLessons++;
+    });
+  });
+
+  const remainingLessons = Math.max(0, totalLessons - doneLessons);
+  const isAllDone = totalLessons > 0 && doneLessons === totalLessons;
+
+  // Post-curriculum Mastery Banner (Alumni loop)
+  const masteryBanner = document.getElementById('toefl-mastery-banner');
+  if (masteryBanner) {
+    masteryBanner.style.display = isAllDone ? 'flex' : 'none';
+  }
+
+  const targetScore = state.toeflTargetScore || 500;
+  const targetMode = state.toeflTargetMode || (state.toeflTargetDate ? 'date' : (state.toeflTargetPace ? 'pace' : null));
+
+  // Empty state: prompt user to set goal
+  if (!targetMode) {
+    cardEl.style.display = 'block';
+    cardEl.innerHTML = `
+      <div class="tsp-empty-state">
+        <div class="tsp-es-icon">🎯</div>
+        <div class="tsp-es-body">
+          <div class="tsp-badge">PERSONAL STUDY PLAN</div>
+          <h3 class="tsp-title">Punya Target Tanggal Ujian TOEFL?</h3>
+          <p class="tsp-sub">Pasang tanggal tes atau pilih ritme belajarmu agar Luca bisa menghitung target harian dan countdown H-Day secara otomatis!</p>
+          <button type="button" class="btn-primary tsp-btn-setup" onclick="openToeflExamTargetModal()">
+            ⚡ Pasang Target & Skema Belajar Sekarang
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  cardEl.style.display = 'block';
+
+  let countdownBadge = '';
+  let countdownMain = '';
+  let countdownSub = '';
+  let paceAdvice = '';
+
+  if (targetMode === 'date' && state.toeflTargetDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const examDate = new Date(state.toeflTargetDate);
+    examDate.setHours(0, 0, 0, 0);
+    const diffTime = examDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    const dateFormatted = examDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+    if (diffDays > 1) {
+      countdownBadge = `H-${diffDays} HARI MENUJU UJIAN`;
+      countdownMain = `H-${diffDays}`;
+      countdownSub = `Tes: ${dateFormatted}`;
+      const dailyLessons = remainingLessons > 0 ? (remainingLessons / diffDays).toFixed(1) : 0;
+      paceAdvice = isAllDone
+        ? 'Semua materi telah tuntas! Lakukan pemanasan harian untuk mengasah reflek.'
+        : `Target ritme: <strong>~${Math.max(1, Math.ceil(dailyLessons))} modul per hari</strong> (${remainingLessons} modul tersisa).`;
+    } else if (diffDays === 1) {
+      countdownBadge = `BESOK HARI H! 🔥`;
+      countdownMain = `H-1`;
+      countdownSub = `Ujian besok: ${dateFormatted}`;
+      paceAdvice = 'Hari terakhir! Istirahat cukup, hindari begadang, dan review trik inti di Buku Catatan.';
+    } else if (diffDays === 0) {
+      countdownBadge = `HARI INI UJIAN! 🌟`;
+      countdownMain = `HARI H`;
+      countdownSub = `Good luck pejuang TOEFL!`;
+      paceAdvice = 'Tarik napas dalam-dalam, fokus pada kata kunci speaker kedua, dan basmi jebakan!';
+    } else {
+      countdownBadge = `TARGET TANGGAL TELAH LEWAT`;
+      countdownMain = `SELESAI`;
+      countdownSub = `Ujian: ${dateFormatted}`;
+      paceAdvice = 'Ujianmu sudah lewat. Pasang tanggal baru atau ganti ke ritme belajar santai.';
+    }
+  } else {
+    // Mode PACE
+    const pace = state.toeflTargetPace || 'standard';
+    if (pace === 'sprint') {
+      countdownBadge = `🚀 SPRINT KILAT (14 HARI)`;
+      countdownMain = `2 Modul/Hari`;
+      countdownSub = `Intensif & Cepat`;
+      paceAdvice = `Target: Selesaikan 2 modul per hari. Dalam 14 hari seluruh materi tuntas dipelajari!`;
+    } else if (pace === 'standard') {
+      countdownBadge = `📅 STANDAR MANTAP (30 HARI)`;
+      countdownMain = `1 Modul/Hari`;
+      countdownSub = `Ritme Paling Ideal`;
+      paceAdvice = `Target: 1 modul per hari. Santai, mantap, dan daya ingat bertahan lama.`;
+    } else {
+      countdownBadge = `🍃 RITME BEBAS & FLEKSIBEL`;
+      countdownMain = `Santai`;
+      countdownSub = `Sesuai Waktu Luang`;
+      paceAdvice = `Belajar mengalir tanpa beban deadline, tapi usahakan minimal 3 modul per minggu ya!`;
+    }
+  }
+
+  const completionPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
+
+  cardEl.innerHTML = `
+    <div class="tsp-content">
+      <div class="tsp-header">
+        <div class="tsp-header-left">
+          <span class="tsp-badge-tag">${countdownBadge}</span>
+          <span class="tsp-target-score">Target: <strong>${targetScore}+</strong></span>
+        </div>
+        <button type="button" class="tsp-btn-edit" onclick="openToeflExamTargetModal()" title="Ubah Target atau Tanggal">
+          ✏️ Edit Target
+        </button>
+      </div>
+
+      <div class="tsp-grid">
+        <div class="tsp-countdown-block">
+          <div class="tsp-cd-main">${countdownMain}</div>
+          <div class="tsp-cd-sub">${countdownSub}</div>
+        </div>
+
+        <div class="tsp-progress-block">
+          <div class="tsp-pb-header">
+            <span>Kurikulum TOEFL: <strong>${doneLessons}/${totalLessons} Selesai</strong></span>
+            <span><strong>${completionPct}%</strong></span>
+          </div>
+          <div class="tsp-pb-bar">
+            <div class="tsp-pb-fill" style="width: ${completionPct}%;"></div>
+          </div>
+          <div class="tsp-pb-advice">
+            <span class="tsp-luca-emoji">Luca 🦉:</span>
+            <span>${paceAdvice}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tsp-actions">
+        ${isAllDone ? `
+          <button type="button" class="btn-primary tsp-btn-action" onclick="startDailyToeflWarmup()">
+            ⚡ Pemanasan Asah 5 Menit Sekarang
+          </button>
+        ` : `
+          <button type="button" class="btn-primary tsp-btn-action" onclick="continueNextToeflLesson()">
+            🚀 Lanjutkan Belajar Hari Ini
+          </button>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function startDailyToeflWarmup() {
+  const toeflData = APP_DATA.toefl;
+  if (!toeflData || !toeflData.units) return;
+
+  const allQuizzes = [];
+  toeflData.units.forEach(u => {
+    (u.lessons || []).forEach(l => {
+      if (l.quiz && Array.isArray(l.quiz)) {
+        l.quiz.forEach(q => {
+          allQuizzes.push({
+            ...q,
+            unitTitle: u.title
+          });
+        });
+      }
+    });
+  });
+
+  if (allQuizzes.length === 0) {
+    showToast('Belum ada bank soal pemanasan yang tersedia.', 'error');
+    return;
+  }
+
+  // Shuffle and pick 5 rapid questions
+  const shuffled = allQuizzes.sort(() => 0.5 - Math.random());
+  const selectedQuiz = shuffled.slice(0, 5);
+
+  const warmupUnit = {
+    id: 'toefl_warmup',
+    title: '⚡ Pemanasan Asah Reflek TOEFL (Alumni)',
+    color: '#f59e0b',
+    section: 'mixed',
+    lessons: []
+  };
+
+  const warmupLesson = {
+    id: 'toefl_warmup_session_' + Date.now(),
+    title: '5-Minute Rapid TOEFL Warmup',
+    type: 'flashcard-quiz',
+    xpReward: 35,
+    cards: [],
+    quiz: selectedQuiz
+  };
+
+  currentLesson = warmupLesson;
+  currentUnit = warmupUnit;
+  currentLang = 'toefl';
+  lessonStep = 0;
+  quizStep = 0;
+  correctAnswers = 0;
+  totalAnswers = 0;
+  lessonStartTime = Date.now();
+  lessonXpEarned = 35;
+
+  showView('lesson');
+  renderLessonStep();
+  showToast('Pemanasan kilat 5 soal dimulai! Pertahankan reflekmu!', 'info');
+}
+
+window.openToeflExamTargetModal = openToeflExamTargetModal;
+window.closeToeflExamTargetModal = closeToeflExamTargetModal;
+window.selectTargetScoreChip = selectTargetScoreChip;
+window.selectTargetMode = selectTargetMode;
+window.selectTargetPace = selectTargetPace;
+window.saveToeflExamTarget = saveToeflExamTarget;
+window.renderToeflStudyPlanCard = renderToeflStudyPlanCard;
+window.startDailyToeflWarmup = startDailyToeflWarmup;
+
+function continueNextToeflLesson() {
+  const data = APP_DATA.toefl;
+  if (!data || !data.units) return;
+
+  const activeTrack = state.toeflActiveTrack || 'full';
+  const trackUnits = data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both');
+
+  for (const unit of trackUnits) {
+    for (const lesson of unit.lessons) {
+      if (!state.completedLessons.includes(lesson.id)) {
+        startLesson('toefl', unit.id, lesson.id);
+        return;
+      }
+    }
+  }
+
+  // If all completed, open exam simulation modal
+  showToast('🏆 Semua modul TOEFL telah selesai dipelajari! Yuk uji prediksimu di Simulasi Resmi!', 'success');
+  openExamSetupModal();
+}
+window.continueNextToeflLesson = continueNextToeflLesson;
+
+function openToeflScoreInfoModal() {
+  const modal = document.getElementById('toefl-score-info-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+window.openToeflScoreInfoModal = openToeflScoreInfoModal;
+
+function closeToeflScoreInfoModal() {
+  const modal = document.getElementById('toefl-score-info-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+window.closeToeflScoreInfoModal = closeToeflScoreInfoModal;
+
+// ─── UNIT NOTES & TIPS MODAL (BUKU CATATAN PER MODUL) ─────────
+function openUnitNotesModal(lang, unitId) {
+  const modal = document.getElementById('unit-notes-modal');
+  if (!modal) return;
+
+  const notes = (typeof UNIT_NOTES_DATA !== 'undefined' && UNIT_NOTES_DATA[unitId]) ? UNIT_NOTES_DATA[unitId] : null;
+
+  // Fallback metadata from APP_DATA
+  const langKey = lang || currentLang || 'toefl';
+  const langData = (typeof APP_DATA !== 'undefined' && APP_DATA[langKey]) ? APP_DATA[langKey] : null;
+  const unitObj = langData && langData.units ? langData.units.find(u => u.id === unitId) : null;
+  const unitTitle = (notes && notes.unitTitle) || (unitObj ? unitObj.title : 'Catatan Modul Pembelajaran');
+  const cleanTitle = unitTitle.replace(/^[\p{Extended_Pictographic}\u200d\uFE0F\uD800-\uDFFF\s]+/u, '').trim();
+
+  // 🔒 Reward Guard: Notes are only unlocked after all lessons in the module are 100% completed
+  const isUnitDone = unitObj && unitObj.lessons ? unitObj.lessons.every(l => state.completedLessons.includes(l.id)) : false;
+  if (!isUnitDone && !state.completedUnits.includes(unitId)) {
+    showLockedNotesMsg(cleanTitle);
+    return;
+  }
+  const icon = (notes && notes.icon) || (unitObj ? unitObj.icon : '📖');
+  const badge = (notes && notes.badge) || (langKey === 'toefl' ? 'TOEFL ITP Cheat Sheet' : 'Rangkuman Materi & Catatan Penting');
+  const color = (notes && notes.color) || (unitObj ? unitObj.color : '#8b5cf6');
+
+  const titleEl = document.getElementById('un-modal-title');
+  if (titleEl) titleEl.textContent = cleanTitle;
+
+  const iconEl = document.getElementById('un-header-icon');
+  if (iconEl) iconEl.textContent = icon;
+
+  const badgeEl = document.getElementById('un-header-badge');
+  if (badgeEl) {
+    badgeEl.textContent = badge;
+    badgeEl.style.background = `${color}20`;
+    badgeEl.style.color = color;
+    badgeEl.style.borderColor = `${color}55`;
+  }
+
+  const bodyEl = document.getElementById('un-modal-body');
+  if (bodyEl) {
+    if (!notes) {
+      bodyEl.innerHTML = `
+        <div class="un-summary-card" style="border-left-color: ${color}">
+          <div class="un-card-title">📌 Intisari Materi Modul</div>
+          <p>${unitObj ? unitObj.description : 'Pelajari dan kuasai materi dalam modul ini dengan konsisten!'}</p>
+        </div>
+        <div class="un-luca-box">
+          <span class="un-luca-avatar">🌍</span>
+          <div class="un-luca-text">
+            <strong>Pesan dari Luca:</strong>
+            <p>Terus asah latihanmu setiap hari! Konsistensi 10-15 menit sehari akan melesatkan skor dan kemampuan bahasamu!</p>
+          </div>
+        </div>
+      `;
+    } else {
+      let html = '';
+
+      // 1. Intisari Materi
+      if (notes.summary) {
+        html += `
+          <div class="un-summary-card" style="border-left-color: ${color}">
+            <div class="un-card-title">💡 Intisari Pokok Materi</div>
+            <p>${notes.summary}</p>
+          </div>
+        `;
+      }
+
+      // 2. Kaidah Emas & Rumus
+      if (notes.goldenRules && notes.goldenRules.length > 0) {
+        html += `
+          <div class="un-section-header">
+            <span class="un-sec-icon">⭐</span>
+            <h4>Kaidah Emas & Rumus Penting</h4>
+          </div>
+          <div class="un-rules-list">
+            ${notes.goldenRules.map((rule, idx) => `
+              <div class="un-rule-card">
+                <div class="un-rule-num" style="background: ${color}">${idx + 1}</div>
+                <div class="un-rule-content">
+                  <h5 class="un-rule-title">${rule.rule}</h5>
+                  <p class="un-rule-exp">${rule.explanation}</p>
+                  ${rule.formula ? `
+                    <div class="un-rule-formula">
+                      <span class="un-formula-tag">⚡ Rumus / Pola Kunci:</span>
+                      <code>${rule.formula}</code>
+                    </div>
+                  ` : ''}
+                  ${rule.example ? `
+                    <div class="un-rule-example">
+                      <span class="un-example-tag">🔍 Contoh Kasus:</span>
+                      <div class="un-example-body">${rule.example.replace(/\n/g, '<br>')}</div>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // 3. Trik Soal & Waspada Jebakan
+      if (notes.questionTips && notes.questionTips.length > 0) {
+        html += `
+          <div class="un-section-header">
+            <span class="un-sec-icon">🎯</span>
+            <h4>Trik Eksekusi Soal & Jebakan Ujian</h4>
+          </div>
+          <div class="un-tips-grid">
+            ${notes.questionTips.map(tip => `
+              <div class="un-tip-card">
+                <div class="un-tip-pattern">
+                  <span class="un-tip-dot"></span>
+                  <strong>${tip.pattern}</strong>
+                </div>
+                <div class="un-tip-hack">
+                  <span class="un-hack-label">🚀 Trik Cepat:</span>
+                  ${tip.hack}
+                </div>
+                ${tip.trapAlert ? `
+                  <div class="un-tip-trap">
+                    ${tip.trapAlert}
+                  </div>
+                ` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // 4. Cheat Sheet Cepat
+      if (notes.cheatSheet && notes.cheatSheet.length > 0) {
+        html += `
+          <div class="un-section-header">
+            <span class="un-sec-icon">⚡</span>
+            <h4>Ringkasan Cepat (Cheat Sheet)</h4>
+          </div>
+          <div class="un-cheatsheet-grid">
+            ${notes.cheatSheet.map(cs => `
+              <div class="un-cs-item">
+                <div class="un-cs-label">${cs.label}</div>
+                <div class="un-cs-value">${cs.value}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // 5. Pesan Luca
+      if (notes.lucaMessage) {
+        html += `
+          <div class="un-luca-box">
+            <span class="un-luca-avatar">🌍</span>
+            <div class="un-luca-text">
+              <strong>Trik & Catatan dari Maskot Luca:</strong>
+              <p>${notes.lucaMessage}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      bodyEl.innerHTML = html;
+    }
+  }
+
+  modal.classList.add('active');
+  modal.style.setProperty('display', 'flex', 'important');
+  const cardBody = modal.querySelector('.modal-body');
+  if (cardBody) cardBody.scrollTop = 0;
+}
+
+function closeUnitNotesModal() {
+  const modal = document.getElementById('unit-notes-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.setProperty('display', 'none', 'important');
+  }
+}
+
+function showLockedNotesMsg(unitTitle) {
+  showAlertPopup({
+    icon: '🔒',
+    title: 'Buku Catatan Masih Terkunci!',
+    message: `Buku Rangkuman & Trik Soal untuk modul <strong>"${unitTitle || 'ini'}"</strong> adalah <strong>Hadiah Eksklusif Kelulusan</strong>! 🏆<br><br>Selesaikan seluruh pelajaran di modul ini dengan skor 100% sempurna untuk membuka dan membaca catatan ini selamanya!`,
+    type: 'warning',
+    buttonText: 'Siap Tuntaskan Latihan! 💪'
+  });
+}
+window.openUnitNotesModal = openUnitNotesModal;
+window.closeUnitNotesModal = closeUnitNotesModal;
+window.showLockedNotesMsg = showLockedNotesMsg;
+
 // ─── DASHBOARD ────────────────────────────────────────────────
 function renderDashboard() {
   const hour = new Date().getHours();
@@ -747,6 +1516,9 @@ function renderDashboard() {
   document.getElementById('toefl-btn-text').textContent = toeflDone === 0 ? 'Mulai TOEFL Prep' : 'Lanjutkan';
   const toeflLevel = Math.floor(state.toeflXp / 100) + 1;
   document.getElementById('toefl-badge').textContent = `Level ${toeflLevel}`;
+
+  // Update Live TOEFL Score Predictor Card & Badges
+  updateToeflPredictorUI();
 
   // Achievements
   renderAchievements();
@@ -887,6 +1659,8 @@ function renderLessonMap(lang) {
     if (btnFast3) btnFast3.classList.toggle('active', activeTrack === 'fast3');
     if (btnFull) btnFull.classList.toggle('active', activeTrack === 'full');
     unitsToRender = data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both');
+    updateToeflPredictorUI();
+    renderToeflStudyPlanCard();
   }
 
   pathEl.innerHTML = unitsToRender.map((unit, ui) => {
@@ -896,13 +1670,14 @@ function renderLessonMap(lang) {
     const unitTotal = unitLessons.length;
     const unitPct = Math.round((unitDone / unitTotal) * 100);
     const unitComplete = state.completedUnits.includes(unit.id);
-    const prevUnit = ui > 0 ? unitsToRender[ui - 1] : null;
-    const isLocked = prevUnit && !state.completedUnits.includes(prevUnit.id);
+    
+    // MODULAR FREEDOM: All modules (Structure, Reading, Listening) are accessible anytime!
+    const isLocked = false;
 
     const cleanTitle = (unit.title || '').replace(/^[\p{Extended_Pictographic}\u200d\uFE0F\uD800-\uDFFF\s]+/u, '').trim();
 
     return `
-      <div class="unit-section ${isLocked ? 'unit-locked' : ''}" style="--unit-color: ${unit.color}">
+      <div class="unit-section" style="--unit-color: ${unit.color}">
         <div class="unit-header">
           <div class="unit-icon-wrap ${unitComplete ? 'complete' : ''}">
             <span class="unit-icon">${unit.icon}</span>
@@ -915,14 +1690,22 @@ function renderLessonMap(lang) {
             <div class="unit-progress-bar">
               <div class="unit-progress-fill" style="width: ${unitPct}%; background: ${unit.color}"></div>
             </div>
-            <div class="unit-progress-text">${unitDone}/${unitTotal} pelajaran</div>
+            <div class="unit-progress-footer">
+              <span class="unit-progress-text">${unitDone}/${unitTotal} pelajaran</span>
+              <button type="button" class="btn-unit-notes-pill ${unitComplete ? 'completed' : 'locked'}" 
+                onclick="event.stopPropagation(); ${unitComplete ? `openUnitNotesModal('${lang}', '${unit.id}')` : `showLockedNotesMsg('${cleanTitle.replace(/'/g, "\\'")}')`}" 
+                title="${unitComplete ? 'Buka Buku Catatan & Rangkuman Modul' : 'Selesaikan seluruh pelajaran di modul ini untuk membuka catatan lengkap'}">
+                📖 Buku Catatan
+              </button>
+            </div>
           </div>
         </div>
         <div class="lessons-grid">
           ${unitLessons.map((lesson, li) => {
             const done = state.completedLessons.includes(lesson.id);
             const prevLesson = li > 0 ? unitLessons[li - 1] : null;
-            const locked = isLocked || (prevLesson && !state.completedLessons.includes(prevLesson.id));
+            // STRICT LESSON MASTERY: Lessons within each module must be mastered sequentially (100% accuracy required)
+            const locked = prevLesson && !state.completedLessons.includes(prevLesson.id);
             return `
               <div class="lesson-node ${done ? 'done' : ''} ${locked ? 'locked' : 'available'}"
                    onclick="${!locked ? `startLesson('${lang}', '${unit.id}', '${lesson.id}')` : 'showLockedMsg()'}">
@@ -959,8 +1742,8 @@ function getTypeIcon(type) {
 function showLockedMsg() {
   showAlertPopup({
     icon: '🔒',
-    title: 'Materi Masih Terkunci!',
-    message: 'Mode Belajar Ketat (Strict Mastery): Kamu wajib menyelesaikan materi sebelumnya dengan <strong>skor 100% sempurna</strong> terlebih dahulu untuk membuka modul ini!',
+    title: 'Pelajaran Masih Terkunci!',
+    message: 'Mode Belajar Ketat (Strict Mastery): Kamu wajib menyelesaikan pelajaran sebelumnya di modul ini dengan <strong>skor 100% sempurna</strong> terlebih dahulu untuk membuka level berikutnya!',
     type: 'warning',
     buttonText: 'Siap Belajar 👍'
   });
@@ -1011,6 +1794,225 @@ function prepareConversationQuestions(rawConvos) {
 }
 
 // ─── LESSON ENGINE ────────────────────────────────────────────
+
+// ══════════════════════════════════════════════════════════
+// 🎯 CHECKPOINT-LOOP CONTROLLER (INTERLEAVED ACTIVE LEARNING)
+// ══════════════════════════════════════════════════════════
+
+let checkpointIndex = 0;
+let checkpointPhase = 'card'; // 'card' | 'quiz' | 'transition'
+let checkpointQuizIndex = 0;
+let checkpointQuizzes = [];
+let checkpointCorrectCount = 0;
+let checkpointAttempts = 1;
+let checkpointHistory = []; // Records { id, title, correct, total, passed }
+
+function initCheckpointLesson(lesson) {
+  checkpointIndex = 0;
+  checkpointPhase = 'card';
+  checkpointQuizIndex = 0;
+  checkpointCorrectCount = 0;
+  checkpointAttempts = 1;
+  checkpointHistory = [];
+  prepareActiveCheckpointQuizzes();
+}
+
+function prepareActiveCheckpointQuizzes(excludeIds = []) {
+  if (!currentLesson || !currentLesson.checkpoints) return;
+  const cp = currentLesson.checkpoints[checkpointIndex];
+  if (!cp || !cp.pool) return;
+
+  const count = cp.sampleCount || 3;
+  let available = cp.pool.filter(q => !excludeIds.includes(q.q));
+  if (available.length < count) available = cp.pool;
+
+  // Shuffle and sample fresh questions
+  const picked = [...available].sort(() => 0.5 - Math.random()).slice(0, count);
+
+  // Deep clone and randomize options positions (anti-key memorization)
+  checkpointQuizzes = picked.map(q => {
+    const cloned = JSON.parse(JSON.stringify(q));
+    const correctText = cloned.options[cloned.answer];
+    const shuffledOpts = [...cloned.options].sort(() => 0.5 - Math.random());
+    cloned.options = shuffledOpts;
+    cloned.answer = shuffledOpts.indexOf(correctText);
+    return cloned;
+  });
+
+  checkpointQuizIndex = 0;
+  checkpointCorrectCount = 0;
+}
+
+function renderCheckpointStep() {
+  const lesson = currentLesson;
+  if (!lesson || !lesson.checkpoints) return;
+  const cp = lesson.checkpoints[checkpointIndex];
+  if (!cp) {
+    finishLesson();
+    return;
+  }
+
+  updateLessonProgress();
+
+  if (checkpointPhase === 'card') {
+    renderCheckpointCard(cp);
+  } else if (checkpointPhase === 'quiz') {
+    const q = checkpointQuizzes[checkpointQuizIndex];
+    if (q) {
+      renderQuiz(q);
+      // Prepend checkpoint header badge
+      const quizContainer = document.querySelector('.quiz-wrapper') || document.querySelector('.quiz-container');
+      if (quizContainer) {
+        const tag = document.createElement('div');
+        tag.className = 'checkpoint-quiz-tag';
+        tag.innerHTML = `
+          <span>🎯 <strong>${cp.title}</strong></span>
+          <span>Soal <strong>${checkpointQuizIndex + 1} dari ${checkpointQuizzes.length}</strong></span>
+        `;
+        quizContainer.insertBefore(tag, quizContainer.firstChild);
+      }
+    } else {
+      evaluateCheckpoint(cp);
+    }
+  }
+}
+
+function renderCheckpointCard(cp) {
+  const content = document.getElementById('lesson-content');
+  if (!content) return;
+  const card = cp.card;
+  const totalCp = currentLesson.checkpoints.length;
+
+  content.innerHTML = `
+    <div class="checkpoint-card-wrapper">
+      <div class="checkpoint-step-indicator">
+        <span class="csi-badge">${cp.badge || `TRIK ${checkpointIndex + 1} DARI ${totalCp}`}</span>
+        <h3 class="csi-title">${cp.title}</h3>
+      </div>
+
+      <div class="flashcard-container" style="margin-top: 10px;">
+        <div class="flashcard front" style="transform: none;">
+          <div class="fc-front-main">${card.front}</div>
+          <div class="fc-front-sub">${card.romanization || ''}</div>
+          <div class="fc-front-pron">${card.pronunciation || ''}</div>
+          ${card.example ? `
+            <div class="fc-example">
+              <div class="fc-ex-text">${card.example}</div>
+              <div class="fc-ex-trans">${card.exampleMeaning || ''}</div>
+            </div>
+          ` : ''}
+          ${card.tip ? `
+            <div class="fc-tip" style="margin-top: 14px; font-size: 0.88rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 12px; color: #fde68a; line-height: 1.5;">
+              ${card.tip}
+            </div>
+          ` : ''}
+        </div>
+      </div>
+
+      <div class="checkpoint-action-row" style="margin-top: 20px; text-align: center;">
+        <button type="button" class="btn-primary" onclick="startCheckpointQuiz()" style="width: 100%; max-width: 440px; padding: 14px 24px; font-size: 1.05rem; font-weight: 800; border-radius: 14px; box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);">
+          ⚡ Mulai 3 Soal Latihan Trik Ini →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function startCheckpointQuiz() {
+  checkpointPhase = 'quiz';
+  checkpointQuizIndex = 0;
+  checkpointCorrectCount = 0;
+  renderLessonStep();
+}
+
+function nextCheckpointQuizStep() {
+  const container = document.getElementById('quiz-feedback-container');
+  if (container) container.innerHTML = '';
+
+  const cp = currentLesson.checkpoints[checkpointIndex];
+  checkpointQuizIndex++;
+
+  if (checkpointQuizIndex < checkpointQuizzes.length) {
+    renderLessonStep();
+  } else {
+    evaluateCheckpoint(cp);
+  }
+}
+
+function evaluateCheckpoint(cp) {
+  const content = document.getElementById('lesson-content');
+  if (!content) return;
+  const passScore = cp.passScore || 2;
+  const isPassed = checkpointCorrectCount >= passScore;
+  const totalCp = currentLesson.checkpoints.length;
+  const isLastCp = checkpointIndex + 1 === totalCp;
+
+  checkpointHistory[checkpointIndex] = {
+    id: cp.id,
+    title: cp.title,
+    correct: checkpointCorrectCount,
+    total: checkpointQuizzes.length,
+    passed: isPassed
+  };
+
+  checkpointPhase = 'transition';
+
+  if (isPassed) {
+    content.innerHTML = `
+      <div class="checkpoint-transition-card success">
+        <div class="ctc-icon">🎉</div>
+        <div class="ctc-badge">CHECKPOINT TUNTAS!</div>
+        <h3 class="ctc-title">${cp.title} Berhasil Dikuasai!</h3>
+        <p class="ctc-sub">Skor: <strong>${checkpointCorrectCount}/${checkpointQuizzes.length} Benar</strong>. Pemahaman trik ini sudah terpatri kuat di kepalamu!</p>
+        <button type="button" class="btn-primary ctc-btn" onclick="proceedToNextCheckpoint()">
+          ${isLastCp ? 'Selesaikan Pelajaran & Lihat Rapor 🏁' : 'Lanjut ke Trik Berikutnya →'}
+        </button>
+      </div>
+    `;
+    if (typeof launchConfetti === 'function') launchConfetti();
+  } else {
+    content.innerHTML = `
+      <div class="checkpoint-transition-card remedial">
+        <div class="ctc-icon">⚠️</div>
+        <div class="ctc-badge remedial">PERLU PENGUATAN</div>
+        <h3 class="ctc-title">${cp.title} Perlu Dipoles</h3>
+        <p class="ctc-sub">Kamu baru benar <strong>${checkpointCorrectCount}/${checkpointQuizzes.length}</strong> (target minimal ${passScore}/${checkpointQuizzes.length}). Jangan khawatir, yuk uji kembali dengan 3 soal variasi baru!</p>
+        <div class="ctc-tip-reminder">
+          <strong>💡 Trik Kunci:</strong> ${cp.card.tip || cp.card.exampleMeaning}
+        </div>
+        <button type="button" class="btn-primary ctc-btn remedial" onclick="retryCheckpointWithNewQuestions()">
+          🔄 Coba 3 Soal Variasi Baru (Anti-Hafalan)
+        </button>
+      </div>
+    `;
+  }
+}
+
+function proceedToNextCheckpoint() {
+  checkpointIndex++;
+  if (checkpointIndex < currentLesson.checkpoints.length) {
+    checkpointPhase = 'card';
+    checkpointAttempts = 1;
+    prepareActiveCheckpointQuizzes();
+    renderLessonStep();
+  } else {
+    finishLesson();
+  }
+}
+
+function retryCheckpointWithNewQuestions() {
+  const previousQuestions = checkpointQuizzes.map(q => q.q);
+  checkpointAttempts++;
+  checkpointPhase = 'quiz';
+  prepareActiveCheckpointQuizzes(previousQuestions);
+  renderLessonStep();
+}
+
+window.startCheckpointQuiz = startCheckpointQuiz;
+window.nextCheckpointQuizStep = nextCheckpointQuizStep;
+window.proceedToNextCheckpoint = proceedToNextCheckpoint;
+window.retryCheckpointWithNewQuestions = retryCheckpointWithNewQuestions;
+
 function startLesson(lang, unitId, lessonId) {
   const data = APP_DATA[lang];
   if (!data) return;
@@ -1019,15 +2021,11 @@ function startLesson(lang, unitId, lessonId) {
   const lesson = unit.lessons.find(l => l.id === lessonId);
   if (!lesson) return;
 
-  // Strict Lock Guard: verify previous unit & lesson are completed 100% within current track
-  const activeTrack = (lang === 'toefl') ? (state.toeflActiveTrack || 'full') : null;
-  const trackUnits = activeTrack ? data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both') : data.units;
-  const ui = trackUnits.findIndex(u => u.id === unitId);
-  const prevUnit = ui > 0 ? trackUnits[ui - 1] : null;
-  const isUnitLocked = prevUnit && !state.completedUnits.includes(prevUnit.id);
+  // Modular Freedom: Any module (Structure, Reading, Listening) can be started freely!
+  // Strict Lesson Mastery: Lessons within each module must be mastered sequentially (100% accuracy required)
   const li = unit.lessons.findIndex(l => l.id === lessonId);
   const prevLesson = li > 0 ? unit.lessons[li - 1] : null;
-  const isLessonLocked = isUnitLocked || (prevLesson && !state.completedLessons.includes(prevLesson.id));
+  const isLessonLocked = prevLesson && !state.completedLessons.includes(prevLesson.id);
 
   if (isLessonLocked) {
     showLockedMsg();
@@ -1040,7 +2038,9 @@ function startLesson(lang, unitId, lessonId) {
   currentLang = lang;
 
   // Dynamically sample questions and randomize option positions
-  if (currentLesson.type === 'flashcard-quiz' && currentLesson.quiz && currentLesson.quiz.length) {
+  if (currentLesson.type === 'checkpoint-loop') {
+    initCheckpointLesson(currentLesson);
+  } else if (currentLesson.type === 'flashcard-quiz' && currentLesson.quiz && currentLesson.quiz.length) {
     currentLesson.quiz = prepareLessonQuiz(currentLesson.quiz);
   } else if (currentLesson.type === 'fill-blank' && currentLesson.questions && currentLesson.questions.length) {
     currentLesson.questions = prepareFillBlankQuestions(currentLesson.questions);
@@ -1073,6 +2073,7 @@ function startLesson(lang, unitId, lessonId) {
       confirmText: 'Ya, Keluar',
       cancelText: 'Tetap Lanjut Belajar',
       onConfirm: () => {
+        stopQuestionTimer();
         try { sessionStorage.removeItem('basaloka_active_lesson'); } catch (_) {}
         showView(lang === 'korean' ? 'korean-map' : (lang === 'english' ? 'english-map' : 'toefl-map'));
       }
@@ -1085,7 +2086,123 @@ function startLesson(lang, unitId, lessonId) {
 
   showView('lesson');
   updateHeartsDisplay('lesson-hearts-display');
+  updateLessonTimerUI();
   renderLessonStep();
+}
+
+// ─── TOEFL REAL EXAM TIMER MODE ENGINE ─────────────────────────
+let lessonTimerInterval = null;
+let lessonTimeRemaining = 0;
+let lessonTimeLimit = 40;
+
+function updateLessonTimerUI() {
+  const toggleBtn = document.getElementById('btn-lesson-timer-toggle');
+  const timerText = document.getElementById('ltt-text');
+  const timerWrap = document.getElementById('lesson-timer-bar-wrap');
+  
+  const isTimerOn = !!state.toeflTimerEnabled;
+  if (toggleBtn) {
+    if (isTimerOn) {
+      toggleBtn.classList.add('active');
+      if (timerText) timerText.textContent = 'Timer ON ⚡';
+    } else {
+      toggleBtn.classList.remove('active');
+      if (timerText) timerText.textContent = 'Timer OFF';
+    }
+  }
+
+  if (!isTimerOn && timerWrap) {
+    timerWrap.style.display = 'none';
+  }
+}
+
+function toggleLessonTimerMode() {
+  state.toeflTimerEnabled = !state.toeflTimerEnabled;
+  saveState();
+  updateLessonTimerUI();
+
+  if (state.toeflTimerEnabled) {
+    showToast('⏱️ Mode Timer ETS Aktif! Waktu berjalan per soal.', 'info');
+    if (currentLesson && currentLang === 'toefl') {
+      restartCurrentQuestionTimer();
+    }
+  } else {
+    stopQuestionTimer();
+    showToast('⏱️ Mode Timer Dinonaktifkan (Mode Santai).', 'info');
+  }
+}
+window.toggleLessonTimerMode = toggleLessonTimerMode;
+
+function stopQuestionTimer() {
+  if (lessonTimerInterval) {
+    clearInterval(lessonTimerInterval);
+    lessonTimerInterval = null;
+  }
+  const timerWrap = document.getElementById('lesson-timer-bar-wrap');
+  if (timerWrap) {
+    timerWrap.style.display = 'none';
+    timerWrap.classList.remove('danger');
+  }
+}
+
+function startQuestionTimer(durationSec, onTimeout) {
+  stopQuestionTimer();
+
+  if (!state.toeflTimerEnabled || currentLang !== 'toefl') return;
+
+  const timerWrap = document.getElementById('lesson-timer-bar-wrap');
+  const timerFill = document.getElementById('lesson-timer-bar-fill');
+  const timerText = document.getElementById('lesson-timer-countdown-text');
+
+  if (!timerWrap || !timerFill || !timerText) return;
+
+  lessonTimeLimit = durationSec || 40;
+  lessonTimeRemaining = lessonTimeLimit;
+
+  timerWrap.style.display = 'flex';
+  timerWrap.classList.remove('danger');
+  timerFill.style.width = '100%';
+  timerText.innerHTML = `⏱️ ${lessonTimeRemaining}s`;
+
+  lessonTimerInterval = setInterval(() => {
+    lessonTimeRemaining--;
+    const pct = Math.max(0, Math.round((lessonTimeRemaining / lessonTimeLimit) * 100));
+    timerFill.style.width = `${pct}%`;
+    timerText.innerHTML = `⏱️ ${lessonTimeRemaining}s`;
+
+    if (lessonTimeRemaining <= 10) {
+      timerWrap.classList.add('danger');
+    }
+
+    if (lessonTimeRemaining <= 0) {
+      stopQuestionTimer();
+      if (typeof onTimeout === 'function') {
+        onTimeout();
+      }
+    }
+  }, 1000);
+}
+
+function restartCurrentQuestionTimer() {
+  if (!currentLesson || currentLang !== 'toefl') return;
+  const l = currentLesson;
+  if (l.type === 'flashcard-quiz' || l.type === 'verb-drill') {
+    const cards = l.type === 'verb-drill' ? (l.verbs || []) : (l.cards || []);
+    const qi = lessonStep - cards.length;
+    if (qi >= 0 && l.quiz && l.quiz[qi]) {
+      startQuestionTimer(40, () => answerQuiz(-1, l.quiz[qi].answer, true));
+    }
+  } else if (l.type === 'fill-blank' && l.questions && l.questions[fillBlankStep]) {
+    const q = l.questions[fillBlankStep];
+    const correctVal = typeof q.answer === 'number' ? q.options[q.answer] : (q.answer || '');
+    startQuestionTimer(40, () => answerFill('__TIMEOUT__', String(correctVal), '', '', q.explanation || '', true));
+  } else if (l.type === 'reading-quiz' && l.questions && l.questions[readingStep]) {
+    const q = l.questions[readingStep];
+    startQuestionTimer(60, () => answerReadingQuiz(-1, q.answer, q.explanation || '', true));
+  } else if (l.type === 'conversation-listening' && l.conversations && l.conversations[convoListeningStep]) {
+    const c = l.conversations[convoListeningStep];
+    startQuestionTimer(45, () => answerConversationListening(-1, c.answer, c.explanation || '', true));
+  }
 }
 
 function renderLessonStep() {
@@ -1093,6 +2210,11 @@ function renderLessonStep() {
   if (!lesson) return;
   const content = document.getElementById('lesson-content');
   updateLessonProgress();
+
+  if (lesson.type === 'checkpoint-loop') {
+    renderCheckpointStep();
+    return;
+  }
 
   if (lesson.type === 'flashcard-quiz') {
     const cards = lesson.cards;
@@ -1149,8 +2271,13 @@ function updateLessonProgress() {
   let total = 1;
   let current = 0;
 
-  if (lesson.type === 'flashcard-quiz') {
-    total = lesson.cards.length + lesson.quiz.length;
+  if (lesson.type === 'checkpoint-loop') {
+    const totalCp = lesson.checkpoints ? lesson.checkpoints.length : 3;
+    const stepsPerCp = 4; // 1 card + 3 quizzes
+    total = totalCp * stepsPerCp;
+    current = (checkpointIndex * stepsPerCp) + (checkpointPhase === 'card' ? 0 : (checkpointQuizIndex + 1));
+  } else if (lesson.type === 'flashcard-quiz') {
+    total = (lesson.cards ? lesson.cards.length : 0) + (lesson.quiz ? lesson.quiz.length : 0);
     current = lessonStep;
   } else if (lesson.type === 'verb-drill') {
     total = lesson.verbs.length + lesson.quiz.length;
@@ -1310,8 +2437,9 @@ function renderQuiz(q) {
   const content = document.getElementById('lesson-content');
   const cards = currentLesson.type === 'verb-drill' ? (currentLesson.verbs || []) : (currentLesson.cards || []);
   const totalCards = cards.length;
-  const qi = lessonStep - totalCards + 1;
-  const totalQ = currentLesson.quiz ? currentLesson.quiz.length : 1;
+  const isCpLoop = currentLesson && currentLesson.type === 'checkpoint-loop';
+  const qi = isCpLoop ? (checkpointQuizIndex + 1) : (lessonStep - totalCards + 1);
+  const totalQ = isCpLoop ? (checkpointQuizzes ? checkpointQuizzes.length : 3) : (currentLesson.quiz ? currentLesson.quiz.length : 1);
 
   // Check if question contains conversation or audio prompt
   const hasAudioPrompt = !!(q.audioText || q.dialogue || (q.q && (q.q.includes('Audio') || q.q.includes('Man:') || q.q.includes('Woman:'))));
@@ -1352,6 +2480,7 @@ function renderQuiz(q) {
     const safeSpk2Text = spk2Text.replace(/'/g, "\\'");
     const safeNarrator = narratorSpeech.replace(/'/g, "\\'");
 
+    hasAudioPlayedThisQuestion = false;
     audioPlayerHtml = `
       <div class="quiz-audio-player-card">
         <div class="qap-header">
@@ -1362,10 +2491,14 @@ function renderQuiz(q) {
           <button type="button" class="btn-quiz-audio primary" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeSpk1Role}', '${safeSpk1Text}', '${safeSpk2Role}', '${safeSpk2Text}', '${safeNarrator}')">
             ▶️ Putar Percakapan
           </button>
-          <button type="button" class="btn-quiz-transcript-toggle" id="btn-quiz-transcript-toggle" onclick="toggleQuizTranscript()">
+          <button type="button" class="btn-audio-mode-pill ${state.toeflStrictAudioMode ? 'active-strict' : ''}" id="btn-audio-mode-pill" onclick="toggleAudioStrictExamMode()" title="Ganti antara Mode Santai dan Simulasi Ujian ETS 1x Putar">
+            ${state.toeflStrictAudioMode ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)'}
+          </button>
+          <button type="button" class="btn-quiz-transcript-toggle" id="btn-quiz-transcript-toggle" onclick="toggleQuizTranscript()" ${state.toeflStrictAudioMode ? 'style="display: none;"' : ''}>
             👁️ Buka Naskah & Arti
           </button>
         </div>
+        <div id="qap-strict-notice-area"></div>
         <div class="quiz-transcript-drawer" id="quiz-transcript-drawer" style="display: none;">
           <div class="qtd-header">📜 Naskah Percakapan (Transkrip):</div>
           <div class="qtd-line"><strong>${escapeHtml(spk1Label)}:</strong> "${escapeHtml(spk1Text)}"</div>
@@ -1380,6 +2513,14 @@ function renderQuiz(q) {
     <div class="quiz-wrapper">
       <div class="quiz-label">🎯 Quiz ${qi}/${totalQ}</div>
       ${audioPlayerHtml}
+      ${q.passage ? `
+        <div class="quiz-reading-passage-box">
+          <div class="qrpb-header">
+            <span class="qrpb-tag">📖 Teks Bacaan Singkat</span>
+          </div>
+          <div class="qrpb-content">${escapeHtml(q.passage)}</div>
+        </div>
+      ` : ''}
       ${q.char ? `<div class="quiz-char-display">${escapeHtml(q.char)}</div>` : ''}
       <div class="quiz-question">${escapeHtml(displayQuestion)}</div>
       <div class="quiz-options" id="quiz-options">
@@ -1390,19 +2531,31 @@ function renderQuiz(q) {
       </div>
       <div id="quiz-feedback-container"></div>
     </div>`;
+
+  stopQuestionTimer();
+  if (state.toeflTimerEnabled && currentLang === 'toefl') {
+    startQuestionTimer(40, () => {
+      answerQuiz(-1, q.answer, true);
+    });
+  }
 }
 
 function parseQuizDialogue(q) {
   if (q.dialogue && Array.isArray(q.dialogue)) {
-    const manObj = q.dialogue.find(d => d.speaker === 'man');
-    const womanObj = q.dialogue.find(d => d.speaker === 'woman');
-    const firstIsMan = q.dialogue[0] && q.dialogue[0].speaker === 'man';
-    const s1 = firstIsMan ? (manObj || q.dialogue[0]) : (womanObj || q.dialogue[0]);
-    const s2 = firstIsMan ? (womanObj || q.dialogue[1]) : (manObj || q.dialogue[1]);
+    const s1 = q.dialogue[0];
+    const s2 = q.dialogue.length > 1 ? q.dialogue[1] : null;
     return {
       hasDialogue: true,
-      speaker1: { role: s1 ? s1.speaker : 'man', label: s1 ? (s1.speaker === 'man' ? 'Pria' : 'Wanita') : 'Pria', text: s1 ? s1.text : '' },
-      speaker2: s2 ? { role: s2.speaker, label: s2.speaker === 'man' ? 'Pria' : 'Wanita', text: s2.text } : null,
+      speaker1: {
+        role: s1 ? (s1.speaker || 'man') : 'man',
+        label: s1 ? (s1.label || (s1.speaker === 'woman' ? 'Wanita' : 'Pria')) : 'Pria',
+        text: s1 ? s1.text : ''
+      },
+      speaker2: s2 ? {
+        role: s2.speaker || 'woman',
+        label: s2.label || (s2.speaker === 'woman' ? 'Wanita' : 'Pria'),
+        text: s2.text
+      } : null,
       questionText: q.questionText || q.narrator || 'What does the speaker imply?'
     };
   }
@@ -1497,8 +2650,17 @@ function parseQuizDialogue(q) {
 }
 
 function getEnglishNarratorPrompt(questionText) {
-  const clean = (questionText || '').trim();
+  // Strip out Indonesian translations or text in parentheses / brackets
+  let clean = (questionText || '')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/["“”'‘’]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
   if (/^(what|who|where|how|which|why)\b/i.test(clean)) {
+    // Ensure clean natural question mark ending
+    clean = clean.replace(/[?.\s]+$/, '') + '?';
     return clean;
   }
   const lower = clean.toLowerCase();
@@ -1514,6 +2676,51 @@ function getEnglishNarratorPrompt(questionText) {
   return 'What does the speaker imply?';
 }
 
+// ─── STRICT 1X LISTENING MODE (ETS REAL EXAM SIMULATION) ─────
+let hasAudioPlayedThisQuestion = false;
+
+function toggleAudioStrictExamMode() {
+  state.toeflStrictAudioMode = !state.toeflStrictAudioMode;
+  saveState();
+
+  const isStrict = !!state.toeflStrictAudioMode;
+  showToast(
+    isStrict 
+      ? '🏛️ Mode Simulasi ETS Aktif: Audio hanya diputar 1 kali tanpa pengulangan!' 
+      : '🔄 Mode Santai Aktif: Audio bebas diputar ulang.',
+    'info'
+  );
+
+  const quizPill = document.getElementById('btn-audio-mode-pill');
+  if (quizPill) {
+    quizPill.className = `btn-audio-mode-pill ${isStrict ? 'active-strict' : ''}`;
+    quizPill.innerHTML = isStrict ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)';
+  }
+  const convoPill = document.getElementById('btn-convo-mode-pill');
+  if (convoPill) {
+    convoPill.className = `btn-audio-mode-pill ${isStrict ? 'active-strict' : ''}`;
+    convoPill.innerHTML = isStrict ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)';
+  }
+
+  const quizTrBtn = document.getElementById('btn-quiz-transcript-toggle');
+  if (quizTrBtn && !hasAnsweredCurrentQuestion()) {
+    quizTrBtn.style.display = isStrict ? 'none' : 'inline-flex';
+  }
+  const convoTrBtn = document.getElementById('btn-transcript-toggle');
+  if (convoTrBtn && !hasAnsweredCurrentQuestion()) {
+    convoTrBtn.style.display = isStrict ? 'none' : 'inline-flex';
+  }
+}
+window.toggleAudioStrictExamMode = toggleAudioStrictExamMode;
+
+function hasAnsweredCurrentQuestion() {
+  const qOpts = document.querySelector('.quiz-option');
+  if (qOpts && qOpts.disabled) return true;
+  const cOpts = document.querySelector('.convo-option-btn');
+  if (cOpts && cOpts.disabled) return true;
+  return false;
+}
+
 function toggleQuizTranscript() {
   const drawer = document.getElementById('quiz-transcript-drawer');
   const btn = document.getElementById('btn-quiz-transcript-toggle');
@@ -1527,6 +2734,11 @@ function toggleQuizTranscript() {
 window.toggleQuizTranscript = toggleQuizTranscript;
 
 function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorText) {
+  if (state.toeflStrictAudioMode && hasAudioPlayedThisQuestion) {
+    showToast('⚠️ Aturan ETS: Audio hanya dapat diputar 1 kali di ujian resmi!', 'warning');
+    return;
+  }
+
   const btn = document.getElementById('btn-quiz-convo-play');
   if (isPlayingConvo) {
     if (speechSynth) speechSynth.cancel();
@@ -1540,46 +2752,67 @@ function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorT
 
   const resetBtn = () => {
     isPlayingConvo = false;
-    if (btn) btn.innerHTML = '▶️ Putar Percakapan';
+    if (state.toeflStrictAudioMode) {
+      hasAudioPlayedThisQuestion = true;
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.add('disabled-strict');
+        btn.innerHTML = '🔒 Audio Selesai (Aturan ETS: 1x Saja)';
+      }
+      const noticeArea = document.getElementById('qap-strict-notice-area');
+      if (noticeArea) {
+        noticeArea.innerHTML = '<div class="strict-audio-notice">⚠️ <strong>Aturan Resmi ETS:</strong> Audio tidak dapat diulang. Silakan pilih opsi jawaban terbaikmu!</div>';
+      }
+    } else {
+      if (btn) btn.innerHTML = '▶️ Putar Percakapan';
+    }
   };
 
   const spk1Gender = (spk1Role === 'woman' || spk1Role === 'female') ? 'female' : 'male';
   const spk2Gender = (spk2Role === 'woman' || spk2Role === 'female') ? 'female' : 'male';
-  const spk1Pitch = spk1Gender === 'female' ? 1.15 : 0.80;
-  const spk2Pitch = spk2Gender === 'female' ? 1.15 : 0.80;
 
   if (spk1Text && spk2Text) {
-    speakWithVoice(spk1Text, 'en-US', { pitch: spk1Pitch, rate: 0.92, gender: spk1Gender }, () => {
+    // Initial 120ms gentle warmup delay so first word is never clipped
+    setTimeout(() => {
       if (!isPlayingConvo) return;
-      setTimeout(() => {
+      speakWithVoice(spk1Text, 'en-US', { gender: spk1Gender }, () => {
         if (!isPlayingConvo) return;
-        speakWithVoice(spk2Text, 'en-US', { pitch: spk2Pitch, rate: 0.92, gender: spk2Gender, cancelPrevious: false }, () => {
+        // Natural 600ms turn-taking conversation pause
+        setTimeout(() => {
           if (!isPlayingConvo) return;
-          if (narratorText) {
-            setTimeout(() => {
-              if (!isPlayingConvo) return;
-              speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
-                resetBtn();
-              });
-            }, 500);
-          } else {
-            resetBtn();
-          }
-        });
-      }, 450);
-    });
+          speakWithVoice(spk2Text, 'en-US', { gender: spk2Gender, cancelPrevious: false }, () => {
+            if (!isPlayingConvo) return;
+            if (narratorText) {
+              // Calm 750ms silence pause before ETS exam narrator speaks
+              setTimeout(() => {
+                if (!isPlayingConvo) return;
+                speakWithVoice(narratorText, 'en-US', { gender: 'neutral', rate: 0.88, pitch: 0.98, cancelPrevious: false }, () => {
+                  setTimeout(() => {
+                    resetBtn();
+                  }, 450);
+                });
+              }, 750);
+            } else {
+              setTimeout(() => resetBtn(), 400);
+            }
+          });
+        }, 600);
+      });
+    }, 120);
   } else if (spk1Text) {
-    speakWithVoice(spk1Text, 'en-US', { pitch: spk1Pitch, rate: 0.92, gender: spk1Gender }, () => {
+    speakWithVoice(spk1Text, 'en-US', { gender: spk1Gender }, () => {
       if (!isPlayingConvo) return;
       if (narratorText) {
         setTimeout(() => {
           if (!isPlayingConvo) return;
-          speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
-            resetBtn();
+          speakWithVoice(narratorText, 'en-US', { gender: 'neutral', rate: 0.88, pitch: 0.98, cancelPrevious: false }, () => {
+            setTimeout(() => {
+              resetBtn();
+            }, 400);
           });
-        }, 500);
+        }, 650);
       } else {
-        resetBtn();
+        setTimeout(() => resetBtn(), 350);
       }
     });
   } else {
@@ -1588,32 +2821,48 @@ function playQuizCombinedAudio(spk1Role, spk1Text, spk2Role, spk2Text, narratorT
 }
 window.playQuizCombinedAudio = playQuizCombinedAudio;
 
-function answerQuiz(selected, correct) {
+function answerQuiz(selected, correct, isTimeout) {
+  stopQuestionTimer();
   const opts = document.querySelectorAll('.quiz-option');
   opts.forEach(o => o.disabled = true);
 
   // Automatically reveal transcript drawer upon answering so learners can review the full dialogue
   const drawer = document.getElementById('quiz-transcript-drawer');
   const transcriptBtn = document.getElementById('btn-quiz-transcript-toggle');
+  if (transcriptBtn) transcriptBtn.style.display = 'inline-flex';
   if (drawer && (drawer.style.display === 'none' || drawer.style.display === '')) {
     drawer.style.display = 'block';
     if (transcriptBtn) transcriptBtn.innerHTML = '🙈 Sembunyikan Naskah';
   }
 
   totalAnswers++;
-  const isCorrect = selected === correct;
+  const isCorrect = !isTimeout && selected === correct;
+  if (currentLesson && currentLesson.type === 'checkpoint-loop') {
+    if (isCorrect) checkpointCorrectCount++;
+  }
   const cards = currentLesson.type === 'verb-drill' ? (currentLesson.verbs || []) : (currentLesson.cards || []);
   const totalCards = cards.length;
   const qi = Math.max(0, lessonStep - totalCards);
-  const currentQ = (currentLesson.quiz && currentLesson.quiz[qi]) || null;
+  const currentQ = currentLesson.type === 'checkpoint-loop' 
+    ? checkpointQuizzes[checkpointQuizIndex]
+    : ((currentLesson.quiz && currentLesson.quiz[qi]) || null);
   const correctText = (currentQ && currentQ.options && currentQ.options[correct]) || (opts[correct] ? opts[correct].innerText : '');
-  const selectedText = (currentQ && currentQ.options && currentQ.options[selected]) || (opts[selected] ? opts[selected].innerText : '');
-  const explanation = currentQ?.explanation || currentQ?.tip || currentLesson?.tip || '';
+  const selectedText = isTimeout
+    ? '⏰ Waktu Habis (Tidak sempat menjawab)'
+    : ((currentQ && currentQ.options && currentQ.options[selected]) || (opts[selected] ? opts[selected].innerText : ''));
+  let explanation = currentQ?.explanation || currentQ?.tip || currentLesson?.tip || '';
+  if (isTimeout) {
+    explanation = `<span style="color: #ef4444; font-weight: 700;">⏰ Waktu Pengerjaan Habis!</span><br>Di ujian TOEFL asli, kamu rata-rata hanya memiliki waktu 37 detik per soal di Structure. Jangan panik, pelajari pembahasannya di bawah ini:<br><br>${explanation}`;
+  }
 
   if (isCorrect) {
     correctAnswers++;
     if (opts[selected]) opts[selected].classList.add('correct');
-    const xpReward = Math.round((currentLesson.xpReward || 20) / (currentLesson.quiz ? currentLesson.quiz.length : 1));
+    let xpReward = Math.round((currentLesson.xpReward || 20) / (currentLesson.quiz ? currentLesson.quiz.length : 1));
+    if (state.toeflTimerEnabled && currentLang === 'toefl') {
+      xpReward += 5; // +5 Bonus XP for speed with timer on
+      showToast('⚡ +5 XP Bonus Kecepatan Waktu ETS!', 'success');
+    }
     lessonXpEarned += xpReward;
     playSuccessEffect();
     showQuizFeedback({
@@ -1645,7 +2894,9 @@ function showQuizFeedback({ isCorrect, selectedText, correctText, explanation, x
   const totalCards = cards.length;
   const qi = lessonStep - totalCards + 1;
   const totalQ = currentLesson.quiz ? currentLesson.quiz.length : 1;
-  const isLastQuestion = qi >= totalQ;
+  const isLastQuestion = currentLesson.type === 'checkpoint-loop'
+    ? (checkpointQuizIndex + 1 >= checkpointQuizzes.length)
+    : (qi >= totalQ);
 
   container.innerHTML = `
     <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}">
@@ -1683,6 +2934,10 @@ function showQuizFeedback({ isCorrect, selectedText, correctText, explanation, x
 }
 
 function nextQuizStep() {
+  if (currentLesson && currentLesson.type === 'checkpoint-loop') {
+    nextCheckpointQuizStep();
+    return;
+  }
   lessonStep++;
   renderLessonStep();
 }
@@ -1796,13 +3051,21 @@ function renderFillBlank(q) {
       </div>
       <div id="fill-feedback-area"></div>
     </div>`;
+
+  stopQuestionTimer();
+  if (state.toeflTimerEnabled && currentLang === 'toefl') {
+    startQuestionTimer(40, () => {
+      answerFill('__TIMEOUT__', safeAnswer, '', '', safeExp, true);
+    });
+  }
 }
 
-function answerFill(selected, correct, ttsText, ttsLang, explanation) {
+function answerFill(selected, correct, ttsText, ttsLang, explanation, isTimeout) {
+  stopQuestionTimer();
   const opts = document.querySelectorAll('.fill-option');
   opts.forEach(o => o.disabled = true);
   totalAnswers++;
-  const isCorrect = selected.trim() === correct.trim();
+  const isCorrect = !isTimeout && selected.trim() === correct.trim();
 
   opts.forEach(o => {
     if (o.textContent.trim() === correct.trim()) o.classList.add('correct');
@@ -1811,13 +3074,18 @@ function answerFill(selected, correct, ttsText, ttsLang, explanation) {
 
   if (isCorrect) {
     correctAnswers++;
-    lessonXpEarned += Math.round(currentLesson.xpReward / currentLesson.questions.length);
+    let xpGain = Math.round(currentLesson.xpReward / currentLesson.questions.length);
+    if (state.toeflTimerEnabled && currentLang === 'toefl') {
+      xpGain += 5;
+      showToast('⚡ +5 XP Bonus Kecepatan Waktu ETS!', 'success');
+    }
+    lessonXpEarned += xpGain;
     showToast('✅ Benar!', 'success');
     playSuccessEffect();
     if (ttsText) setTimeout(() => speak(ttsText, ttsLang), 300);
   } else {
     loseHeart();
-    showToast('❌ Kurang tepat, periksa pembahasannya', 'error');
+    showToast(isTimeout ? '⏰ Waktu Habis!' : '❌ Kurang tepat, periksa pembahasannya', 'error');
   }
 
   const feedbackArea = document.getElementById('fill-feedback-area');
@@ -1899,30 +3167,45 @@ function renderReadingQuiz(passage, qObj, qIndex, totalQ) {
       </div>
     </div>
   `;
+
+  stopQuestionTimer();
+  if (state.toeflTimerEnabled && currentLang === 'toefl') {
+    startQuestionTimer(60, () => {
+      answerReadingQuiz(-1, qObj.answer, qObj.explanation, true);
+    });
+  }
 }
 
-function answerReadingQuiz(selectedIndex, correctIndex, explanation) {
+function answerReadingQuiz(selectedIndex, correctIndex, explanation, isTimeout) {
+  stopQuestionTimer();
   const btns = document.querySelectorAll('.reading-opt-btn');
   btns.forEach(btn => btn.disabled = true);
 
   totalAnswers++;
-  const isCorrect = selectedIndex === correctIndex;
+  const isCorrect = !isTimeout && selectedIndex === correctIndex;
   const letters = ['A', 'B', 'C', 'D'];
   const qObj = currentLesson.questions[readingStep] || {};
-  const selectedText = (qObj.options && qObj.options[selectedIndex]) ? `${letters[selectedIndex]}. ${qObj.options[selectedIndex]}` : `Opsi ${letters[selectedIndex]}`;
+  const selectedText = isTimeout
+    ? '⏰ Waktu Habis (Tidak sempat menjawab)'
+    : ((qObj.options && qObj.options[selectedIndex]) ? `${letters[selectedIndex]}. ${qObj.options[selectedIndex]}` : `Opsi ${letters[selectedIndex]}`);
   const correctText = (qObj.options && qObj.options[correctIndex]) ? `${letters[correctIndex]}. ${qObj.options[correctIndex]}` : `Opsi ${letters[correctIndex]}`;
 
   if (isCorrect) {
     btns[selectedIndex].classList.add('correct');
     correctAnswers++;
-    lessonXpEarned += Math.round(currentLesson.xpReward / currentLesson.questions.length);
+    let xpGain = Math.round(currentLesson.xpReward / currentLesson.questions.length);
+    if (state.toeflTimerEnabled && currentLang === 'toefl') {
+      xpGain += 5;
+      showToast('⚡ +5 XP Bonus Kecepatan Waktu ETS!', 'success');
+    }
+    lessonXpEarned += xpGain;
     showToast('✅ Jawaban Benar!', 'success');
     playSuccessEffect();
   } else {
-    btns[selectedIndex].classList.add('wrong');
-    btns[correctIndex].classList.add('correct');
+    if (btns[selectedIndex]) btns[selectedIndex].classList.add('wrong');
+    if (btns[correctIndex]) btns[correctIndex].classList.add('correct');
     loseHeart();
-    showToast('❌ Kurang tepat, periksa pembahasannya', 'error');
+    showToast(isTimeout ? '⏰ Waktu Habis!' : '❌ Kurang tepat, periksa pembahasannya', 'error');
   }
 
   const feedbackEl = document.getElementById('reading-feedback');
@@ -1971,6 +3254,7 @@ function renderConversationListening(convo, qIndex, totalQ) {
   const letters = ['A', 'B', 'C', 'D'];
   convoTranscriptVisible = false;
   isPlayingConvo = false;
+  hasAudioPlayedThisQuestion = false;
   if (convoAudioQueueTimeout) clearTimeout(convoAudioQueueTimeout);
 
   const manLine = (convo.dialogue || []).find(d => d.speaker === 'man') || convo.dialogue[0];
@@ -2004,11 +3288,15 @@ function renderConversationListening(convo, qIndex, totalQ) {
               <span class="play-icon" id="play-all-icon">▶️</span>
               <span id="play-all-text">Putar Percakapan</span>
             </button>
-            <button class="btn-transcript-toggle" id="btn-transcript-toggle" onclick="toggleConvoTranscript()">
+            <button type="button" class="btn-audio-mode-pill ${state.toeflStrictAudioMode ? 'active-strict' : ''}" id="btn-convo-mode-pill" onclick="toggleAudioStrictExamMode()" title="Ganti antara Mode Santai dan Simulasi Ujian ETS 1x Putar">
+              ${state.toeflStrictAudioMode ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)'}
+            </button>
+            <button class="btn-transcript-toggle" id="btn-transcript-toggle" onclick="toggleConvoTranscript()" ${state.toeflStrictAudioMode ? 'style="display: none;"' : ''}>
               <span id="transcript-btn-icon">👁️</span>
               <span id="transcript-btn-text">Buka Naskah & Terjemahan</span>
             </button>
           </div>
+          <div id="convo-strict-notice-area"></div>
 
           <!-- Soundwave Animation Banner -->
           <div class="convo-soundwave-bar" id="convo-soundwave" style="display: none;">
@@ -2065,9 +3353,21 @@ function renderConversationListening(convo, qIndex, totalQ) {
   setTimeout(() => {
     playFullConversation();
   }, 450);
+
+  stopQuestionTimer();
+  if (state.toeflTimerEnabled && currentLang === 'toefl') {
+    startQuestionTimer(45, () => {
+      answerConversationListening(-1, convo.answer, convo.explanation, true);
+    });
+  }
 }
 
 function playFullConversation() {
+  if (state.toeflStrictAudioMode && hasAudioPlayedThisQuestion) {
+    showToast('⚠️ Aturan ETS: Audio hanya dapat diputar 1 kali di ujian resmi!', 'warning');
+    return;
+  }
+
   if (!currentLesson || !currentLesson.conversations) return;
   const convo = currentLesson.conversations[convoListeningStep];
   if (!convo || !convo.dialogue || !convo.dialogue.length) return;
@@ -2098,7 +3398,21 @@ function playFullConversation() {
     isPlayingConvo = false;
     if (waveBar) waveBar.style.display = 'none';
     if (playBtnIcon) playBtnIcon.textContent = '▶️';
-    if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
+    if (state.toeflStrictAudioMode) {
+      hasAudioPlayedThisQuestion = true;
+      const playBtn = document.getElementById('btn-play-convo');
+      if (playBtn) {
+        playBtn.disabled = true;
+        playBtn.classList.add('disabled-strict');
+      }
+      if (playBtnText) playBtnText.textContent = '🔒 Audio Selesai (Aturan ETS: 1x Saja)';
+      const noticeArea = document.getElementById('convo-strict-notice-area');
+      if (noticeArea) {
+        noticeArea.innerHTML = '<div class="strict-audio-notice">⚠️ <strong>Aturan Resmi ETS:</strong> Audio tidak dapat diulang. Silakan pilih opsi jawaban terbaikmu!</div>';
+      }
+    } else {
+      if (playBtnText) playBtnText.textContent = 'Putar Percakapan';
+    }
   };
 
   // Play lines in strictly CHRONOLOGICAL order (turn 1 then turn 2)!
@@ -2110,8 +3424,6 @@ function playFullConversation() {
     const isWoman = line && (line.speaker === 'woman' || line.speaker === 'female');
     return {
       gender: isWoman ? 'female' : 'male',
-      pitch: isWoman ? 1.15 : 0.80,
-      rate: 0.92,
       cancelPrevious: false
     };
   };
@@ -2139,10 +3451,12 @@ function playFullConversation() {
             convoAudioQueueTimeout = setTimeout(() => {
               if (!isPlayingConvo) return;
               if (waveStatus) waveStatus.textContent = '🎙️ Narator membacakan pertanyaan...';
-              speakWithVoice(narratorLine, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, resetBtn);
-            }, 600);
+              speakWithVoice(narratorLine, 'en-US', { pitch: 0.98, rate: 0.88, gender: 'neutral', cancelPrevious: false }, () => {
+                setTimeout(() => resetBtn(), 400);
+              });
+            }, 650);
           } else {
-            resetBtn();
+            setTimeout(() => resetBtn(), 350);
           }
         });
       } else if (narratorLine) {
@@ -2180,11 +3494,11 @@ function playSpeakerVoice(speakerRole, text, cardElementId) {
 
   if (card) card.classList.add('active-speaking');
 
-  const opts = speakerRole === 'man'
-    ? { pitch: 1.0, rate: 0.92, gender: 'male' }
-    : speakerRole === 'woman'
-    ? { pitch: 1.0, rate: 0.92, gender: 'female' }
-    : { pitch: 1.0, rate: 0.90, gender: 'neutral' };
+  const opts = (speakerRole === 'man' || speakerRole === 'male')
+    ? { gender: 'male' }
+    : (speakerRole === 'woman' || speakerRole === 'female')
+    ? { gender: 'female' }
+    : { gender: 'neutral' };
 
   speakWithVoice(text, 'en-US', opts, () => {
     if (card) card.classList.remove('active-speaking');
@@ -2206,27 +3520,37 @@ function toggleConvoTranscript() {
   if (btn) btn.classList.toggle('active', convoTranscriptVisible);
 }
 
-function answerConversationListening(selectedIndex, correctIndex, explanation) {
+function answerConversationListening(selectedIndex, correctIndex, explanation, isTimeout) {
+  stopQuestionTimer();
   const btns = document.querySelectorAll('.convo-option-btn');
   btns.forEach(btn => btn.disabled = true);
 
+  const transcriptBtn = document.getElementById('btn-transcript-toggle');
+  if (transcriptBtn) transcriptBtn.style.display = 'inline-flex';
+
   totalAnswers++;
-  const isCorrect = selectedIndex === correctIndex;
+  const isCorrect = !isTimeout && selectedIndex === correctIndex;
   const currentConvo = currentLesson.conversations[convoListeningStep] || {};
-  const selectedText = (currentConvo.options && currentConvo.options[selectedIndex]) ? currentConvo.options[selectedIndex] : 'Jawaban Anda';
+  const selectedText = isTimeout
+    ? '⏰ Waktu Habis (Tidak sempat menjawab)'
+    : ((currentConvo.options && currentConvo.options[selectedIndex]) ? currentConvo.options[selectedIndex] : 'Jawaban Anda');
   const correctText = (currentConvo.options && currentConvo.options[correctIndex]) ? currentConvo.options[correctIndex] : 'Kunci Jawaban';
 
   if (isCorrect) {
     btns[selectedIndex].classList.add('correct');
     correctAnswers++;
-    const rewardPerQ = Math.round((currentLesson.xpReward || 35) / currentLesson.conversations.length);
+    let rewardPerQ = Math.round((currentLesson.xpReward || 35) / currentLesson.conversations.length);
+    if (state.toeflTimerEnabled && currentLang === 'toefl') {
+      rewardPerQ += 5;
+      showToast('⚡ +5 XP Bonus Kecepatan Waktu ETS!', 'success');
+    }
     lessonXpEarned += rewardPerQ;
     showToast('✅ Jawaban Benar!', 'success');
     playSuccessEffect();
   } else {
-    btns[selectedIndex].classList.add('wrong');
-    btns[correctIndex].classList.add('correct');
-    showToast('❌ Kurang tepat, periksa pembahasannya', 'error');
+    if (btns[selectedIndex]) btns[selectedIndex].classList.add('wrong');
+    if (btns[correctIndex]) btns[correctIndex].classList.add('correct');
+    showToast(isTimeout ? '⏰ Waktu Habis!' : '❌ Kurang tepat, periksa pembahasannya', 'error');
   }
 
   const feedbackEl = document.getElementById('convo-feedback-area');
@@ -2278,6 +3602,7 @@ function loseHeart() {
 
 // ─── FINISH LESSON ────────────────────────────────────────────
 function finishLesson() {
+  if (typeof stopQuestionTimer === 'function') stopQuestionTimer();
   try {
     sessionStorage.removeItem('basaloka_active_lesson');
   } catch (_) {}
@@ -2365,6 +3690,120 @@ function finishLesson() {
         ? `${Math.floor(timeSec / 60)}m ${timeSec % 60}s` 
         : `${timeSec}s`;
       timeEl.textContent = formattedTime;
+    }
+
+    // TOEFL Live Score Predictor Boost Banner in Result View
+    const toeflBoostEl = document.getElementById('result-toefl-boost');
+    if (toeflBoostEl) {
+      if (lang === 'toefl') {
+        const pred = calculatePredictedToeflScore(state);
+        const prevScore = state.toeflLastPredictedScore || 310;
+        const diff = Math.max(0, pred.totalScore - prevScore);
+        state.toeflLastPredictedScore = pred.totalScore;
+        saveState();
+
+        const predScoreEl = document.getElementById('rtb-pred-score');
+        const milestoneEl = document.getElementById('rtb-milestone-badge');
+        const diffEl = document.getElementById('rtb-score-diff');
+        const targetEl = document.getElementById('rtb-target-info');
+
+        if (predScoreEl) predScoreEl.textContent = pred.totalScore;
+        if (milestoneEl) milestoneEl.textContent = pred.milestoneBadge;
+        if (diffEl) {
+          diffEl.textContent = diff > 0 ? `+${diff} Poin Prediksi Baru! 🚀` : `Skor Prediksi Terkini`;
+          diffEl.style.color = diff > 0 ? '#10b981' : '#38bdf8';
+        }
+        if (targetEl) {
+          targetEl.textContent = pred.pointsToTarget > 0 
+            ? `Kurang ${pred.pointsToTarget} poin lagi menuju ${pred.targetLabel}!`
+            : `Selamat! Target ${pred.targetLabel} telah berhasil dicapai! 🎉`;
+        }
+        toeflBoostEl.style.display = 'block';
+        updateToeflPredictorUI();
+      } else {
+        toeflBoostEl.style.display = 'none';
+      }
+    }
+
+    // 🩺 TOEFL Post-Lesson / Exam Module Prescription Card
+    const prescCard = document.getElementById('result-prescription-card');
+    if (prescCard) {
+      if (lang === 'toefl') {
+        const pred = calculatePredictedToeflScore(state);
+        let targetUnitId = 'toefl-day3';
+        let badgeText = 'REKOMENDASI DONGKRAK SKOR CEPAT';
+        let titleText = 'Modul 3: Structure 1–15 (Rumus S+V & Konektor)';
+        let descText = 'Menguasai pola Subjek & Kata Kerja memberi lonjakan poin tercepat pada tes TOEFL!';
+
+        if (unit && (unit.section === 'listening' || unit.id.includes('listening') || unit.id.includes('d1') || unit.id.includes('u-hack')) && !isPerfect) {
+          targetUnitId = 'toefl-u-hack';
+          badgeText = 'FOKUS PERBAIKAN: LISTENING COMPREHENSION';
+          titleText = 'Modul 1: Listening Part A (Trik Second Speaker)';
+          descText = 'Fokus pada speaker kedua dan cari sinonim kata kunci untuk menghindari perangkap bunyi!';
+        } else if (unit && (unit.section === 'structure' || unit.id.includes('structure') || unit.id.includes('day3') || unit.id.includes('day4')) && !isPerfect) {
+          targetUnitId = 'toefl-day4';
+          badgeText = 'FOKUS PERBAIKAN: DETEKTIF ERROR 16–40';
+          titleText = 'Modul 4: Written Expression (Detektif Error)';
+          descText = 'Periksa kesesuaian Subject-Verb Agreement dan bentuk kata (Adjective vs Adverb) untuk membasmi jebakan soal!';
+        } else if (unit && (unit.section === 'reading' || unit.id.includes('reading') || unit.id.includes('day6') || unit.id.includes('u2')) && !isPerfect) {
+          targetUnitId = 'toefl-day6';
+          badgeText = 'FOKUS PERBAIKAN: READING NINJA';
+          titleText = 'Modul 6: Reading Ninja (Scan & Skim Cepat)';
+          descText = 'Hindari membaca seluruh teks dari awal. Baca kalimat pertama tiap paragraf lalu scan kata kunci!';
+        } else if (state.toeflRecUnitId) {
+          targetUnitId = state.toeflRecUnitId;
+          const recU = (APP_DATA.toefl && APP_DATA.toefl.units) ? APP_DATA.toefl.units.find(u => u.id === targetUnitId) : null;
+          if (recU) {
+            badgeText = 'REKOMENDASI DIAGNOSTIK LUCA';
+            titleText = (recU.title || 'Modul Rekomendasi').replace(/^[\p{Extended_Pictographic}\u200d\uFE0F\uD800-\uDFFF\s]+/u, '').trim();
+            descText = 'Modul ini dipilih otomatis sesuai kelemahan terbesarmu saat tes diagnostik.';
+          }
+        }
+
+        const rpcBadge = document.getElementById('rpc-badge');
+        const rpcTitle = document.getElementById('rpc-title');
+        const rpcDesc = document.getElementById('rpc-desc');
+        const rpcBtn = document.getElementById('rpc-action-btn');
+
+        if (rpcBadge) rpcBadge.textContent = badgeText;
+        if (rpcTitle) rpcTitle.textContent = titleText;
+        if (rpcDesc) rpcDesc.textContent = descText;
+        if (rpcBtn) {
+          rpcBtn.onclick = () => {
+            const uObj = (APP_DATA.toefl && APP_DATA.toefl.units) ? APP_DATA.toefl.units.find(u => u.id === targetUnitId) : null;
+            if (uObj && uObj.lessons && uObj.lessons.length) {
+              startLesson('toefl', uObj.id, uObj.lessons[0].id);
+            } else {
+              showView('toefl-map');
+            }
+          };
+        }
+        prescCard.style.display = 'block';
+      } else {
+        prescCard.style.display = 'none';
+      }
+    }
+
+    // 📘 Unit Completion Card (Buku Catatan & Tips Modul)
+    const unitCompleteCard = document.getElementById('result-unit-complete-card');
+    if (unitCompleteCard) {
+      const isUnitAllDone = unit && unit.lessons && unit.lessons.every(l => state.completedLessons.includes(l.id));
+      if (isUnitAllDone && isPerfect) {
+        const titleEl = document.getElementById('rucc-unit-title');
+        if (titleEl) {
+          const cleanUName = (unit.title || 'Materi Modul').replace(/^[\p{Extended_Pictographic}\u200d\uFE0F\uD800-\uDFFF\s]+/u, '').trim();
+          titleEl.textContent = cleanUName;
+        }
+        const openNotesBtn = document.getElementById('rucc-open-notes-btn');
+        if (openNotesBtn) {
+          openNotesBtn.onclick = () => {
+            openUnitNotesModal(lang, unit.id);
+          };
+        }
+        unitCompleteCard.style.display = 'block';
+      } else {
+        unitCompleteCard.style.display = 'none';
+      }
     }
 
     const backBtn = document.getElementById('result-back-btn');
@@ -2587,18 +4026,33 @@ function switchAuthTab(tab) {
   const formLogin = document.getElementById('auth-form-login');
   const formRegister = document.getElementById('auth-form-register');
   const alertEl = document.getElementById('auth-alert');
-  if (alertEl) alertEl.className = 'auth-alert hidden';
+  if (alertEl) {
+    alertEl.className = 'auth-alert hidden';
+    alertEl.style.display = 'none';
+  }
 
   if (tab === 'login') {
-    tabLogin.classList.add('active');
-    tabRegister.classList.remove('active');
-    formLogin.classList.remove('hidden');
-    formRegister.classList.add('hidden');
+    if (tabLogin) tabLogin.classList.add('active');
+    if (tabRegister) tabRegister.classList.remove('active');
+    if (formLogin) {
+      formLogin.classList.remove('hidden');
+      formLogin.style.display = 'block';
+    }
+    if (formRegister) {
+      formRegister.classList.add('hidden');
+      formRegister.style.display = 'none';
+    }
   } else {
-    tabRegister.classList.add('active');
-    tabLogin.classList.remove('active');
-    formRegister.classList.remove('hidden');
-    formLogin.classList.add('hidden');
+    if (tabRegister) tabRegister.classList.add('active');
+    if (tabLogin) tabLogin.classList.remove('active');
+    if (formRegister) {
+      formRegister.classList.remove('hidden');
+      formRegister.style.display = 'block';
+    }
+    if (formLogin) {
+      formLogin.classList.add('hidden');
+      formLogin.style.display = 'none';
+    }
   }
 }
 
@@ -2607,7 +4061,32 @@ function showAuthAlert(msg, type = 'error') {
   if (!alertEl) return;
   alertEl.textContent = msg;
   alertEl.className = `auth-alert ${type}`;
+  alertEl.style.display = 'block';
 }
+
+function togglePasswordVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+
+  if (btn) {
+    const icon = btn.querySelector('.eye-icon') || btn;
+    if (isPassword) {
+      icon.textContent = '🙈';
+      btn.setAttribute('aria-label', 'Sembunyikan password');
+      btn.setAttribute('title', 'Sembunyikan password');
+    } else {
+      icon.textContent = '👁️';
+      btn.setAttribute('aria-label', 'Lihat password');
+      btn.setAttribute('title', 'Lihat password');
+    }
+  }
+
+  // Preserve focus
+  try { input.focus(); } catch (_) {}
+}
+window.togglePasswordVisibility = togglePasswordVisibility;
 
 function getLocalUsers() {
   try {
@@ -2647,6 +4126,7 @@ async function handleLogin(e) {
       showToast(`👋 Selamat datang kembali, ${data.user.username}!`, 'success');
       showView('dashboard');
       updateNavStats();
+      setTimeout(checkAndPromptWelcomeReview, 700);
       return;
     }
   } catch (err) {
@@ -2664,6 +4144,7 @@ async function handleLogin(e) {
     showToast(`👋 Selamat datang kembali, ${found.username}!`, 'success');
     showView('dashboard');
     updateNavStats();
+    setTimeout(checkAndPromptWelcomeReview, 700);
     return;
   }
 
@@ -2820,6 +4301,12 @@ if (document.readyState === 'complete') {
   window.addEventListener('load', () => setTimeout(initGoogleGIS, 500));
 }
 
+function switchToEmailPasswordAuth() {
+  closeGoogleModal();
+  openAuthModal('login');
+}
+window.switchToEmailPasswordAuth = switchToEmailPasswordAuth;
+
 function openGoogleModal() {
   closeAuthModal();
   const m = document.getElementById('google-modal');
@@ -2901,6 +4388,7 @@ async function submitGoogleAuth(email, name) {
       showToast(`✨ Berhasil masuk via Google! Halo, ${data.user.username}!`, 'success');
       showView('dashboard');
       updateNavStats();
+      setTimeout(checkAndPromptWelcomeReview, 700);
       return;
     }
   } catch (err) {
@@ -2917,6 +4405,7 @@ async function submitGoogleAuth(email, name) {
   showToast(`✨ Berhasil masuk via Google! Halo, ${localUser.username}!`, 'success');
   showView('dashboard');
   updateNavStats();
+  setTimeout(checkAndPromptWelcomeReview, 700);
 }
 
 function handleLogout() {
@@ -2928,10 +4417,28 @@ function handleLogout() {
     confirmText: 'Ya, Keluar',
     cancelText: 'Tetap Masuk',
     onConfirm: () => {
+      sessionStorage.removeItem('basaloka_review_prompted');
+      sessionStorage.removeItem('basaloka_luca_greeted');
+      sessionStorage.removeItem('basaloka_active_lesson');
       state.currentUser = null;
+      state.userName = '';
+      state.totalXp = 0;
+      state.todayXp = 0;
+      state.streak = 0;
+      state.koreanXp = 0;
+      state.englishXp = 0;
+      state.toeflXp = 0;
+      state.completedLessons = [];
+      state.completedUnits = [];
+      state.totalLessons = 0;
+      state.koreanLessons = 0;
+      state.englishLessons = 0;
+      state.toeflLessons = 0;
+      state.perfectScores = 0;
       saveState();
       updateNavStats();
       showToast('👋 Kamu sudah keluar dari akun.', 'info');
+      showView('onboarding', false);
     }
   });
 }
@@ -3028,6 +4535,9 @@ function processDialogueTurn() {
     setTimeout(() => {
       typing.style.display = 'none';
 
+      const partnerIsMan = currentDialogue.partner && (currentDialogue.partner.avatar === '👨' || /min-jun|oliver|man|pria|david/i.test(currentDialogue.partner.name));
+      const partnerGender = partnerIsMan ? 'male' : 'female';
+
       // Render partner bubble
       const row = document.createElement('div');
       row.className = 'chat-row partner';
@@ -3037,7 +4547,7 @@ function processDialogueTurn() {
         </div>
         <div class="chat-bubble">
           <div class="chat-text-main">
-            <button class="chat-audio-btn" onclick="speak('${turn.text.replace(/'/g, "\\'")}', '${turn.ttsLang}')" title="Dengarkan pengucapan">🔊</button>
+            <button class="chat-audio-btn" onclick="speak('${turn.text.replace(/'/g, "\\'")}', '${turn.ttsLang}', 0.88, '${partnerGender}')" title="Dengarkan pengucapan">🔊</button>
             ${turn.text}
           </div>
           ${turn.romanization ? `<div class="chat-text-rom" style="${dialogueShowRom ? '' : 'display:none;'}">🗣️ ${turn.romanization}</div>` : ''}
@@ -3057,7 +4567,7 @@ function processDialogueTurn() {
       stream.scrollTop = stream.scrollHeight;
 
       // Auto play partner line
-      speak(turn.text, turn.ttsLang);
+      speak(turn.text, turn.ttsLang, 0.88, partnerGender);
 
       // Advance to next turn (usually user response)
       dialogueTurnIndex++;
@@ -3735,16 +5245,14 @@ function playExamConvoAudio(qIndex, spk1Role, spk1Text, spk2Role, spk2Text, narr
 
   const isWoman1 = (spk1Role === 'woman' || spk1Role === 'female');
   const gender1 = isWoman1 ? 'female' : 'male';
-  const pitch1 = isWoman1 ? 1.15 : 0.80;
 
   const isWoman2 = (spk2Role === 'woman' || spk2Role === 'female');
   const gender2 = isWoman2 ? 'female' : 'male';
-  const pitch2 = isWoman2 ? 1.15 : 0.80;
 
   // Step 1: Speaker 1 in chronological sequence
   if (status) status.textContent = `Memutar pembicara 1 (${isWoman1 ? 'Wanita' : 'Pria'})...`;
 
-  speakWithVoice(spk1Text, 'en-US', { pitch: pitch1, rate: 0.92, gender: gender1 }, () => {
+  speakWithVoice(spk1Text, 'en-US', { gender: gender1 }, () => {
     if (!toeflSimState.isPlayingAudio) return;
 
     toeflSimState.audioTimeout = setTimeout(() => {
@@ -3754,7 +5262,7 @@ function playExamConvoAudio(qIndex, spk1Role, spk1Text, spk2Role, spk2Text, narr
       if (spk2Text) {
         if (status) status.textContent = `Memutar pembicara 2 (${isWoman2 ? 'Wanita' : 'Pria'})...`;
 
-        speakWithVoice(spk2Text, 'en-US', { pitch: pitch2, rate: 0.92, gender: gender2, cancelPrevious: false }, () => {
+        speakWithVoice(spk2Text, 'en-US', { gender: gender2, cancelPrevious: false }, () => {
           if (!toeflSimState.isPlayingAudio) return;
 
           toeflSimState.audioTimeout = setTimeout(() => {
@@ -3763,7 +5271,7 @@ function playExamConvoAudio(qIndex, spk1Role, spk1Text, spk2Role, spk2Text, narr
             // Step 3: Narrator
             if (status) status.textContent = 'Narator membacakan pertanyaan...';
 
-            speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, () => {
+            speakWithVoice(narratorText, 'en-US', { gender: 'neutral', cancelPrevious: false }, () => {
               toeflSimState.isPlayingAudio = false;
               if (btn) {
                 btn.disabled = true;
@@ -4068,8 +5576,26 @@ function submitToeflSim() {
   state.totalXp += xpBonus;
   state.todayXp += xpBonus;
   state.toeflXp += xpBonus;
+
+  // Persist official exam score and refresh live predictor
+  state.lastExamScore = {
+    totalScore,
+    scaleL,
+    scaleS,
+    scaleR,
+    correctL,
+    totalL,
+    correctS,
+    totalS,
+    correctR,
+    totalR,
+    date: Date.now()
+  };
+  state.toeflLastPredictedScore = totalScore;
+
   saveState();
   updateNavStats();
+  updateToeflPredictorUI();
 
   // Populate Report Card
   const candidateName = (state.currentUser && state.currentUser.username) || state.userName || 'Peserta TOEFL';
@@ -4503,6 +6029,8 @@ function initApp() {
   } else {
     showView('onboarding', false);
   }
+  checkPushStatus();
+  setTimeout(showLucaGreetingSplash, 120);
 }
 
 if (document.readyState === 'loading') {
@@ -4644,4 +6172,847 @@ window.openPwaGuideModal = openPwaGuideModal;
 window.closePwaGuideModal = closePwaGuideModal;
 window.switchPwaTab = switchPwaTab;
 window.dismissPwaBanner = dismissPwaBanner;
+
+// ─── 🔔 WEB PUSH NOTIFICATIONS (Pengingat 2x Sehari) ─────────
+const VAPID_PUBLIC_KEY = 'BOA7Frh6Eh0d1auW2ALi7zlHEJEi2HSmxHHfFdYMRorqTfmvKpbEzvazpxxM8XoVT5K2Rok6Q9Xp_3aIDyN270I';
+let currentPushSubscription = null;
+
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+async function checkPushStatus() {
+  const btn = document.getElementById('btn-enable-notif');
+  const testBtn = document.getElementById('btn-test-notif');
+  const statusText = document.getElementById('rcb-status-text');
+  const badge = document.getElementById('rcb-badge');
+
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    if (btn) {
+      btn.textContent = 'Tidak Didukung Browser';
+      btn.disabled = true;
+    }
+    if (statusText) statusText.textContent = 'Browser kamu tidak mendukung Web Push. Coba pasang (Install) BasaLoka di Chrome/Edge agar notifikasi aktif.';
+    return;
+  }
+
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    currentPushSubscription = await reg.pushManager.getSubscription();
+
+    if (currentPushSubscription && Notification.permission === 'granted') {
+      if (btn) {
+        btn.innerHTML = '✅ Pengingat Aktif';
+        btn.classList.add('active');
+      }
+      if (testBtn) testBtn.style.display = 'inline-flex';
+      if (badge) badge.textContent = 'Aktif: 12:00 & 19:00';
+      if (statusText) {
+        statusText.innerHTML = 'Pengingat aktif! Notifikasi otomatis berbunyi pada <strong>12:00 WIB (Siang)</strong> dan <strong>19:00 WIB (Malam)</strong>.';
+      }
+    } else {
+      if (btn) {
+        btn.innerHTML = 'Aktifkan Pengingat 🔔';
+        btn.classList.remove('active');
+      }
+      if (testBtn) testBtn.style.display = 'none';
+      if (badge) badge.textContent = '12:00 & 19:00 WIB';
+      if (statusText) {
+        statusText.textContent = 'Dapatkan notifikasi otomatis di HP saat istirahat siang (12:00) & malam (19:00) agar streak belajarmu tidak putus!';
+      }
+    }
+  } catch (err) {
+    console.warn('Error checking push status:', err);
+  }
+}
+
+async function enablePushNotifications() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    showToast('⚠️ Browser kamu belum mendukung Web Push Notifications.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btn-enable-notif');
+  const originalText = btn ? btn.innerHTML : '';
+  if (btn) btn.innerHTML = 'Memproses... ⏳';
+
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      showToast('⚠️ Izin notifikasi ditolak. Harap izinkan notifikasi di pengaturan browser/HP kamu.', 'error');
+      if (btn) btn.innerHTML = originalText;
+      return;
+    }
+
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlB64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+    }
+
+    currentPushSubscription = sub;
+
+    // Send to backend
+    const uid = (state.currentUser && state.currentUser.id) ? state.currentUser.id : null;
+    const res = await fetch('/api/push-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subscription: sub,
+        timeSlot1: '12:00',
+        timeSlot2: '19:00',
+        userId: uid
+      })
+    });
+
+    if (res.ok) {
+      showToast('🎉 Pengingat berhasil diaktifkan! Notifikasi akan bunyi jam 12:00 Siang & 19:00 Malam.', 'success');
+      checkPushStatus();
+    } else {
+      showToast('⚠️ Gagal menyimpan ke server, silakan coba lagi.', 'error');
+      if (btn) btn.innerHTML = originalText;
+    }
+  } catch (err) {
+    console.error('Error enabling push:', err);
+    showToast('⚠️ Gagal mengaktifkan notifikasi: ' + err.message, 'error');
+    if (btn) btn.innerHTML = originalText;
+  }
+}
+
+async function sendTestPushNotification() {
+  if (!currentPushSubscription) {
+    showToast('Harap aktifkan pengingat terlebih dahulu!', 'info');
+    return;
+  }
+
+  const testBtn = document.getElementById('btn-test-notif');
+  if (testBtn) testBtn.innerHTML = 'Mengirim... 🚀';
+
+  try {
+    const res = await fetch('/api/send-reminder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        test: true,
+        endpoint: currentPushSubscription.endpoint
+      })
+    });
+
+    if (res.ok) {
+      showToast('🔔 Notifikasi uji coba terkirim! Cek bilah status HP / layar kuncimu.', 'success');
+    } else {
+      showToast('⚠️ Gagal mengirim notifikasi uji coba.', 'error');
+    }
+  } catch (err) {
+    showToast('⚠️ Terjadi kendala jaringan.', 'error');
+  } finally {
+    if (testBtn) testBtn.innerHTML = '🔔 Tes Bunyikan HP';
+  }
+}
+
+window.enablePushNotifications = enablePushNotifications;
+window.sendTestPushNotification = sendTestPushNotification;
+
+// ─── SPACED REPETITION / WELCOME BACK 10-QUESTION REVIEW ────────
+let welcomeReviewState = {
+  active: false,
+  questions: [],
+  currentIndex: 0,
+  correctCount: 0,
+  totalCount: 10,
+  lessonTitle: '',
+  startTime: 0
+};
+
+function findLessonInfoById(id) {
+  if (!id || typeof APP_DATA === 'undefined') return null;
+  for (const lang of ['korean', 'english', 'toefl']) {
+    for (const u of (APP_DATA[lang]?.units || [])) {
+      const l = (u.lessons || []).find(x => x.id === id);
+      if (l) return { lesson: l, unit: u, lang };
+    }
+  }
+  return null;
+}
+
+function shuffleReviewOptions(q) {
+  const options = [...q.options];
+  const correctText = options[q.answer];
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  return {
+    ...q,
+    options,
+    answer: options.indexOf(correctText)
+  };
+}
+
+function extractQuestionsFromLesson(lesson, lang) {
+  const result = [];
+  if (!lesson) return result;
+
+  // 1. Regular quiz
+  if (Array.isArray(lesson.quiz)) {
+    lesson.quiz.forEach(q => {
+      if (q && q.q && Array.isArray(q.options) && q.options.length >= 2) {
+        const parsed = (typeof parseQuizDialogue === 'function') ? parseQuizDialogue(q) : null;
+        const hasD = parsed && parsed.hasDialogue;
+        let dialogueArray = null;
+        if (hasD) {
+          if (Array.isArray(parsed.dialogue)) {
+            dialogueArray = parsed.dialogue;
+          } else if (parsed.speaker1 && parsed.speaker2) {
+            dialogueArray = [parsed.speaker1, parsed.speaker2];
+          } else if (parsed.speaker1) {
+            dialogueArray = [parsed.speaker1];
+          }
+        }
+        result.push({
+          q: hasD ? parsed.questionText : q.q,
+          options: [...q.options],
+          answer: q.answer || 0,
+          explanation: q.explanation || '',
+          sourceLessonTitle: lesson.title,
+          dialogue: dialogueArray,
+          convoTitle: lesson.title,
+          audioText: q.ttsText || (lang === 'korean' ? q.char : null),
+          audioLang: lang === 'korean' ? 'ko-KR' : 'en-US'
+        });
+      }
+    });
+  }
+
+  // 2. Questions in fill-blank / reading-quiz
+  if (Array.isArray(lesson.questions)) {
+    lesson.questions.forEach(q => {
+      const text = q.text || q.q || q.question;
+      if (text && Array.isArray(q.options) && q.options.length >= 2) {
+        result.push({
+          q: text,
+          options: [...q.options],
+          answer: q.answer || 0,
+          explanation: q.explanation || '',
+          sourceLessonTitle: lesson.title,
+          passage: lesson.passage || null,
+          passageTitle: lesson.title,
+          audioText: null,
+          audioLang: lang === 'korean' ? 'ko-KR' : 'en-US'
+        });
+      }
+    });
+  }
+
+  // 3. Conversation-listening
+  if (Array.isArray(lesson.conversations)) {
+    lesson.conversations.forEach(c => {
+      const qText = c.question || c.title || 'Pilih jawaban yang paling tepat sesuai percakapan:';
+      if (Array.isArray(c.options) && c.options.length >= 2) {
+        result.push({
+          q: qText,
+          options: [...c.options],
+          answer: c.answer || 0,
+          explanation: c.explanation || '',
+          sourceLessonTitle: lesson.title,
+          convoTitle: c.title,
+          dialogue: c.dialogue,
+          narrator: c.narrator,
+          audioLang: 'en-US'
+        });
+      }
+    });
+  }
+
+  // 4. Cards (if needed as MCQs)
+  if (Array.isArray(lesson.cards) && lesson.cards.length >= 2) {
+    lesson.cards.forEach((c, i) => {
+      if (c && c.front && (c.exampleMeaning || c.tip || c.pronunciation)) {
+        const correctOpt = c.exampleMeaning || c.pronunciation || c.tip;
+        const otherCards = lesson.cards.filter((_, idx) => idx !== i);
+        const distractor1 = otherCards[0]?.exampleMeaning || otherCards[0]?.pronunciation || 'Pilihan lain';
+        const distractor2 = otherCards[1]?.exampleMeaning || otherCards[1]?.pronunciation || 'Pilihan pengecoh';
+        result.push({
+          q: `Apa arti atau pelafalan yang tepat untuk: "${c.front}"?`,
+          options: [correctOpt, distractor1, distractor2],
+          answer: 0,
+          explanation: c.tip || `Pelafalan: ${c.pronunciation || ''}`,
+          sourceLessonTitle: lesson.title,
+          audioText: c.ttsText || c.front,
+          audioLang: c.ttsLang || (lang === 'korean' ? 'ko-KR' : 'en-US')
+        });
+      }
+    });
+  }
+
+  return result;
+}
+
+function collectReviewQuestions(completedLessonIds, targetCount = 10) {
+  if (!completedLessonIds || completedLessonIds.length === 0) return [];
+
+  let pool = [];
+  const reversed = [...completedLessonIds].reverse();
+
+  for (const lid of reversed) {
+    const info = findLessonInfoById(lid);
+    if (info) {
+      const qs = extractQuestionsFromLesson(info.lesson, info.lang);
+      pool.push(...qs);
+      if (pool.length >= targetCount * 2) break;
+    }
+  }
+
+  const seen = new Set();
+  const deduped = [];
+  for (const item of pool) {
+    const key = (item.q || '').trim().toLowerCase();
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      deduped.push(item);
+    }
+  }
+
+  if (deduped.length === 0) return [];
+
+  let finalQuestions = [];
+  while (finalQuestions.length < targetCount) {
+    for (const q of deduped) {
+      finalQuestions.push(shuffleReviewOptions(q));
+      if (finalQuestions.length >= targetCount) break;
+    }
+  }
+
+  return finalQuestions.slice(0, targetCount);
+}
+
+function checkAndPromptWelcomeReview() {
+  if (sessionStorage.getItem('basaloka_review_prompted') === 'true') return;
+  if (!state.completedLessons || state.completedLessons.length === 0) return;
+  if (!state.userName && !state.currentUser) return;
+
+  const lastLessonId = state.completedLessons[state.completedLessons.length - 1];
+  const lessonInfo = findLessonInfoById(lastLessonId);
+  if (!lessonInfo) return;
+
+  sessionStorage.setItem('basaloka_review_prompted', 'true');
+
+  const nameEl = document.getElementById('wr-user-name');
+  if (nameEl) nameEl.textContent = state.userName || 'Sobat Loka';
+
+  const titleEl = document.getElementById('wr-last-lesson-title');
+  if (titleEl) titleEl.textContent = lessonInfo.lesson.title;
+
+  const subEl = document.getElementById('wr-last-lesson-sub');
+  if (subEl) subEl.textContent = `${lessonInfo.unit.title} • ${lessonInfo.lang.toUpperCase()}`;
+
+  const modal = document.getElementById('welcome-review-modal');
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+  }
+}
+
+function closeWelcomeReviewModal() {
+  const modal = document.getElementById('welcome-review-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
+}
+
+function startWelcomeReviewSession() {
+  closeWelcomeReviewModal();
+  const questions = collectReviewQuestions(state.completedLessons, 3);
+  if (!questions || questions.length === 0) {
+    showInteractiveAlert({
+      title: 'Materi Belum Cukup',
+      message: 'Selesaikan minimal 1 materi latihan terlebih dahulu untuk membuka mode buka kunci!',
+      type: 'info'
+    });
+    return;
+  }
+
+  const lastLessonId = state.completedLessons[state.completedLessons.length - 1];
+  const lessonInfo = findLessonInfoById(lastLessonId);
+
+  welcomeReviewState = {
+    active: true,
+    questions,
+    currentIndex: 0,
+    correctCount: 0,
+    totalCount: questions.length,
+    lessonTitle: lessonInfo ? lessonInfo.lesson.title : 'Pelajaran Terakhir',
+    startTime: Date.now()
+  };
+
+  showView('lesson', false);
+
+  const quitBtn = document.getElementById('lesson-quit-btn');
+  if (quitBtn) {
+    quitBtn.onclick = () => {
+      showConfirmPopup({
+        icon: '🔒',
+        type: 'warning',
+        title: 'Buka Kunci Belum Selesai!',
+        message: 'Tinggal sedikit lagi! Selesaikan 3 soal kilat ini (~45 detik) untuk membuka kunci Beranda & klaim bonus +20 XP.',
+        confirmText: 'Lanjut Kuis (Tinggal Dikit)',
+        cancelText: 'Keluar ke Halaman Awal',
+        onConfirm: () => {},
+        onCancel: () => {
+          stopReviewAudio();
+          welcomeReviewState.active = false;
+          showView('onboarding', false);
+        }
+      });
+    };
+  }
+
+  renderReviewQuestion();
+}
+
+let isPlayingReviewConvo = false;
+let reviewAudioQueueTimeout = null;
+let reviewTranscriptVisible = true;
+
+function stopReviewAudio() {
+  if (isPlayingReviewConvo) {
+    if (speechSynth) speechSynth.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if (reviewAudioQueueTimeout) clearTimeout(reviewAudioQueueTimeout);
+    isPlayingReviewConvo = false;
+    const btnText = document.getElementById('play-review-text');
+    const btnIcon = document.getElementById('play-review-icon');
+    if (btnIcon) btnIcon.textContent = '▶️';
+    if (btnText) btnText.textContent = 'Putar Percakapan Audio';
+  }
+}
+
+function toggleReviewTranscript() {
+  reviewTranscriptVisible = !reviewTranscriptVisible;
+  const box = document.getElementById('review-transcript-box');
+  const icon = document.getElementById('rev-transcript-btn-icon');
+  const text = document.getElementById('rev-transcript-btn-text');
+  if (box) box.style.display = reviewTranscriptVisible ? 'flex' : 'none';
+  if (icon) icon.textContent = reviewTranscriptVisible ? '🙈' : '👁️';
+  if (text) text.textContent = reviewTranscriptVisible ? 'Sembunyikan Naskah' : 'Buka Naskah & Terjemahan';
+}
+
+function playReviewDialogueAudio() {
+  if (!welcomeReviewState.active) return;
+  const q = welcomeReviewState.questions[welcomeReviewState.currentIndex];
+  if (!q || !q.dialogue || !q.dialogue.length) return;
+
+  const btnText = document.getElementById('play-review-text');
+  const btnIcon = document.getElementById('play-review-icon');
+
+  if (isPlayingReviewConvo) {
+    stopReviewAudio();
+    return;
+  }
+
+  isPlayingReviewConvo = true;
+  if (btnIcon) btnIcon.textContent = '⏹️';
+  if (btnText) btnText.textContent = 'Hentikan Audio';
+
+  const resetBtn = () => {
+    isPlayingReviewConvo = false;
+    if (btnIcon) btnIcon.textContent = '▶️';
+    if (btnText) btnText.textContent = 'Putar Percakapan Audio';
+  };
+
+  const line1 = q.dialogue[0];
+  const line2 = q.dialogue.length > 1 ? q.dialogue[1] : null;
+  const narratorText = q.narrator || '';
+
+  const getVoiceOpts = (line) => {
+    const isWoman = line && (line.speaker === 'woman' || line.speaker === 'female' || (line.label && /wanita|mahasiswi|girl|woman/i.test(line.label)));
+    return {
+      gender: isWoman ? 'female' : 'male',
+      cancelPrevious: false
+    };
+  };
+
+  if (line1 && line1.text) {
+    speakWithVoice(line1.text, 'en-US', getVoiceOpts(line1), () => {
+      if (!isPlayingReviewConvo) return;
+      reviewAudioQueueTimeout = setTimeout(() => {
+        if (!isPlayingReviewConvo) return;
+        if (line2 && line2.text) {
+          speakWithVoice(line2.text, 'en-US', getVoiceOpts(line2), () => {
+            if (!isPlayingReviewConvo) return;
+            if (narratorText) {
+              reviewAudioQueueTimeout = setTimeout(() => {
+                if (!isPlayingReviewConvo) return;
+                speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, resetBtn);
+              }, 600);
+            } else {
+              resetBtn();
+            }
+          });
+        } else if (narratorText) {
+          reviewAudioQueueTimeout = setTimeout(() => {
+            if (!isPlayingReviewConvo) return;
+            speakWithVoice(narratorText, 'en-US', { pitch: 0.98, rate: 0.90, gender: 'neutral', cancelPrevious: false }, resetBtn);
+          }, 600);
+        } else {
+          resetBtn();
+        }
+      }, 500);
+    });
+  } else {
+    resetBtn();
+  }
+}
+
+function renderReviewQuestion() {
+  const content = document.getElementById('lesson-content');
+  if (!content || !welcomeReviewState.active) return;
+
+  stopReviewAudio();
+  reviewTranscriptVisible = true;
+
+  const q = welcomeReviewState.questions[welcomeReviewState.currentIndex];
+  if (!q) {
+    finishWelcomeReviewSession();
+    return;
+  }
+
+  const progressPct = Math.round((welcomeReviewState.currentIndex / welcomeReviewState.totalCount) * 100);
+  const fill = document.getElementById('lesson-progress-fill');
+  if (fill) fill.style.width = `${progressPct}%`;
+
+  let contextHtml = '';
+  // 1. Dialogue context (conversation listening & short dialogue)
+  if (q.dialogue && Array.isArray(q.dialogue) && q.dialogue.length) {
+    contextHtml = `
+      <div class="convo-hero-card" style="margin-bottom: 20px; text-align: left; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+        <div class="convo-hero-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(56, 189, 248, 0.12); border-bottom: 1px solid rgba(56, 189, 248, 0.25);">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.1rem;">🎧</span>
+            <span style="font-weight: 800; color: #38bdf8; font-size: 0.88rem; letter-spacing: 0.5px;">SKENARIO PERCAKAPAN: ${escapeHtml(q.convoTitle || 'Listening Part A/B')}</span>
+          </div>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Dengarkan / baca percakapan sebelum menjawab</span>
+        </div>
+        <div class="convo-hero-body" style="padding: 16px 18px;">
+          <div class="convo-audio-controls" style="display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
+            <button type="button" class="btn-play-all" id="btn-play-review-convo" onclick="playReviewDialogueAudio()" style="background: linear-gradient(135deg, #0284c7, #2563eb); border: none; padding: 10px 20px; border-radius: 50px; color: #ffffff; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+              <span class="play-icon" id="play-review-icon">▶️</span>
+              <span id="play-review-text">Putar Percakapan Audio</span>
+            </button>
+            <button type="button" class="btn-transcript-toggle" id="btn-review-transcript-toggle" onclick="toggleReviewTranscript()" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 16px; border-radius: 50px; color: #e2e8f0; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+              <span id="rev-transcript-btn-icon">🙈</span>
+              <span id="rev-transcript-btn-text">Sembunyikan Naskah</span>
+            </button>
+          </div>
+
+          <!-- Dialogue Bubbles List -->
+          <div class="transcript-bubbles-list" id="review-transcript-box" style="display: flex; flex-direction: column; gap: 10px;">
+            ${q.dialogue.map(d => {
+              const isW = (d.speaker === 'woman' || d.speaker === 'female' || (d.label && /wanita|mahasiswi|girl|woman/i.test(d.label)));
+              return `
+                <div class="transcript-bubble ${isW ? 'woman' : 'man'}" style="padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, 0.04); border-left: 3.5px solid ${isW ? '#ec4899' : '#38bdf8'};">
+                  <div class="tb-speaker" style="font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; color: ${isW ? '#f472b6' : '#38bdf8'};">
+                    ${d.avatar || (isW ? '👩' : '👨')} ${escapeHtml(d.label || (isW ? 'Wanita' : 'Pria'))}:
+                  </div>
+                  <div class="tb-en" style="font-size: 0.95rem; color: #f8fafc; line-height: 1.5; font-weight: 500;">
+                    "${escapeHtml(d.text)}"
+                  </div>
+                  ${d.translation ? `
+                    <div class="tb-id" style="font-size: 0.82rem; color: #94a3b8; margin-top: 4px; line-height: 1.4;">
+                      🇮🇩 ${escapeHtml(d.translation)}
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (q.passage) {
+    contextHtml = `
+      <div class="reading-passage-card" style="margin-bottom: 20px; text-align: left; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(99, 102, 241, 0.3); border-radius: 18px; padding: 18px 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+        <div style="font-size: 0.84rem; font-weight: 800; color: #818cf8; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+          <span>📖</span>
+          <span>TEKS BACAAN: ${escapeHtml(q.passageTitle || 'Reading Comprehension')}</span>
+        </div>
+        <div style="font-size: 0.93rem; color: #cbd5e1; line-height: 1.65; max-height: 240px; overflow-y: auto; padding-right: 8px;">
+          ${escapeHtml(q.passage)}
+        </div>
+      </div>
+    `;
+  } else if (q.audioText) {
+    const safeAudio = escapeHtml(q.audioText).replace(/'/g, "\\'");
+    const audioLang = q.audioLang || 'en-US';
+    contextHtml = `
+      <div style="margin-bottom: 18px; text-align: center;">
+        <button type="button" class="btn-card" style="padding: 10px 22px; border-radius: 50px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="speakReviewAudio('${safeAudio}', '${audioLang}')">
+          🔊 Putar Audio Soal
+        </button>
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <div class="quiz-wrapper">
+      <div class="review-quiz-badge-bar">
+        <span class="review-tag-pill">🔒 Buka Kunci Harian (${welcomeReviewState.currentIndex + 1}/${welcomeReviewState.totalCount})</span>
+        <span class="review-source-pill">📚 ${escapeHtml(q.sourceLessonTitle || welcomeReviewState.lessonTitle)}</span>
+      </div>
+      ${contextHtml}
+      <div class="quiz-question">${escapeHtml(q.q)}</div>
+      <div class="quiz-options" id="quiz-options">
+        ${q.options.map((opt, i) => `
+          <button class="quiz-option" id="rev-opt-${i}" onclick="answerReviewQuiz(${i}, ${q.answer})">
+            ${escapeHtml(opt)}
+          </button>
+        `).join('')}
+      </div>
+      <div id="quiz-feedback-container"></div>
+    </div>
+  `;
+}
+
+function speakReviewAudio(text, lang) {
+  if (lang === 'ko-KR') {
+    speakKorean(text);
+  } else {
+    speakEnglish(text);
+  }
+}
+
+function answerReviewQuiz(selectedIndex, correctIndex) {
+  stopReviewAudio();
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(btn => btn.disabled = true);
+
+  const isCorrect = selectedIndex === correctIndex;
+  const q = welcomeReviewState.questions[welcomeReviewState.currentIndex];
+  const correctText = (q && q.options && q.options[correctIndex]) || (opts[correctIndex] ? opts[correctIndex].innerText : '');
+  const selectedText = (q && q.options && q.options[selectedIndex]) || (opts[selectedIndex] ? opts[selectedIndex].innerText : '');
+
+  if (isCorrect) {
+    welcomeReviewState.correctCount++;
+    if (opts[selectedIndex]) opts[selectedIndex].classList.add('correct');
+    playSuccessEffect();
+  } else {
+    if (opts[selectedIndex]) opts[selectedIndex].classList.add('wrong');
+    if (opts[correctIndex]) opts[correctIndex].classList.add('correct');
+  }
+
+  const container = document.getElementById('quiz-feedback-container');
+  if (container) {
+    const isLast = welcomeReviewState.currentIndex + 1 >= welcomeReviewState.totalCount;
+    const nextBtnLabel = isLast ? '🎉 Buka Kunci Beranda & Klaim +20 XP 🔓' : `Lanjut ke Soal Berikutnya (${welcomeReviewState.currentIndex + 2}/${welcomeReviewState.totalCount}) →`;
+    container.innerHTML = `
+      <div class="quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}" style="margin-top: 18px;">
+        <div class="fb-header">
+          <span class="fb-icon">${isCorrect ? '🎉' : '💡'}</span>
+          <div class="fb-text-wrap">
+            <div class="fb-title">${isCorrect ? 'Tepat Sekali! Ingatanmu Mantap!' : 'Hampir Benar! Perhatikan Kunci Jawabannya:'}</div>
+            <div class="fb-breakdown-row" style="margin-top: 6px;">
+              ${!isCorrect ? `<span class="fb-tag wrong">❌ Pilihanmu: ${escapeHtml(selectedText)}</span>` : ''}
+              <span class="fb-tag correct">✅ Kunci Jawaban Benar: ${escapeHtml(correctText)}</span>
+            </div>
+            ${q.explanation ? `
+              <div class="fb-explanation-detail" style="margin-top: 10px;">
+                <div class="fb-exp-title">🔍 Penjelasan Materi:</div>
+                <div class="fb-exp-text">${escapeHtml(q.explanation)}</div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <button type="button" class="btn-primary" id="btn-review-next" onclick="nextReviewQuestion()" style="margin-top: 16px; width: 100%; padding: 13px; font-weight: 800; border-radius: 14px; font-size: 0.98rem;">
+          ${nextBtnLabel}
+        </button>
+      </div>
+    `;
+  }
+}
+
+function nextReviewQuestion() {
+  stopReviewAudio();
+  welcomeReviewState.currentIndex++;
+  if (welcomeReviewState.currentIndex < welcomeReviewState.totalCount) {
+    renderReviewQuestion();
+  } else {
+    finishWelcomeReviewSession();
+  }
+}
+
+function finishWelcomeReviewSession() {
+  stopReviewAudio();
+  welcomeReviewState.active = false;
+  const fill = document.getElementById('lesson-progress-fill');
+  if (fill) fill.style.width = '100%';
+
+  // Reward +20 XP for unlocking the gate
+  const xpReward = 20;
+  state.totalXp = (state.totalXp || 0) + xpReward;
+  state.todayXp = (state.todayXp || 0) + xpReward;
+  saveState();
+  updateNavStats();
+  try { launchConfetti(); } catch (_) {}
+
+  const accuracy = Math.round((welcomeReviewState.correctCount / welcomeReviewState.totalCount) * 100);
+  const duration = Math.max(1, Math.round((Date.now() - welcomeReviewState.startTime) / 1000));
+
+  const content = document.getElementById('lesson-content');
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="review-score-card">
+      <div class="rsc-icon">🔓</div>
+      <h2 class="rsc-title">Gerbang Beranda Terbuka!</h2>
+      <p class="rsc-sub">Luar biasa! 3 soal kilat dari materi <strong>${escapeHtml(welcomeReviewState.lessonTitle)}</strong> tuntas kamu kuasai. Akses penuh ke seluruh fitur BasaLoka kini terbuka!</p>
+
+      <div class="rsc-stats-grid">
+        <div class="rsc-stat-box">
+          <span class="rsc-stat-val">+${xpReward} XP</span>
+          <span class="rsc-stat-label">Bonus Buka Kunci</span>
+        </div>
+        <div class="rsc-stat-box">
+          <span class="rsc-stat-val">${accuracy}%</span>
+          <span class="rsc-stat-label">${welcomeReviewState.correctCount}/${welcomeReviewState.totalCount} Benar</span>
+        </div>
+        <div class="rsc-stat-box">
+          <span class="rsc-stat-val">${duration}s</span>
+          <span class="rsc-stat-label">Waktu Kilat</span>
+        </div>
+      </div>
+
+      <div class="rsc-actions">
+        <button type="button" class="btn-primary" onclick="showView('dashboard')" style="width: 100%; padding: 14px 28px; font-size: 1.05rem; font-weight: 800; border-radius: 16px;">
+          🚀 Jelajahi Beranda BasaLoka
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Window bindings
+window.checkAndPromptWelcomeReview = checkAndPromptWelcomeReview;
+window.closeWelcomeReviewModal = closeWelcomeReviewModal;
+window.startWelcomeReviewSession = startWelcomeReviewSession;
+window.answerReviewQuiz = answerReviewQuiz;
+window.nextReviewQuestion = nextReviewQuestion;
+window.speakReviewAudio = speakReviewAudio;
+window.playReviewDialogueAudio = playReviewDialogueAudio;
+window.toggleReviewTranscript = toggleReviewTranscript;
+window.stopReviewAudio = stopReviewAudio;
+
+// ─── LUCA INTERACTIVE GREETING / SPLASH SCREEN ───────────────
+const LUCA_NUGGETS = [
+  'Konsisten 10 menit sehari lebih dahsyat daripada belajar 3 jam seminggu!',
+  'Tips TOEFL: 85% kunci jawaban Listening Part A ada di ucapan orang kedua!',
+  'Fun Fact: Huruf vokal Hangul terinspirasi dari Langit (•), Bumi (ㅡ), dan Manusia (ㅣ)!',
+  'Tips Grammar: Bentuk "Neither... nor..." selalu ikut subjek terdekatnya!',
+  'Jurus TOEFL: Hindari opsi jawaban yang bunyinya mirip audio. Biasanya itu jebakan sinonim!',
+  'Setiap soal yang kamu kerjakan hari ini membawamu selangkah lebih dekat ke skor 550+!',
+  'Belajar bahasa itu seperti olahraga: otot ingatanmu makin kuat kalau dilatih tiap hari!'
+];
+
+let lucaAutoTimer = null;
+let isLucaGreetingActive = false;
+
+function showLucaGreetingSplash() {
+  if (sessionStorage.getItem('basaloka_luca_greeted') === 'true') {
+    setTimeout(checkAndPromptWelcomeReview, 600);
+    return;
+  }
+
+  const overlay = document.getElementById('luca-greeting-overlay');
+  if (!overlay) {
+    setTimeout(checkAndPromptWelcomeReview, 600);
+    return;
+  }
+
+  sessionStorage.setItem('basaloka_luca_greeted', 'true');
+  isLucaGreetingActive = true;
+
+  const titleEl = document.getElementById('luca-greeting-title');
+  const subEl = document.getElementById('luca-greeting-sub');
+  const streakPill = document.getElementById('luca-streak-pill');
+  const factText = document.getElementById('luca-fun-fact-text');
+  const fill = document.getElementById('luca-progress-fill');
+
+  const rawUser = state.userName || (state.currentUser && (state.currentUser.username || state.currentUser.name));
+  if (rawUser) {
+    if (titleEl) titleEl.innerHTML = `Halo, <span>${escapeHtml(rawUser)}</span>! 👋`;
+    if (subEl) subEl.innerHTML = `Aku <strong>Luca</strong>, senang melihatmu kembali! Siap asah kemampuan bahasa hari ini? ✨`;
+    if (streakPill && (state.streak || 0) > 0) {
+      streakPill.style.display = 'inline-block';
+      streakPill.textContent = `🔥 Streak ${state.streak} Hari`;
+    }
+  } else {
+    if (titleEl) titleEl.innerHTML = `Halo, <span>Sobat Loka</span>! 👋`;
+    if (subEl) subEl.innerHTML = `Kenalin, aku <strong>Luca</strong>! Pemandu belajarmu keliling dunia bahasa & TOEFL 🌍✨`;
+    if (streakPill) streakPill.style.display = 'none';
+  }
+
+  if (factText) {
+    const randomNugget = LUCA_NUGGETS[Math.floor(Math.random() * LUCA_NUGGETS.length)];
+    factText.textContent = randomNugget;
+  }
+
+  overlay.classList.remove('fade-out');
+  overlay.style.display = 'flex';
+
+  if (fill) {
+    fill.style.width = '0%';
+    setTimeout(() => {
+      if (isLucaGreetingActive) fill.style.width = '100%';
+    }, 50);
+  }
+
+  lucaAutoTimer = setTimeout(dismissLucaGreeting, 2500);
+}
+
+function dismissLucaGreeting() {
+  if (!isLucaGreetingActive) return;
+  isLucaGreetingActive = false;
+  if (lucaAutoTimer) {
+    clearTimeout(lucaAutoTimer);
+    lucaAutoTimer = null;
+  }
+
+  const overlay = document.getElementById('luca-greeting-overlay');
+  if (overlay) {
+    overlay.classList.add('fade-out');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      overlay.classList.remove('fade-out');
+      if (typeof checkAndPromptWelcomeReview === 'function') {
+        setTimeout(checkAndPromptWelcomeReview, 350);
+      }
+    }, 400);
+  }
+}
+
+function handleLucaOverlayClick(e) {
+  dismissLucaGreeting();
+}
+
+window.showLucaGreetingSplash = showLucaGreetingSplash;
+window.dismissLucaGreeting = dismissLucaGreeting;
+window.handleLucaOverlayClick = handleLucaOverlayClick;
+
+
+
 

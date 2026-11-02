@@ -1,5 +1,5 @@
 // BasaLoka Service Worker for PWA (Progressive Web App)
-const CACHE_NAME = 'basaloka-cache-v5';
+const CACHE_NAME = 'basaloka-cache-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -67,5 +67,66 @@ self.addEventListener('fetch', (event) => {
           }
         });
       })
+  );
+});
+
+// ─── PUSH NOTIFICATIONS ────────────────────────────────────────
+self.addEventListener('push', (event) => {
+  let data = {
+    title: '🌟 BasaLoka: Waktunya Belajar!',
+    body: 'Yuk luangkan 5-10 menit hari ini untuk mengasah kemampuan TOEFL & Bahasa!',
+    icon: './images/icon-192.png',
+    badge: './images/favicon.png',
+    url: './'
+  };
+
+  if (event.data) {
+    try {
+      const parsed = event.data.json();
+      data = { ...data, ...parsed };
+    } catch (e) {
+      data.body = event.data.text();
+    }
+  }
+
+  const options = {
+    body: data.body,
+    icon: data.icon || './images/icon-192.png',
+    badge: data.badge || './images/favicon.png',
+    vibrate: [120, 60, 120],
+    data: {
+      url: data.url || './'
+    },
+    actions: [
+      { action: 'open_app', title: '🚀 Buka Materi' },
+      { action: 'close', title: 'Nanti' }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'close') {
+    return;
+  }
+
+  const targetUrl = (event.notification.data && event.notification.data.url) || './';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
   );
 });

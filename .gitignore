@@ -8,3 +8,5 @@ client_secret*.json
 *.json.secret
 
 
+
+scratch/

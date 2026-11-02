@@ -1918,8 +1918,8 @@ const APP_DATA = {
           {
             "id": "toefl-fast3-l1",
             "title": "Jurus 1: Anti-Bunyi Mirip & Trik Orang Kedua",
-            "type": "flashcard-quiz",
-            "xpReward": 30,
+            "type": "checkpoint-loop",
+            "xpReward": 35,
             "cards": [
               {
                 "front": "⚠️ JEBAKAN BUNYI MIRIP",
@@ -1927,64 +1927,553 @@ const APP_DATA = {
                 "pronunciation": "Avoid Similar Sounds!",
                 "example": "Audio: \"I was in serious pain.\" -> Opsi Jebakan: \"He boarded a plane.\"",
                 "exampleMeaning": "Kata \"plane\" (pesawat) sengaja dimunculkan karena bunyinya mirip \"pain\" (sakit)! Ini 90% jebakan!",
-                "tip": "💡 Ingat: Jangan pernah pilih kata yang bunyinya sama persis dengan audio. Jawaban benar SELALU pakai sinonim (misal: \"He was hurt\").",
+                "tip": "💡 Ingat: Jangan pernah pilih kata yang bunyinya sama atau mirip dengan audio. Jawaban benar SELALU memakai sinonim atau parafrase kalimat.",
                 "ttsText": "I was in serious pain.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "🎯 TRIK ORANG KEDUA",
-                "romanization": "Kunci Rahasia 80% Soal",
-                "pronunciation": "Focus on the 2nd Speaker",
-                "example": "Man: \"Did you buy the tickets?\" / Woman: \"I barely had enough cash on me.\"",
-                "exampleMeaning": "Pria bertanya tiket, Wanita menjawab uangnya nyaris tidak cukup. Jawaban soal ada di ucapan WANITA!",
-                "tip": "💡 Buka telinga lebar-lebar untuk PEMBICARA KEDUA! Pertanyaan \"What does the woman/man mean?\" selalu menanyakan maksud kalimat orang kedua.",
-                "ttsText": "I barely had enough cash on me.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "🔄 JURUS PARAPHRASE",
-                "romanization": "Ganti Kata = Jawaban Benar",
-                "pronunciation": "Restatement & Synonyms",
-                "example": "Audio: \"turn in the paper\" -> Jawaban: \"submit the assignment\"",
-                "exampleMeaning": "\"Turn in\" artinya mengumpulkan (= submit), \"paper\" artinya tugas karya tulis (= assignment).",
-                "tip": "💡 Cari opsi yang artinya sama tapi susunan katanya beda. Kalau ada kata yang sama persis seperti di audio, curigai sebagai jebakan!",
-                "ttsText": "Don't forget to turn in your paper before five.",
                 "ttsLang": "en-US"
               }
             ],
             "quiz": [
               {
-                "q": "Man: \"Are you going to the physics seminar this afternoon?\"\nWoman: \"I'd love to, but I'm completely swamped with lab reports.\"\nWhat does the woman mean?",
-                "options": [
-                  "She will go to the swamp near the laboratory.",
-                  "She is too busy finishing lab reports to attend.",
-                  "She loves going to physics seminars alone.",
-                  "She is inviting the man to help her write reports."
+                "dialogue": [
+                  {
+                    "speaker": "man",
+                    "label": "Pria",
+                    "text": "Did you manage to reach Professor Anderson yesterday?"
+                  },
+                  {
+                    "speaker": "woman",
+                    "label": "Wanita",
+                    "text": "I tried calling his office, but the line was completely dead."
+                  }
                 ],
-                "answer": 1,
-                "explanation": "💡 Analisis TOEFL: Idiom 'swamped with' berarti 'sangat sibuk / kewalahan'. Opsi A sengaja memunculkan kata 'swamp' (rawa) sebagai jebakan bunyi mirip!"
+                "q": "What does the woman mean?",
+                "options": [
+                  "She was unable to get through to the professor on the phone.",
+                  "Professor Anderson suddenly passed away yesterday.",
+                  "She walked along the chalk line to the professor's office.",
+                  "She read an urgent telegram from the university faculty."
+                ],
+                "answer": 0,
+                "explanation": "💡 Analisis TOEFL: 'The line was dead' adalah ungkapan telepon tidak tersambung. Opsi B menjebak kata 'dead' secara harfiah, dan opsi C menjebak kata 'line'."
               },
               {
-                "q": "Woman: \"Did Mark finish the financial analysis on time?\"\nMan: \"He barely managed to get it in under the wire.\"\nWhat does the man say about Mark?",
-                "options": [
-                  "Mark damaged the electrical wires in the office.",
-                  "Mark completed the report just before the deadline.",
-                  "Mark was not able to submit the work today.",
-                  "Mark called the financial manager on the wire."
+                "dialogue": [
+                  {
+                    "speaker": "woman",
+                    "label": "Wanita",
+                    "text": "How did Bob take the news about losing the debate match?"
+                  },
+                  {
+                    "speaker": "man",
+                    "label": "Pria",
+                    "text": "He took the defeat with a grain of salt."
+                  }
                 ],
-                "answer": 1,
-                "explanation": "💡 Analisis TOEFL: Idiom 'under the wire' berarti 'tepat sebelum batas waktu berakhir'. Opsi A & D adalah jebakan kata 'wire'!"
+                "q": "What does the man say about Bob?",
+                "options": [
+                  "Bob was not deeply distressed by the negative outcome.",
+                  "Bob accidentally put too much salt in his lunch soup.",
+                  "Bob bought a bag of grain at the local supermarket.",
+                  "Bob blamed his debate opponent for cheating."
+                ],
+                "answer": 0,
+                "explanation": "💡 Analisis TOEFL: 'Take with a grain of salt' bermakna menerima santai / tidak terlalu diambil hati. Opsi B & C adalah jebakan bunyi 'salt' dan 'grain'."
               },
               {
-                "q": "Man: \"I thought you said the concert tickets were fifty dollars.\"\nWoman: \"Well, they cost an arm and a leg, didn't they?\"\nWhat does the woman imply?",
-                "options": [
-                  "She injured her arm and leg at the concert hall.",
-                  "The concert tickets were extremely expensive.",
-                  "They only bought half of the required tickets.",
-                  "The man forgot to bring enough medical supplies."
+                "dialogue": [
+                  {
+                    "speaker": "man",
+                    "label": "Pria",
+                    "text": "Is Sarah still working as a lab assistant in the biology department?"
+                  },
+                  {
+                    "speaker": "woman",
+                    "label": "Wanita",
+                    "text": "No, she quit because she couldn't bear the heavy workload."
+                  }
                 ],
-                "answer": 1,
-                "explanation": "💡 Analisis TOEFL: Ungkapan 'cost an arm and a leg' adalah idiom umum bermakna 'sangat mahal sekali'. Opsi A adalah jebakan makna harfiah!"
+                "q": "What does the woman say about Sarah?",
+                "options": [
+                  "Sarah resigned because the demands were excessive.",
+                  "A wild bear wandered into the laboratory building.",
+                  "Sarah bought a pair of safety glasses for research.",
+                  "Sarah was praised for working overtime every evening."
+                ],
+                "answer": 0,
+                "explanation": "💡 Analisis TOEFL: 'Couldn't bear' berarti 'tidak kuat menahan'. Opsi B menjebak kata 'bear' (beruang) dan opsi C menjebak bunyi mirip 'pair'."
+              }
+            ],
+            "checkpoints": [
+              {
+                "id": "toefl-fast3-l1-cp1",
+                "badge": "JURUS 1 DARI 3: ANTI-BUNYI MIRIP",
+                "title": "Trik 1: Jebakan Bunyi Mirip (Avoid Similar Sounds)",
+                "card": {
+                  "front": "⚠️ JEBAKAN BUNYI MIRIP",
+                  "romanization": "Aturan Emas Listening Part A",
+                  "pronunciation": "Avoid Similar Sounds!",
+                  "example": "Audio: \"I was in serious pain.\" -> Opsi Jebakan: \"He boarded a plane.\"",
+                  "exampleMeaning": "Kata \"plane\" (pesawat) sengaja dimunculkan karena bunyinya mirip \"pain\" (sakit)! Ini 90% jebakan!",
+                  "tip": "💡 Ingat: Jangan pernah pilih kata yang bunyinya sama atau mirip dengan audio. Jawaban benar SELALU memakai sinonim atau parafrase kalimat.",
+                  "ttsText": "I was in serious pain.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Did you manage to reach Professor Anderson yesterday?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "I tried calling his office, but the line was completely dead."
+                      }
+                    ],
+                    "q": "What does the woman mean?",
+                    "options": [
+                      "She was unable to get through to the professor on the phone.",
+                      "Professor Anderson suddenly passed away yesterday.",
+                      "She walked along the chalk line to the professor's office.",
+                      "She read an urgent telegram from the university faculty."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'The line was dead' adalah ungkapan telepon tidak tersambung. Opsi B menjebak kata 'dead' secara harfiah, dan opsi C menjebak kata 'line'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "How did Bob take the news about losing the debate match?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "He took the defeat with a grain of salt."
+                      }
+                    ],
+                    "q": "What does the man say about Bob?",
+                    "options": [
+                      "Bob was not deeply distressed by the negative outcome.",
+                      "Bob accidentally put too much salt in his lunch soup.",
+                      "Bob bought a bag of grain at the local supermarket.",
+                      "Bob blamed his debate opponent for cheating."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Take with a grain of salt' bermakna menerima santai / tidak terlalu diambil hati. Opsi B & C adalah jebakan bunyi 'salt' dan 'grain'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Is Sarah still working as a lab assistant in the biology department?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "No, she quit because she couldn't bear the heavy workload."
+                      }
+                    ],
+                    "q": "What does the woman say about Sarah?",
+                    "options": [
+                      "Sarah resigned because the demands were excessive.",
+                      "A wild bear wandered into the laboratory building.",
+                      "Sarah bought a pair of safety glasses for research.",
+                      "Sarah was praised for working overtime every evening."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Couldn't bear' berarti 'tidak kuat menahan'. Opsi B menjebak kata 'bear' (beruang) dan opsi C menjebak bunyi mirip 'pair'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Did you enjoy your vacation in Hawaii last week?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "The flight was delayed and my luggage vanished without a trace."
+                      }
+                    ],
+                    "q": "What happened to the man during his trip?",
+                    "options": [
+                      "His personal bags were lost while traveling.",
+                      "He ran in a race across the airport terminal.",
+                      "He tracked his flight using radar on his phone.",
+                      "He purchased extra luggage at the duty-free shop."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Luggage vanished' = bagasinya hilang. Opsi B menjebak bunyi mirip 'trace' -> 'race', opsi C menjebak kata 'track'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Can we still catch the noon ferry to the harbor?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "We'd better hurry, or the boat will sail without us."
+                      }
+                    ],
+                    "q": "What does the woman imply?",
+                    "options": [
+                      "They need to move quickly to board on time.",
+                      "The department store is holding a clearance sale.",
+                      "The man should purchase a sailboat for the trip.",
+                      "The ferry departure has been cancelled until tomorrow."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'We'd better hurry' = harus bergegas. Opsi B menjebak bunyi mirip 'sail' -> 'sale'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Why is David looking so remarkably pale today?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "He caught a terrible cold after getting soaked in the rain."
+                      }
+                    ],
+                    "q": "What does the man say about David?",
+                    "options": [
+                      "David fell ill as a result of the wet weather.",
+                      "David carried a heavy metal pail of water.",
+                      "David called his doctor from the university clinic.",
+                      "David boarded a train during the thunderstorm."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Caught a cold after soaked in rain' = jatuh sakit. Opsi B menjebak bunyi mirip 'pale' -> 'pail', opsi C menjebak 'cold' -> 'called', opsi D menjebak 'rain' -> 'train'."
+                  }
+                ]
+              },
+              {
+                "id": "toefl-fast3-l1-cp2",
+                "badge": "JURUS 2 DARI 3: TRIK ORANG KEDUA",
+                "title": "Trik 2: Fokus Penuh Pembicara Kedua (Focus on 2nd Speaker)",
+                "card": {
+                  "front": "🎯 TRIK ORANG KEDUA",
+                  "romanization": "Kunci Rahasia 80% Soal",
+                  "pronunciation": "Focus on the 2nd Speaker",
+                  "example": "Man: \"Did you buy the tickets?\" / Woman: \"I barely had enough cash on me.\"",
+                  "exampleMeaning": "Pria bertanya tiket, Wanita menjawab uangnya nyaris tidak cukup. Jawaban soal ada di ucapan WANITA!",
+                  "tip": "💡 Buka telinga lebar-lebar untuk PEMBICARA KEDUA! Pertanyaan \"What does the woman/man mean?\" selalu menanyakan maksud kalimat orang kedua.",
+                  "ttsText": "I barely had enough cash on me.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Are you planning to attend the campus biology symposium tonight?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "I wouldn't miss it for the world!"
+                      }
+                    ],
+                    "q": "What does the woman mean?",
+                    "options": [
+                      "She definitely intends to be present at the symposium.",
+                      "She will travel around the globe this evening.",
+                      "She will miss the lecture because she is exhausted.",
+                      "The university cancelled the international conference."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus kalimat orang ke-2: 'I wouldn't miss it for the world' adalah idiom bermakna 'Pasti datang / tidak akan melewatkannya'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Do you think Mark will accept the research grant in Boston?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "He jumped at the chance the moment they notified him."
+                      }
+                    ],
+                    "q": "What does the man say about Mark?",
+                    "options": [
+                      "Mark eagerly accepted the opportunity without hesitation.",
+                      "Mark physically jumped over an obstacle in the room.",
+                      "Mark is still unsure whether to move to Boston.",
+                      "Mark turned down the funding because of the location."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus orang ke-2: 'Jumped at the chance' = langsung menyambar tawaran dengan sangat antusias."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Could you lend me twenty dollars until financial aid arrives?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "I'm completely flat broke myself until Friday."
+                      }
+                    ],
+                    "q": "What does the woman imply?",
+                    "options": [
+                      "She has no spare money to lend him right now.",
+                      "She accidentally broke an expensive plate in the kitchen.",
+                      "She will receive twenty dollars from her professor.",
+                      "Her apartment is situated on a very flat street."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus orang ke-2: 'Flat broke' adalah ungkapan khas kampus yang berarti 'sama sekali tidak punya uang/bokek'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Are you ready to deliver your presentation in the auditorium?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "I've got butterflies in my stomach just thinking about it."
+                      }
+                    ],
+                    "q": "What does the man imply about the presentation?",
+                    "options": [
+                      "He is experiencing strong anxiety about speaking.",
+                      "He collected live butterflies for his entomology class.",
+                      "He suffers from a stomach illness after eating lunch.",
+                      "He feels totally confident and thoroughly relaxed."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus orang ke-2: 'Butterflies in my stomach' adalah idiom populer untuk rasa gugup / cemas luar biasa."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Did the mechanic manage to fix the engine problem?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "He said it's running like clockwork now."
+                      }
+                    ],
+                    "q": "What does the woman mean?",
+                    "options": [
+                      "The vehicle is functioning very smoothly and reliably.",
+                      "The mechanic mounted a new antique clock on the dashboard.",
+                      "They must wait several more hours before driving.",
+                      "The car broke down again right after leaving the garage."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus orang ke-2: 'Running like clockwork' = beroperasi lancar dan presisi tanpa kendala sama sekali."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Have you seen Kevin recently? He looks thoroughly exhausted."
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "He's been burning the candle at both ends studying for finals."
+                      }
+                    ],
+                    "q": "What does the man say about Kevin?",
+                    "options": [
+                      "Kevin has been working excessively hard from morning till late night.",
+                      "Kevin burned down a pair of candles in his dormitory room.",
+                      "Kevin injured his fingers during a physics experiment.",
+                      "Kevin stopped preparing for his upcoming semester exams."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Fokus orang ke-2: 'Burning the candle at both ends' = memforsir diri belajar/bekerja pagi buta sampai larut malam."
+                  }
+                ]
+              },
+              {
+                "id": "toefl-fast3-l1-cp3",
+                "badge": "JURUS 3 DARI 3: PARAPHRASE & IDIOM",
+                "title": "Trik 3: Jurus Paraphrase & Idiom Kampus (Restatements)",
+                "card": {
+                  "front": "🔄 JURUS PARAPHRASE",
+                  "romanization": "Ganti Kata = Jawaban Benar",
+                  "pronunciation": "Restatement & Synonyms",
+                  "example": "Audio: \"turn in the paper\" -> Jawaban: \"submit the assignment\"",
+                  "exampleMeaning": "\"Turn in\" artinya mengumpulkan (= submit), \"paper\" artinya tugas karya tulis (= assignment).",
+                  "tip": "💡 Cari opsi yang artinya sama tapi susunan katanya beda. Kalau ada kata yang sama persis seperti di audio, curigai sebagai jebakan!",
+                  "ttsText": "Don't forget to turn in your paper before five.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Are you almost done typing that 20-page research paper?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "I'm just putting the finishing touches on it right now."
+                      }
+                    ],
+                    "q": "What does the woman mean?",
+                    "options": [
+                      "She is completing the final minor adjustments on her paper.",
+                      "She is just beginning to write the opening introduction.",
+                      "She is tapping her hands on the computer screen repeatedly.",
+                      "She decided not to submit the extensive research report."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Putting finishing touches' = menyelesaikan detail akhir (hampir selesai 100%)."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Did you hear that Professor Davis cancelled the midterm exam?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "You can say that again!"
+                      }
+                    ],
+                    "q": "What does the man mean?",
+                    "options": [
+                      "He enthusiastically agrees with what the woman remarked.",
+                      "He asks the woman to repeat her statement more loudly.",
+                      "He doubts that the professor actually called off the test.",
+                      "He wants to retake the examination during summer term."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'You can say that again!' BUKAN menyuruh ngomong lagi, tapi ungkapan sepakat 100% ('Setuju banget!')."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Is the central library open during the winter holiday?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "They've closed their doors until next semester."
+                      }
+                    ],
+                    "q": "What does the woman imply?",
+                    "options": [
+                      "The library is not operating during the holiday period.",
+                      "The entrance doors of the building are mechanically stuck.",
+                      "The library will remain closed permanently for renovations.",
+                      "Students can access the reading halls through side windows."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Closed their doors until...' adalah parafrase dari 'tutup/tidak beroperasi selama libur'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Did you understand the professor's explanation of quantum physics?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "To be honest, it was as clear as mud to me."
+                      }
+                    ],
+                    "q": "What does the man mean?",
+                    "options": [
+                      "He found the scientific concept utterly incomprehensible.",
+                      "The lecture was extremely transparent and easy to follow.",
+                      "He accidentally dropped his lecture notebook in the mud.",
+                      "He plans to major in quantum physics next academic year."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'As clear as mud' adalah sarkasme bahasa Inggris yang berarti 'sangat tidak jelas / sama sekali tidak mengerti'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "Would you like to join our study group for the chemistry exam?"
+                      },
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "I'm all ears—tell me the schedule and place!"
+                      }
+                    ],
+                    "q": "What does the woman mean?",
+                    "options": [
+                      "She is eager and ready to listen to the study details.",
+                      "She has an ear infection and cannot attend group meetings.",
+                      "She prefers to review chemistry textbooks entirely alone.",
+                      "She thinks the study group should be rescheduled next week."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'All ears' bermakna 'siap mendengarkan dengan penuh perhatian dan antusias'."
+                  },
+                  {
+                    "dialogue": [
+                      {
+                        "speaker": "woman",
+                        "label": "Wanita",
+                        "text": "Did you decide to purchase that expensive digital camera?"
+                      },
+                      {
+                        "speaker": "man",
+                        "label": "Pria",
+                        "text": "I had second thoughts when I saw the final price tag."
+                      }
+                    ],
+                    "q": "What does the man say about the camera?",
+                    "options": [
+                      "He reconsidered and chose not to buy the device.",
+                      "He bought two cameras because of a limited promotional discount.",
+                      "He thought about the purchase twice before ordering it online.",
+                      "He lost the receipt and warranty tag at the electronics shop."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'Had second thoughts' adalah idiom yang bermakna berubah pikiran / ragu dan membatalkan keputusan awal."
+                  }
+                ]
               }
             ]
           },
@@ -2229,37 +2718,277 @@ const APP_DATA = {
           {
             "id": "toefl-fast3-l4",
             "title": "Jurus 2: Rumus 3 Detik S + V & Konektor FANBOYS",
-            "type": "flashcard-quiz",
-            "xpReward": 30,
+            "type": "checkpoint-loop",
+            "xpReward": 35,
+            "checkpoints": [
+              {
+                "id": "cp1_sv",
+                "number": 1,
+                "title": "Trik 1: Rumus 3 Detik S + V (Anti-Kalimat Pincang)",
+                "badge": "TRIK 1: SUBJEK & KATA KERJA",
+                "card": {
+                  "front": "⚡ RUMUS 3 DETIK S + V",
+                  "romanization": "Kunci Emas Structure 1–15",
+                  "pronunciation": "1 Klausa Wajib = 1 Subjek + 1 Verb",
+                  "example": "Soal: \"_________ was appointed ambassador to France in 1785.\"",
+                  "exampleMeaning": "Ada Verb \"was appointed\", tapi Subjek di depan KOSONG! Langsung cari opsi yang berisi Subjek murni.",
+                  "tip": "💡 Aturan Emas: Setiap kalimat bahasa Inggris WAJIB punya minimal 1 Subjek dan 1 Verb utama. Jangan pilih opsi yang memasukkan Verb dobel tanpa konektor!",
+                  "ttsText": "Thomas Jefferson was appointed ambassador to France in 1785.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "q": "Structure: \"_________ the dominant architectural style of Medieval European cathedrals for over three centuries.\"",
+                    "options": [
+                      "Gothic was",
+                      "That Gothic was",
+                      "Although Gothic was",
+                      "The Gothic style being"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat belum memiliki Subjek maupun Verb utama. Opsi A 'Gothic was' langsung melengkapi pola [S + V] secara tepat tanpa konektor berlebih."
+                  },
+                  {
+                    "q": "Structure: \"The new geothermal turbine at the facility _________ continuous electric power to the surrounding communities.\"",
+                    "options": [
+                      "supplying",
+                      "supplies",
+                      "supply of",
+                      "is supply"
+                    ],
+                    "answer": 1,
+                    "explanation": "💡 Analisis TOEFL: Kalimat sudah memiliki Subjek 'The new geothermal turbine' (tunggal), tetapi belum ada Kata Kerja (Verb). Opsi B 'supplies' adalah Verb aktif tunggal yang tepat."
+                  },
+                  {
+                    "q": "Structure: \"_________ during the late Pleistocene epoch, the saber-toothed cat was an apex predator across North America.\"",
+                    "options": [
+                      "Flourishing",
+                      "It flourished",
+                      "It was flourishing",
+                      "That flourished"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat utama sudah lengkap ('the saber-toothed cat was...'). Bagian depan berkoma adalah Participle Phrase (keterangan), sehingga butuh 'Flourishing', bukan S+V dobel."
+                  },
+                  {
+                    "q": "Structure: \"The sophisticated climate model _________ by atmospheric physicists successfully forecasted the monsoon pattern.\"",
+                    "options": [
+                      "developed",
+                      "was developed",
+                      "developing it",
+                      "has developed"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Verb utama kalimat sudah ada di belakang yaitu 'forecasted'. Maka ruang kosong butuh Past Participle (Adjective pemendek) 'developed' (yang dikembangkan), bukan Verb kedua."
+                  },
+                  {
+                    "q": "Structure: \"Between 1860 and 1900, the United States _________ from an agrarian nation into an industrial superpower.\"",
+                    "options": [
+                      "transformed",
+                      "transforming",
+                      "the transformation",
+                      "was transformation"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Subjek kalimat adalah 'the United States'. Kalimat membutuhkan Verb lampau 'transformed' (mentransformasikan diri)."
+                  },
+                  {
+                    "q": "Structure: \"_________ was the first permanent English settlement established in North America.\"",
+                    "options": [
+                      "Jamestown",
+                      "In Jamestown",
+                      "That Jamestown",
+                      "Because Jamestown"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Verb utama 'was' sudah ada, tetapi Subjek di depan rumpang. Opsi A 'Jamestown' adalah Noun murni sebagai Subjek tanpa preposisi perusak."
+                  }
+                ]
+              },
+              {
+                "id": "cp2_prep",
+                "number": 2,
+                "title": "Trik 2: Jurus Coret Preposisi & Pengecoh Subjek",
+                "badge": "TRIK 2: JURUS CORET PREPOSISI",
+                "card": {
+                  "front": "✂️ JURUS CORET PREPOSISI",
+                  "romanization": "Hapus Pengecoh Subjek",
+                  "pronunciation": "Prepositional Phrases are NOT Subjects",
+                  "example": "\"The discovery [of new deep-sea hydrothermal vents] _________ marine biologists.\"",
+                  "exampleMeaning": "Frasa dalam kurung yang diawali \"of\" HANYA keterangan! Subjek aslinya adalah \"The discovery\" (tunggal) -> butuh Verb tunggal \"astonished\".",
+                  "tip": "💡 Coret kata setelah: in, at, on, of, for, with, by. Subjek asli SELALU di depan preposisi! Jangan tertipu jamak/tunggal di dalam frasa preposisi.",
+                  "ttsText": "The discovery of hydrothermal vents astonished marine biologists.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "q": "Structure: \"A thick layer of blubber beneath the skin _________ marine mammals from hypothermia in arctic waters.\"",
+                    "options": [
+                      "protects",
+                      "protecting",
+                      "protection",
+                      "is protected"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Coret 'of blubber beneath the skin'. Subjek asli adalah 'A thick layer' (tunggal). Kalimat membutuhkan Verb aktif tunggal berakhiran -s: 'protects'."
+                  },
+                  {
+                    "q": "Structure: \"The archaeological artifacts from the bronze age excavation site _________ currently on display at the national museum.\"",
+                    "options": [
+                      "is",
+                      "are",
+                      "being",
+                      "was"
+                    ],
+                    "answer": 1,
+                    "explanation": "💡 Analisis TOEFL: Coret 'from the bronze age excavation site'. Subjek aslinya adalah 'The archaeological artifacts' (jamak/plural). Maka Verb yang benar adalah 'are'."
+                  },
+                  {
+                    "q": "Structure: \"Research on the psychological effects of prolonged isolation _________ critical insights for deep-space astronaut missions.\"",
+                    "options": [
+                      "provides",
+                      "provide",
+                      "providing",
+                      "provision"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Coret 'on the psychological effects of prolonged isolation'. Subjek utama adalah 'Research' (uncountable/tunggal). Butuh Verb tunggal 'provides'."
+                  },
+                  {
+                    "q": "Structure: \"The installation of high-efficiency solar panels on public university buildings _________ electric expenditures significantly.\"",
+                    "options": [
+                      "reduces",
+                      "reduce",
+                      "reducing",
+                      "are reduced"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Coret 'of high-efficiency solar panels on public university buildings'. Subjek asli adalah 'The installation' (tunggal), membutuhkan Verb 'reduces'."
+                  },
+                  {
+                    "q": "Structure: \"With the exception of helium, noble gases in the periodic table _________ an outer shell of eight valence electrons.\"",
+                    "options": [
+                      "possess",
+                      "possesses",
+                      "possessing",
+                      "is possessing"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: 'With the exception of helium' adalah preposisi pembuka (coret). Subjek aslinya adalah 'noble gases' (jamak). Maka butuh Verb jamak tanpa -s: 'possess'."
+                  },
+                  {
+                    "q": "Structure: \"The variety of plant and animal species inhabiting tropical rain forests _________ extraordinary biodiversity.\"",
+                    "options": [
+                      "exhibits",
+                      "exhibit",
+                      "exhibiting",
+                      "are exhibited"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Subjek inti adalah 'The variety' (tunggal). Frasa setelah 'of' adalah keterangan. Maka Verb tunggal yang benar adalah 'exhibits'."
+                  }
+                ]
+              },
+              {
+                "id": "cp3_fanboys",
+                "number": 3,
+                "title": "Trik 3: Jurus Konektor FANBOYS & Klausa Majemuk",
+                "badge": "TRIK 3: KONEKTOR KLAUSA",
+                "card": {
+                  "front": "🔗 JURUS KONEKTOR FANBOYS",
+                  "romanization": "Menghubungkan 2 Kalimat Utuh",
+                  "pronunciation": "For, And, Nor, But, Or, Yet, So",
+                  "example": "\"The proposal was approved, _________ implementation will begin immediately.\"",
+                  "exampleMeaning": "Ada 2 klausa utuh (S1+V1 dan S2+V2). Kita butuh konektor setara: \"and\".",
+                  "tip": "💡 Rumus Baku TOEFL: [S1 + V1] + KONEKTOR + [S2 + V2]. Jumlah Verb selalu = Jumlah Konektor + 1! Kalau ada 2 Verb, WAJIB ada 1 Konektor.",
+                  "ttsText": "The proposal was approved, and implementation will begin immediately.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "q": "Structure: \"The telescope at Mount Palomar has a 200-inch mirror, _________ astronomers to observe distant galaxies with unprecedented clarity.\"",
+                    "options": [
+                      "which enables",
+                      "enables",
+                      "and it enables",
+                      "that it enables"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama sudah punya S+V ('The telescope has'). Untuk menyambung klausa kedua dengan Verb 'enables', dibutuhkan konektor relatif 'which'."
+                  },
+                  {
+                    "q": "Structure: \"The company's third-quarter revenue exceeded forecasts, _________ production costs remained surprisingly low.\"",
+                    "options": [
+                      "and",
+                      "because",
+                      "so that",
+                      "in spite of"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Dua klausa setara dan positif disambung koma dan konektor setara koordinatif 'and'."
+                  },
+                  {
+                    "q": "Structure: \"A battery stores chemical energy, _________ it converts that energy into electrical current when connected to a circuit.\"",
+                    "options": [
+                      "and",
+                      "which",
+                      "although",
+                      "whereas"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Pola dua klausa mandiri utuh: [S1 + V1], + KONEKTOR + [S2 + V2]. Pilihan 'and' menyambung klausa kedua 'it converts' secara gramatikal sempurna."
+                  },
+                  {
+                    "q": "Structure: \"The regional reservoir was severely depleted, _________ city officials imposed emergency water restrictions.\"",
+                    "options": [
+                      "so",
+                      "for",
+                      "nor",
+                      "but"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Klausa kedua merupakan konsekuensi/hasil logis dari klausa pertama. Konektor sebab-akibat yang tepat dari FANBOYS adalah 'so' (sehingga)."
+                  },
+                  {
+                    "q": "Structure: \"Neither the governor _________ the members of the legislative assembly supported the controversial transit bill.\"",
+                    "options": [
+                      "nor",
+                      "or",
+                      "and",
+                      "but"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Pasangan kata penghubung korelatif baku untuk 'Neither' adalah 'nor' (Neither ... nor ...)."
+                  },
+                  {
+                    "q": "Structure: \"The laboratory was equipped with cutting-edge microscopes, _________ the researchers lacked sufficient funding for specimen slides.\"",
+                    "options": [
+                      "yet",
+                      "so",
+                      "and",
+                      "or"
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Hubungan kedua klausa bersifat kontras (alat canggih tetapi dana minim). Konektor kontras dari FANBOYS yang tepat adalah 'yet' (namun)."
+                  }
+                ]
+              }
+            ],
             "cards": [
               {
                 "front": "⚡ RUMUS 3 DETIK S + V",
                 "romanization": "Kunci Emas Structure 1-15",
                 "pronunciation": "1 Klausa = 1 Subjek + 1 Verb",
                 "example": "Soal: \"_________ was appointed ambassador to France in 1785.\"",
-                "exampleMeaning": "Ada Verb \"was appointed\", tapi Subjek di depan KOSONG! Cari opsi yang berisi Subjek murni.",
-                "tip": "💡 Kalimat baku bahasa Inggris WAJIB punya 1 Subjek dan 1 Verb utama. Jangan pilih opsi yang ada Verb dobel tanpa konektor!",
+                "exampleMeaning": "Ada Verb \"was appointed\", tapi Subjek di depan KOSONG!",
+                "tip": "💡 1 Kalimat wajib 1 Subjek dan 1 Verb.",
                 "ttsText": "Thomas Jefferson was appointed ambassador to France.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "✂️ JURUS CORET PREPOSISI",
-                "romanization": "Hapus Pengecoh Subjek",
-                "pronunciation": "Prepositional Phrases are NOT Subjects",
-                "example": "\"The discovery [of new deep-sea hydrothermal vents] _________ marine biologists.\"",
-                "exampleMeaning": "Frasa dalam kurung yang diawali \"of\" HANYA keterangan! Subjek aslinya adalah \"The discovery\" (tunggal) -> butuh Verb tunggal \"astonished\".",
-                "tip": "💡 Coret kata setelah: in, at, on, of, for, with, by. Subjek asli SELALU di depan preposisi!",
-                "ttsText": "The discovery of hydrothermal vents astonished marine biologists.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "🔗 JURUS KONEKTOR FANBOYS",
-                "romanization": "Menghubungkan 2 Kalimat Utuh",
-                "pronunciation": "For, And, Nor, But, Or, Yet, So",
-                "example": "\"The proposal was approved, _________ implementation will begin immediately.\"",
-                "exampleMeaning": "Ada 2 klausa utuh (S1+V1 dan S2+V2). Kita butuh konektor setara: \"and\".",
-                "tip": "💡 Rumus: [S1 + V1] + KONEKTOR + [S2 + V2]. Jumlah Verb selalu = Jumlah Konektor + 1!",
-                "ttsText": "The proposal was approved, and implementation will begin immediately.",
                 "ttsLang": "en-US"
               }
             ],
@@ -2273,29 +3002,7 @@ const APP_DATA = {
                   "The Gothic style being"
                 ],
                 "answer": 0,
-                "explanation": "💡 Analisis TOEFL: Kalimat belum memiliki Subjek maupun Verb utama. Opsi A 'Gothic was' langsung melengkapi [S + V] secara tepat tanpa konektor yang menggantung."
-              },
-              {
-                "q": "Structure: \"The telescope at Mount Palomar has a 200-inch mirror, _________ astronomers to observe distant galaxies with unprecedented clarity.\"",
-                "options": [
-                  "enables",
-                  "which enables",
-                  "and it enables",
-                  "that it enables"
-                ],
-                "answer": 1,
-                "explanation": "💡 Analisis TOEFL: Kalimat pertama sudah memiliki S+V ('The telescope has'). Untuk menyambung klausa kedua dengan Verb 'enables', dibutuhkan konektor relatif 'which'."
-              },
-              {
-                "q": "Structure: \"A thick layer of blubber beneath the skin _________ marine mammals from hypothermia in arctic waters.\"",
-                "options": [
-                  "protects",
-                  "protecting",
-                  "protection",
-                  "is protected"
-                ],
-                "answer": 0,
-                "explanation": "💡 Analisis TOEFL: Subjek kalimat adalah 'A thick layer' (tunggal). Frasa 'of blubber beneath the skin' hanyalah keterangan preposisi. Kalimat butuh Verb aktif tunggal 'protects'."
+                "explanation": "💡 Subjek dan Verb rumpang."
               }
             ]
           },
@@ -2455,8 +3162,8 @@ const APP_DATA = {
           {
             "id": "toefl-fast3-l7",
             "title": "Jurus 4: Ninja Scan Reading & Pertanyaan Main Idea",
-            "type": "flashcard-quiz",
-            "xpReward": 30,
+            "type": "checkpoint-loop",
+            "xpReward": 35,
             "cards": [
               {
                 "front": "🥷 TEKNIK NINJA MAIN IDEA",
@@ -2465,63 +3172,321 @@ const APP_DATA = {
                 "example": "Soal: \"What is the main topic of the passage?\"",
                 "exampleMeaning": "BACA CUMA kalimat pertama paragraf 1 dan kalimat pertama paragraf 2! 90% ide pokok teks TOEFL ditaruh di awal paragraf.",
                 "tip": "💡 Jangan buang waktu baca seluruh bacaan dari awal sampai habis. Baca baris pertama tiap paragraf, lalu langsung tembak jawaban!",
-                "ttsText": "The invention of movable type revolutionized communication in Europe.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "🔍 SCAN KATA KUNCI TERTARGET",
-                "romanization": "Mata Elang Mencari Fakta",
-                "pronunciation": "Targeted Keyword Scanning",
-                "example": "Soal: \"According to paragraph 2, what year was the telescope invented?\"",
-                "exampleMeaning": "JANGAN baca ulang! Gerakkan mata cepat cari angka tahun (misal: \"1608\") atau huruf kapital seperti radar.",
-                "tip": "💡 Kata kunci terbaik untuk di-scan: Angka, tahun, nama orang (huruf kapital), nama tempat, dan istilah ilmiah berhuruf miring.",
-                "ttsText": "In 1608, Dutch spectacle makers designed the first optical telescope.",
-                "ttsLang": "en-US"
-              },
-              {
-                "front": "🚫 SOAL JEBAKAN EXCEPT / NOT",
-                "romanization": "Cari 1 Opsi yang Salah / Absen",
-                "pronunciation": "Negative Factual Elimination",
-                "example": "\"All of the following are mentioned EXCEPT...\"",
-                "exampleMeaning": "3 opsi disebutkan di teks, HANYA 1 opsi yang tidak ada atau bertolak belakang dengan teks.",
-                "tip": "💡 Eliminasi: Tandai 3 opsi yang kamu temukan di paragraf. Opsi yang tersisa (yang tidak disebutkan sama sekali) adalah JAWABAN BENAR!",
-                "ttsText": "All of the following factors contributed to urban growth EXCEPT rapid climate warming.",
+                "ttsText": "The invention of movable type revolutionized communication across Europe.",
                 "ttsLang": "en-US"
               }
             ],
             "quiz": [
               {
-                "q": "Reading Hack: Where is the main idea most frequently found in an academic TOEFL passage? (Di manakah letak ide pokok paling sering ditemukan dalam teks akademik TOEFL?)",
+                "passage": "Photosynthesis is the fundamental biochemical process by which green plants and certain organisms transform radiant solar energy into chemical bond energy stored in glucose molecules. Through specialized cellular organelles called chloroplasts, light reactions convert water and carbon dioxide into oxygen and carbohydrates essential for planetary life.",
+                "q": "What is the primary topic of the passage?",
                 "options": [
-                  "In the last sentence of the bottom-most paragraph.",
-                  "In the first sentence of the introduction and topic sentences of each paragraph.",
-                  "In the footnotes at the very end of the manuscript.",
-                  "Scattered randomly throughout statistical data tables."
-                ],
-                "answer": 1,
-                "explanation": "💡 Trik Emas Reading: Paragraf esai akademik TOEFL dirancang deduktif. Kalimat pertama paragraf pengantar selalu memuat thesis statement atau ide pokok utama."
-              },
-              {
-                "q": "Reading Hack: What is the most efficient strategy when facing a 'Which of the following is NOT true according to paragraph 3?' question? (Bagaimana strategi paling efisien saat menghadapi soal 'NOT true'?)",
-                "options": [
-                  "Rereading the entire passage from title to conclusion.",
-                  "Choosing the longest option without checking the passage.",
-                  "Matching each option against paragraph 3 and eliminating the one unsupported by the text.",
-                  "Guessing letter C because C is statistically most frequent."
-                ],
-                "answer": 2,
-                "explanation": "💡 Trik Eliminasi: Tipe soal Negative Factual diselesaikan dengan eliminasi 3 opsi yang benar berdasarkan paragraf 3; opsi sisanya adalah kunci jawaban."
-              },
-              {
-                "q": "Reading Hack: For vocabulary questions like 'The word \"pivotal\" in line 4 is closest in meaning to:', how should you guess if you do not know the definition? (Bagaimana cara menebak arti kata jika lupa artinya?)",
-                "options": [
-                  "Substitute each choice into the sentence and select the one that makes the most logical sense.",
-                  "Choose the word with the closest spelling to 'pivotal'.",
-                  "Count the number of syllables in the target word.",
-                  "Select the synonym that is least commonly used in daily conversation."
+                  "The fundamental biological mechanism and importance of photosynthesis.",
+                  "The microscopic structure and chemical staining of chloroplasts.",
+                  "The commercial cultivation of green plants in agricultural greenhouses.",
+                  "The harmful atmospheric effects of excessive carbon dioxide."
                 ],
                 "answer": 0,
-                "explanation": "💡 Context Clue Hack: Masukkan satu per satu pilihan (crucial, minor, decorative, rapid) ke dalam kalimat asli. Opsi yang mempertahankan makna utuh kalimat adalah jawaban tepat."
+                "explanation": "💡 Analisis TOEFL: Kalimat pertama langsung mendefinisikan 'Photosynthesis is the fundamental biochemical process...'. Opsi B, C, D hanya detail parsial atau topik luar."
+              },
+              {
+                "passage": "The Industrial Revolution of the late eighteenth century profoundly altered the socioeconomic landscape of Great Britain by replacing artisanal handicraft production with mechanized steam-powered factories. This rapid shift spurred unprecedented urban migration, transforming agrarian villages into bustling industrial centers practically overnight.",
+                "q": "Which of the following best expresses the main idea of the passage?",
+                "options": [
+                  "Mechanized manufacturing during the Industrial Revolution dramatically transformed British society and economy.",
+                  "Artisans in Great Britain produced higher quality handicrafts than modern automated factories.",
+                  "Agrarian farming villages successfully resisted urban expansion throughout the eighteenth century.",
+                  "Steam engines were exclusively used for coal mining rather than commercial manufacturing."
+                ],
+                "answer": 0,
+                "explanation": "💡 Analisis TOEFL: Kalimat pertama memuat thesis statement: Revolusi Industri mengubah lanskap sosioekonomi melalui pabrik bertenaga uap dan urbanisasi massal."
+              },
+              {
+                "passage": "Bioluminescence, the biochemical generation of cold visible light by living organisms, serves vital ecological functions across abyssal oceanic depths. Predatory anglerfish utilize luminous dorsal lures to attract prey, while other species emit synchronized light pulses to startle predators or signal prospective mating partners.",
+                "q": "The primary purpose of the passage is to explain:",
+                "options": [
+                  "The diverse ecological survival functions of bioluminescence in deep-sea creatures.",
+                  "The commercial capture and aquarium display of predatory anglerfish.",
+                  "The complete chemical synthesis of cold light inside terrestrial laboratories.",
+                  "Why marine animals have lost their vision in perpetual dark ocean trenches."
+                ],
+                "answer": 0,
+                "explanation": "💡 Analisis TOEFL: Kalimat pertama menyatakan 'serves vital ecological functions', lalu diikuti contoh memburu mangsa, menakuti predator, dan kawin."
+              }
+            ],
+            "checkpoints": [
+              {
+                "id": "toefl-fast3-l7-cp1",
+                "badge": "JURUS 1 DARI 3: TEKNIK NINJA MAIN IDEA",
+                "title": "Trik 1: Aturan Kalimat Pertama (First Sentence Rule)",
+                "card": {
+                  "front": "🥷 TEKNIK NINJA MAIN IDEA",
+                  "romanization": "Jawab Soal 1 Tanpa Baca Semua",
+                  "pronunciation": "First Sentence Rule",
+                  "example": "Soal: \"What is the main topic of the passage?\"",
+                  "exampleMeaning": "BACA CUMA kalimat pertama paragraf 1 dan kalimat pertama paragraf 2! 90% ide pokok teks TOEFL ditaruh di awal paragraf.",
+                  "tip": "💡 Jangan buang waktu baca seluruh bacaan dari awal sampai habis. Baca baris pertama tiap paragraf, lalu langsung tembak jawaban!",
+                  "ttsText": "The invention of movable type revolutionized communication across Europe.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "passage": "Photosynthesis is the fundamental biochemical process by which green plants and certain organisms transform radiant solar energy into chemical bond energy stored in glucose molecules. Through specialized cellular organelles called chloroplasts, light reactions convert water and carbon dioxide into oxygen and carbohydrates essential for planetary life.",
+                    "q": "What is the primary topic of the passage?",
+                    "options": [
+                      "The fundamental biological mechanism and importance of photosynthesis.",
+                      "The microscopic structure and chemical staining of chloroplasts.",
+                      "The commercial cultivation of green plants in agricultural greenhouses.",
+                      "The harmful atmospheric effects of excessive carbon dioxide."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama langsung mendefinisikan 'Photosynthesis is the fundamental biochemical process...'. Opsi B, C, D hanya detail parsial atau topik luar."
+                  },
+                  {
+                    "passage": "The Industrial Revolution of the late eighteenth century profoundly altered the socioeconomic landscape of Great Britain by replacing artisanal handicraft production with mechanized steam-powered factories. This rapid shift spurred unprecedented urban migration, transforming agrarian villages into bustling industrial centers practically overnight.",
+                    "q": "Which of the following best expresses the main idea of the passage?",
+                    "options": [
+                      "Mechanized manufacturing during the Industrial Revolution dramatically transformed British society and economy.",
+                      "Artisans in Great Britain produced higher quality handicrafts than modern automated factories.",
+                      "Agrarian farming villages successfully resisted urban expansion throughout the eighteenth century.",
+                      "Steam engines were exclusively used for coal mining rather than commercial manufacturing."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama memuat thesis statement: Revolusi Industri mengubah lanskap sosioekonomi melalui pabrik bertenaga uap dan urbanisasi massal."
+                  },
+                  {
+                    "passage": "Bioluminescence, the biochemical generation of cold visible light by living organisms, serves vital ecological functions across abyssal oceanic depths. Predatory anglerfish utilize luminous dorsal lures to attract prey, while other species emit synchronized light pulses to startle predators or signal prospective mating partners.",
+                    "q": "The primary purpose of the passage is to explain:",
+                    "options": [
+                      "The diverse ecological survival functions of bioluminescence in deep-sea creatures.",
+                      "The commercial capture and aquarium display of predatory anglerfish.",
+                      "The complete chemical synthesis of cold light inside terrestrial laboratories.",
+                      "Why marine animals have lost their vision in perpetual dark ocean trenches."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama menyatakan 'serves vital ecological functions', lalu diikuti contoh memburu mangsa, menakuti predator, dan kawin."
+                  },
+                  {
+                    "passage": "Plate tectonics provides a comprehensive geological framework explaining the dynamic motions of Earth's lithospheric plates across the semi-fluid asthenosphere. The interactions along divergent, convergent, and transform boundaries account for major seismic phenomena, including volcanic eruptions, mountain orogeny, and continental drift.",
+                    "q": "What is the main focus of the passage?",
+                    "options": [
+                      "How the theory of plate tectonics explains global seismic activities and landform formation.",
+                      "The exact depth and mineral composition of Earth's molten core layers.",
+                      "Techniques used by modern volcanologists to measure magma temperatures.",
+                      "The historical timeline of disastrous volcanic eruptions in ancient civilizations."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama dan kedua langsung mengaitkan teori tektonik lempeng dengan fenomena vulkanik, orogeni gunung, dan pergeseran benua."
+                  },
+                  {
+                    "passage": "The decipherment of ancient Maya hieroglyphic script represents one of the most remarkable linguistic triumphs of the twentieth century. For decades presumed to represent purely ideographic symbols, modern epigraphers demonstrated that Maya glyphs constitute a sophisticated logosyllabic writing system capable of encoding phonetic spoken language.",
+                    "q": "What does the passage mainly discuss?",
+                    "options": [
+                      "The breakthrough discovery that Maya hieroglyphs form a phonetic writing system.",
+                      "The religious rituals depicted in monumental Maya stone architecture.",
+                      "The historical collapse of classic Maya urban civilization in Central America.",
+                      "A comparison between Egyptian hieroglyphs and Mesoamerican artistic symbols."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat kedua menegaskan inti bacaan: tulisan Maya terbukti merupakan 'logosyllabic writing system capable of encoding phonetic spoken language'."
+                  },
+                  {
+                    "passage": "Geothermal energy harnesses the natural thermal reservoir stored deep within Earth's crust to generate electricity and supply residential district heating. By extracting subsurface hydrothermal steam through deep boreholes, geothermal power plants deliver continuous baseload electrical capacity with minimal atmospheric greenhouse emissions.",
+                    "q": "What is the author's primary objective in the passage?",
+                    "options": [
+                      "To describe the utility and environmental benefits of harnessing geothermal energy.",
+                      "To argue that geothermal drilling causes unpredictable seismic tremors in urban zones.",
+                      "To calculate the installation cost of residential rooftop solar photovoltaic panels.",
+                      "To outline the historical extraction of fossil fuel deposits in North America."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Analisis TOEFL: Kalimat pertama dan kedua menguraikan cara kerja dan keuntungan energi geotermal sebagai pembangkit listrik ramah emisi."
+                  }
+                ]
+              },
+              {
+                "id": "toefl-fast3-l7-cp2",
+                "badge": "JURUS 2 DARI 3: SCAN KATA KUNCI TERTARGET",
+                "title": "Trik 2: Scan Mata Elang (Targeted Keyword Scanning)",
+                "card": {
+                  "front": "🔍 SCAN KATA KUNCI TERTARGET",
+                  "romanization": "Mata Elang Mencari Fakta",
+                  "pronunciation": "Targeted Keyword Scanning",
+                  "example": "Soal: \"According to paragraph 2, what year was the telescope invented?\"",
+                  "exampleMeaning": "JANGAN baca ulang! Gerakkan mata cepat cari angka tahun (misal: \"1608\") atau huruf kapital seperti radar.",
+                  "tip": "💡 Kata kunci terbaik untuk di-scan: Angka, tahun, nama orang (huruf kapital), nama tempat, dan istilah ilmiah berhuruf miring.",
+                  "ttsText": "In 1608, Dutch spectacle makers designed the first optical telescope.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "passage": "Halley's Comet is arguably the most famous periodic comet in history, returning to Earth's planetary vicinity approximately every 75 to 76 years. In 1705, English astronomer Edmond Halley applied Isaac Newton's newly formulated laws of universal gravitation to calculate historical orbital records, correctly predicting its triumphant reappearance in 1758.",
+                    "q": "According to the passage, in what year did Edmond Halley calculate the comet's periodic return?",
+                    "options": [
+                      "In 1705.",
+                      "In 1758.",
+                      "In 1608.",
+                      "In 1776."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Kata kunci soal adalah 'year' dan nama 'Edmond Halley'. Scan cepat angka tahun di teks: 'In 1705, English astronomer Edmond Halley... correctly predicting its return in 1758'."
+                  },
+                  {
+                    "passage": "Penicillin, the world's first widely effective antibiotic medicine, was serendipitously discovered in September 1928 by Scottish bacteriologist Alexander Fleming at St. Mary's Hospital in London. Fleming observed that a contaminant mold colony identified as Penicillium notatum had dissolved adjacent colonies of Staphylococcus bacteria on an untended petri dish.",
+                    "q": "According to the passage, where was Alexander Fleming working when he discovered penicillin?",
+                    "options": [
+                      "At St. Mary's Hospital in London.",
+                      "At Oxford University Medical Laboratory.",
+                      "At the Pasteur Institute in Paris.",
+                      "At the Royal Botanic Gardens in Edinburgh."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Cari huruf kapital nama tempat dekat nama 'Alexander Fleming'. Teks: 'Alexander Fleming at St. Mary's Hospital in London'."
+                  },
+                  {
+                    "passage": "Extending over 2,300 kilometers off the northeastern coast of Queensland, Australia, the Great Barrier Reef stands as the planet's largest biogenic structure composed of billions of coral polyps. This vibrant marine habitat shelters over 1,500 species of tropical fish and more than 400 distinct varieties of hard scleractinian corals.",
+                    "q": "Based on the text, approximately how many species of tropical fish inhabit the Great Barrier Reef?",
+                    "options": [
+                      "Over 1,500 species.",
+                      "Exactly 2,300 species.",
+                      "Fewer than 400 species.",
+                      "Approximately 50 species."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Cari kata kunci 'tropical fish'. Scan angka di dekatnya: 'over 1,500 species of tropical fish'."
+                  },
+                  {
+                    "passage": "Johannes Gutenberg developed the movable metal type printing press in Mainz, Germany, around the year 1440. His crowning mechanical achievement was the completed production of the Latin Gutenberg Bible around 1455, printed on durable rag vellum and paper, ushering in the spread of Renaissance humanism.",
+                    "q": "According to the passage, when was the production of the Gutenberg Bible completed?",
+                    "options": [
+                      "Around 1455.",
+                      "Around 1440.",
+                      "In 1517.",
+                      "In 1605."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Cari kata kunci berhuruf kapital 'Gutenberg Bible'. Teks: 'completed production of the Latin Gutenberg Bible around 1455'."
+                  },
+                  {
+                    "passage": "Yellowstone was officially established as the world's premier national park on March 1, 1872, when United States President Ulysses S. Grant signed the landmark Yellowstone National Park Protection Act. Spanning 2.2 million acres primarily across Wyoming, it protects nearly half of the world's geothermal features, including the famed Old Faithful geyser.",
+                    "q": "Which United States President signed the legislation establishing Yellowstone National Park?",
+                    "options": [
+                      "Ulysses S. Grant.",
+                      "Theodore Roosevelt.",
+                      "Abraham Lincoln.",
+                      "Thomas Jefferson."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Cari kata kunci kapital 'President' dan 'signed'. Teks: 'President Ulysses S. Grant signed the landmark...'."
+                  },
+                  {
+                    "passage": "Marie Curie remains the sole individual in scientific history honored with Nobel Prizes in two distinct scientific disciplines. In 1903, she shared the Nobel Prize in Physics for pioneering investigations into radiation phenomena, and in 1911, she was awarded the Nobel Prize in Chemistry for successfully isolating the radioactive elements radium and polonium.",
+                    "q": "In what year did Marie Curie receive the Nobel Prize in Chemistry?",
+                    "options": [
+                      "In 1911.",
+                      "In 1903.",
+                      "In 1898.",
+                      "In 1925."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Scan: Cari kata kunci 'Chemistry'. Teks: 'and in 1911, she was awarded the Nobel Prize in Chemistry...'."
+                  }
+                ]
+              },
+              {
+                "id": "toefl-fast3-l7-cp3",
+                "badge": "JURUS 3 DARI 3: SOAL JEBAKAN EXCEPT & KONTEKS",
+                "title": "Trik 3: Eliminasi Soal EXCEPT / NOT (Negative Factual Elimination)",
+                "card": {
+                  "front": "🚫 SOAL JEBAKAN EXCEPT / NOT",
+                  "romanization": "Cari 1 Opsi yang Salah / Absen",
+                  "pronunciation": "Negative Factual Elimination",
+                  "example": "\"All of the following are mentioned EXCEPT...\"",
+                  "exampleMeaning": "3 opsi disebutkan di teks, HANYA 1 opsi yang tidak ada atau bertolak belakang dengan teks.",
+                  "tip": "💡 Eliminasi: Tandai 3 opsi yang kamu temukan di paragraf. Opsi yang tersisa (yang tidak disebutkan sama sekali) adalah JAWABAN BENAR!",
+                  "ttsText": "All of the following factors contributed to urban growth EXCEPT rapid climate warming.",
+                  "ttsLang": "en-US"
+                },
+                "sampleCount": 3,
+                "passScore": 2,
+                "pool": [
+                  {
+                    "passage": "Honeybee foragers perform an intricate figure-eight 'waggle dance' inside dark hives to communicate the precise geographical coordinates of newly discovered floral nectar. The angle of the central run relative to vertical gravity communicates directional heading toward the sun, the duration of abdominal vibrations signifies spatial distance, and the vigor of body movements conveys resource nutritional quality.",
+                    "q": "According to the passage, all of the following parameters are encoded in the waggle dance EXCEPT:",
+                    "options": [
+                      "The ambient air temperature of the foraging meadow.",
+                      "The directional bearing relative to the sun.",
+                      "The spatial distance to the floral food source.",
+                      "The nutritional richness of the discovered nectar."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Eliminasi: Teks menyebut arah (bearing), jarak (distance), dan kualitas nektar (nutritional quality). Suhu udara ('ambient air temperature') TIDAK PERNAH disebutkan."
+                  },
+                  {
+                    "passage": "Xerophytic plants have evolved specialized morphological adaptations enabling sustained survival in arid desert biomes. Key adaptations include thick waxy epidermal cuticles to minimize cuticular transpiration, deeply penetrating taproots capable of tapping subterranean aquifers, and specialized crassulacean acid metabolism (CAM) allowing nocturnal stomatal opening.",
+                    "q": "The author mentions all of the following adaptations of desert xerophytes EXCEPT:",
+                    "options": [
+                      "Broad thin foliage to maximize evaporative cooling.",
+                      "Thick waxy cuticles preventing moisture evaporation.",
+                      "Deep root systems reaching subsurface water tables.",
+                      "Nighttime stomatal opening to conserve internal moisture."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Eliminasi: Daun tipis lebar ('broad thin foliage') justru akan membunuh tanaman gurun karena mempercepat penguapan! Teks justru menyebut kutikula tebal, akar dalam, dan stomata malam."
+                  },
+                  {
+                    "passage": "Ocean acidification, driven by elevated absorption of atmospheric carbon dioxide, dramatically alters marine chemical equilibria. As oceanic pH decreases, carbonate ion saturation plummets, directly impairing calcifying shellfish from assembling protective calcium carbonate shells, inducing coral colony bleaching, and disrupting delicate marine food webs.",
+                    "q": "Which of the following is NOT described as a direct consequence of ocean acidification?",
+                    "options": [
+                      "Massive dilution of oceanic waters by freshwater glacial flooding.",
+                      "A decline in the carbonate ion saturation of seawater.",
+                      "Impairment of shell calcification in marine invertebrates.",
+                      "Extensive coral reef bleaching and ecological disruption."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Eliminasi: Opsi B, C, dan D secara eksplisit ditulis di teks sebagai dampak asidifikasi laut. Pengenceran air tawar glasial ('freshwater glacial flooding') tidak ada."
+                  },
+                  {
+                    "passage": "The Royal Library of Alexandria was an unparalleled intellectual repository of the Hellenistic world, housing hundreds of thousands of papyrus scrolls spanning poetry, mathematics, medicine, and celestial astronomy. Supported by the Ptolemaic dynasty, it served as a collaborative research institute attracting prominent scholars from across the Mediterranean basin.",
+                    "q": "All of the following characteristics regarding the Library of Alexandria are supported by the text EXCEPT:",
+                    "options": [
+                      "It mass-produced printed manuscripts using mechanical movable metal presses.",
+                      "It accumulated extensive collections of handwritten papyrus scrolls.",
+                      "It received royal patronage from monarchs of the Ptolemaic dynasty.",
+                      "It served as an intellectual center attracting scholars across the Mediterranean."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Eliminasi: Mesin cetak bergerak baru ditemukan 1600 tahun kemudian oleh Gutenberg! Teks secara tegas menyebut 'papyrus scrolls', 'Ptolemaic dynasty', dan 'attracting prominent scholars'."
+                  },
+                  {
+                    "passage": "NASA's twin Mars Exploration Rovers, Spirit and Opportunity, touched down on opposite hemispheres of Mars in January 2004. Both robotic explorers deployed multi-spectral panoramic cameras to photograph rocky terrains, autonomous rock abrasion drills to sample mineral layers, and alpha particle X-ray spectrometers to ascertain chemical composition.",
+                    "q": "According to the passage, all of the following scientific tools were deployed on the Mars rovers EXCEPT:",
+                    "options": [
+                      "Pressurized life-support cabins for astronaut pilots.",
+                      "Multi-spectral cameras for surface terrain imaging.",
+                      "Rock abrasion instruments for extracting mineral samples.",
+                      "Spectrometers for determining elemental composition."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Trik Eliminasi: Rover adalah robot tak berawak ('robotic explorers'). Tidak ada kabin manusia/astronot. Opsi B, C, D semua disebutkan di teks."
+                  },
+                  {
+                    "passage": "Volcanic ash soils, scientifically classified as andisols, are remarkably fertile due to their high content of amorphous mineral weathering products. Although susceptible to heavy wind erosion when left uncultivated, these resilient volcanic soils support dense agricultural populations across equatorial volcanic arcs like Indonesia and the Philippines.",
+                    "q": "The word \"resilient\" in the passage is closest in meaning to:",
+                    "options": [
+                      "Durable and able to recover rapidly.",
+                      "Extremely brittle and easily fractured.",
+                      "Incapable of sustaining any plant growth.",
+                      "Highly toxic to livestock and humans."
+                    ],
+                    "answer": 0,
+                    "explanation": "💡 Context Clue Hack: Tanah yang mendukung populasi pertanian padat ('support dense agricultural populations') pasti bersifat subur, tangguh, dan dapat pulih dengan baik ('durable and able to recover')."
+                  }
+                ]
               }
             ]
           },

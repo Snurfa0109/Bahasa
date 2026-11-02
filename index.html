@@ -18,13 +18,56 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=47">
+  <link rel="stylesheet" href="css/style.css?v=65">
   <!-- Google Identity Services (GIS) Library -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
 <div id="app">
+
+  <!-- ───────── LUCA INTERACTIVE GREETING / SPLASH SCREEN ───────── -->
+  <div id="luca-greeting-overlay" class="luca-splash-overlay" style="display: none;" onclick="handleLucaOverlayClick(event)">
+    <div class="luca-splash-content">
+      <div class="luca-cosmic-glow"></div>
+
+      <!-- Luca Mascot with Animated Floating Wave & Glow -->
+      <div class="luca-mascot-wrapper">
+        <div class="luca-ring-halo"></div>
+        <img src="images/icon-512.png" alt="Luca - Maskot BasaLoka" class="luca-mascot-img" />
+        <span class="luca-sparkle-star s1">✨</span>
+        <span class="luca-sparkle-star s2">⭐</span>
+        <span class="luca-sparkle-star s3">✨</span>
+      </div>
+
+      <!-- Luca Speech Bubble -->
+      <div class="luca-speech-card">
+        <div class="luca-badge-row">
+          <span class="luca-role-pill">🪐 Pemandu Belajarmu</span>
+          <span class="luca-streak-pill" id="luca-streak-pill" style="display: none;">🔥 Streak 0 Hari</span>
+        </div>
+        <h2 class="luca-greeting-title" id="luca-greeting-title">Halo, Sobat Loka! 👋</h2>
+        <p class="luca-greeting-sub" id="luca-greeting-sub">Kenalin, aku <strong>Luca</strong>! Senang banget bisa nemenin kamu belajar bahasa hari ini ✨</p>
+        
+        <div class="luca-fun-fact-box" id="luca-fun-fact-box">
+          <span class="lff-icon">💡</span>
+          <span class="lff-text" id="luca-fun-fact-text">Konsisten 10 menit sehari lebih ampuh daripada 3 jam sekali seminggu!</span>
+        </div>
+      </div>
+
+      <!-- Interactive Actions -->
+      <div class="luca-splash-actions">
+        <button type="button" class="btn-luca-enter" id="btn-luca-enter" onclick="dismissLucaGreeting()">
+          <span>🚀 Mulai Belajar Bareng Luca</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <div class="luca-auto-progress-bar">
+          <div class="luca-auto-progress-fill" id="luca-progress-fill"></div>
+        </div>
+        <span class="luca-tap-hint">Ketuk di mana saja untuk langsung masuk</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════ NAVIGATION ═══════════ -->
   <nav id="main-nav" class="hidden">
@@ -241,6 +284,11 @@
               <span>🏆 <span id="toefl-xp">0</span> XP</span>
               <span>📚 <span id="toefl-lessons">0</span>/<span id="toefl-total">0</span> pelajaran</span>
             </div>
+            <div class="card-toefl-prediction" id="card-toefl-prediction">
+              <span class="pred-label">Prediksi Skor:</span>
+              <strong class="pred-val" id="toefl-card-pred-score">310</strong>
+              <span class="pred-badge" id="toefl-card-pred-badge">🌱 Level Dasar</span>
+            </div>
             <div class="card-action">
               <button class="btn-card toefl-btn" id="toefl-cta-btn">
                 <span id="toefl-btn-text">Mulai Belajar</span>
@@ -251,21 +299,147 @@
 
         </div>
 
-        <!-- 🎯 TOEFL ITP Full Simulation & Score Predictor Banner -->
-        <div class="toefl-sim-cta-banner" onclick="openExamSetupModal()" role="button" tabindex="0">
-          <div class="toefl-sim-cta-content">
-            <div class="toefl-sim-cta-badge">🎓 Standar Resmi ETS • Prediksi Skor 310 - 677</div>
-            <h3 class="toefl-sim-cta-title">🎯 Simulasi Resmi Tes TOEFL ITP</h3>
-            <p class="toefl-sim-cta-desc">Uji kemampuanmu dengan 140 soal standar ETS (50 Listening Audio 1x Putar, 40 Structure Grammar, & 50 Academic Reading) dengan timer ujian resmi & syarat kampus 430!</p>
-            <div class="toefl-sim-cta-tags">
-              <span>🎧 50 Soal Listening (Audio 1x)</span>
-              <span>📐 40 Soal Structure & Error ID</span>
-              <span>📖 50 Soal Reading Passage</span>
-              <span>⏱️ Pilihan 115 Menit / 1,5 Jam</span>
-              <span>🎯 Syarat Kampus Min. 430</span>
+        <!-- 🔥 PEMBANGKIT SEMANGAT: LIVE TOEFL SCORE PREDICTOR CARD -->
+        <div class="toefl-predictor-card" id="toefl-predictor-card">
+          <div class="tpc-header">
+            <div class="tpc-header-title">
+              <span class="tpc-flame-icon">🔥</span>
+              <div>
+                <div class="tpc-badge-mini">🎯 ETS SCALE 310 – 677 • PEMBANGKIT SEMANGAT</div>
+                <h3 class="tpc-title">Prediksi Skor TOEFL ITP Live 📊</h3>
+                <p class="tpc-subtitle">Skormu naik otomatis seiring bertambahnya modul & simulasi yang kamu kuasai!</p>
+              </div>
+            </div>
+            <div class="tpc-badge-wrap">
+              <span class="tpc-milestone-badge" id="tpc-milestone-badge">🌱 Level Dasar (310+)</span>
             </div>
           </div>
-          <button class="btn-primary toefl-sim-cta-btn" onclick="openExamSetupModal()">Mulai Ujian ⏱️</button>
+
+          <div class="tpc-main-grid">
+            <!-- Score Gauge & Value -->
+            <div class="tpc-score-col">
+              <div class="tpc-score-circle">
+                <div class="tpc-score-number" id="tpc-score-number">310</div>
+                <div class="tpc-score-scale">/ 677 ETS Scale</div>
+              </div>
+              <div class="tpc-target-info">
+                <span class="tpc-target-tag" id="tpc-target-tag">Target: Skor 450 (Menengah)</span>
+                <span class="tpc-points-left" id="tpc-points-left">Kurang 140 poin</span>
+              </div>
+            </div>
+
+            <!-- Meter and Milestone Checkpoints -->
+            <div class="tpc-gauge-col">
+              <div class="tpc-meter-header">
+                <span class="tpc-meter-title">Skala Kemampuan Resmi ETS (310 – 677)</span>
+                <span class="tpc-meter-percent" id="tpc-meter-percent">0% Menuju Skor Maksimal</span>
+              </div>
+              <div class="tpc-meter-track">
+                <div class="tpc-meter-fill" id="tpc-meter-fill" style="width: 0%"></div>
+                <!-- Milestone Markers -->
+                <div class="tpc-marker m-310" title="Skor Minimum: 310">
+                  <span class="marker-dot"></span>
+                  <span class="marker-label">310<br><small>Mulai</small></span>
+                </div>
+                <div class="tpc-marker m-450" title="Level Menengah (Intermediate): 450">
+                  <span class="marker-dot"></span>
+                  <span class="marker-label">450<br><small>📈 Menengah</small></span>
+                </div>
+                <div class="tpc-marker m-500" title="Standar BUMN & S2 Dalam Negeri: 500">
+                  <span class="marker-dot"></span>
+                  <span class="marker-label">500<br><small>💼 BUMN</small></span>
+                </div>
+                <div class="tpc-marker m-550" title="Standar Beasiswa LPDP: 550">
+                  <span class="marker-dot"></span>
+                  <span class="marker-label">550<br><small>🏆 LPDP</small></span>
+                </div>
+                <div class="tpc-marker m-677" title="Skor Maksimal: 677">
+                  <span class="marker-dot"></span>
+                  <span class="marker-label">677<br><small>Master</small></span>
+                </div>
+              </div>
+
+              <!-- 3 Section Breakdown -->
+              <div class="tpc-sections-row">
+                <div class="tpc-sec-item" id="tpc-sec-l" title="Listening: Menyimak audio percakapan & kuliah (Skala ETS 31-68)">
+                  <span class="sec-icon">🎧</span>
+                  <div class="sec-info">
+                    <div class="sec-top">
+                      <span class="sec-name">Listening</span>
+                      <strong class="sec-score"><span id="tpc-score-l">31</span><small>/68</small></strong>
+                    </div>
+                    <div class="sec-bar"><div class="sec-fill" id="tpc-fill-l" style="width: 0%"></div></div>
+                  </div>
+                </div>
+                <div class="tpc-sec-item" id="tpc-sec-s" title="Structure & Written Expression: Tata bahasa & pendeteksi error (Skala ETS 31-68)">
+                  <span class="sec-icon">📐</span>
+                  <div class="sec-info">
+                    <div class="sec-top">
+                      <span class="sec-name">Structure</span>
+                      <strong class="sec-score"><span id="tpc-score-s">31</span><small>/68</small></strong>
+                    </div>
+                    <div class="sec-bar"><div class="sec-fill" id="tpc-fill-s" style="width: 0%"></div></div>
+                  </div>
+                </div>
+                <div class="tpc-sec-item" id="tpc-sec-r" title="Reading Comprehension: Pemahaman teks akademik sains & sejarah (Skala ETS 31-67)">
+                  <span class="sec-icon">📖</span>
+                  <div class="sec-info">
+                    <div class="sec-top">
+                      <span class="sec-name">Reading</span>
+                      <strong class="sec-score"><span id="tpc-score-r">31</span><small>/67</small></strong>
+                    </div>
+                    <div class="sec-bar"><div class="sec-fill" id="tpc-fill-r" style="width: 0%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Luca Mascot Booster Speech Box -->
+          <div class="tpc-booster-box">
+            <div class="tpc-luca-avatar">🌍</div>
+            <div class="tpc-booster-content">
+              <div class="tpc-booster-title">Pesan Pembangkit Semangat dari Luca:</div>
+              <p class="tpc-booster-msg" id="tpc-booster-msg">
+                Setiap latihan yang kamu selesaikan akan otomatis menaikkan prediksimu! Mulai dari Fast Track Listening untuk dongkrak 30+ poin pertamamu! 🚀
+              </p>
+            </div>
+            <div class="tpc-booster-actions">
+              <button class="btn-primary tpc-btn-primary" onclick="continueNextToeflLesson()">
+                <span>🚀 Lanjut Materi Penambah Skor</span>
+              </button>
+              <button class="btn-secondary tpc-btn-secondary" onclick="openExamSetupModal()">
+                <span>⏱️ Simulasi Resmi (140 Soal)</span>
+              </button>
+              <button class="btn-ghost tpc-btn-info" onclick="openToeflScoreInfoModal()" title="Pelajari cara kerja perhitungan skor ETS">
+                <span>ℹ️ Rumus Skor</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔔 Daily 2x Reminder Card (12:00 Siang & 19:00 Malam WIB) -->
+        <div class="reminder-card-banner" id="reminder-card-banner">
+          <div class="rcb-left">
+            <span class="rcb-icon">🔔</span>
+            <div class="rcb-info">
+              <div class="rcb-title">
+                <span>Pengingat Belajar 2x Sehari</span>
+                <span class="rcb-badge" id="rcb-badge">12:00 & 19:00 WIB</span>
+              </div>
+              <div class="rcb-desc" id="rcb-status-text">
+                Dapatkan notifikasi otomatis di HP saat istirahat siang (12:00) & malam (19:00) agar streak belajarmu tidak putus!
+              </div>
+            </div>
+          </div>
+          <div class="rcb-actions">
+            <button type="button" class="btn-test-notif" id="btn-test-notif" onclick="sendTestPushNotification()" style="display: none;" title="Kirim notifikasi uji coba ke HP sekarang">
+              🔔 Tes Bunyikan HP
+            </button>
+            <button type="button" class="btn-enable-notif" id="btn-enable-notif" onclick="enablePushNotifications()">
+              Aktifkan Pengingat 🔔
+            </button>
+          </div>
         </div>
 
         <!-- Achievements -->
@@ -326,6 +500,61 @@
           </button>
           <h2 class="map-title">📝 TOEFL ITP Preparation</h2>
           <div class="map-xp">⚡ <span id="toefl-map-xp">0</span> XP</div>
+        </div>
+
+        <!-- 🎯 LIVE TOEFL SCORE PREDICTOR STRIP (Pembangkit Semangat) -->
+        <div class="toefl-map-predictor-strip" id="toefl-map-predictor-strip">
+          <div class="tmps-left">
+            <div class="tmps-label">PREDIKSI SKOR TOEFL SAAT INI</div>
+            <div class="tmps-score-row">
+              <span class="tmps-score" id="map-toefl-pred-score">310</span>
+              <span class="tmps-max">/ 677</span>
+              <span class="tmps-badge" id="map-toefl-milestone-badge">🌱 Level Dasar (310+)</span>
+            </div>
+          </div>
+          <div class="tmps-meter-container">
+            <div class="tmps-meter-bar">
+              <div class="tmps-meter-fill" id="map-toefl-meter-fill" style="width: 0%"></div>
+            </div>
+            <div class="tmps-meter-labels">
+              <span>310 (Mulai)</span>
+              <span>450 (Menengah)</span>
+              <span>500 (BUMN)</span>
+              <span>550 (LPDP)</span>
+              <span>677</span>
+            </div>
+          </div>
+          <div class="tmps-luca-quote" id="map-toefl-luca-quote">
+            <span class="tmps-luca-avatar">🌍</span>
+            <span class="tmps-quote-text" id="map-toefl-luca-text">Luca: "Selesaikan modul untuk menaikkan prediksimu!"</span>
+          </div>
+          <div class="tmps-actions-row">
+            <button type="button" class="btn-tmps-diagnostic" id="btn-toefl-diagnostic-trigger" onclick="openToeflDiagnosticModal()">
+              🎯 Tes Diagnostik 10 Menit (Cek Skor Awal)
+            </button>
+            <button type="button" class="btn-tmps-info" onclick="openToeflScoreInfoModal()">
+              ℹ️ Detail Tingkatan
+            </button>
+          </div>
+        </div>
+
+        <!-- 📅 PERSONAL STUDY PLAN & D-DAY COUNTDOWN CARD -->
+        <div class="toefl-study-plan-card" id="toefl-study-plan-card">
+          <!-- Dynamic content rendered by renderToeflStudyPlanCard() -->
+        </div>
+
+        <!-- 👑 POST-CURRICULUM MASTERY BANNER (Alumni Loop) -->
+        <div class="toefl-mastery-banner" id="toefl-mastery-banner" style="display: none;">
+          <div class="tmb-left">
+            <span class="tmb-icon">👑</span>
+            <div class="tmb-meta">
+              <h3>Seluruh Modul TOEFL Tuntas 100%!</h3>
+              <p>Hebat! Kamu telah menamatkan seluruh kurikulum. Pertahankan reflekmu hingga hari H ujian!</p>
+            </div>
+          </div>
+          <button type="button" class="btn-tmb-warmup" onclick="startDailyToeflWarmup()">
+            ⚡ Pemanasan Asah Harian (5 Menit)
+          </button>
         </div>
 
         <!-- ⚡ FAST TRACK & MASTER PATH TEMBUS 500-550+ -->
@@ -415,6 +644,14 @@
           <div class="lesson-progress-bar">
             <div class="lesson-progress-fill" id="lesson-progress-fill" style="width: 0%"></div>
           </div>
+          <button type="button" class="btn-lesson-timer-toggle" id="btn-lesson-timer-toggle" onclick="toggleLessonTimerMode()" title="Mode Timer Kilat ETS (Latihan Simulasi Waktu)">
+            <span class="ltt-icon">⏱️</span>
+            <span class="ltt-text" id="ltt-text">Timer OFF</span>
+          </button>
+        </div>
+        <div class="lesson-timer-bar-wrap" id="lesson-timer-bar-wrap" style="display: none;">
+          <div class="lesson-timer-bar-fill" id="lesson-timer-bar-fill" style="width: 100%;"></div>
+          <span class="lesson-timer-countdown-text" id="lesson-timer-countdown-text">⏱️ 40s</span>
         </div>
         <div class="lesson-content" id="lesson-content">
           <!-- Dynamic content injected by JS -->
@@ -445,6 +682,52 @@
               <span class="result-stat-value" id="result-time">0s</span>
               <span class="result-stat-label">Waktu</span>
             </div>
+          </div>
+          <!-- 🚀 TOEFL Score Boost Notification (Shown for TOEFL lessons) -->
+          <div class="result-toefl-boost" id="result-toefl-boost" style="display: none;">
+            <div class="rtb-header">
+              <span class="rtb-avatar">🌍</span>
+              <div class="rtb-meta">
+                <div class="rtb-title">Pembangkit Semangat Luca! 🚀</div>
+                <div class="rtb-sub">Prediksi Skor TOEFL ITP Terkini</div>
+              </div>
+            </div>
+            <div class="rtb-score-box">
+              <div class="rtb-score-val" id="rtb-pred-score">310</div>
+              <div class="rtb-score-details">
+                <div class="rtb-badge" id="rtb-milestone-badge">🌱 Level Dasar (310+)</div>
+                <div class="rtb-diff" id="rtb-score-diff">+0 Poin</div>
+                <div class="rtb-target-info" id="rtb-target-info">Kurang 140 poin lagi menuju Skor 450!</div>
+              </div>
+            </div>
+          </div>
+          <!-- 📚 Unit Completion Notes Card (Shown when a module is 100% completed) -->
+          <div class="result-unit-complete-card" id="result-unit-complete-card" style="display: none;">
+            <div class="rucc-top">
+              <span class="rucc-icon">🎓</span>
+              <div class="rucc-meta">
+                <div class="rucc-badge">🏆 MODUL INI RESMI TUNTAS 100%!</div>
+                <h3 class="rucc-title" id="rucc-unit-title">Judul Modul</h3>
+                <p class="rucc-desc">Kamu telah menuntaskan seluruh latihan di modul ini! Buka rangkuman dan catatan penting untuk mengunci pemahaman materi & trik soal.</p>
+              </div>
+            </div>
+            <button type="button" class="btn-primary rucc-btn" id="rucc-open-notes-btn">
+              📖 Buka Buku Catatan & Trik Modul Ini ⚡
+            </button>
+          </div>
+          <!-- 💡 TOEFL Post-Exam Module Prescription (Shown if simulation/score is below target) -->
+          <div class="result-prescription-card" id="result-prescription-card" style="display: none;">
+            <div class="rpc-top">
+              <span class="rpc-icon">💡</span>
+              <div class="rpc-meta">
+                <div class="rpc-badge" id="rpc-badge">REKOMENDASI DONGKRAK SKOR</div>
+                <h3 class="rpc-title" id="rpc-title">Saran Perbaikan Modul</h3>
+                <p class="rpc-desc" id="rpc-desc">Poin terbanyak yang bisa kamu selamatkan ada di modul ini.</p>
+              </div>
+            </div>
+            <button type="button" class="btn-primary rpc-btn" id="rpc-action-btn">
+              🚀 Buka Modul Perbaikan Sekarang
+            </button>
           </div>
           <div class="result-actions">
             <button class="btn-secondary" id="result-back-btn">← Kembali ke Peta</button>
@@ -1101,7 +1384,12 @@
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input type="password" id="login-password" class="form-input" placeholder="Masukkan password kamu" required>
+          <div class="password-input-wrap">
+            <input type="password" id="login-password" class="form-input" placeholder="Masukkan password kamu" required>
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('login-password', this)" title="Lihat password" aria-label="Lihat password">
+              <span class="eye-icon">👁️</span>
+            </button>
+          </div>
         </div>
         <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 12px;">
           Masuk & Sinkronkan Progress 🚀
@@ -1109,7 +1397,7 @@
       </form>
 
       <!-- Form: Register -->
-      <form id="auth-form-register" class="hidden" onsubmit="handleRegister(event)">
+      <form id="auth-form-register" class="hidden" onsubmit="handleRegister(event)" style="display: none;">
         <div class="form-group">
           <label class="form-label">Nama Kamu (User Name)</label>
           <input type="text" id="reg-username" class="form-input" placeholder="Nama panggilan kamu..." maxlength="30" required>
@@ -1120,7 +1408,12 @@
         </div>
         <div class="form-group">
           <label class="form-label">Buat Password (min. 6 karakter)</label>
-          <input type="password" id="reg-password" class="form-input" placeholder="Minimal 6 karakter" minlength="6" required>
+          <div class="password-input-wrap">
+            <input type="password" id="reg-password" class="form-input" placeholder="Minimal 6 karakter" minlength="6" required>
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('reg-password', this)" title="Lihat password" aria-label="Lihat password">
+              <span class="eye-icon">👁️</span>
+            </button>
+          </div>
         </div>
         <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 12px;">
           Buat Akun & Mulai Belajar 🎉
@@ -1154,24 +1447,15 @@
       <!-- Container akun dinamis di perangkat ini (jika pernah masuk sebelumnya) -->
       <div id="google-recent-account-container"></div>
 
-      <div class="onboarding-divider" style="margin: 14px 0 16px;">
-        <span>atau masuk manual</span>
+      <div class="onboarding-divider" style="margin: 16px 0;">
+        <span>atau punya akun biasa?</span>
       </div>
 
-      <!-- Custom Google Account input -->
-      <form onsubmit="handleCustomGoogleAuth(event)" class="google-custom-form">
-        <div class="form-group">
-          <label class="form-label" style="font-size: 0.85rem;">Email Google / Gmail kamu:</label>
-          <input type="email" id="google-custom-email" class="form-input" placeholder="contoh@gmail.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" style="font-size: 0.85rem;">Nama Panggilan:</label>
-          <input type="text" id="google-custom-name" class="form-input" placeholder="Nama kamu..." maxlength="25">
-        </div>
-        <button type="submit" class="btn-primary" style="width: 100%; border-radius: var(--radius-md);">
-          Lanjutkan Masuk ✨
+      <div style="text-align: center; margin-top: 8px;">
+        <button type="button" class="btn-secondary" style="width: 100%; border-radius: var(--radius-md); padding: 12px; font-weight: 700;" onclick="switchToEmailPasswordAuth()">
+          🔑 Masuk dengan Email & Password
         </button>
-      </form>
+      </div>
     </div>
   </div>
 </div>
@@ -1395,6 +1679,97 @@
   </div>
 </div>
 
+<!-- ───────── MODAL: PANDUAN SKOR & RUMUS RESMI TOEFL ITP ───────── -->
+<div id="toefl-score-info-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card toefl-score-info-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">📊</span>
+        <div>
+          <h3 class="modal-title">Panduan Skor & Target TOEFL ITP®</h3>
+          <div class="modal-subtitle">Standar Resmi ETS: Rentang Skor 310 – 677</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeToeflScoreInfoModal()">✕</button>
+    </div>
+    <div class="modal-body tsi-modal-body">
+      <!-- ETS Formula card -->
+      <div class="tsi-formula-box">
+        <div class="tsi-formula-badge">📐 RUMUS RESMI ETS (Educational Testing Service)</div>
+        <div class="tsi-formula-math">
+          Skor Total = <span class="math-expr">((Listening + Structure + Reading) × 10) ÷ 3</span>
+        </div>
+        <p class="tsi-formula-desc">
+          Setiap bagian memiliki skala terkonversi: <strong>Listening (31–68)</strong>, <strong>Structure (31–68)</strong>, dan <strong>Reading (31–67)</strong>. Skor minimum adalah <strong>310</strong> dan skor maksimum adalah <strong>677</strong>.
+        </p>
+      </div>
+
+      <!-- Target Milestones List -->
+      <h4 class="tsi-section-title">🎯 Tingkatan Skor & Standar Kelulusan:</h4>
+      <div class="tsi-targets-grid">
+        <div class="tsi-target-card campus">
+          <div class="tsi-target-header">
+            <span class="tsi-icon">🎓</span>
+            <div>
+              <strong>Syarat Kampus (Sidang & Yudisium S1)</strong>
+              <div class="tsi-badge">Skor Minimal: 430 – 450</div>
+            </div>
+          </div>
+          <p>Mayoritas universitas di Indonesia (PTN & PTS) mewajibkan skor TOEFL minimal 430 atau 450 sebagai syarat kelulusan dan pengambilan ijazah.</p>
+        </div>
+
+        <div class="tsi-target-card bumn">
+          <div class="tsi-target-header">
+            <span class="tsi-icon">💼</span>
+            <div>
+              <strong>Standar BUMN, CPNS & Magister S2</strong>
+              <div class="tsi-badge">Skor Target: 500 – 525</div>
+            </div>
+          </div>
+          <p>Rekrutmen Bersama BUMN (RBB), seleksi CPNS kementerian (seperti Kemenlu, Kemenkeu), dan seleksi Pascasarjana UI, ITB, UGM mensyaratkan skor 500+.</p>
+        </div>
+
+        <div class="tsi-target-card lpdp">
+          <div class="tsi-target-header">
+            <span class="tsi-icon">🏆</span>
+            <div>
+              <strong>Beasiswa LPDP & Internasional</strong>
+              <div class="tsi-badge">Skor Target: 550 – 580</div>
+            </div>
+          </div>
+          <p>Peluang lolos seleksi beasiswa bergengsi seperti LPDP Dalam/Luar Negeri, Fulbright, AAS, dan IISMA terbuka lebar dengan skor di atas 550.</p>
+        </div>
+
+        <div class="tsi-target-card master">
+          <div class="tsi-target-header">
+            <span class="tsi-icon">🌟</span>
+            <div>
+              <strong>Advanced / Master Class</strong>
+              <div class="tsi-badge">Skor Target: 600 – 677</div>
+            </div>
+          </div>
+          <p>Level penutur fasih (CEFR C1). Kemampuan memahami kuliah akademik kompleks dan artikel ilmiah tingkat tinggi.</p>
+        </div>
+      </div>
+
+      <!-- How BasaLoka boosts it -->
+      <div class="tsi-how-box">
+        <div class="tsi-how-title">💡 Bagaimana BasaLoka Menghitung Prediksi Skormu?</div>
+        <ul class="tsi-how-list">
+          <li><strong>Penguasaan Modul:</strong> Setiap latihan Listening, Structure, dan Reading yang kamu selesaikan menambah skor konversi di bagian masing-masing.</li>
+          <li><strong>Akurasi 100%:</strong> BasaLoka menerapkan prinsip Strict Mastery — mengulang hingga paham betul memastikan poinmu terkunci permanen.</li>
+          <li><strong>Simulasi Resmi:</strong> Saat mengerjakan Simulasi Ujian 140 Soal / 30 Soal, skormu langsung terkalibrasi dengan timer ETS yang sebenarnya.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeToeflScoreInfoModal()" style="width: 100%;">
+        Paham, Siap Tingkatkan Skor! 🚀
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ───────── MODAL: CAMPUS SCORE 430 ALERT (Lulus / Gagal Wajib Ulang) ───────── -->
 <div id="campus-score-alert-modal" class="modal-overlay" style="display: none;">
   <div class="modal-card campus-alert-modal-card" id="campus-alert-card-inner">
@@ -1417,8 +1792,201 @@
   </div>
 </div>
 
-<script src="js/data.js?v=47"></script>
-<script src="js/app.js?v=47"></script>
+<!-- ───────── MODAL: GERBANG BUKA KUNCI (3 Soal Kilat - Micro Warm-up) ───────── -->
+<div id="welcome-review-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card welcome-review-card">
+    <div class="welcome-review-header">
+      <div class="wr-hero-icon">🔒</div>
+      <span class="wr-pill-tag">GERBANG BUKA KUNCI • 3 SOAL KILAT</span>
+    </div>
+    <div class="modal-body welcome-review-body">
+      <h3 class="wr-headline">Buka Kunci Akses Beranda, <span id="wr-user-name">Sobat Loka</span>! 🔓</h3>
+      <p class="wr-desc">Biar materi ga gampang lupa, <strong>Luca</strong> mengunci beranda sebentar. Selesaikan <strong>3 soal kilat (~45 detik)</strong> dari pelajaran terakhirmu untuk membukanya:</p>
+      
+      <div class="wr-lesson-box">
+        <span class="wr-lesson-icon">📚</span>
+        <div class="wr-lesson-details">
+          <div class="wr-lesson-title" id="wr-last-lesson-title">Pelajaran Terakhir</div>
+          <div class="wr-lesson-sub" id="wr-last-lesson-sub">TOEFL & Bahasa</div>
+        </div>
+      </div>
+
+      <div class="wr-perks-list">
+        <div class="wr-perk-item">
+          <span class="wr-perk-icon">⚡</span>
+          <span class="wr-perk-text"><strong>Cuma 3 Soal:</strong> Cukup 45 detik saja!</span>
+        </div>
+        <div class="wr-perk-item">
+          <span class="wr-perk-icon">🎁</span>
+          <span class="wr-perk-text"><strong>Klaim +20 XP:</strong> Bonus poin langsung ke profil</span>
+        </div>
+        <div class="wr-perk-item">
+          <span class="wr-perk-icon">🔓</span>
+          <span class="wr-perk-text"><strong>Buka Akses Penuh:</strong> Dashboard bebas dijelajahi</span>
+        </div>
+      </div>
+    </div>
+    <div class="welcome-review-footer">
+      <button type="button" class="btn-wr-start" id="btn-start-welcome-review" onclick="startWelcomeReviewSession()">
+        ⚡ Buka Kunci Akses Sekarang (3 Soal Kilat)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: BUKU CATATAN MODUL & RANGKUMAN KUNCI ───────── -->
+<div id="unit-notes-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card unit-notes-modal-card">
+    <div class="modal-header un-modal-header">
+      <div class="modal-title-wrap">
+        <span class="un-header-icon" id="un-header-icon">📖</span>
+        <div>
+          <div class="un-header-badge" id="un-header-badge">BUKU CATATAN MODUL & TRIK SOAL</div>
+          <h3 class="modal-title" id="un-modal-title">Rangkuman Kunci Materi</h3>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeUnitNotesModal()">✕</button>
+    </div>
+
+    <div class="modal-body un-modal-body" id="un-modal-body">
+      <!-- Injected by JS: Intisari, Golden Rules, Trik Soal, Cheat Sheet, Luca message -->
+    </div>
+
+    <div class="modal-footer un-modal-footer">
+      <button type="button" class="btn-primary" onclick="closeUnitNotesModal()" style="width: 100%; padding: 13px; font-weight: 800; font-size: 0.95rem;">
+        Paham & Simpan Catatan Ini 📝
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: TOEFL DIAGNOSTIC PLACEMENT TEST (10 MENIT) ───────── -->
+<div id="toefl-diagnostic-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card toefl-diagnostic-modal-card">
+    <div class="modal-header tdm-header">
+      <div class="tdm-header-left">
+        <span class="tdm-icon" id="tdm-header-icon">🎯</span>
+        <div>
+          <div class="tdm-badge" id="tdm-header-badge">TOEFL DIAGNOSTIC PLACEMENT TEST</div>
+          <h3 class="tdm-title" id="tdm-header-title">Mini Test Diagnostik (10 Soal)</h3>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeToeflDiagnosticModal()">✕</button>
+    </div>
+    <div class="tdm-progress-bar-wrap">
+      <div class="tdm-progress-bar-fill" id="tdm-progress-bar-fill" style="width: 10%;"></div>
+    </div>
+
+    <div class="modal-body tdm-body" id="tdm-body">
+      <!-- Injected dynamically by JS -->
+    </div>
+
+    <div class="modal-footer tdm-footer" id="tdm-footer">
+      <!-- Buttons injected by JS (Next question / Submit / Start Recommended Module) -->
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: TARGET TANGGAL UJIAN & SKEMA BELAJAR ───────── -->
+<div id="toefl-exam-target-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card toefl-exam-target-modal-card">
+    <div class="modal-header tetm-header">
+      <div class="tetm-header-left">
+        <span class="tetm-icon">📅</span>
+        <div>
+          <div class="tetm-badge">TARGET UJIAN & PERSONAL STUDY PLAN</div>
+          <h3 class="tetm-title">Pasang Target Ujian & Skema Belajar</h3>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeToeflExamTargetModal()">✕</button>
+    </div>
+
+    <div class="modal-body tetm-body">
+      <!-- Target Score Selector -->
+      <div class="tetm-field">
+        <label class="tetm-label">🎯 Target Skor TOEFL yang Ingin Diraih:</label>
+        <div class="tetm-score-chips">
+          <button type="button" class="tetm-chip" id="tchip-450" data-score="450" onclick="selectTargetScoreChip(450)">
+            <span class="tc-val">450+</span>
+            <span class="tc-sub">Syarat Sidang / Wisuda</span>
+          </button>
+          <button type="button" class="tetm-chip active" id="tchip-500" data-score="500" onclick="selectTargetScoreChip(500)">
+            <span class="tc-val">500+</span>
+            <span class="tc-sub">Syarat BUMN / CPNS</span>
+          </button>
+          <button type="button" class="tetm-chip" id="tchip-550" data-score="550" onclick="selectTargetScoreChip(550)">
+            <span class="tc-val">550+</span>
+            <span class="tc-sub">Beasiswa LPDP / S2</span>
+          </button>
+          <button type="button" class="tetm-chip" id="tchip-600" data-score="600" onclick="selectTargetScoreChip(600)">
+            <span class="tc-val">600+</span>
+            <span class="tc-sub">Master / Luar Negeri</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Option 1: Calendar Date -->
+      <div class="tetm-field">
+        <div class="tetm-radio-option" onclick="selectTargetMode('date')">
+          <input type="radio" name="tetm-mode" id="tetm-mode-date" checked>
+          <label for="tetm-mode-date" class="tetm-radio-title">
+            <strong>📅 Sudah Punya Tanggal Ujian Pasti</strong>
+            <p>Pilih tanggal resmi tes kamu untuk mengaktifkan countdown H-X.</p>
+          </label>
+        </div>
+        <div class="tetm-date-input-wrap" id="tetm-date-input-wrap">
+          <input type="date" id="tetm-date-input" class="tetm-date-input">
+        </div>
+      </div>
+
+      <!-- Option 2: Target Pace (If no date yet) -->
+      <div class="tetm-field">
+        <div class="tetm-radio-option" onclick="selectTargetMode('pace')">
+          <input type="radio" name="tetm-mode" id="tetm-mode-pace">
+          <label for="tetm-mode-pace" class="tetm-radio-title">
+            <strong>🧘 Belum Punya Tanggal (Pilih Ritme Belajar)</strong>
+            <p>Belajar bertahap dengan ritme harian yang fleksibel.</p>
+          </label>
+        </div>
+        <div class="tetm-pace-chips" id="tetm-pace-chips" style="display: none;">
+          <button type="button" class="tetm-pace-btn active" id="tpace-sprint" onclick="selectTargetPace('sprint')">
+            <span class="tpb-badge">⚡ Sprint Kilat (14 Hari)</span>
+            <span class="tpb-desc">Target 2 pelajaran per hari (Ngebut & Intensif)</span>
+          </button>
+          <button type="button" class="tetm-pace-btn" id="tpace-standard" onclick="selectTargetPace('standard')">
+            <span class="tpb-badge">🏃 Standar Mantap (30 Hari)</span>
+            <span class="tpb-desc">Target 1 pelajaran per hari (Paling Ideal)</span>
+          </button>
+          <button type="button" class="tetm-pace-btn" id="tpace-flexible" onclick="selectTargetPace('flexible')">
+            <span class="tpb-badge">🌱 Santai & Bebas</span>
+            <span class="tpb-desc">Belajar mengalir sesuai waktu luang</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Luca Mascot Insight Box -->
+      <div class="tetm-luca-box">
+        <span class="tetm-luca-avatar">🌍</span>
+        <div class="tetm-luca-text">
+          <strong id="tetm-luca-title">Rencana Personal Luca:</strong>
+          <p id="tetm-luca-desc">Memasang target tanggal dan ritme membuat otakmu 3x lebih fokus dan konsisten belajar!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer tetm-footer">
+      <button type="button" class="btn-secondary tetm-btn-cancel" onclick="closeToeflExamTargetModal()">Batal</button>
+      <button type="button" class="btn-primary tetm-btn-save" onclick="saveToeflExamTarget()">
+        Simpan Target 🚀
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js?v=65"></script>
+<script src="js/notes-data.js?v=65"></script>
+<script src="js/diagnostic-data.js?v=65"></script>
+<script src="js/app.js?v=65"></script>
 
 <script>
 // Failsafe direct handlers to ensure zero dead clicks

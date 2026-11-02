@@ -1,5 +1,11 @@
 {
   "framework": null,
   "buildCommand": null,
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "crons": [
+    {
+      "path": "/api/send-reminder",
+      "schedule": "0 5,12 * * *"
+    }
+  ]
 }

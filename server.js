@@ -12,6 +12,8 @@ const loginHandler = require('./api/login');
 const registerHandler = require('./api/register');
 const googleAuthHandler = require('./api/google-auth');
 const progressHandler = require('./api/progress/[userId]');
+const pushSubscribeHandler = require('./api/push-subscribe');
+const sendReminderHandler = require('./api/send-reminder');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=UTF-8',
@@ -106,6 +108,15 @@ const server = http.createServer(async (req, res) => {
 
     if (pathname === '/api/google-auth') {
       return adaptVercelHandler(googleAuthHandler, req, res);
+    }
+
+    if (pathname === '/api/push-subscribe') {
+      return adaptVercelHandler(pushSubscribeHandler, req, res);
+    }
+
+    if (pathname === '/api/send-reminder') {
+      const isTest = urlObj.searchParams.get('test') === 'true';
+      return adaptVercelHandler(sendReminderHandler, req, res, { test: isTest });
     }
 
     if (pathname.startsWith('/api/progress/')) {
