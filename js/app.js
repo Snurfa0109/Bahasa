@@ -2732,7 +2732,7 @@ function parseQuizDialogue(q) {
         label: s2.label || (s2.speaker === 'woman' ? 'Wanita' : 'Pria'),
         text: s2.text
       } : null,
-      questionText: q.questionText || q.narrator || 'What does the speaker imply?'
+      questionText: q.questionText || q.q || q.narrator || 'What does the speaker imply?'
     };
   }
 
@@ -6544,6 +6544,42 @@ function extractQuestionsFromLesson(lesson, lang) {
   const result = [];
   if (!lesson) return result;
 
+  // 0. Checkpoint-loop lessons (TOEFL mastery checkpoints with rich question pools)
+  if (Array.isArray(lesson.checkpoints)) {
+    lesson.checkpoints.forEach(cp => {
+      if (Array.isArray(cp.pool)) {
+        cp.pool.forEach(q => {
+          if (q && (q.q || q.dialogue) && Array.isArray(q.options) && q.options.length >= 2) {
+            const parsed = (typeof parseQuizDialogue === 'function') ? parseQuizDialogue(q) : null;
+            const hasD = parsed && parsed.hasDialogue;
+            let dialogueArray = null;
+            if (hasD) {
+              if (Array.isArray(q.dialogue)) {
+                dialogueArray = q.dialogue;
+              } else if (parsed.speaker1 && parsed.speaker2) {
+                dialogueArray = [parsed.speaker1, parsed.speaker2];
+              } else if (parsed.speaker1) {
+                dialogueArray = [parsed.speaker1];
+              }
+            }
+            result.push({
+              q: hasD ? (q.q || parsed.questionText) : q.q,
+              options: [...q.options],
+              answer: q.answer || 0,
+              explanation: q.explanation || '',
+              sourceLessonTitle: lesson.title,
+              dialogue: dialogueArray,
+              convoTitle: cp.title || lesson.title,
+              passage: q.passage || null,
+              audioText: q.ttsText || null,
+              audioLang: lang === 'korean' ? 'ko-KR' : 'en-US'
+            });
+          }
+        });
+      }
+    });
+  }
+
   // 1. Regular quiz
   if (Array.isArray(lesson.quiz)) {
     lesson.quiz.forEach(q => {
@@ -6561,7 +6597,7 @@ function extractQuestionsFromLesson(lesson, lang) {
           }
         }
         result.push({
-          q: hasD ? parsed.questionText : q.q,
+          q: hasD ? (q.q || parsed.questionText) : q.q,
           options: [...q.options],
           answer: q.answer || 0,
           explanation: q.explanation || '',
@@ -6650,14 +6686,16 @@ function collectReviewQuestions(completedLessonIds, targetCount = 10) {
     if (info) {
       const qs = extractQuestionsFromLesson(info.lesson, info.lang);
       pool.push(...qs);
-      if (pool.length >= targetCount * 2) break;
+      if (pool.length >= targetCount * 3) break;
     }
   }
 
   const seen = new Set();
   const deduped = [];
   for (const item of pool) {
-    const key = (item.q || '').trim().toLowerCase();
+    const dialogueKey = item.dialogue ? item.dialogue.map(d => (d.text || '')).join(' ') : '';
+    const passageKey = item.passage ? item.passage.slice(0, 40) : '';
+    const key = (dialogueKey + ' ' + passageKey + ' ' + (item.q || '')).trim().toLowerCase();
     if (key && !seen.has(key)) {
       seen.add(key);
       deduped.push(item);
@@ -6666,9 +6704,12 @@ function collectReviewQuestions(completedLessonIds, targetCount = 10) {
 
   if (deduped.length === 0) return [];
 
+  // Shuffle so warm-up questions are fresh and varied every time
+  const shuffledPool = [...deduped].sort(() => 0.5 - Math.random());
+
   let finalQuestions = [];
   while (finalQuestions.length < targetCount) {
-    for (const q of deduped) {
+    for (const q of shuffledPool) {
       finalQuestions.push(shuffleReviewOptions(q));
       if (finalQuestions.length >= targetCount) break;
     }
