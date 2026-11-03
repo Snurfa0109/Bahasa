@@ -1027,7 +1027,7 @@ function renderToeflStudyPlanCard() {
           <h3 class="tsp-title">Punya Target Tanggal Ujian TOEFL?</h3>
           <p class="tsp-sub">Pasang tanggal tes atau pilih ritme belajarmu agar Luca bisa menghitung target harian dan countdown H-Day secara otomatis!</p>
           <button type="button" class="btn-primary tsp-btn-setup" onclick="openToeflExamTargetModal()">
-            ⚡ Pasang Target & Skema Belajar Sekarang
+            ⚡ Pasang Target & Skema Belajar
           </button>
         </div>
       </div>

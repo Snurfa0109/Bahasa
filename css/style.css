@@ -4451,16 +4451,31 @@ body::before {
   transform: scale(0.99);
 }
 .hack-banner-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
   color: #ffffff;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.6px;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 8px !important;
   margin-bottom: 12px;
+  white-space: nowrap;
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+}
+.tsp-btn-setup {
+  width: 100% !important;
+  height: 44px !important;
+  padding: 0 18px !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4) !important;
 }
 .hack-banner-main {
   display: flex;
@@ -7971,17 +7986,41 @@ body::before {
 .toefl-score-info-card {
   max-width: 620px !important;
   width: 92% !important;
+  max-height: 86vh !important;
+  display: flex !important;
+  flex-direction: column !important;
   background: #14172b !important;
   border: 1px solid rgba(245, 158, 11, 0.4) !important;
   border-radius: 20px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
 }
 .tsi-modal-body {
-  padding: 18px 22px;
+  padding: 18px 22px 28px 22px !important;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: 72vh;
-  overflow-y: auto;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+}
+.tsi-modal-footer {
+  flex-shrink: 0;
+  padding: 14px 20px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #0f1322 !important;
+}
+.btn-tsi-close {
+  width: 100% !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 .tsi-formula-box {
   background: rgba(245, 158, 11, 0.08);
@@ -8658,21 +8697,25 @@ body::before {
 .tmps-actions-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  width: 100%;
 }
 .btn-tmps-diagnostic {
+  flex: 1 1 auto;
+  height: 40px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: linear-gradient(135deg, #8b5cf6, #3b82f6);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  padding: 7px 16px;
+  border-radius: 12px !important;
+  padding: 0 14px;
   color: #ffffff;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
@@ -8682,16 +8725,20 @@ body::before {
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.55);
 }
 .btn-tmps-info {
+  flex: 0 0 auto;
+  height: 40px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 999px;
-  padding: 7px 14px;
-  color: #94a3b8;
-  font-size: 0.8rem;
+  border-radius: 12px !important;
+  padding: 0 14px;
+  color: #cbd5e1;
+  font-size: 0.85rem;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s ease;
 }
