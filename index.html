@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=68">
+  <link rel="stylesheet" href="css/style.css?v=69">
   <!-- Google Identity Services (GIS) Library -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -143,29 +143,16 @@
             <button type="button" class="btn-secondary btn-action-half" onclick="openAuthModal('login')">
               🔑 Masuk (Login)
             </button>
-            <button type="button" class="btn-secondary btn-action-half" onclick="openAuthModal('register')">
+            <button type="button" class="btn-primary btn-action-half" onclick="openAuthModal('register')">
               📝 Daftar Akun Baru
             </button>
           </div>
 
-          <div class="onboarding-divider">
-            <span>atau coba dulu tanpa akun</span>
-          </div>
-
-          <div class="guest-start-box">
-            <label class="form-label" for="user-name-input">Mulai dengan nama saja: 👋</label>
-            <div class="guest-input-row">
-              <input
-                type="text"
-                id="user-name-input"
-                class="form-input"
-                placeholder="Ketik nama kamu..."
-                maxlength="20"
-                autocomplete="off"
-              >
-              <button id="start-btn" class="btn-primary btn-guest-start" onclick="startApp()">
-                Mulai 🚀
-              </button>
+          <div class="onboarding-cloud-note">
+            <div class="cloud-note-icon">☁️</div>
+            <div class="cloud-note-text">
+              <strong>Progres Tersimpan Otomatis</strong>
+              <p>Masuk atau buat akun agar progres belajar, streak harian, dan skor TOEFL tersimpan aman di cloud.</p>
             </div>
           </div>
         </div>
@@ -1989,7 +1976,7 @@
 <script src="js/data.js?v=68"></script>
 <script src="js/notes-data.js?v=68"></script>
 <script src="js/diagnostic-data.js?v=68"></script>
-<script src="js/app.js?v=68"></script>
+<script src="js/app.js?v=69"></script>
 
 <script>
 // Failsafe direct handlers to ensure zero dead clicks

@@ -559,6 +559,10 @@ function navigateBack() {
 }
 
 function showView(viewName, pushHistory = true) {
+  const hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+  if (!hasValidUser && viewName !== 'onboarding') {
+    viewName = 'onboarding';
+  }
   if (viewName !== 'lesson' && typeof stopQuestionTimer === 'function') {
     stopQuestionTimer();
   }
@@ -640,36 +644,12 @@ window.navigateBack = navigateBack;
 
 // ─── ONBOARDING ───────────────────────────────────────────────
 function startApp() {
-  const nameInput = document.getElementById('user-name-input');
-  const name = nameInput ? nameInput.value.trim() : '';
-  if (!name) {
-    if (nameInput) {
-      nameInput.classList.add('shake');
-      setTimeout(() => nameInput.classList.remove('shake'), 600);
-      nameInput.placeholder = 'Isi nama kamu dulu ya! 😊';
-      nameInput.focus();
-    }
-    showAlertPopup({
-      icon: '😊',
-      type: 'info',
-      title: 'Halo Pembelajar!',
-      message: 'Silakan isi nama panggilanmu terlebih dahulu agar kami bisa menyiapkan materi belajar yang personal untukmu.',
-      buttonText: 'Siap, Mengerti! ✨',
-      onClose: () => { if (nameInput) nameInput.focus(); }
-    });
-    return;
+  const hasUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+  if (hasUser) {
+    showView('dashboard');
+  } else {
+    openAuthModal('register');
   }
-  state.userName = name;
-  state.lastPlayDate = new Date().toDateString();
-  saveState();
-  showView('dashboard');
-}
-
-const initialNameInput = document.getElementById('user-name-input');
-if (initialNameInput) {
-  initialNameInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') startApp();
-  });
 }
 
 // ─── TOEFL LIVE SCORE PREDICTOR & PEMBANGKIT SEMANGAT ENGINE ─
@@ -4611,8 +4591,14 @@ function handleLogout() {
       state.englishLessons = 0;
       state.toeflLessons = 0;
       state.perfectScores = 0;
+      try {
+        localStorage.removeItem('basaloka_user');
+        localStorage.removeItem('basaloka_last_user');
+        localStorage.removeItem('basaloka_last_view');
+      } catch (_) {}
       saveState();
       updateNavStats();
+      updateAuthNavUI();
       showToast('👋 Kamu sudah keluar dari akun.', 'info');
       showView('onboarding', false);
     }
@@ -6102,7 +6088,8 @@ window.toggleRoadmapDay = toggleRoadmapDay;
 
 // ─── ROUTING & PERSISTENCE ────────────────────────────────────
 function resolveInitialRoute() {
-  if (!state.userName) {
+  const hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+  if (!hasValidUser) {
     showView('onboarding', false);
     return;
   }
@@ -6181,22 +6168,32 @@ window.addEventListener('hashchange', () => {
 // ─── INIT ─────────────────────────────────────────────────────
 function initApp() {
   loadState();
-  let hasValidUser = !!state.userName;
+  let hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
   if (!hasValidUser) {
     try {
       const rawUser = localStorage.getItem('basaloka_user');
       if (rawUser) {
         const parsed = JSON.parse(rawUser);
-        if (parsed && (parsed.name || parsed.email)) {
-          state.userName = parsed.name || parsed.email.split('@')[0];
+        if (parsed && (parsed.id || parsed.email)) {
+          state.currentUser = parsed;
+          state.userName = parsed.username || parsed.name || parsed.email.split('@')[0];
           hasValidUser = true;
         }
       }
     } catch (_) {}
   }
-  if (!hasValidUser && typeof currentUser !== 'undefined' && currentUser) {
-    state.userName = currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Sobat Loka');
-    hasValidUser = true;
+  if (!hasValidUser) {
+    try {
+      const lastUser = localStorage.getItem('basaloka_last_user');
+      if (lastUser) {
+        const parsed = JSON.parse(lastUser);
+        if (parsed && (parsed.id || parsed.email)) {
+          state.currentUser = parsed;
+          state.userName = parsed.username || parsed.name || parsed.email.split('@')[0];
+          hasValidUser = true;
+        }
+      }
+    } catch (_) {}
   }
 
   if (hasValidUser) {
@@ -6205,6 +6202,7 @@ function initApp() {
   } else {
     showView('onboarding', false);
   }
+  updateAuthNavUI();
   checkPushStatus();
   setTimeout(showLucaGreetingSplash, 120);
 }
