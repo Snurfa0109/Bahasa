@@ -4181,11 +4181,43 @@ function switchAuthTab(tab) {
   const tabRegister = document.getElementById('auth-tab-register');
   const formLogin = document.getElementById('auth-form-login');
   const formRegister = document.getElementById('auth-form-register');
+  const formForgot = document.getElementById('auth-form-forgot');
+  const authTabsContainer = document.querySelector('.auth-tabs');
+  const googleBtn = document.querySelector('#auth-modal .btn-google');
+  const divider = document.querySelector('#auth-modal .onboarding-divider');
   const alertEl = document.getElementById('auth-alert');
   if (alertEl) {
     alertEl.className = 'auth-alert hidden';
     alertEl.style.display = 'none';
   }
+
+  if (tab === 'forgot') {
+    if (authTabsContainer) authTabsContainer.style.display = 'none';
+    if (googleBtn) googleBtn.style.display = 'none';
+    if (divider) divider.style.display = 'none';
+    if (formLogin) { formLogin.classList.add('hidden'); formLogin.style.display = 'none'; }
+    if (formRegister) { formRegister.classList.add('hidden'); formRegister.style.display = 'none'; }
+    if (formForgot) {
+      formForgot.classList.remove('hidden');
+      formForgot.style.display = 'block';
+      const step1 = document.getElementById('forgot-step-1');
+      const step2 = document.getElementById('forgot-step-2');
+      if (step1) step1.style.display = 'block';
+      if (step2) step2.style.display = 'none';
+      const emailInput = document.getElementById('forgot-email');
+      const loginEmail = document.getElementById('login-email');
+      if (emailInput && loginEmail && loginEmail.value) {
+        emailInput.value = loginEmail.value;
+      }
+    }
+    return;
+  }
+
+  // Restore regular elements
+  if (authTabsContainer) authTabsContainer.style.display = 'flex';
+  if (googleBtn) googleBtn.style.display = 'flex';
+  if (divider) divider.style.display = 'flex';
+  if (formForgot) { formForgot.classList.add('hidden'); formForgot.style.display = 'none'; }
 
   if (tab === 'login') {
     if (tabLogin) tabLogin.classList.add('active');
@@ -4211,6 +4243,11 @@ function switchAuthTab(tab) {
     }
   }
 }
+
+function openForgotPasswordFlow() {
+  switchAuthTab('forgot');
+}
+window.openForgotPasswordFlow = openForgotPasswordFlow;
 
 function showAuthAlert(msg, type = 'error') {
   const alertEl = document.getElementById('auth-alert');
@@ -4312,18 +4349,24 @@ async function handleRegister(e) {
   const username = document.getElementById('reg-username').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
+  const securityQuestion = document.getElementById('reg-security-q')?.value;
+  const securityAnswer = document.getElementById('reg-security-a')?.value?.trim();
+
   if (!username || !email || !password) {
     return showAuthAlert('Semua kolom wajib diisi!', 'error');
   }
   if (password.length < 6) {
     return showAuthAlert('Password minimal 6 karakter!', 'error');
   }
+  if (!securityAnswer) {
+    return showAuthAlert('Jawaban pertanyaan keamanan wajib diisi!', 'error');
+  }
 
   try {
     const res = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password })
+      body: JSON.stringify({ username, email, password, securityQuestion, securityAnswer })
     });
     if (res.ok) {
       const data = await res.json();
@@ -4335,6 +4378,9 @@ async function handleRegister(e) {
       showView('dashboard');
       updateNavStats();
       return;
+    } else {
+      const errData = await res.json();
+      return showAuthAlert(errData.error || 'Pendaftaran gagal!', 'error');
     }
   } catch (err) {
     // Fallback to local storage for static hosting
@@ -4346,7 +4392,7 @@ async function handleRegister(e) {
     return showAuthAlert('Email sudah terdaftar. Silakan login!', 'error');
   }
 
-  const newUser = { id: 'local_' + Date.now(), username, email, password };
+  const newUser = { id: 'local_' + Date.now(), username, email, password, securityQuestion, securityAnswer };
   localUsers.push(newUser);
   saveLocalUsers(localUsers);
 
@@ -4358,6 +4404,96 @@ async function handleRegister(e) {
   showView('dashboard');
   updateNavStats();
 }
+
+// ─── FORGOT PASSWORD HANDLERS ─────────────────────────────────
+let currentForgotEmail = '';
+let currentForgotHasQuestion = true;
+
+async function checkForgotEmail() {
+  const emailInput = document.getElementById('forgot-email');
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+  if (!email) {
+    return showAuthAlert('Masukkan email terdaftar kamu!', 'error');
+  }
+
+  try {
+    const res = await fetch('/api/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'get_question', email })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return showAuthAlert(data.error || 'Email tidak ditemukan.', 'error');
+    }
+
+    currentForgotEmail = email;
+    currentForgotHasQuestion = data.hasQuestion;
+
+    const step1 = document.getElementById('forgot-step-1');
+    const step2 = document.getElementById('forgot-step-2');
+    const qEl = document.getElementById('forgot-displayed-question');
+    const ansGroup = document.getElementById('forgot-answer-group');
+    const userFallbackGroup = document.getElementById('forgot-username-fallback-group');
+
+    if (qEl) qEl.textContent = data.question;
+    if (ansGroup) ansGroup.style.display = data.hasQuestion ? 'block' : 'none';
+    if (userFallbackGroup) userFallbackGroup.style.display = data.hasQuestion ? 'none' : 'block';
+
+    if (step1) step1.style.display = 'none';
+    if (step2) step2.style.display = 'block';
+
+    const alertEl = document.getElementById('auth-alert');
+    if (alertEl) alertEl.style.display = 'none';
+  } catch (err) {
+    showAuthAlert('Gagal menghubungi server.', 'error');
+  }
+}
+
+async function handleForgotPasswordSubmit(e) {
+  if (e) e.preventDefault();
+  const answer = document.getElementById('forgot-answer')?.value?.trim();
+  const usernameFallback = document.getElementById('forgot-username-fallback')?.value?.trim();
+  const newPassword = document.getElementById('forgot-new-password')?.value;
+
+  if (!newPassword || newPassword.length < 6) {
+    return showAuthAlert('Password baru minimal 6 karakter!', 'error');
+  }
+  if (currentForgotHasQuestion && !answer) {
+    return showAuthAlert('Harap isi jawaban pertanyaan keamanan!', 'error');
+  }
+  if (!currentForgotHasQuestion && !usernameFallback) {
+    return showAuthAlert('Harap isi nama pengguna akunmu!', 'error');
+  }
+
+  try {
+    const res = await fetch('/api/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'reset_password',
+        email: currentForgotEmail,
+        answer,
+        usernameFallback,
+        newPassword
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return showAuthAlert(data.error || 'Gagal mereset password.', 'error');
+    }
+
+    showToast('🎉 ' + data.message, 'success');
+    switchAuthTab('login');
+    const loginEmail = document.getElementById('login-email');
+    if (loginEmail) loginEmail.value = currentForgotEmail;
+  } catch (err) {
+    showAuthAlert('Terjadi kesalahan saat memproses reset password.', 'error');
+  }
+}
+
+window.checkForgotEmail = checkForgotEmail;
+window.handleForgotPasswordSubmit = handleForgotPasswordSubmit;
 
 // ─── GOOGLE AUTH & GIS INTEGRATION ────────────────────────────
 const GOOGLE_CLIENT_ID = "860315695715-k5mg1bfsuq5l7rmrc2k74giksujh18p3.apps.googleusercontent.com";

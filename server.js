@@ -14,6 +14,8 @@ const googleAuthHandler = require('./api/google-auth');
 const progressHandler = require('./api/progress/[userId]');
 const pushSubscribeHandler = require('./api/push-subscribe');
 const sendReminderHandler = require('./api/send-reminder');
+const speakingChatHandler = require('./api/speaking-chat');
+const forgotPasswordHandler = require('./api/forgot-password');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=UTF-8',
@@ -106,12 +108,20 @@ const server = http.createServer(async (req, res) => {
       return adaptVercelHandler(registerHandler, req, res);
     }
 
+    if (pathname === '/api/forgot-password') {
+      return adaptVercelHandler(forgotPasswordHandler, req, res);
+    }
+
     if (pathname === '/api/google-auth') {
       return adaptVercelHandler(googleAuthHandler, req, res);
     }
 
     if (pathname === '/api/push-subscribe') {
       return adaptVercelHandler(pushSubscribeHandler, req, res);
+    }
+
+    if (pathname === '/api/speaking-chat') {
+      return adaptVercelHandler(speakingChatHandler, req, res);
     }
 
     if (pathname === '/api/send-reminder') {

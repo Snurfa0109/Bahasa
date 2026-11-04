@@ -607,6 +607,35 @@
           <h2 class="map-title">🇬🇧 Jalur Inggris</h2>
           <div class="map-xp">⚡ <span id="english-map-xp">0</span> XP</div>
         </div>
+
+        <!-- 🎙️ LUCA AI SPEAKING BUDDY (1-ON-1 VOICE CALL HERO) -->
+        <div class="speaking-hero-banner" id="speaking-hero-banner">
+          <div class="speaking-banner-top">
+            <span class="speaking-live-badge">🎙️ 1-ON-1 VOICE CALL</span>
+            <span class="speaking-session-duration">⏱️ 3–5 Menit Sehari</span>
+          </div>
+          <div class="speaking-banner-header-row">
+            <div class="speaking-banner-avatar-wrap">
+              <div class="speaking-avatar-pulse"></div>
+              <img src="images/icon-192.png" alt="Luca Speaking Buddy" class="speaking-banner-avatar">
+            </div>
+            <div class="speaking-banner-titles">
+              <h3 class="speaking-banner-title">Teleponan Bareng Luca AI 🌟</h3>
+              <p class="speaking-banner-sub">Latihan ngobrol bahasa Inggris langsung dengan suara, bebas salah!</p>
+            </div>
+          </div>
+          <div class="speaking-current-topic" id="speaking-banner-topic-box">
+            <span class="sct-label">🔥 Misi Hari Ini:</span>
+            <span class="sct-title" id="speaking-banner-topic-title">Memuat topik...</span>
+          </div>
+          <div class="speaking-banner-actions">
+            <button type="button" class="btn-speaking-call" onclick="openSpeakingBuddyModal()">
+              <span class="call-icon">📞</span>
+              <span>Mulai Voice Call (3–5 Menit)</span>
+            </button>
+          </div>
+        </div>
+
         <div class="lesson-path" id="english-lesson-path">
           <!-- Populated by JS -->
         </div>
@@ -747,13 +776,12 @@
     <div id="view-dialogue" class="view">
       <div class="dialogue-container">
         <div class="dialogue-header">
-          <button class="btn-back-nav" onclick="quitDialogue()" aria-label="Kembali ke daftar dialog">
+          <button class="dialogue-back-btn" onclick="quitDialogue()" aria-label="Kembali ke daftar dialog" title="Keluar">
             <span class="back-arrow">←</span>
-            <span>Keluar</span>
           </button>
           <div class="dialogue-partner-info">
             <div class="partner-avatar" id="dialogue-partner-avatar">☕</div>
-            <div>
+            <div class="partner-meta">
               <div class="partner-name" id="dialogue-partner-name">Min-jun</div>
               <div class="partner-status" id="dialogue-partner-status">● Sedang mengobrol...</div>
             </div>
@@ -1370,7 +1398,10 @@
           <input type="email" id="login-email" class="form-input" placeholder="nama@email.com" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Password</label>
+          <div class="form-label-row">
+            <label class="form-label" style="margin: 0;">Password</label>
+            <a href="javascript:void(0)" class="auth-link-forgot" onclick="openForgotPasswordFlow()">Lupa password? 🔑</a>
+          </div>
           <div class="password-input-wrap">
             <input type="password" id="login-password" class="form-input" placeholder="Masukkan password kamu" required>
             <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('login-password', this)" title="Lihat password" aria-label="Lihat password">
@@ -1402,9 +1433,75 @@
             </button>
           </div>
         </div>
+        <div class="form-group">
+          <label class="form-label">Pertanyaan Keamanan (Pemulihan Password)</label>
+          <select id="reg-security-q" class="form-input form-select" required>
+            <option value="Apa nama hewan peliharaan pertamamu?">Apa nama hewan peliharaan pertamamu? 🐾</option>
+            <option value="Di kota mana kamu dilahirkan?">Di kota mana kamu dilahirkan? 🏙️</option>
+            <option value="Apa nama sekolah dasar (SD) pertamamu?">Apa nama sekolah dasar (SD) pertamamu? 🎒</option>
+            <option value="Apa makanan favorit masa kecilmu?">Apa makanan favorit masa kecilmu? 🍜</option>
+            <option value="Siapa nama sahabat masa kecilmu?">Siapa nama sahabat masa kecilmu? 🤝</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Jawaban Rahasia (Hanya kamu yang tahu)</label>
+          <input type="text" id="reg-security-a" class="form-input" placeholder="Contoh: Kucing Oren / Bandung / SDN 1" required>
+          <span class="form-helper-text">Digunakan untuk mereset password dengan aman jika suatu saat lupa.</span>
+        </div>
         <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 12px;">
           Buat Akun & Mulai Belajar 🎉
         </button>
+      </form>
+
+      <!-- Form: Forgot Password -->
+      <form id="auth-form-forgot" class="hidden" onsubmit="handleForgotPasswordSubmit(event)" style="display: none;">
+        <div class="forgot-step" id="forgot-step-1">
+          <p class="forgot-guide-text">Masukkan email akunmu untuk melihat pertanyaan keamanan pemulihan:</p>
+          <div class="form-group">
+            <label class="form-label">Email Terdaftar</label>
+            <input type="email" id="forgot-email" class="form-input" placeholder="nama@email.com" required>
+          </div>
+          <button type="button" class="btn-primary btn-large" style="width: 100%; margin-top: 10px;" onclick="checkForgotEmail()">
+            Cari Akun & Pertanyaan Keamanan 🔍
+          </button>
+        </div>
+
+        <div class="forgot-step" id="forgot-step-2" style="display: none;">
+          <div class="forgot-question-box">
+            <span class="fqb-label">Pertanyaan Keamanan Akunmu:</span>
+            <strong class="fqb-question" id="forgot-displayed-question">...</strong>
+          </div>
+
+          <div class="form-group" id="forgot-answer-group">
+            <label class="form-label">Jawaban Kamu</label>
+            <input type="text" id="forgot-answer" class="form-input" placeholder="Ketik jawaban rahasiamu...">
+          </div>
+
+          <div class="form-group" id="forgot-username-fallback-group" style="display: none;">
+            <label class="form-label">Nama Pengguna (Username)</label>
+            <input type="text" id="forgot-username-fallback" class="form-input" placeholder="Ketik username akunmu...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Buat Password Baru (min. 6 karakter)</label>
+            <div class="password-input-wrap">
+              <input type="password" id="forgot-new-password" class="form-input" placeholder="Password baru" minlength="6" required>
+              <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('forgot-new-password', this)" title="Lihat password" aria-label="Lihat password">
+                <span class="eye-icon">👁️</span>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary btn-large" style="width: 100%; margin-top: 10px;">
+            Simpan Password Baru & Masuk 🔐
+          </button>
+        </div>
+
+        <div class="forgot-back-row">
+          <button type="button" class="btn-back-to-login" onclick="switchAuthTab('login')">
+            ← Kembali ke Menu Masuk
+          </button>
+        </div>
       </form>
 
     </div>
@@ -1973,10 +2070,104 @@
   </div>
 </div>
 
+<!-- ───────── MODAL: LUCA AI SPEAKING BUDDY (1-ON-1 REAL VOICE CALL) ───────── -->
+<div id="speaking-buddy-modal" class="modal-overlay voice-call-overlay" style="display: none;">
+  <div class="modal-card voice-call-card">
+    
+    <!-- Top Call Bar -->
+    <div class="voice-call-topbar">
+      <div class="vct-badge" id="voice-call-topic-pill">
+        <span class="vct-icon">🎯</span>
+        <span id="speaking-modal-topic-title">Memuat Misi...</span>
+      </div>
+      <button type="button" class="vct-topic-btn" onclick="cycleSpeakingTopic()" title="Ganti Topik Obrolan">
+        🔄 Ganti
+      </button>
+      <div class="vct-timer" id="speaking-call-timer">00:00</div>
+    </div>
+
+    <!-- Center Call Stage (Pulsing Voice Orb & Subtitles) -->
+    <div class="voice-call-stage">
+      <!-- Voice Halo & Avatar -->
+      <div class="voice-call-orb-wrap" id="voice-call-orb-wrap">
+        <div class="voice-wave-ring ring-1"></div>
+        <div class="voice-wave-ring ring-2"></div>
+        <div class="voice-wave-ring ring-3"></div>
+        <img src="images/icon-192.png" alt="Luca Voice" class="voice-call-avatar">
+      </div>
+
+      <!-- Live Call Status -->
+      <div class="voice-call-caller-name">Luca Speaking Partner</div>
+      <div class="voice-call-status" id="speaking-connection-status">
+        <span class="status-indicator-dot"></span>
+        <span id="speaking-status-label">Terhubung • Menunggu suaramu</span>
+      </div>
+
+      <!-- Live Spoken Subtitle Box -->
+      <div class="voice-call-subtitles-box" id="voice-call-subtitles-box">
+        <p class="vcs-text" id="voice-call-current-text">
+          "Menghubungkan panggilan suara..."
+        </p>
+        <div class="vcs-actions" id="voice-call-sub-actions" style="display: none;">
+          <button type="button" class="vcs-btn" onclick="replayCurrentLucaAudio()" title="Dengar Ulang">
+            🔊 Ulangi Suara
+          </button>
+          <button type="button" class="vcs-btn" onclick="toggleCurrentTranslation()" title="Lihat Terjemahan">
+            🇮🇩 Terjemahan
+          </button>
+        </div>
+        <p class="vcs-translation" id="voice-call-translation-text" style="display: none;"></p>
+      </div>
+
+      <!-- Gentle Recasting / Correction Card (Appears if user made a grammar slip) -->
+      <div class="voice-call-recast-card" id="voice-call-recast-card" style="display: none;">
+        <span class="vcr-icon">💡</span>
+        <div class="vcr-content" id="voice-call-recast-content"></div>
+      </div>
+    </div>
+
+    <!-- Sliding Cheat Sheet / Bantuan Kalimat (Toggled by Lightbulb button) -->
+    <div class="voice-call-hints-drawer" id="voice-call-hints-drawer" style="display: none;">
+      <div class="vch-header">
+        <span>💡 Bantuan Kalimat (Baca salah satu ke Mic):</span>
+        <button type="button" class="vch-close" onclick="toggleHintsDrawer()">✕</button>
+      </div>
+      <div class="vch-chips" id="speaking-chips-container">
+        <!-- Injected chips -->
+      </div>
+    </div>
+
+    <!-- Bottom Call Control Deck (Like a Smartphone Call) -->
+    <div class="voice-call-deck">
+      <!-- Hint Button -->
+      <button type="button" class="vcd-btn vcd-btn-hint" id="vcd-btn-hint" onclick="toggleHintsDrawer()" title="Bantuan Kalimat / Contekan">
+        <span class="vcd-icon">💡</span>
+        <span class="vcd-label">Bantuan</span>
+      </button>
+
+      <!-- Big Mic Button -->
+      <div class="vcd-mic-wrapper">
+        <button type="button" class="vcd-btn-mic" id="btn-speaking-mic" onclick="toggleSpeakingMic()" title="Ketuk untuk Bicara">
+          <span class="vcd-mic-icon" id="speaking-mic-icon">🎙️</span>
+        </button>
+        <span class="vcd-mic-hint" id="speaking-mic-hint">Ketuk mic untuk bicara</span>
+      </div>
+
+      <!-- Hangup Call Button -->
+      <button type="button" class="vcd-btn vcd-btn-hangup" onclick="closeSpeakingBuddyModal()" title="Akhiri Panggilan">
+        <span class="vcd-icon">🔴</span>
+        <span class="vcd-label">Tutup</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <script src="js/data.js?v=68"></script>
 <script src="js/notes-data.js?v=68"></script>
 <script src="js/diagnostic-data.js?v=68"></script>
 <script src="js/app.js?v=69"></script>
+<script src="js/speaking.js?v=69"></script>
 
 <script>
 // Failsafe direct handlers to ensure zero dead clicks

@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { username, email, password } = req.body || {};
+    const { username, email, password, securityQuestion, securityAnswer } = req.body || {};
     const cleanEmail = (email || '').trim().toLowerCase();
     const cleanUsername = (username || '').trim();
 
@@ -35,9 +35,16 @@ module.exports = async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
+    let answerHash = null;
+    let cleanQuestion = (securityQuestion || '').trim();
+
+    if (securityAnswer) {
+      answerHash = await bcrypt.hash(securityAnswer.trim().toLowerCase(), 10);
+    }
+
     const [insertResult] = await pool.query(
-      'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
-      [cleanUsername, cleanEmail, passwordHash]
+      'INSERT INTO users (username, email, password_hash, security_question, security_answer_hash) VALUES (?, ?, ?, ?, ?)',
+      [cleanUsername, cleanEmail, passwordHash, cleanQuestion || null, answerHash]
     );
 
     const newUser = {
