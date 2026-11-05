@@ -103,59 +103,101 @@
   <!-- ═══════════ VIEW CONTAINER ═══════════ -->
   <div id="views-container">
 
-    <!-- ───────── VIEW: ONBOARDING ───────── -->
+    <!-- ───────── VIEW: ONBOARDING (LANDING PAGE & AUTH GATE) ───────── -->
     <div id="view-onboarding" class="view active">
-      <div class="onboarding-container">
-        <div class="onboarding-hero">
-          <div class="onboarding-brand-badge">
+      <!-- Sticky Top Landing Navigation Bar -->
+      <nav class="landing-top-nav">
+        <div class="landing-nav-brand">
+          <img src="images/icon-192.png" alt="BasaLoka" class="landing-nav-logo">
+          <span class="landing-nav-name">BasaLoka</span>
+        </div>
+        <div class="landing-nav-actions">
+          <button type="button" class="btn-landing-nav-login" onclick="openAuthModal('login')">
+            🔑 Masuk
+          </button>
+        </div>
+      </nav>
+
+      <div class="landing-page-container">
+        <!-- Hero Header -->
+        <header class="landing-hero">
+          <div class="landing-brand-badge">
             <picture>
               <source srcset="images/LogoTengah.webp" type="image/webp">
-              <img src="images/LogoTengah.png" alt="BasaLoka Logo" class="onboarding-hero-logo" fetchpriority="high">
+              <img src="images/LogoTengah.png" alt="BasaLoka Logo" class="landing-hero-logo" fetchpriority="high">
             </picture>
           </div>
-          <div class="onboarding-brand-meaning">
+          <div class="landing-brand-meaning">
             <span class="meaning-chip">✨ <strong>Basa</strong> (Sunda: Bahasa)</span>
             <span class="meaning-chip">🌏 <strong>Loka</strong> (Sansekerta: Dunia)</span>
           </div>
-          <p class="hero-sub">Jelajahi Dunia Bahasa (Korea, Inggris, & TOEFL) — Interaktif, Menyenangkan, dan Langkah demi Langkah 🌱</p>
-        </div>
-        <div class="onboarding-form">
-          <!-- Google Sign In Button Container (GIS Native Button & One-Tap) -->
-          <div id="google-hero-btn-wrapper" style="width: 100%; display: flex; justify-content: center; margin-bottom: 4px;">
-            <div id="google-hero-btn"></div>
-          </div>
-          <!-- Fallback Button in case GIS hasn't loaded yet -->
-          <button type="button" id="google-hero-fallback-btn" class="btn-google btn-large" onclick="triggerGoogleSignIn()" style="display: none;">
-            <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-            </svg>
-            <span>Lanjutkan dengan Google</span>
-          </button>
+          <h1 class="landing-headline">Kuasai Bahasa Asing & Tembus Skor TOEFL 🚀</h1>
+          <p class="landing-sub">Platform belajar interaktif dengan AI Speaking Partner suara langsung, Prediktor TOEFL ITP berstandar resmi, dan Roleplay percakapan Korea harian.</p>
 
-          <div class="onboarding-divider">
-            <span>atau masuk dengan akun email</span>
-          </div>
-
-          <div class="onboarding-auth-actions">
-            <button type="button" class="btn-secondary btn-action-half" onclick="openAuthModal('login')">
-              🔑 Masuk (Login)
+          <!-- Primary Hero Auth Actions (Centered, Single Clean Action Block) -->
+          <div class="landing-hero-actions">
+            <!-- Google Sign In Button Container (GIS Native Button & One-Tap) -->
+            <div id="google-hero-btn-wrapper" style="display: flex; justify-content: center; margin-bottom: 6px;">
+              <div id="google-hero-btn"></div>
+            </div>
+            <!-- Fallback Button in case GIS hasn't loaded yet -->
+            <button type="button" id="google-hero-fallback-btn" class="btn-google btn-large" onclick="triggerGoogleSignIn()" style="display: none;">
+              <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Lanjutkan dengan Google</span>
             </button>
-            <button type="button" class="btn-primary btn-action-half" onclick="openAuthModal('register')">
-              📝 Daftar Akun Baru
-            </button>
-          </div>
 
-          <div class="onboarding-cloud-note">
-            <div class="cloud-note-icon">☁️</div>
-            <div class="cloud-note-text">
-              <strong>Progres Tersimpan Otomatis</strong>
-              <p>Masuk atau buat akun agar progres belajar, streak harian, dan skor TOEFL tersimpan aman di cloud.</p>
+            <button type="button" class="btn-primary btn-hero-cta" onclick="openAuthModal('register')">
+              🚀 Mulai Belajar Gratis
+            </button>
+
+            <div class="landing-login-hint">
+              Sudah punya akun? <button type="button" class="link-subtle" onclick="openAuthModal('login')">Masuk di sini</button>
             </div>
           </div>
-        </div>
+
+          <!-- Trust Stats Badges -->
+          <div class="landing-stats-row">
+            <div class="lstat-pill">⚡ <strong>100+</strong> Modul Interaktif</div>
+            <div class="lstat-pill">🎙️ <strong>AI Voice</strong> Real-time</div>
+            <div class="lstat-pill">☁️ <strong>TiDB Cloud</strong> Auto-Sync</div>
+          </div>
+        </header>
+
+        <!-- Feature Highlight Section (3 Cards in Grid on Desktop) -->
+        <section class="landing-features-section" aria-label="Keunggulan BasaLoka">
+          <h2 class="features-section-title">✨ Apa yang Bisa Kamu Pelajari di BasaLoka?</h2>
+
+          <div class="landing-features-grid">
+            <div class="landing-feature-card feat-speaking">
+              <div class="feat-card-badge">🎙️ 1-ON-1 VOICE CALL</div>
+              <h3 class="feat-card-title">Teleponan Bareng Luca AI</h3>
+              <p class="feat-card-desc">Latihan ngomong bahasa Inggris langsung lewat suara layaknya teleponan nyata. Bebas grogi, bebas salah, dan Luca siap bantu kosakata!</p>
+            </div>
+
+            <div class="landing-feature-card feat-toefl">
+              <div class="feat-card-badge">📊 PREDIKTOR 310–677</div>
+              <h3 class="feat-card-title">Simulasi & Trik Kilat TOEFL ITP</h3>
+              <p class="feat-card-desc">Tes diagnostik 10 menit berbobot ETS, trik jitu Structure & Listening, serta pelacak target skor BUMN (500+) dan LPDP (550+).</p>
+            </div>
+
+            <div class="landing-feature-card feat-korean">
+              <div class="feat-card-badge">🇰🇷 REAL SCENARIOS</div>
+              <h3 class="feat-card-title">Roleplay Percakapan Korea</h3>
+              <p class="feat-card-desc">Simulasi pesan kopi di kafe Hongdae Seoul hingga traveling bareng audio penutur asli, aksara Hangul, dan tips budaya K-Drama.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Landing Footer -->
+        <footer class="landing-footer">
+          <div class="lf-trust">🔒 Terenkripsi & Aman • 🌱 100% Bebas Iklan</div>
+          <div class="lf-copy">© 2026 BasaLoka • Belajar Bahasa Korea, Inggris & TOEFL Interaktif</div>
+        </footer>
       </div>
     </div>
 
@@ -1531,6 +1573,21 @@
       <!-- Container akun dinamis di perangkat ini (jika pernah masuk sebelumnya) -->
       <div id="google-recent-account-container"></div>
 
+      <!-- Direct Google Quick Sign In Form -->
+      <form onsubmit="handleCustomGoogleAuth(event)" style="margin-top: 10px;">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label" style="font-size: 0.85rem;">Email Google</label>
+          <input type="email" id="google-custom-email" class="form-input" placeholder="nama@gmail.com" required style="padding: 10px 14px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-size: 0.85rem;">Nama Panggilan (Opsional)</label>
+          <input type="text" id="google-custom-name" class="form-input" placeholder="Nama kamu" style="padding: 10px 14px;">
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; border-radius: var(--radius-md); font-weight: 700;">
+          🚀 Lanjutkan & Masuk Sekarang
+        </button>
+      </form>
+
       <div class="onboarding-divider" style="margin: 16px 0;">
         <span>atau punya akun biasa?</span>
       </div>
@@ -2168,41 +2225,6 @@
 <script src="js/diagnostic-data.js?v=68"></script>
 <script src="js/app.js?v=69"></script>
 <script src="js/speaking.js?v=69"></script>
-
-<script>
-// Failsafe direct handlers to ensure zero dead clicks
-function openGoogleModal() {
-  closeAuthModal();
-  const m = document.getElementById('google-modal');
-  if (m) {
-    m.classList.add('active');
-    m.style.setProperty('display', 'flex', 'important');
-  }
-}
-function closeGoogleModal() {
-  const m = document.getElementById('google-modal');
-  if (m) {
-    m.classList.remove('active');
-    m.style.setProperty('display', 'none', 'important');
-  }
-}
-function openAuthModal(mode) {
-  closeGoogleModal();
-  const m = document.getElementById('auth-modal');
-  if (m) {
-    m.classList.add('active');
-    m.style.setProperty('display', 'flex', 'important');
-    if (typeof switchAuthTab === 'function') switchAuthTab(mode || 'login');
-  }
-}
-function closeAuthModal() {
-  const m = document.getElementById('auth-modal');
-  if (m) {
-    m.classList.remove('active');
-    m.style.setProperty('display', 'none', 'important');
-  }
-}
-</script>
 
 </body>
 </html>

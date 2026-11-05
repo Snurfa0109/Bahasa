@@ -1,4 +1,4 @@
-const { pool } = require('./db');
+const { pool, formatProgress } = require('./db');
 const bcrypt = require('bcryptjs');
 
 module.exports = async (req, res) => {
@@ -29,8 +29,32 @@ module.exports = async (req, res) => {
     }
 
     // Check if email already exists
-    const [existing] = await pool.query('SELECT id FROM users WHERE email = ? LIMIT 1', [cleanEmail]);
+    const [existing] = await pool.query('SELECT id, username, password_hash FROM users WHERE email = ? LIMIT 1', [cleanEmail]);
     if (existing && existing.length > 0) {
+      if (!existing[0].password_hash) {
+        // User registered with Google previously, now assigning password & security question
+        const passwordHash = await bcrypt.hash(password, 10);
+        let answerHash = null;
+        let cleanQuestion = (securityQuestion || '').trim();
+        if (securityAnswer) {
+          answerHash = await bcrypt.hash(securityAnswer.trim().toLowerCase(), 10);
+        }
+        await pool.query(
+          'UPDATE users SET password_hash = ?, security_question = ?, security_answer_hash = ? WHERE id = ?',
+          [passwordHash, cleanQuestion || null, answerHash, existing[0].id]
+        );
+        const [progressRows] = await pool.query('SELECT * FROM user_progress WHERE user_id = ? LIMIT 1', [existing[0].id]);
+        const progress = progressRows.length > 0 ? formatProgress(progressRows[0]) : null;
+        return res.status(200).json({
+          message: 'Password berhasil ditambahkan ke akun kamu!',
+          user: {
+            id: existing[0].id,
+            username: existing[0].username || cleanUsername,
+            email: cleanEmail
+          },
+          progress
+        });
+      }
       return res.status(409).json({ error: 'Email sudah terdaftar. Silakan login!' });
     }
 

@@ -551,7 +551,11 @@ function navigateBack() {
   // General history pop
   if (navHistory.length > 1) {
     navHistory.pop(); // Pop current view
-    const prevView = navHistory.pop(); // Get previous view
+    let prevView = navHistory.pop(); // Get previous view
+    const hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+    if (hasValidUser && prevView === 'onboarding') {
+      prevView = 'dashboard';
+    }
     showView(prevView || 'dashboard', true);
   } else {
     showView('dashboard', true);
@@ -562,6 +566,8 @@ function showView(viewName, pushHistory = true) {
   const hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
   if (!hasValidUser && viewName !== 'onboarding') {
     viewName = 'onboarding';
+  } else if (hasValidUser && viewName === 'onboarding') {
+    viewName = 'dashboard';
   }
   if (viewName !== 'lesson' && typeof stopQuestionTimer === 'function') {
     stopQuestionTimer();
@@ -4315,12 +4321,24 @@ async function handleLogin(e) {
         state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
       }
       saveState();
+      try {
+        localStorage.setItem('basaloka_user', JSON.stringify(data.user));
+        localStorage.setItem('basaloka_last_user', JSON.stringify({ email: data.user.email, username: data.user.username }));
+      } catch (_) {}
+      navHistory = ['dashboard'];
       closeAuthModal();
+      closeGoogleModal();
+      updateAuthNavUI();
       showToast(`👋 Selamat datang kembali, ${data.user.username}!`, 'success');
       showView('dashboard');
       updateNavStats();
       setTimeout(checkAndPromptWelcomeReview, 700);
       return;
+    } else {
+      const errData = await res.json().catch(() => ({}));
+      if (errData && errData.error) {
+        return showAuthAlert(errData.error, 'error');
+      }
     }
   } catch (err) {
     // Fallback to local storage for static hosting
@@ -4333,7 +4351,14 @@ async function handleLogin(e) {
     state.currentUser = found;
     state.userName = found.username;
     saveState();
+    try {
+      localStorage.setItem('basaloka_user', JSON.stringify(found));
+      localStorage.setItem('basaloka_last_user', JSON.stringify({ email: found.email, username: found.username }));
+    } catch (_) {}
+    navHistory = ['dashboard'];
     closeAuthModal();
+    closeGoogleModal();
+    updateAuthNavUI();
     showToast(`👋 Selamat datang kembali, ${found.username}!`, 'success');
     showView('dashboard');
     updateNavStats();
@@ -4372,14 +4397,24 @@ async function handleRegister(e) {
       const data = await res.json();
       state.currentUser = data.user;
       state.userName = data.user.username;
+      if (data.progress) {
+        state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
+      }
       saveState();
+      try {
+        localStorage.setItem('basaloka_user', JSON.stringify(data.user));
+        localStorage.setItem('basaloka_last_user', JSON.stringify({ email: data.user.email, username: data.user.username }));
+      } catch (_) {}
+      navHistory = ['dashboard'];
       closeAuthModal();
-      showToast(`🎉 Akun berhasil dibuat! Selamat belajar, ${data.user.username}!`, 'success');
+      closeGoogleModal();
+      updateAuthNavUI();
+      showToast(`🎉 ${data.message || 'Akun berhasil dibuat!'} Selamat belajar, ${data.user.username}!`, 'success');
       showView('dashboard');
       updateNavStats();
       return;
     } else {
-      const errData = await res.json();
+      const errData = await res.json().catch(() => ({}));
       return showAuthAlert(errData.error || 'Pendaftaran gagal!', 'error');
     }
   } catch (err) {
@@ -4399,7 +4434,14 @@ async function handleRegister(e) {
   state.currentUser = newUser;
   state.userName = username;
   saveState();
+  try {
+    localStorage.setItem('basaloka_user', JSON.stringify(newUser));
+    localStorage.setItem('basaloka_last_user', JSON.stringify({ email: newUser.email, username: newUser.username }));
+  } catch (_) {}
+  navHistory = ['dashboard'];
   closeAuthModal();
+  closeGoogleModal();
+  updateAuthNavUI();
   showToast(`🎉 Akun berhasil dibuat! Selamat belajar, ${username}!`, 'success');
   showView('dashboard');
   updateNavStats();
@@ -4568,8 +4610,13 @@ function initGoogleGIS() {
       });
     }
 
-    // Prompt One Tap automatically on page load if appropriate
-    google.accounts.id.prompt();
+    // Prompt One Tap automatically on page load only if user is not already logged in
+    const hasUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+    if (!hasUser) {
+      google.accounts.id.prompt((notification) => {
+        // Safe logger / fallback
+      });
+    }
   } catch (err) {
     console.warn('GIS init error:', err);
     const fallback = document.getElementById('google-hero-fallback-btn');
@@ -4580,7 +4627,15 @@ function initGoogleGIS() {
 function triggerGoogleSignIn() {
   if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
     initGoogleGIS();
-    google.accounts.id.prompt();
+    try {
+      google.accounts.id.prompt((notification) => {
+        if (notification && (notification.isNotDisplayed() || notification.isSkippedMoment())) {
+          openGoogleModal();
+        }
+      });
+    } catch (_) {
+      openGoogleModal();
+    }
   } else {
     openGoogleModal();
   }
@@ -4607,10 +4662,17 @@ function openGoogleModal() {
     m.style.display = 'flex';
   }
 
+  // Pre-fill email from login input if already typed
+  const loginEmail = document.getElementById('login-email')?.value?.trim();
+  const customEmail = document.getElementById('google-custom-email');
+  if (customEmail && loginEmail && !customEmail.value) {
+    customEmail.value = loginEmail;
+  }
+
   // Coba tampilkan popup One Tap resmi jika didukung
   if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
     initGoogleGIS();
-    google.accounts.id.prompt();
+    try { google.accounts.id.prompt(); } catch (_) {}
   }
 
   // Render akun yang tersimpan KHUSUS di perangkat ini (jika pernah masuk sebelumnya)
@@ -4653,8 +4715,8 @@ function closeGoogleModal() {
 
 async function handleCustomGoogleAuth(e) {
   if (e) e.preventDefault();
-  const email = document.getElementById('google-custom-email').value.trim();
-  const name = document.getElementById('google-custom-name').value.trim();
+  const email = document.getElementById('google-custom-email')?.value?.trim();
+  const name = document.getElementById('google-custom-name')?.value?.trim();
   if (!email) return;
   await submitGoogleAuth(email, name);
 }
@@ -4674,9 +4736,14 @@ async function submitGoogleAuth(email, name) {
         state = { ...state, ...data.progress, currentUser: data.user, userName: data.user.username };
       }
       saveState();
-      localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: data.user.username }));
+      try {
+        localStorage.setItem('basaloka_user', JSON.stringify(data.user));
+        localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: data.user.username }));
+      } catch (_) {}
+      navHistory = ['dashboard'];
       closeGoogleModal();
       closeAuthModal();
+      updateAuthNavUI();
       showToast(`✨ Berhasil masuk via Google! Halo, ${data.user.username}!`, 'success');
       showView('dashboard');
       updateNavStats();
@@ -4691,9 +4758,14 @@ async function submitGoogleAuth(email, name) {
   state.currentUser = localUser;
   state.userName = localUser.username;
   saveState();
-  localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: localUser.username }));
+  try {
+    localStorage.setItem('basaloka_user', JSON.stringify(localUser));
+    localStorage.setItem('basaloka_last_user', JSON.stringify({ email, username: localUser.username }));
+  } catch (_) {}
+  navHistory = ['dashboard'];
   closeGoogleModal();
   closeAuthModal();
+  updateAuthNavUI();
   showToast(`✨ Berhasil masuk via Google! Halo, ${localUser.username}!`, 'success');
   showView('dashboard');
   updateNavStats();
@@ -6335,12 +6407,12 @@ function initApp() {
   if (hasValidUser) {
     resolveInitialRoute();
     syncProgressFromCloud();
+    setTimeout(showLucaGreetingSplash, 120);
   } else {
     showView('onboarding', false);
   }
   updateAuthNavUI();
   checkPushStatus();
-  setTimeout(showLucaGreetingSplash, 120);
 }
 
 if (document.readyState === 'loading') {
@@ -7283,6 +7355,9 @@ let lucaAutoTimer = null;
 let isLucaGreetingActive = false;
 
 function showLucaGreetingSplash() {
+  const hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
+  if (!hasValidUser) return;
+
   if (sessionStorage.getItem('basaloka_luca_greeted') === 'true') {
     setTimeout(checkAndPromptWelcomeReview, 600);
     return;

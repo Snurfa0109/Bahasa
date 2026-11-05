@@ -33,9 +33,16 @@ module.exports = async (req, res) => {
     }
 
     const user = users[0];
+    if (!user.password_hash) {
+      return res.status(401).json({
+        error: 'Akun ini terdaftar via Google. Silakan gunakan tombol "Lanjutkan dengan Google" di atas!',
+        isGoogleAccount: true
+      });
+    }
+
     const passwordMatch = await bcrypt.compare(password, user.password_hash || '');
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Email atau password salah!' });
+      return res.status(401).json({ error: 'Email atau password salah! Periksa kembali atau gunakan Lupa Password.' });
     }
 
     // Fetch progress
