@@ -209,7 +209,8 @@
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
-    utterance.rate = 0.95;
+    const userSpeed = (window.getAudioSpeed ? window.getAudioSpeed() : (parseFloat(localStorage.getItem('basaloka_audio_speed')) || 1.0));
+    utterance.rate = Math.max(0.50, Math.min(1.80, 0.95 * userSpeed));
     utterance.pitch = 1.05;
 
     const voices = window.speechSynthesis.getVoices();

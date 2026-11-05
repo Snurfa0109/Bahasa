@@ -88,6 +88,10 @@
         <span class="stat-value" id="xp-count">0</span>
         <span class="stat-label">XP</span>
       </div>
+      <button type="button" class="btn-nav-audio-speed" id="global-audio-speed-btn" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio (0.75x, 1.0x, 1.25x, 1.5x)">
+        <span class="speed-icon">🔊</span>
+        <span class="speed-val" id="global-speed-val">1.0x</span>
+      </button>
     </div>
     <div class="nav-auth-section" id="nav-auth-section">
       <button class="btn-install-pwa" id="btn-install-pwa" onclick="triggerPwaInstall()" title="Pasang BasaLoka di HP agar bisa langsung tap!">
@@ -702,6 +706,9 @@
           <div class="lesson-progress-bar">
             <div class="lesson-progress-fill" id="lesson-progress-fill" style="width: 0%"></div>
           </div>
+          <button type="button" class="btn-audio-speed-toggle" id="lesson-audio-speed-btn" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio">
+            ⚡ 1.0x
+          </button>
           <button type="button" class="btn-lesson-timer-toggle" id="btn-lesson-timer-toggle" onclick="toggleLessonTimerMode()" title="Mode Timer Kilat ETS (Latihan Simulasi Waktu)">
             <span class="ltt-icon">⏱️</span>
             <span class="ltt-text" id="ltt-text">Timer OFF</span>
@@ -829,6 +836,9 @@
             </div>
           </div>
           <div class="dialogue-toggles">
+            <button type="button" class="btn-audio-speed-pill" id="dialogue-speed-btn" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Percakapan">
+              ⚡ 1.0x
+            </button>
             <button class="btn-toggle-rom active" id="btn-toggle-rom" onclick="toggleDialogueRomanization()" title="Tampilkan / Sembunyikan Cara Baca">
               Aa
             </button>
@@ -2139,6 +2149,9 @@
       </div>
       <button type="button" class="vct-topic-btn" onclick="cycleSpeakingTopic()" title="Ganti Topik Obrolan">
         🔄 Ganti
+      </button>
+      <button type="button" class="btn-audio-speed-pill vct-speed-btn" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Luca">
+        ⚡ 1.0x
       </button>
       <div class="vct-timer" id="speaking-call-timer">00:00</div>
     </div>

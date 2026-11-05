@@ -170,8 +170,84 @@ const TTS_LANG_MAP = {
   'en-GB': 'en'
 };
 
+// ─── AUDIO PLAYBACK SPEED ENGINE (Slow / Normal / Fast) ───
+const AUDIO_SPEED_PRESETS = [0.75, 1.0, 1.25, 1.5];
+let currentAudioSpeed = parseFloat(localStorage.getItem('basaloka_audio_speed')) || 1.0;
+if (!state.audioSpeed) state.audioSpeed = currentAudioSpeed;
+
+function getAudioSpeed() {
+  const s = state.audioSpeed || parseFloat(localStorage.getItem('basaloka_audio_speed')) || 1.0;
+  return Math.max(0.5, Math.min(2.0, s));
+}
+
+function getAudioSpeedIcon(speed = null) {
+  const s = speed !== null ? speed : getAudioSpeed();
+  if (s <= 0.75) return '🐢';
+  if (s >= 1.5) return '🔥';
+  if (s >= 1.25) return '🚀';
+  return '⚡';
+}
+
+function getAudioSpeedLabel(speed = null) {
+  const s = speed !== null ? speed : getAudioSpeed();
+  return `${getAudioSpeedIcon(s)} ${s.toFixed(2).replace(/\.00$/, '.0').replace(/\.0$/, '.0')}x`;
+}
+
+function setAudioSpeed(newSpeed, notify = true) {
+  const valid = parseFloat(newSpeed);
+  if (isNaN(valid) || valid <= 0) return;
+  state.audioSpeed = valid;
+  try {
+    localStorage.setItem('basaloka_audio_speed', valid.toString());
+  } catch (_) {}
+
+  updateAllAudioSpeedBadges();
+
+  if (notify) {
+    const label = getAudioSpeedLabel(valid);
+    let speedName = 'Normal';
+    if (valid <= 0.75) speedName = 'Pelan 🐢 (Fokus Pelafalan)';
+    else if (valid >= 1.5) speedName = 'Sangat Cepat 🔥 (Tantangan)';
+    else if (valid >= 1.25) speedName = 'Cepat 🚀 (Latihan Reflek Native)';
+
+    showToast(`🔊 Kecepatan Suara: ${label} • ${speedName}`, 'info');
+  }
+}
+
+function cycleAudioSpeed() {
+  const current = getAudioSpeed();
+  const idx = AUDIO_SPEED_PRESETS.findIndex(s => Math.abs(s - current) < 0.05);
+  const nextIdx = (idx + 1) % AUDIO_SPEED_PRESETS.length;
+  setAudioSpeed(AUDIO_SPEED_PRESETS[nextIdx], true);
+}
+
+function updateAllAudioSpeedBadges() {
+  const speed = getAudioSpeed();
+  const label = getAudioSpeedLabel(speed);
+
+  document.querySelectorAll('.audio-speed-label').forEach(el => {
+    el.textContent = label;
+  });
+  document.querySelectorAll('.btn-audio-speed-pill, .btn-audio-speed-toggle').forEach(el => {
+    el.innerHTML = label;
+    el.setAttribute('title', `Kecepatan Audio: ${label} (Klik untuk ubah kecepatan)`);
+    el.classList.toggle('speed-slow', speed < 1.0);
+    el.classList.toggle('speed-fast', speed > 1.0);
+  });
+  const globalVal = document.getElementById('global-speed-val');
+  if (globalVal) globalVal.textContent = `${speed.toFixed(2).replace(/\.00$/, '.0').replace(/\.0$/, '.0')}x`;
+}
+
 function speak(text, lang = 'ko-KR', rate = 0.88, gender = 'neutral') {
   speakWithVoice(text, lang, { rate, gender });
+}
+
+function speakKorean(text, rate = 0.88) {
+  speakWithVoice(text, 'ko-KR', { rate });
+}
+
+function speakEnglish(text, rate = 0.88) {
+  speakWithVoice(text, 'en-US', { rate });
 }
 
 // ─── AUDIO ENGINE (High-Fidelity Chrome/Windows/Mobile Multi-Speaker TTS) ───
@@ -311,7 +387,9 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
   }
 
   const pitch = opts.pitch !== undefined ? opts.pitch : defaultPitch;
-  const rate = opts.rate !== undefined ? opts.rate : defaultRate;
+  const userSpeed = getAudioSpeed();
+  const baseRate = opts.rate !== undefined ? opts.rate : defaultRate;
+  const rate = Math.max(0.50, Math.min(1.80, baseRate * userSpeed));
   const shouldCancel = opts.cancelPrevious !== false;
 
   if (speechSynth) {
@@ -387,15 +465,15 @@ function speakWithVoice(text, lang = 'en-US', opts = {}, onEnd = null) {
     audio.preservesPitch = false;
     audio.mozPreservesPitch = false;
     audio.webkitPreservesPitch = false;
-    audio.playbackRate = 0.80;
+    audio.playbackRate = Math.max(0.50, Math.min(2.0, 0.80 * userSpeed));
   } else if (gender === 'female') {
     audio.preservesPitch = false;
     audio.mozPreservesPitch = false;
     audio.webkitPreservesPitch = false;
-    audio.playbackRate = 1.10;
+    audio.playbackRate = Math.max(0.50, Math.min(2.0, 1.10 * userSpeed));
   } else {
     audio.preservesPitch = true;
-    audio.playbackRate = 0.92;
+    audio.playbackRate = Math.max(0.50, Math.min(2.0, 0.92 * userSpeed));
   }
 
   if (onEnd) {
@@ -2346,8 +2424,11 @@ function renderFlashcard(card) {
             ← Sebelumnya
           </button>
         ` : ''}
-        <button class="btn-audio" onclick="speak('${ttsText.replace(/'/g, "\\'")}', '${card.ttsLang}')">
+        <button class="btn-audio" onclick="speak('${ttsText.replace(/'/g, "\\'")}', '${card.ttsLang}')" title="Dengarkan audio">
           🔊 Dengarkan
+        </button>
+        <button type="button" class="btn-audio-slow" onclick="speak('${ttsText.replace(/'/g, "\\'")}', '${card.ttsLang}', 0.60)" title="Dengarkan pelan (0.60x)">
+          🐢 Pelan
         </button>
         <button class="btn-primary btn-next-fc" onclick="nextFlashcard()">
           Lanjut →
@@ -2403,8 +2484,11 @@ function renderVerbDrill(verb) {
         </div>
       </div>
       <div class="fc-actions">
-        <button class="btn-audio" onclick="speak('${verb.ttsText.replace(/'/g, "\\'")}', '${verb.ttsLang}', 0.75)">
+        <button class="btn-audio" onclick="speak('${verb.ttsText.replace(/'/g, "\\'")}', '${verb.ttsLang}')" title="Dengarkan audio">
           🔊 Dengarkan
+        </button>
+        <button type="button" class="btn-audio-slow" onclick="speak('${verb.ttsText.replace(/'/g, "\\'")}', '${verb.ttsLang}', 0.60)" title="Dengarkan pelan (0.60x)">
+          🐢 Pelan
         </button>
         <button class="btn-primary btn-next-fc" onclick="nextVerbDrill()">
           Lanjut →
@@ -3306,9 +3390,14 @@ function renderReadingQuiz(passage, qObj, qIndex, totalQ) {
       <div class="passage-card">
         <div class="passage-header">
           <span class="passage-badge">📖 TOEFL Academic Reading</span>
-          <button class="btn-audio" onclick="speak('${safeTitle}. ${safeText}', 'en-US')" title="Dengarkan passage dalam aksen akademik">
-            🔊 Dengarkan Paragraf
-          </button>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button class="btn-audio" onclick="speak('${safeTitle}. ${safeText}', 'en-US')" title="Dengarkan passage dalam aksen akademik">
+              🔊 Dengarkan Paragraf
+            </button>
+            <button type="button" class="btn-audio-speed-pill" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio">
+              ${getAudioSpeedLabel()}
+            </button>
+          </div>
         </div>
         <h3 class="passage-title">${passage.title}</h3>
         <div class="passage-text">${passage.text.replace(/\\n\\n/g, '<br><br>')}</div>
@@ -3449,6 +3538,9 @@ function renderConversationListening(convo, qIndex, totalQ) {
             <button class="btn-play-all" id="btn-play-convo" onclick="playFullConversation()">
               <span class="play-icon" id="play-all-icon">▶️</span>
               <span id="play-all-text">Putar Percakapan</span>
+            </button>
+            <button type="button" class="btn-audio-speed-pill" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio">
+              ${getAudioSpeedLabel()}
             </button>
             <button type="button" class="btn-audio-mode-pill ${state.toeflStrictAudioMode ? 'active-strict' : ''}" id="btn-convo-mode-pill" onclick="toggleAudioStrictExamMode()" title="Ganti antara Mode Santai dan Simulasi Ujian ETS 1x Putar">
               ${state.toeflStrictAudioMode ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)'}
@@ -5147,6 +5239,13 @@ window.handleLogout = handleLogout;
 window.openHangulGuideModal = openHangulGuideModal;
 window.closeHangulGuideModal = closeHangulGuideModal;
 window.speak = speak;
+window.speakKorean = speakKorean;
+window.speakEnglish = speakEnglish;
+window.getAudioSpeed = getAudioSpeed;
+window.setAudioSpeed = setAudioSpeed;
+window.cycleAudioSpeed = cycleAudioSpeed;
+window.getAudioSpeedLabel = getAudioSpeedLabel;
+window.updateAllAudioSpeedBadges = updateAllAudioSpeedBadges;
 window.renderDialogueHub = renderDialogueHub;
 window.startDialogue = startDialogue;
 window.chooseDialogueOption = chooseDialogueOption;
@@ -5480,6 +5579,9 @@ function renderExamQuestion(index) {
                 <span id="exam-play-icon">▶️</span> <span id="exam-play-text">Putar Percakapan</span>
               </button>
             `}
+            <button type="button" class="btn-audio-speed-pill" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio Ujian">
+              ${getAudioSpeedLabel()}
+            </button>
             <div class="exam-wave" id="exam-wave-anim" style="display: none;">
               <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
               <span class="exam-audio-speaker-label" id="exam-speaker-status">Memutar audio...</span>
@@ -6412,6 +6514,7 @@ function initApp() {
     showView('onboarding', false);
   }
   updateAuthNavUI();
+  updateAllAudioSpeedBadges();
   checkPushStatus();
 }
 
