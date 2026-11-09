@@ -1946,8 +1946,8 @@ function renderCheckpointStep() {
         const tag = document.createElement('div');
         tag.className = 'checkpoint-quiz-tag';
         tag.innerHTML = `
-          <span>🎯 <strong>${cp.title}</strong></span>
-          <span>Soal <strong>${checkpointQuizIndex + 1} dari ${checkpointQuizzes.length}</strong></span>
+          <span class="cqt-title">🎯 <strong>${escapeHtml(cp.title)}</strong></span>
+          <span class="cqt-counter">Soal <strong>${checkpointQuizIndex + 1} dari ${checkpointQuizzes.length}</strong></span>
         `;
         quizContainer.insertBefore(tag, quizContainer.firstChild);
       }
@@ -2635,7 +2635,18 @@ const TOEFL_VOCAB_DICT = {
   "spectrometer": "alat pengukur spektrum zat/cahaya",
   "ascertain": "memastikan kepastian",
   "fertile": "subur",
-  "equatorial": "khatulistiwa / ekuatorial"
+  "equatorial": "khatulistiwa / ekuatorial",
+  "sophisticated": "canggih / sangat maju & kompleks",
+  "climate": "iklim / kondisi cuaca jangka panjang",
+  "atmospheric": "atmosferik (berkaitan dengan lapisan udara bumi)",
+  "physicists": "fisikawan (ilmuwan bidang fisika)",
+  "forecasted": "meramalkan / memprediksi",
+  "forecast": "prakiraan / ramalan cuaca atau tren",
+  "monsoon": "angin muson (musim hujan periodik tropis)",
+  "pattern": "pola / keteraturan susunan",
+  "agrarian": "agraris (berbasis pertanian)",
+  "superpower": "negara adidaya / kekuatan raksasa dunia",
+  "monumental": "monumental / sangat besar dan bersejarah"
 };
 
 function renderInteractiveToeflText(rawText) {
@@ -2748,16 +2759,18 @@ function renderQuiz(q) {
           <span class="qap-tag">🎧 Rekaman Suara Percakapan</span>
           <span class="qap-sub">Dengarkan audio dialog dengan saksama sebelum menjawab:</span>
         </div>
-        <div class="qap-action-row">
-          <button type="button" class="btn-quiz-audio primary" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeSpk1Role}', '${safeSpk1Text}', '${safeSpk2Role}', '${safeSpk2Text}', '${safeNarrator}')">
+        <div class="qap-action-column">
+          <button type="button" class="btn-quiz-audio primary btn-qap-play-main" id="btn-quiz-convo-play" onclick="playQuizCombinedAudio('${safeSpk1Role}', '${safeSpk1Text}', '${safeSpk2Role}', '${safeSpk2Text}', '${safeNarrator}')">
             ▶️ Putar Percakapan
           </button>
-          <button type="button" class="btn-audio-mode-pill ${state.toeflStrictAudioMode ? 'active-strict' : ''}" id="btn-audio-mode-pill" onclick="toggleAudioStrictExamMode()" title="Ganti antara Mode Santai dan Simulasi Ujian ETS 1x Putar">
-            ${state.toeflStrictAudioMode ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)'}
-          </button>
-          <button type="button" class="btn-quiz-transcript-toggle" id="btn-quiz-transcript-toggle" onclick="toggleQuizTranscript()" ${state.toeflStrictAudioMode ? 'style="display: none;"' : ''}>
-            👁️ Buka Naskah & Arti
-          </button>
+          <div class="qap-sub-actions">
+            <button type="button" class="btn-audio-mode-pill ${state.toeflStrictAudioMode ? 'active-strict' : ''}" id="btn-audio-mode-pill" onclick="toggleAudioStrictExamMode()" title="Ganti antara Mode Santai dan Simulasi Ujian ETS 1x Putar">
+              ${state.toeflStrictAudioMode ? '🏛️ Mode ETS (1x Saja)' : '🔄 Mode Santai (Bisa Diulang)'}
+            </button>
+            <button type="button" class="btn-quiz-transcript-toggle" id="btn-quiz-transcript-toggle" onclick="toggleQuizTranscript()" ${state.toeflStrictAudioMode ? 'style="display: none;"' : ''}>
+              👁️ Buka Naskah & Arti
+            </button>
+          </div>
         </div>
         <div id="qap-strict-notice-area"></div>
         <div class="quiz-transcript-drawer" id="quiz-transcript-drawer" style="display: none;">
@@ -2770,21 +2783,25 @@ function renderQuiz(q) {
     `;
   }
 
+  const renderedQuestion = currentLang === 'toefl' ? renderInteractiveToeflText(displayQuestion) : escapeHtml(displayQuestion);
+  const renderedPassage = q.passage ? (currentLang === 'toefl' ? renderInteractiveToeflText(q.passage) : escapeHtml(q.passage)) : '';
+  const hasInteractiveVocab = (renderedQuestion + renderedPassage).includes('toefl-vocab-word');
+
   content.innerHTML = `
     <div class="quiz-wrapper">
-      <div class="quiz-label">🎯 Quiz ${qi}/${totalQ}</div>
+      ${!isCpLoop ? `<div class="quiz-label">🎯 Quiz ${qi}/${totalQ}</div>` : ''}
       ${audioPlayerHtml}
       ${q.passage ? `
         <div class="quiz-reading-passage-box">
           <div class="qrpb-header">
             <span class="qrpb-tag">📖 Teks Bacaan Singkat</span>
           </div>
-          <div class="qrpb-content">${currentLang === 'toefl' ? renderInteractiveToeflText(q.passage) : escapeHtml(q.passage)}</div>
+          <div class="qrpb-content">${renderedPassage}</div>
         </div>
       ` : ''}
       ${q.char ? `<div class="quiz-char-display">${escapeHtml(q.char)}</div>` : ''}
-      <div class="quiz-question">${currentLang === 'toefl' ? renderInteractiveToeflText(displayQuestion) : escapeHtml(displayQuestion)}</div>
-      ${currentLang === 'toefl' ? `<div class="toefl-vocab-hint">💡 <em>Ketuk kata yang digarisbawahi titik halus untuk intip artinya</em></div>` : ''}
+      <div class="quiz-question">${renderedQuestion}</div>
+      ${hasInteractiveVocab ? `<div class="toefl-vocab-hint">💡 <em>Ketuk kata yang digarisbawahi titik halus untuk intip artinya</em></div>` : ''}
       <div class="quiz-options" id="quiz-options">
         ${q.options.map((opt, i) => `
           <button class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i}, ${q.answer})">

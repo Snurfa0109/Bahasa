@@ -1701,11 +1701,11 @@ input::-ms-clear {
 /* ─── QUIZ ───────────────────────────────────────────────────── */
 .quiz-wrapper {
   width: 100%;
-  max-width: 560px;
+  max-width: 580px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  align-items: stretch;
+  gap: 14px;
 }
 
 .quiz-label {
@@ -7133,6 +7133,22 @@ input::-ms-clear {
   .lesson-header {
     margin-bottom: 12px !important;
     padding: 4px 0 !important;
+    gap: 8px !important;
+  }
+  .lesson-header .btn-quit {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+    flex-shrink: 0 !important;
+  }
+  .lesson-header .lesson-progress-bar {
+    flex: 1 1 auto !important;
+    min-width: 60px !important;
+  }
+  .lesson-header .btn-audio-speed-toggle,
+  .lesson-header .btn-lesson-timer-toggle {
+    padding: 6px 9px !important;
+    font-size: 0.76rem !important;
+    flex-shrink: 0 !important;
   }
   .lesson-content {
     align-items: flex-start !important;
@@ -7294,11 +7310,43 @@ input::-ms-clear {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+.qap-action-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
 .qap-action-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+.btn-qap-play-main {
+  width: 100% !important;
+  justify-content: center !important;
+  font-size: 0.94rem !important;
+  padding: 10px 16px !important;
+  border-radius: 12px !important;
+}
+.qap-sub-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+.qap-sub-actions .btn-audio-mode-pill,
+.qap-sub-actions .btn-quiz-transcript-toggle {
+  width: 100%;
+  justify-content: center;
+  min-height: 38px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }
 .btn-quiz-audio {
   display: inline-flex;
@@ -10204,13 +10252,28 @@ input::-ms-clear {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 8px 14px;
-  margin-bottom: 12px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
   font-size: 0.82rem;
   color: #94a3b8;
+  gap: 10px;
+}
+.checkpoint-quiz-tag .cqt-title {
+  font-weight: 600;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+}
+.checkpoint-quiz-tag .cqt-counter {
+  font-size: 0.78rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .checkpoint-quiz-tag strong {
   color: #38bdf8;
@@ -10323,24 +10386,30 @@ input::-ms-clear {
 /* TOEFL Tap-to-Translate Vocab Tooltip (Concept A) */
 .toefl-vocab-word {
   cursor: pointer;
-  border-bottom: 1.5px dotted rgba(56, 189, 248, 0.45);
-  color: inherit;
+  border-bottom: 2px dotted #38bdf8;
+  color: #f0fdfa;
+  text-decoration: none;
   transition: all 0.15s ease;
   position: relative;
   display: inline;
-  padding: 0 1px;
+  padding: 1px 3px;
+  border-radius: 3px;
 }
 .toefl-vocab-word:hover,
 .toefl-vocab-word:active {
   color: #38bdf8;
-  border-bottom-color: #38bdf8;
+  border-bottom: 2px solid #38bdf8;
+  background: rgba(56, 189, 248, 0.14);
 }
 .toefl-vocab-hint {
   font-size: 0.78rem;
   color: #94a3b8;
   margin-top: 4px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .vocab-micro-tooltip {
   position: absolute;
