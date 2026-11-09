@@ -7943,6 +7943,22 @@ function openIdiomDrillModal() {
   modal.classList.add('active');
 }
 
+let idiomAudioTimer = null;
+
+function resetIdiomPlayButton() {
+  if (idiomAudioTimer) {
+    clearTimeout(idiomAudioTimer);
+    idiomAudioTimer = null;
+  }
+  idiomDrillSession.isPlayingAudio = false;
+  const btn = document.getElementById('btn-idm-play-audio');
+  const icon = document.getElementById('idm-play-icon');
+  const text = document.getElementById('idm-play-text');
+  if (btn) btn.disabled = false;
+  if (icon) icon.textContent = '▶️';
+  if (text) text.textContent = 'Putar Ulang Percakapan';
+}
+
 function closeIdiomDrillModal() {
   const modal = document.getElementById('idiom-drill-modal');
   if (modal) {
@@ -7950,6 +7966,11 @@ function closeIdiomDrillModal() {
     modal.classList.remove('active');
   }
   if (speechSynth) speechSynth.cancel();
+  if (idiomAudioTimer) {
+    clearTimeout(idiomAudioTimer);
+    idiomAudioTimer = null;
+  }
+  idiomDrillSession.isPlayingAudio = false;
   idiomDrillSession.active = false;
 }
 
@@ -7984,13 +8005,18 @@ function renderIdiomDrillCard() {
   const q = questions[currentIndex];
   const letters = ['A', 'B', 'C', 'D'];
   idiomDrillSession.hasAnswered = false;
+  idiomDrillSession.isPlayingAudio = false;
+  if (idiomAudioTimer) {
+    clearTimeout(idiomAudioTimer);
+    idiomAudioTimer = null;
+  }
 
   body.innerHTML = `
     <div>
       <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px; margin-bottom: 12px;">
         <span style="font-weight: 700; color: #c084fc;">🎧 Pertanyaan ${currentIndex + 1} dari ${questions.length}</span>
         <span style="background: rgba(168, 85, 247, 0.15); color: #e9d5ff; padding: 2px 8px; border-radius: 6px; font-weight: 600;">
-          Idiom: "${q.idiom}"
+          🎯 Part A • Short Dialogue
         </span>
       </div>
 
@@ -8000,14 +8026,19 @@ function renderIdiomDrillCard() {
           <strong style="color: #ffffff; font-size: 0.9rem; display: block;">Dengarkan Percakapan:</strong>
           <span style="color: #94a3b8; font-size: 0.78rem;">Fokus pada ucapan pembicara kedua!</span>
         </div>
-        <button type="button" class="btn-idm-play" id="btn-idm-play-audio" onclick="playIdiomDrillAudio()">
-          <span id="idm-play-icon">▶️</span> <span id="idm-play-text">Putar Percakapan</span>
-        </button>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-idm-play" id="btn-idm-play-audio" onclick="playIdiomDrillAudio()">
+            <span id="idm-play-icon">▶️</span> <span id="idm-play-text">Putar Percakapan</span>
+          </button>
+          <button type="button" class="btn-audio-speed-pill" onclick="cycleAudioSpeed()" title="Atur Kecepatan Suara Audio">
+            ${getAudioSpeedLabel()}
+          </button>
+        </div>
       </div>
 
       <div class="idm-quote-card" id="idm-transcript-box" style="display: none;">
-        <strong>Pria:</strong> "${q.dialogue[0].text}"<br>
-        <strong>Wanita:</strong> "${q.dialogue[1].text}"
+        <strong>Pria:</strong> "${escapeHtml(q.dialogue[0].text)}"<br>
+        <strong>Wanita:</strong> "${escapeHtml(q.dialogue[1].text)}"
       </div>
 
       <div style="font-size: 0.94rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">
@@ -8026,11 +8057,6 @@ function renderIdiomDrillCard() {
       <div id="idm-feedback-area"></div>
     </div>
   `;
-
-  // Auto-play audio on question load for fluid experience
-  setTimeout(() => {
-    playIdiomDrillAudio();
-  }, 350);
 }
 
 function playIdiomDrillAudio() {
@@ -8043,35 +8069,55 @@ function playIdiomDrillAudio() {
   const text = document.getElementById('idm-play-text');
 
   if (speechSynth) speechSynth.cancel();
+  if (idiomAudioTimer) clearTimeout(idiomAudioTimer);
 
+  idiomDrillSession.isPlayingAudio = true;
+  if (btn) btn.disabled = true;
   if (icon) icon.textContent = '🔊';
-  if (text) text.textContent = 'Memutar dialog...';
 
   const s1 = q.dialogue[0];
   const s2 = q.dialogue[1];
+  const isWoman1 = (s1 && (s1.speaker === 'woman' || s1.speaker === 'female'));
+  const isWoman2 = (s2 && (s2.speaker === 'woman' || s2.speaker === 'female'));
 
-  speakWithVoice(s1.text, 'en-US', { gender: s1.speaker === 'woman' ? 'female' : 'male' }, () => {
+  if (text) text.textContent = `Memutar: Pembicara 1 (${isWoman1 ? 'Wanita' : 'Pria'})...`;
+
+  // Failsafe timeout in case browser TTS interrupts or hangs
+  idiomAudioTimer = setTimeout(resetIdiomPlayButton, 10000);
+
+  speakWithVoice(s1.text, 'en-US', { gender: isWoman1 ? 'female' : 'male' }, () => {
+    if (!idiomDrillSession.isPlayingAudio) return;
+    if (text) text.textContent = `Memutar: Pembicara 2 (${isWoman2 ? 'Wanita' : 'Pria'})...`;
+
     setTimeout(() => {
-      speakWithVoice(s2.text, 'en-US', { gender: s2.speaker === 'woman' ? 'female' : 'male', cancelPrevious: false }, () => {
+      if (!idiomDrillSession.isPlayingAudio) return;
+
+      speakWithVoice(s2.text, 'en-US', { gender: isWoman2 ? 'female' : 'male', cancelPrevious: false }, () => {
+        if (!idiomDrillSession.isPlayingAudio) return;
+
         setTimeout(() => {
+          if (!idiomDrillSession.isPlayingAudio) return;
+
           if (q.narrator) {
+            if (text) text.textContent = 'Narator pertanyaan...';
             speakWithVoice(q.narrator, 'en-US', { gender: 'neutral', rate: 0.9, cancelPrevious: false }, () => {
-              if (icon) icon.textContent = '▶️';
-              if (text) text.textContent = 'Putar Ulang';
+              resetIdiomPlayButton();
             });
           } else {
-            if (icon) icon.textContent = '▶️';
-            if (text) text.textContent = 'Putar Ulang';
+            resetIdiomPlayButton();
           }
-        }, 500);
+        }, 450);
       });
-    }, 450);
+    }, 400);
   });
 }
 
 function answerIdiomDrillQuestion(optIdx) {
   if (idiomDrillSession.hasAnswered) return;
   idiomDrillSession.hasAnswered = true;
+
+  if (speechSynth) speechSynth.cancel();
+  resetIdiomPlayButton();
 
   const { questions, currentIndex } = idiomDrillSession;
   const q = questions[currentIndex];
@@ -8099,11 +8145,14 @@ function answerIdiomDrillQuestion(optIdx) {
     if (fbArea) {
       fbArea.innerHTML = `
         <div class="vdc-feedback-box correct" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #e9d5ff;">
-          <strong style="color: #4ade80;">✅ Tepat Sekali! Insting Listeningmu Tajam!</strong><br>
-          <div style="font-size: 0.85rem; line-height: 1.45; margin-top: 4px;">
+          <strong style="color: #4ade80; font-size: 0.95rem;">✅ Tepat Sekali! Insting Listeningmu Tajam!</strong><br>
+          <div style="font-size: 0.88rem; margin: 8px 0 6px 0; color: #f0abfc;">
+            ✨ Idiom yang Diujikan: <strong>"${escapeHtml(q.idiom)}"</strong> — <em>${escapeHtml(q.meaningId || '')}</em>
+          </div>
+          <div style="font-size: 0.85rem; line-height: 1.45; color: #cbd5e1; margin-bottom: 8px;">
             ${q.explanation}
           </div>
-          <button type="button" class="btn-primary" onclick="nextIdiomDrillQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700; background: linear-gradient(135deg, #9333ea, #6366f1); border: none;">
+          <button type="button" class="btn-primary" onclick="nextIdiomDrillQuestion()" style="margin-top: 8px; width: 100%; border-radius: 8px; font-weight: 700; background: linear-gradient(135deg, #9333ea, #6366f1); border: none;">
             ${currentIndex === questions.length - 1 ? 'Lihat Hasil Drill 🏁' : 'Soal Selanjutnya →'}
           </button>
         </div>
@@ -8115,11 +8164,19 @@ function answerIdiomDrillQuestion(optIdx) {
     if (fbArea) {
       fbArea.innerHTML = `
         <div class="vdc-feedback-box wrong">
-          <strong>❌ Terjebak Makna Harfiah! Cek Triknya:</strong><br>
-          <div style="font-size: 0.85rem; line-height: 1.45; margin-top: 4px;">
+          <strong style="font-size: 0.95rem;">❌ Terjebak Makna Harfiah! Cek Triknya:</strong><br>
+          <div style="font-size: 0.88rem; margin: 8px 0 4px 0; color: #fca5a5;">
+            ✨ Idiom yang Diujikan: <strong>"${escapeHtml(q.idiom)}"</strong> — <em>${escapeHtml(q.meaningId || '')}</em>
+          </div>
+          ${q.literalTrapId ? `
+            <div style="font-size: 0.82rem; color: #fed7aa; margin-bottom: 6px;">
+              ⚠️ Jebakan Harfiah: "${escapeHtml(q.literalTrapId)}"
+            </div>
+          ` : ''}
+          <div style="font-size: 0.85rem; line-height: 1.45; color: #fecaca; margin-bottom: 8px;">
             ${q.explanation}
           </div>
-          <button type="button" class="btn-secondary" onclick="nextIdiomDrillQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700;">
+          <button type="button" class="btn-secondary" onclick="nextIdiomDrillQuestion()" style="margin-top: 8px; width: 100%; border-radius: 8px; font-weight: 700;">
             ${currentIndex === questions.length - 1 ? 'Lihat Hasil Drill 🏁' : 'Soal Selanjutnya →'}
           </button>
         </div>
@@ -8130,6 +8187,11 @@ function answerIdiomDrillQuestion(optIdx) {
 
 function nextIdiomDrillQuestion() {
   if (speechSynth) speechSynth.cancel();
+  if (idiomAudioTimer) {
+    clearTimeout(idiomAudioTimer);
+    idiomAudioTimer = null;
+  }
+  idiomDrillSession.isPlayingAudio = false;
   idiomDrillSession.currentIndex++;
   renderIdiomDrillCard();
 }
