@@ -11325,22 +11325,25 @@ input::-ms-clear {
    🎯 MISTAKE VAULT MODAL STYLING
    ══════════════════════════════════════════════════════════ */
 .mistake-vault-modal-card {
-  max-width: 640px;
-  width: 95%;
+  max-width: 660px;
+  width: min(660px, 94vw);
   background: #0f1123;
   border: 1px solid rgba(239, 68, 68, 0.3);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(239, 68, 68, 0.12);
+  border-radius: var(--radius-xl);
 }
 
 .mvm-header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 14px;
+  padding: 18px 24px 14px 24px;
 }
 
 .mvm-header-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  flex: 1;
 }
 
 .mvm-icon {
@@ -11366,12 +11369,14 @@ input::-ms-clear {
   font-weight: 800;
   color: #fff;
   margin: 0;
+  line-height: 1.25;
 }
 
 .mvm-body {
-  padding: 18px 0;
-  max-height: 75vh;
+  padding: 18px 24px 28px;
+  max-height: calc(88vh - 90px);
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 /* Vault Empty State */
@@ -11516,22 +11521,25 @@ input::-ms-clear {
    🎧 5-MINUTE IDIOM DRILL MODAL
    ══════════════════════════════════════════════════════════ */
 .idiom-drill-modal-card {
-  max-width: 600px;
-  width: 95%;
+  max-width: 660px;
+  width: min(660px, 94vw);
   background: #110e26;
   border: 1px solid rgba(168, 85, 247, 0.35);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(168, 85, 247, 0.15);
+  border-radius: var(--radius-xl);
 }
 
 .idm-header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 14px;
+  padding: 18px 24px 14px 24px;
 }
 
 .idm-header-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  flex: 1;
 }
 
 .idm-icon {
@@ -11540,6 +11548,9 @@ input::-ms-clear {
   border: 1px solid rgba(168, 85, 247, 0.3);
   padding: 8px;
   border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .idm-badge {
@@ -11554,19 +11565,40 @@ input::-ms-clear {
   font-weight: 800;
   color: #fff;
   margin: 0;
+  line-height: 1.25;
 }
 
 .idm-body {
-  padding: 16px 0;
-  max-height: 75vh;
+  padding: 18px 24px 28px;
+  max-height: calc(88vh - 90px);
   overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* Custom sleek scrollbar for drill & vault modals */
+.idm-body::-webkit-scrollbar,
+.mvm-body::-webkit-scrollbar {
+  width: 6px;
+}
+.idm-body::-webkit-scrollbar-track,
+.mvm-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 999px;
+}
+.idm-body::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.45);
+  border-radius: 999px;
+}
+.mvm-body::-webkit-scrollbar-thumb {
+  background: rgba(239, 68, 68, 0.45);
+  border-radius: 999px;
 }
 
 .idm-audio-player {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(168, 85, 247, 0.25);
   border-radius: 12px;
-  padding: 14px;
+  padding: 14px 16px;
   margin-bottom: 14px;
   display: flex;
   align-items: center;
