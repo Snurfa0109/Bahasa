@@ -14669,7 +14669,509 @@ const APP_DATA = {
         }
       }
     ]
-  }
+  },
+  "toeflIdioms": [
+    {
+      "id": "idiom-1",
+      "idiom": "Take a rain check",
+      "meaningId": "Menunda ajakan/tawaran secara halus ke lain waktu",
+      "literalTrapId": "Memeriksa cuaca apakah hujan atau membawa payung",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Are you coming with us to the campus pizzeria tonight?"
+        },
+        {
+          "speaker": "woman",
+          "text": "I'd love to, but I have a midterm tomorrow morning, so I'll have to take a rain check."
+        }
+      ],
+      "narrator": "What does the woman mean?",
+      "options": [
+        "She will check the weather forecast before deciding.",
+        "She wants to postpone going out with them to another time.",
+        "She cannot go because it is raining heavily outside.",
+        "She prefers eating pizza alone in her dormitory room."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: Idiom 'take a rain check' berarti menolak tawaran saat ini secara sopan dan memintanya ditunda ke lain waktu. Opsi A & C adalah jebakan kata 'rain' secara harfiah."
+    },
+    {
+      "id": "idiom-2",
+      "idiom": "Sleep on it",
+      "meaningId": "Menunda mengambil keputusan sampai besok pagi agar bisa berpikir jernih",
+      "literalTrapId": "Langsung pergi tidur di atas kasur",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "The laboratory director offered me the research assistant position, but I have to answer by noon tomorrow."
+        },
+        {
+          "speaker": "woman",
+          "text": "It's a big commitment. Why don't you sleep on it before making up your mind?"
+        }
+      ],
+      "narrator": "What does the woman suggest the man do?",
+      "options": [
+        "Decline the job offer immediately so he can rest.",
+        "Take overnight time to think carefully before deciding.",
+        "Sleep in the laboratory to impress the director.",
+        "Accept the position without reading the contract."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: Idiom 'sleep on it' bermakna menunda keputusan besar semalam agar bisa berpikir matang dengan pikiran segar esok hari."
+    },
+    {
+      "id": "idiom-3",
+      "idiom": "Not see eye to eye",
+      "meaningId": "Tidak sepaham / memiliki perbedaan pandangan yang tajam",
+      "literalTrapId": "Mengalami gangguan penglihatan atau kontak mata",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "How is the biology group project going with Kevin?"
+        },
+        {
+          "speaker": "man",
+          "text": "Honestly, we don't see eye to eye on how to organize the lab findings."
+        }
+      ],
+      "narrator": "What does the man imply about Kevin?",
+      "options": [
+        "Kevin needs to see an optometrist for new glasses.",
+        "They disagree on how to arrange their presentation data.",
+        "Kevin refused to look at the microscope slides.",
+        "They have identical viewpoints on the laboratory results."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: Idiom 'not see eye to eye' berarti tidak sependapat (disagree). Opsi A & C adalah jebakan harfiah kata 'eye'."
+    },
+    {
+      "id": "idiom-4",
+      "idiom": "Burn the midnight oil",
+      "meaningId": "Belajar atau bekerja lembur sampai larut malam",
+      "literalTrapId": "Menyalakan lampu minyak tanah atau terjadi kebakaran",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "You look exhausted today, David. Did you stay up late?"
+        },
+        {
+          "speaker": "man",
+          "text": "I had to burn the midnight oil to finish the term paper for Professor Clark."
+        }
+      ],
+      "narrator": "What did the man do last night?",
+      "options": [
+        "He accidentally caused an oil fire in the chemistry lab.",
+        "He worked diligently late into the night.",
+        "He bought kerosene lamps for his desk.",
+        "He went to sleep early to prepare for class."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Burn the midnight oil' adalah idiom klasik Amerika yang berarti belajar atau bekerja keras hingga larut malam. Opsi A & C adalah jebakan harfiah kata 'oil'."
+    },
+    {
+      "id": "idiom-5",
+      "idiom": "Bite off more than you can chew",
+      "meaningId": "Mengambil beban tugas/komitmen melebihi kapasitas kemampuan",
+      "literalTrapId": "Tersedak saat makan makanan di kafetaria",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "I signed up for twenty-one credit hours and a part-time job at the student center."
+        },
+        {
+          "speaker": "woman",
+          "text": "Be careful, Mark. You don't want to bite off more than you can chew this semester."
+        }
+      ],
+      "narrator": "What does the woman imply about Mark?",
+      "options": [
+        "He should eat his meals more slowly in the dining hall.",
+        "He is taking on far more responsibilities than he can handle.",
+        "He needs to register for even more academic credits.",
+        "He should find a full-time culinary job instead."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Bite off more than you can chew' bermakna mengambil tanggung jawab terlalu banyak melebihi kesanggupan. Opsi A adalah jebakan makna harfiah mengunyah makanan."
+    },
+    {
+      "id": "idiom-6",
+      "idiom": "On the fence",
+      "meaningId": "Ragu-ragu / bimbang dan belum menentukan pilihan",
+      "literalTrapId": "Memanjat atau duduk di atas pagar pembatas kampus",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Have you decided whether to major in Architecture or Civil Engineering?"
+        },
+        {
+          "speaker": "woman",
+          "text": "I'm still on the fence; both departments have fantastic internship opportunities."
+        }
+      ],
+      "narrator": "What does the woman mean?",
+      "options": [
+        "She climbed over the campus safety fence.",
+        "She has not yet made up her mind about her major.",
+        "She dislikes both engineering and architecture.",
+        "She decided to drop out of the university program."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'On the fence' bermakna bimbang (undecided) dan belum bisa memilih satu di antara dua opsi."
+    },
+    {
+      "id": "idiom-7",
+      "idiom": "Under the weather",
+      "meaningId": "Sedang kurang enak badan / agak sakit",
+      "literalTrapId": "Kehujanan atau mengeluh soal cuaca buruk",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Is Sarah joining the study session at the library this afternoon?"
+        },
+        {
+          "speaker": "woman",
+          "text": "She's feeling a bit under the weather, so she's resting in her dorm."
+        }
+      ],
+      "narrator": "What is Sarah's situation?",
+      "options": [
+        "She is worried about a sudden rainstorm.",
+        "She is feeling slightly ill and unwell.",
+        "She prefers studying outdoors in sunny weather.",
+        "She forgot the study group appointment."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Under the weather' adalah frasa idiomatis umum untuk menyatakan kondisi tubuh yang kurang fit atau agak sakit (slightly unwell)."
+    },
+    {
+      "id": "idiom-8",
+      "idiom": "Play it by ear",
+      "meaningId": "Menentukan tindakan secara fleksibel mengikuti situasi yang berkembang",
+      "literalTrapId": "Mendengarkan musik pakai telinga / headset",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "What time should we hike up to the mountain summit tomorrow?"
+        },
+        {
+          "speaker": "woman",
+          "text": "The weather forecast is unpredictable. Let's just play it by ear in the morning."
+        }
+      ],
+      "narrator": "What does the woman suggest?",
+      "options": [
+        "Listening to the radio for emergency announcements.",
+        "Deciding their plan flexibly depending on morning conditions.",
+        "Canceling the entire mountain excursion right away.",
+        "Buying headphones before starting the hike."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Play it by ear' berarti bertindak spontan dan fleksibel saat keadaan sudah jelas (wait and see), tanpa rencana kaku."
+    },
+    {
+      "id": "idiom-9",
+      "idiom": "Hit the books",
+      "meaningId": "Mulai belajar dengan giat dan serius",
+      "literalTrapId": "Memukul atau menjatuhkan buku teks",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Do you want to watch the basketball championship game at the sports bar?"
+        },
+        {
+          "speaker": "woman",
+          "text": "I wish I could, but I really have to hit the books for my Organic Chemistry final."
+        }
+      ],
+      "narrator": "What does the woman plan to do?",
+      "options": [
+        "Return damaged textbooks to the bookstore.",
+        "Spend her evening studying intensively for an exam.",
+        "Attend the championship basketball game with him.",
+        "Clean her study room and bookshelves."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Hit the books' adalah ungkapan khas mahasiswa Amerika yang berarti mulai belajar giat (study hard)."
+    },
+    {
+      "id": "idiom-10",
+      "idiom": "You can say that again",
+      "meaningId": "Setuju mutlak / sangat sepakat dengan apa yang baru saja dikatakan",
+      "literalTrapId": "Meminta orang mengulangi ucapannya karena tidak dengar",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Professor Harrison's final examination was by far the toughest test this semester."
+        },
+        {
+          "speaker": "woman",
+          "text": "You can say that again!"
+        }
+      ],
+      "narrator": "What does the woman mean?",
+      "options": [
+        "She did not hear what the man said and wants him to repeat it.",
+        "She completely agrees with the man's opinion.",
+        "She found the examination surprisingly easy.",
+        "She thinks the professor should rewrite the test questions."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'You can say that again!' adalah idiom persetujuan mutlak (Strong Agreement: 'I completely agree with you!'). Bukan permintaan mengulang ucapan!"
+    },
+    {
+      "id": "idiom-11",
+      "idiom": "Let the cat out of the bag",
+      "meaningId": "Membocorkan rahasia atau kejutan",
+      "literalTrapId": "Mengeluarkan kucing peliharaan dari tas",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Did Lisa find out about the surprise retirement celebration we planned for her?"
+        },
+        {
+          "speaker": "woman",
+          "text": "Unfortunately, someone let the cat out of the bag during the faculty meeting."
+        }
+      ],
+      "narrator": "What happened regarding the celebration?",
+      "options": [
+        "A stray cat disrupted the faculty meeting.",
+        "The surprise celebration was accidentally revealed.",
+        "Lisa canceled the party because she dislikes pets.",
+        "The committee forgot to reserve the reception room."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Let the cat out of the bag' berarti membocorkan rahasia tanpa sengaja (reveal a secret). Opsi A & C adalah jebakan harfiah kata 'cat'."
+    },
+    {
+      "id": "idiom-12",
+      "idiom": "A piece of cake",
+      "meaningId": "Sangat mudah / gampang sekali diselesaikan",
+      "literalTrapId": "Memakan sepotong kue manis",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "How was your driver's license road test this morning?"
+        },
+        {
+          "speaker": "man",
+          "text": "I was nervous at first, but the route was a piece of cake!"
+        }
+      ],
+      "narrator": "What does the man imply about the test?",
+      "options": [
+        "He stopped at a bakery during the road test.",
+        "The examination was very simple and easy.",
+        "The driving instructor gave him sweet snacks.",
+        "He failed the road test due to nervousness."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'A piece of cake' berarti sesuatu yang sangat mudah (very easy / effortless)."
+    },
+    {
+      "id": "idiom-13",
+      "idiom": "Cost an arm and a leg",
+      "meaningId": "Sangat mahal harganya",
+      "literalTrapId": "Cedera fisik pada lengan dan kaki",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "Did you purchase the new computer programming textbook at the campus store?"
+        },
+        {
+          "speaker": "man",
+          "text": "No, that edition costs an arm and a leg; I'm going to rent a digital version online instead."
+        }
+      ],
+      "narrator": "What does the man say about the textbook?",
+      "options": [
+        "It is excessively expensive at the campus store.",
+        "He injured his arm while carrying the heavy book.",
+        "The bookstore ran out of copies this morning.",
+        "The online version requires specialized hardware."
+      ],
+      "answer": 0,
+      "explanation": "💡 Analisis TOEFL: 'Costs an arm and a leg' adalah ungkapan untuk barang yang harganya selangit (extremely expensive)."
+    },
+    {
+      "id": "idiom-14",
+      "idiom": "Cold feet",
+      "meaningId": "Mendadak gugup / ragu-ragu di detik terakhir",
+      "literalTrapId": "Kaki kedinginan karena cuaca dingin",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "Is Jason still giving the opening keynote address at the undergraduate research symposium?"
+        },
+        {
+          "speaker": "woman",
+          "text": "He got cold feet at the last minute, so Elena stepped in to present."
+        }
+      ],
+      "narrator": "What happened to Jason?",
+      "options": [
+        "His shoes were not warm enough for the auditorium.",
+        "He became too nervous to deliver the speech.",
+        "He slipped on the icy campus stairs.",
+        "He forgot the slides on his computer."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Get cold feet' berarti kehilangan keberanian atau menjadi sangat gugup sebelum melakukan sesuatu yang besar (to become too fearful or nervous)."
+    },
+    {
+      "id": "idiom-15",
+      "idiom": "Spill the beans",
+      "meaningId": "Membocorkan informasi rahasia",
+      "literalTrapId": "Menumpahkan biji kacang di lantai",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "Does the professor know who broke the glass beaker in the chemistry lab?"
+        },
+        {
+          "speaker": "man",
+          "text": "Nobody spilled the beans, but the lab technician is reviewing the security footage."
+        }
+      ],
+      "narrator": "What does the man mean?",
+      "options": [
+        "The students cleaned up the spilled coffee beans.",
+        "No one confessed or gave away the secret information.",
+        "The technician found food waste inside the beaker.",
+        "The experiment required organic soybean extracts."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Spill the beans' berarti membeberkan informasi rahasia kepada orang lain. Opsi A & C adalah jebakan harfiah kata 'beans'."
+    },
+    {
+      "id": "idiom-16",
+      "idiom": "Through the grapevine",
+      "meaningId": "Mendengar kabar burung / rumor tidak resmi dari orang lain",
+      "literalTrapId": "Melihat pohon anggur di kebun",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "How did you find out about the tuition scholarship before the official email was sent?"
+        },
+        {
+          "speaker": "woman",
+          "text": "I heard it through the grapevine from an administrative assistant in the dean's office."
+        }
+      ],
+      "narrator": "How did the woman get the news?",
+      "options": [
+        "She read an announcement in an agricultural journal.",
+        "She learned about it through informal word-of-mouth rumors.",
+        "She received a certified letter from the university president.",
+        "She visited a vineyard during the summer break."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Hear through the grapevine' berarti mendengar kabar angin atau info tidak resmi dari obrolan antar orang (informal rumor)."
+    },
+    {
+      "id": "idiom-17",
+      "idiom": "Cross that bridge when you come to it",
+      "meaningId": "Mengatasi masalah nanti saat hal itu benar-benar terjadi, jangan khawatir berlebihan sekarang",
+      "literalTrapId": "Menyeberangi jembatan sungai",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "What if the flight to our research conference is canceled because of the fog tomorrow?"
+        },
+        {
+          "speaker": "woman",
+          "text": "Let's cross that bridge when we come to it. For now, let's finish packing our poster tubes."
+        }
+      ],
+      "narrator": "What does the woman advise the man to do?",
+      "options": [
+        "Take a train across the suspension bridge instead.",
+        "Deal with the problem only if it actually happens later.",
+        "Cancel their hotel reservations immediately.",
+        "Check the bridge traffic before heading to the airport."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Cross that bridge when you come to it' berarti jangan mengkhawatirkan masalah sebelum masalah itu benar-benar timbul."
+    },
+    {
+      "id": "idiom-18",
+      "idiom": "In hot water",
+      "meaningId": "Sedang dalam masalah besar / kesulitan serius",
+      "literalTrapId": "Terkena air panas atau berendam di kolam air panas",
+      "dialogue": [
+        {
+          "speaker": "woman",
+          "text": "Why did Professor Vance ask to see Marcus in his office after seminar?"
+        },
+        {
+          "speaker": "man",
+          "text": "Marcus is in hot water for turning in an unverified dataset."
+        }
+      ],
+      "narrator": "What is Marcus's situation?",
+      "options": [
+        "He burned his hands with boiling water in the lab.",
+        "He is in serious trouble with the professor.",
+        "He received a commendation for his research speed.",
+        "He requested hot tea during the department seminar."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'In hot water' berarti sedang kena masalah atau dalam kesulitan serius (in serious trouble)."
+    },
+    {
+      "id": "idiom-19",
+      "idiom": "See the light at the end of the tunnel",
+      "meaningId": "Mulai melihat tanda-tanda keberhasilan setelah melewati masa-masa sulit",
+      "literalTrapId": "Melihat lampu di ujung terowongan kereta",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "You've been drafting your doctoral dissertation revisions for eight straight months!"
+        },
+        {
+          "speaker": "woman",
+          "text": "I know, but after my advisor's last comments, I can finally see the light at the end of the tunnel."
+        }
+      ],
+      "narrator": "What does the woman mean?",
+      "options": [
+        "She needs better lighting in her underground office.",
+        "She feels she is close to completing her challenging project.",
+        "She plans to take a subway train to the library.",
+        "She has to rewrite her entire thesis from scratch."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'See the light at the end of the tunnel' berarti akhir dari tugas yang panjang dan berat sudah tampak di depan mata."
+    },
+    {
+      "id": "idiom-20",
+      "idiom": "Barking up the wrong tree",
+      "meaningId": "Salah menduga / mencari solusi atau penyebab di tempat yang keliru",
+      "literalTrapId": "Anjing menggonggong di bawah pohon",
+      "dialogue": [
+        {
+          "speaker": "man",
+          "text": "The network technician thinks the server outage was caused by faulty Ethernet cables."
+        },
+        {
+          "speaker": "woman",
+          "text": "He's barking up the wrong tree; the database crashed because of an unpatched software update."
+        }
+      ],
+      "narrator": "What does the woman say about the technician?",
+      "options": [
+        "He was frightened by stray animals near the server room.",
+        "He is pursuing a mistaken assumption about the outage cause.",
+        "He repaired the campus cables ahead of schedule.",
+        "He forgot to bring his diagnostic toolkit."
+      ],
+      "answer": 1,
+      "explanation": "💡 Analisis TOEFL: 'Barking up the wrong tree' bermakna salah sangka atau menuduh/menyelidiki arah yang salah (following a mistaken line of thought)."
+    }
+  ]
 };
 
 if (typeof module !== "undefined") module.exports = { APP_DATA };

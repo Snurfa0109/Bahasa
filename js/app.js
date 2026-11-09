@@ -27,7 +27,8 @@ let state = {
   toeflTargetMode: null,
   toeflTargetDate: null,
   toeflTargetPace: null,
-  toeflRecUnitId: null
+  toeflRecUnitId: null,
+  toeflMistakeVault: []
 };
 
 let currentView = 'onboarding';
@@ -552,6 +553,7 @@ function loadState() {
   const saved = localStorage.getItem('basaloka_state') || localStorage.getItem('linguaplay_state');
   if (saved) {
     state = { ...state, ...JSON.parse(saved) };
+    if (!Array.isArray(state.toeflMistakeVault)) state.toeflMistakeVault = [];
     checkStreak();
   }
   if (typeof window !== 'undefined') window.state = state;
@@ -1725,6 +1727,7 @@ function renderLessonMap(lang) {
     unitsToRender = data.units.filter(u => !u.track || u.track === activeTrack || u.track === 'both');
     updateToeflPredictorUI();
     renderToeflStudyPlanCard();
+    updateMistakeVaultBadge();
   }
 
   pathEl.innerHTML = unitsToRender.map((unit, ui) => {
@@ -5515,6 +5518,7 @@ function renderExamQuestion(index) {
   if (index < 0 || index >= questions.length) return;
 
   toeflSimState.currentIndex = index;
+  resetQuestionPacing();
   const q = questions[index];
   const letters = ['A', 'B', 'C', 'D'];
 
@@ -5932,6 +5936,7 @@ function confirmQuitToeflSim() {
     confirmText: 'Ya, Keluar Tes',
     cancelText: 'Lanjutkan Tes',
     onConfirm: () => {
+      stopQuestionPacingTimer();
       if (toeflSimState.timerInterval) clearInterval(toeflSimState.timerInterval);
       if (speechSynth) speechSynth.cancel();
       if (currentAudio) { currentAudio.pause(); currentAudio = null; }
@@ -5970,6 +5975,7 @@ function closeExamModal() {
 }
 
 function submitToeflSim() {
+  stopQuestionPacingTimer();
   if (toeflSimState.timerInterval) clearInterval(toeflSimState.timerInterval);
   if (speechSynth) speechSynth.cancel();
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
@@ -5983,6 +5989,9 @@ function submitToeflSim() {
   questions.forEach((q, idx) => {
     const userChoice = toeflSimState.answers[idx];
     const isCorrect = userChoice === q.answer;
+    if (!isCorrect) {
+      recordMistake(q, userChoice);
+    }
 
     if (q.section === 'listening') {
       totalL++;
@@ -6516,6 +6525,7 @@ function initApp() {
   }
   updateAuthNavUI();
   updateAllAudioSpeedBadges();
+  updateMistakeVaultBadge();
   checkPushStatus();
 }
 
@@ -7543,6 +7553,645 @@ window.showLucaGreetingSplash = showLucaGreetingSplash;
 window.dismissLucaGreeting = dismissLucaGreeting;
 window.handleLucaOverlayClick = handleLucaOverlayClick;
 
+// ══════════════════════════════════════════════════════════
+// ⏱️ REAL-TIME PACING METER (ETS TIMING SYSTEM)
+// ══════════════════════════════════════════════════════════
+let questionStartTime = Date.now();
+let questionPacingInterval = null;
 
+function resetQuestionPacing() {
+  if (questionPacingInterval) clearInterval(questionPacingInterval);
+  questionStartTime = Date.now();
+  updatePacingDisplay();
+  questionPacingInterval = setInterval(updatePacingDisplay, 500);
+}
 
+function stopQuestionPacingTimer() {
+  if (questionPacingInterval) {
+    clearInterval(questionPacingInterval);
+    questionPacingInterval = null;
+  }
+}
 
+function updatePacingDisplay() {
+  if (!toeflSimState || !toeflSimState.active) return;
+  const questions = (APP_DATA.toeflSimulation && APP_DATA.toeflSimulation.questions) || [];
+  const q = questions[toeflSimState.currentIndex];
+  if (!q) return;
+
+  // Target times based on ETS official exam sections
+  const targetSec = (q.section === 'structure') ? 37 : (q.section === 'reading' ? 65 : 20);
+  const elapsedSec = Math.floor((Date.now() - questionStartTime) / 1000);
+  const pct = Math.min(100, Math.round((elapsedSec / targetSec) * 100));
+
+  const fillEl = document.getElementById('eps-bar-fill');
+  const textEl = document.getElementById('eps-status-text');
+  const iconEl = document.getElementById('eps-status-icon');
+  const badgeEl = document.getElementById('eps-target-badge');
+
+  if (fillEl) fillEl.style.width = `${pct}%`;
+  if (badgeEl) badgeEl.textContent = `🎯 Target ETS: ~${targetSec}d / nomor`;
+
+  if (elapsedSec <= Math.round(targetSec * 0.65)) {
+    if (fillEl) fillEl.className = 'eps-bar-fill green';
+    if (iconEl) iconEl.textContent = '🟢';
+    if (textEl) textEl.innerHTML = `Pace Cepat & Mantap <strong>(${elapsedSec}d)</strong>`;
+  } else if (elapsedSec <= targetSec) {
+    if (fillEl) fillEl.className = 'eps-bar-fill yellow';
+    if (iconEl) iconEl.textContent = '🟡';
+    if (textEl) textEl.innerHTML = `Waktu Pas Standar ETS <strong>(${elapsedSec}d)</strong>`;
+  } else {
+    if (fillEl) fillEl.className = 'eps-bar-fill red pulse';
+    if (iconEl) iconEl.textContent = '🔴';
+    if (textEl) textEl.innerHTML = `Lewat Target Waktu! <strong>(${elapsedSec}d)</strong> • <em>Eliminasi & lanjut!</em>`;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// 🎯 MISTAKE VAULT (BANK SOAL SALAHKU)
+// ══════════════════════════════════════════════════════════
+let mistakeDrillState = {
+  active: false,
+  currentIndex: 0,
+  hasAnswered: false,
+  correctSessionCount: 0
+};
+
+function recordMistake(q, userChoice) {
+  if (!q) return;
+  if (!state.toeflMistakeVault) state.toeflMistakeVault = [];
+  const existingIdx = state.toeflMistakeVault.findIndex(m => m.id === q.id);
+  const mistakeObj = {
+    id: q.id || `mistake-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+    section: q.section || 'structure',
+    part: q.part || '',
+    question: q.question || '',
+    sentence: q.sentence || '',
+    questionText: q.questionText || '',
+    sentenceHighlighted: q.sentenceHighlighted || '',
+    passageTitle: q.passageTitle || (q.passage && q.passage.title) || '',
+    passageText: q.passageText || (q.passage && q.passage.text) || '',
+    dialogue: q.dialogue || null,
+    options: [...(q.options || [])],
+    answer: (q.answer !== undefined) ? q.answer : 0,
+    explanation: q.explanation || 'Pelajari materi tata bahasa dan konteks terkait.',
+    userChoice: userChoice,
+    failedAt: Date.now()
+  };
+
+  if (existingIdx !== -1) {
+    state.toeflMistakeVault[existingIdx] = mistakeObj;
+  } else {
+    state.toeflMistakeVault.unshift(mistakeObj);
+  }
+  saveState();
+  updateMistakeVaultBadge();
+}
+
+function updateMistakeVaultBadge() {
+  const badge = document.getElementById('vault-badge-text');
+  if (!badge) return;
+  const count = (state.toeflMistakeVault && state.toeflMistakeVault.length) || 0;
+  if (count === 0) {
+    badge.textContent = '0 Soal Salah (Sempurna ✨)';
+    badge.className = 'pt-sub clean';
+  } else {
+    badge.textContent = `${count} Soal Perlu Diulang ⚠️`;
+    badge.className = 'pt-sub has-mistakes';
+  }
+}
+
+function openMistakeVaultModal() {
+  const modal = document.getElementById('mistake-vault-modal');
+  if (!modal) return;
+  mistakeDrillState.active = false;
+  renderMistakeVaultView();
+  modal.style.display = 'flex';
+  modal.classList.add('active');
+}
+
+function closeMistakeVaultModal() {
+  const modal = document.getElementById('mistake-vault-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('active');
+  }
+  mistakeDrillState.active = false;
+  updateMistakeVaultBadge();
+}
+
+function renderMistakeVaultView() {
+  const body = document.getElementById('mvm-body-content');
+  if (!body) return;
+  const vault = state.toeflMistakeVault || [];
+
+  if (vault.length === 0) {
+    body.innerHTML = `
+      <div class="vault-empty-state">
+        <div class="ves-icon">🏆</div>
+        <h4 class="ves-title">Mistake Vault Bersih!</h4>
+        <p class="ves-desc">
+          Hebat! Kamu belum memiliki catatan soal salah saat ini, atau semua soal yang pernah salah sudah tuntas kamu pelajari 100%.
+        </p>
+        <button type="button" class="btn-primary" onclick="closeMistakeVaultModal(); showView('toefl-map');" style="padding: 10px 24px; border-radius: var(--radius-md);">
+          Lanjut Latihan TOEFL 🚀
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  body.innerHTML = `
+    <div style="padding: 4px 6px;">
+      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+        <div>
+          <strong style="color: #f87171; font-size: 0.95rem; display: block; margin-bottom: 2px;">
+            ⚠️ Tersimpan ${vault.length} Soal untuk Diperbaiki
+          </strong>
+          <span style="color: #94a3b8; font-size: 0.8rem; line-height: 1.4;">
+            Drill ulang soal-soal ini sampai paham. Soal yang dijawab benar akan otomatis terhapus dari bank kesalahan!
+          </span>
+        </div>
+        <button type="button" class="btn-primary" onclick="startMistakeVaultDrill()" style="background: linear-gradient(135deg, #ef4444, #f97316); border: none; padding: 10px 20px; font-weight: 700; border-radius: 8px;">
+          Mulai Drill Ulang 🚀
+        </button>
+      </div>
+
+      <div style="font-size: 0.8rem; font-weight: 700; color: #94a3b8; margin-bottom: 10px;">
+        DAFTAR SOAL YANG PERNAH SALAH:
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        ${vault.map((m, idx) => `
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <div style="min-width: 0;">
+              <span style="display: inline-block; font-size: 0.7rem; font-weight: 800; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 1px 6px; border-radius: 4px; margin-bottom: 4px;">
+                ${(m.section || 'STRUCTURE').toUpperCase()}
+              </span>
+              <div style="font-size: 0.86rem; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${escapeHtml((m.sentence || m.questionText || m.question || m.sentenceHighlighted || 'Soal TOEFL').slice(0, 75))}...
+              </div>
+            </div>
+            <button type="button" class="btn-secondary" onclick="startMistakeVaultDrill(${idx})" style="padding: 6px 12px; font-size: 0.78rem; flex-shrink: 0;">
+              Latih Ini 🎯
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function startMistakeVaultDrill(startIndex = 0) {
+  const vault = state.toeflMistakeVault || [];
+  if (vault.length === 0) {
+    renderMistakeVaultView();
+    return;
+  }
+  mistakeDrillState = {
+    active: true,
+    currentIndex: Math.max(0, Math.min(startIndex, vault.length - 1)),
+    hasAnswered: false,
+    correctSessionCount: 0
+  };
+  renderMistakeDrillCard();
+}
+
+function renderMistakeDrillCard() {
+  const body = document.getElementById('mvm-body-content');
+  if (!body) return;
+  const vault = state.toeflMistakeVault || [];
+  if (!vault.length || mistakeDrillState.currentIndex >= vault.length) {
+    renderMistakeVaultView();
+    return;
+  }
+
+  const q = vault[mistakeDrillState.currentIndex];
+  const letters = ['A', 'B', 'C', 'D'];
+  const total = vault.length;
+  const currentNum = mistakeDrillState.currentIndex + 1;
+
+  mistakeDrillState.hasAnswered = false;
+
+  const displaySentence = q.sentenceHighlighted
+    ? q.sentenceHighlighted
+        .replace(/\[(.*?)\]\(A\)/g, '<u class="err-tag"><span class="err-sub">A</span>$1</u>')
+        .replace(/\[(.*?)\]\(B\)/g, '<u class="err-tag"><span class="err-sub">B</span>$1</u>')
+        .replace(/\[(.*?)\]\(C\)/g, '<u class="err-tag"><span class="err-sub">C</span>$1</u>')
+        .replace(/\[(.*?)\]\(D\)/g, '<u class="err-tag"><span class="err-sub">D</span>$1</u>')
+    : (q.sentence || q.questionText || q.question || 'Perhatikan pertanyaan berikut:');
+
+  body.innerHTML = `
+    <div class="vault-drill-card">
+      <div class="vdc-top-bar">
+        <span class="vdc-counter">🎯 Soal ${currentNum} dari ${total}</span>
+        <span class="vdc-sec-tag">${(q.section || 'STRUCTURE').toUpperCase()} • ${q.part || 'Drill Ulang'}</span>
+      </div>
+
+      ${q.passageText ? `
+        <div style="background: rgba(255, 255, 255, 0.04); border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.84rem; color: #cbd5e1; max-height: 140px; overflow-y: auto; line-height: 1.45;">
+          <strong style="color: #38bdf8; display: block; margin-bottom: 4px;">📖 ${escapeHtml(q.passageTitle || 'Bacaan Soal')}</strong>
+          ${escapeHtml(q.passageText).replace(/\\n\\n/g, '<br><br>')}
+        </div>
+      ` : ''}
+
+      ${q.dialogue ? `
+        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <span style="font-size: 0.84rem; color: #e2e8f0;">🎧 Audio Percakapan:</span>
+          <button type="button" class="btn-secondary" onclick="speakMistakeDialogue(${mistakeDrillState.currentIndex})" style="padding: 6px 12px; font-size: 0.8rem;">
+            🔊 Putar Audio
+          </button>
+        </div>
+      ` : ''}
+
+      <div class="vdc-prompt">
+        ${displaySentence}
+      </div>
+
+      ${q.question && q.question !== displaySentence ? `
+        <div style="font-size: 0.88rem; font-weight: 700; color: #38bdf8; margin-top: -6px;">
+          ${escapeHtml(q.question)}
+        </div>
+      ` : ''}
+
+      <div class="vdc-options" id="vdc-options-grid">
+        ${q.options.map((opt, i) => `
+          <button type="button" class="vdc-opt-btn" id="vdc-opt-${i}" onclick="answerMistakeQuestion(${i})">
+            <span class="vdc-opt-letter">${letters[i]}</span>
+            <span>${escapeHtml(opt)}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div id="vdc-feedback-area"></div>
+    </div>
+  `;
+}
+
+function speakMistakeDialogue(idx) {
+  const vault = state.toeflMistakeVault || [];
+  const q = vault[idx];
+  if (!q || !q.dialogue) return;
+  const s1 = q.dialogue[0];
+  const s2 = q.dialogue[1];
+  if (s1 && s2) {
+    speakWithVoice(s1.text, 'en-US', { gender: s1.speaker === 'woman' ? 'female' : 'male' }, () => {
+      setTimeout(() => {
+        speakWithVoice(s2.text, 'en-US', { gender: s2.speaker === 'woman' ? 'female' : 'male', cancelPrevious: false });
+      }, 500);
+    });
+  }
+}
+
+function answerMistakeQuestion(optIdx) {
+  if (mistakeDrillState.hasAnswered) return;
+  mistakeDrillState.hasAnswered = true;
+
+  const vault = state.toeflMistakeVault || [];
+  const q = vault[mistakeDrillState.currentIndex];
+  if (!q) return;
+
+  const isCorrect = (optIdx === q.answer);
+  const btns = document.querySelectorAll('.vdc-opt-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const selectedBtn = document.getElementById(`vdc-opt-${optIdx}`);
+  const correctBtn = document.getElementById(`vdc-opt-${q.answer}`);
+
+  if (correctBtn) correctBtn.classList.add('correct');
+  if (!isCorrect && selectedBtn) selectedBtn.classList.add('wrong');
+
+  const fbArea = document.getElementById('vdc-feedback-area');
+
+  if (isCorrect) {
+    playSuccessEffect();
+    mistakeDrillState.correctSessionCount++;
+    // Remove this question from the mistake vault!
+    state.toeflMistakeVault.splice(mistakeDrillState.currentIndex, 1);
+    saveState();
+    updateMistakeVaultBadge();
+
+    state.toeflXp = (state.toeflXp || 0) + 10;
+    state.totalXp = (state.totalXp || 0) + 10;
+    saveState();
+
+    if (fbArea) {
+      fbArea.innerHTML = `
+        <div class="vdc-feedback-box correct">
+          <strong>🎉 Luar Biasa! Kamu Berhasil Menguasainya!</strong><br>
+          Soal ini resmi dihapus dari Mistake Vault (+10 XP).<br><br>
+          <div style="font-size: 0.84rem; color: #d1fae5; line-height: 1.45;">
+            ${q.explanation}
+          </div>
+          <button type="button" class="btn-primary" onclick="nextMistakeQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700;">
+            Lanjut ke Soal Berikutnya →
+          </button>
+        </div>
+      `;
+    }
+  } else {
+    if (fbArea) {
+      fbArea.innerHTML = `
+        <div class="vdc-feedback-box wrong">
+          <strong>⚠️ Masih Kurang Tepat, Perhatikan Kuncinya:</strong><br>
+          Soal ini tetap disimpan di vault agar bisa kamu latih kembali.<br><br>
+          <div style="font-size: 0.84rem; color: #fee2e2; line-height: 1.45;">
+            ${q.explanation}
+          </div>
+          <button type="button" class="btn-secondary" onclick="nextMistakeQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700;">
+            Lanjut ke Soal Berikutnya →
+          </button>
+        </div>
+      `;
+    }
+  }
+}
+
+function nextMistakeQuestion() {
+  const vault = state.toeflMistakeVault || [];
+  if (vault.length === 0) {
+    renderMistakeVaultView();
+    return;
+  }
+  if (mistakeDrillState.currentIndex >= vault.length) {
+    mistakeDrillState.currentIndex = 0;
+  }
+  renderMistakeDrillCard();
+}
+
+// ══════════════════════════════════════════════════════════
+// 🎧 5-MINUTE IDIOM DRILL (LISTENING PART A)
+// ══════════════════════════════════════════════════════════
+let idiomDrillSession = {
+  active: false,
+  questions: [],
+  currentIndex: 0,
+  score: 0,
+  hasAnswered: false,
+  isPlayingAudio: false
+};
+
+function openIdiomDrillModal() {
+  const modal = document.getElementById('idiom-drill-modal');
+  if (!modal) return;
+  startIdiomDrillSession();
+  modal.style.display = 'flex';
+  modal.classList.add('active');
+}
+
+function closeIdiomDrillModal() {
+  const modal = document.getElementById('idiom-drill-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('active');
+  }
+  if (speechSynth) speechSynth.cancel();
+  idiomDrillSession.active = false;
+}
+
+function startIdiomDrillSession() {
+  const pool = (APP_DATA.toeflIdioms && APP_DATA.toeflIdioms.length) ? APP_DATA.toeflIdioms : [];
+  if (!pool.length) return;
+
+  // Sample 5 fresh idioms
+  const picked = shuffle([...pool]).slice(0, 5);
+  idiomDrillSession = {
+    active: true,
+    questions: picked,
+    currentIndex: 0,
+    score: 0,
+    hasAnswered: false,
+    isPlayingAudio: false
+  };
+
+  renderIdiomDrillCard();
+}
+
+function renderIdiomDrillCard() {
+  const body = document.getElementById('idm-body-content');
+  if (!body) return;
+
+  const { questions, currentIndex } = idiomDrillSession;
+  if (!questions.length || currentIndex >= questions.length) {
+    finishIdiomDrillSession();
+    return;
+  }
+
+  const q = questions[currentIndex];
+  const letters = ['A', 'B', 'C', 'D'];
+  idiomDrillSession.hasAnswered = false;
+
+  body.innerHTML = `
+    <div>
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-weight: 700; color: #c084fc;">🎧 Pertanyaan ${currentIndex + 1} dari ${questions.length}</span>
+        <span style="background: rgba(168, 85, 247, 0.15); color: #e9d5ff; padding: 2px 8px; border-radius: 6px; font-weight: 600;">
+          Idiom: "${q.idiom}"
+        </span>
+      </div>
+
+      <!-- Audio Box -->
+      <div class="idm-audio-player">
+        <div>
+          <strong style="color: #ffffff; font-size: 0.9rem; display: block;">Dengarkan Percakapan:</strong>
+          <span style="color: #94a3b8; font-size: 0.78rem;">Fokus pada ucapan pembicara kedua!</span>
+        </div>
+        <button type="button" class="btn-idm-play" id="btn-idm-play-audio" onclick="playIdiomDrillAudio()">
+          <span id="idm-play-icon">▶️</span> <span id="idm-play-text">Putar Percakapan</span>
+        </button>
+      </div>
+
+      <div class="idm-quote-card" id="idm-transcript-box" style="display: none;">
+        <strong>Pria:</strong> "${q.dialogue[0].text}"<br>
+        <strong>Wanita:</strong> "${q.dialogue[1].text}"
+      </div>
+
+      <div style="font-size: 0.94rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">
+        ${escapeHtml(q.narrator || 'What does the speaker mean?')}
+      </div>
+
+      <div class="vdc-options" id="idm-options-grid">
+        ${q.options.map((opt, i) => `
+          <button type="button" class="vdc-opt-btn" id="idm-opt-${i}" onclick="answerIdiomDrillQuestion(${i})">
+            <span class="vdc-opt-letter">${letters[i]}</span>
+            <span>${escapeHtml(opt)}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div id="idm-feedback-area"></div>
+    </div>
+  `;
+
+  // Auto-play audio on question load for fluid experience
+  setTimeout(() => {
+    playIdiomDrillAudio();
+  }, 350);
+}
+
+function playIdiomDrillAudio() {
+  const { questions, currentIndex } = idiomDrillSession;
+  const q = questions[currentIndex];
+  if (!q || !q.dialogue) return;
+
+  const btn = document.getElementById('btn-idm-play-audio');
+  const icon = document.getElementById('idm-play-icon');
+  const text = document.getElementById('idm-play-text');
+
+  if (speechSynth) speechSynth.cancel();
+
+  if (icon) icon.textContent = '🔊';
+  if (text) text.textContent = 'Memutar dialog...';
+
+  const s1 = q.dialogue[0];
+  const s2 = q.dialogue[1];
+
+  speakWithVoice(s1.text, 'en-US', { gender: s1.speaker === 'woman' ? 'female' : 'male' }, () => {
+    setTimeout(() => {
+      speakWithVoice(s2.text, 'en-US', { gender: s2.speaker === 'woman' ? 'female' : 'male', cancelPrevious: false }, () => {
+        setTimeout(() => {
+          if (q.narrator) {
+            speakWithVoice(q.narrator, 'en-US', { gender: 'neutral', rate: 0.9, cancelPrevious: false }, () => {
+              if (icon) icon.textContent = '▶️';
+              if (text) text.textContent = 'Putar Ulang';
+            });
+          } else {
+            if (icon) icon.textContent = '▶️';
+            if (text) text.textContent = 'Putar Ulang';
+          }
+        }, 500);
+      });
+    }, 450);
+  });
+}
+
+function answerIdiomDrillQuestion(optIdx) {
+  if (idiomDrillSession.hasAnswered) return;
+  idiomDrillSession.hasAnswered = true;
+
+  const { questions, currentIndex } = idiomDrillSession;
+  const q = questions[currentIndex];
+  if (!q) return;
+
+  const isCorrect = (optIdx === q.answer);
+  const btns = document.querySelectorAll('#idm-options-grid .vdc-opt-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const selectedBtn = document.getElementById(`idm-opt-${optIdx}`);
+  const correctBtn = document.getElementById(`idm-opt-${q.answer}`);
+
+  if (correctBtn) correctBtn.classList.add('correct');
+  if (!isCorrect && selectedBtn) selectedBtn.classList.add('wrong');
+
+  // Reveal transcript box
+  const trBox = document.getElementById('idm-transcript-box');
+  if (trBox) trBox.style.display = 'block';
+
+  const fbArea = document.getElementById('idm-feedback-area');
+
+  if (isCorrect) {
+    playSuccessEffect();
+    idiomDrillSession.score++;
+    if (fbArea) {
+      fbArea.innerHTML = `
+        <div class="vdc-feedback-box correct" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #e9d5ff;">
+          <strong style="color: #4ade80;">✅ Tepat Sekali! Insting Listeningmu Tajam!</strong><br>
+          <div style="font-size: 0.85rem; line-height: 1.45; margin-top: 4px;">
+            ${q.explanation}
+          </div>
+          <button type="button" class="btn-primary" onclick="nextIdiomDrillQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700; background: linear-gradient(135deg, #9333ea, #6366f1); border: none;">
+            ${currentIndex === questions.length - 1 ? 'Lihat Hasil Drill 🏁' : 'Soal Selanjutnya →'}
+          </button>
+        </div>
+      `;
+    }
+  } else {
+    // Record mistake into vault as well!
+    recordMistake(q, optIdx);
+    if (fbArea) {
+      fbArea.innerHTML = `
+        <div class="vdc-feedback-box wrong">
+          <strong>❌ Terjebak Makna Harfiah! Cek Triknya:</strong><br>
+          <div style="font-size: 0.85rem; line-height: 1.45; margin-top: 4px;">
+            ${q.explanation}
+          </div>
+          <button type="button" class="btn-secondary" onclick="nextIdiomDrillQuestion()" style="margin-top: 10px; width: 100%; border-radius: 8px; font-weight: 700;">
+            ${currentIndex === questions.length - 1 ? 'Lihat Hasil Drill 🏁' : 'Soal Selanjutnya →'}
+          </button>
+        </div>
+      `;
+    }
+  }
+}
+
+function nextIdiomDrillQuestion() {
+  if (speechSynth) speechSynth.cancel();
+  idiomDrillSession.currentIndex++;
+  renderIdiomDrillCard();
+}
+
+function finishIdiomDrillSession() {
+  const body = document.getElementById('idm-body-content');
+  if (!body) return;
+
+  const total = idiomDrillSession.questions.length || 5;
+  const score = idiomDrillSession.score;
+  const xpReward = score * 5 + 10;
+
+  state.toeflXp = (state.toeflXp || 0) + xpReward;
+  state.totalXp = (state.totalXp || 0) + xpReward;
+  saveState();
+
+  if (score >= 4) {
+    playSuccessEffect();
+    launchConfetti();
+  }
+
+  body.innerHTML = `
+    <div style="text-align: center; padding: 24px 16px;">
+      <div style="font-size: 3rem; margin-bottom: 8px;">
+        ${score === total ? '🏆' : (score >= 3 ? '🎉' : '💪')}
+      </div>
+      <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800; margin-bottom: 4px;">
+        Selesai Drill Idiom TOEFL!
+      </h3>
+      <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 14px;">
+        Kamu berhasil menebak <strong style="color: #38bdf8;">${score} dari ${total} idiom</strong> dengan tepat.
+      </p>
+
+      <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 12px; padding: 12px 18px; display: inline-block; margin-bottom: 20px;">
+        <span style="font-size: 1.1rem; font-weight: 800; color: #c084fc;">⚡ +${xpReward} XP Diperoleh!</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn-secondary" onclick="startIdiomDrillSession()" style="padding: 10px 18px; border-radius: 8px; font-weight: 700;">
+          🔄 Drill 5 Soal Lagi
+        </button>
+        <button type="button" class="btn-primary" onclick="closeIdiomDrillModal(); showView('toefl-map');" style="padding: 10px 22px; border-radius: 8px; font-weight: 700; background: linear-gradient(135deg, #9333ea, #6366f1); border: none;">
+          Kembali ke Peta TOEFL ✨
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Window Exports for Mistake Vault, Pacing Meter, & Idiom Drill
+window.resetQuestionPacing = resetQuestionPacing;
+window.stopQuestionPacingTimer = stopQuestionPacingTimer;
+window.updatePacingDisplay = updatePacingDisplay;
+window.recordMistake = recordMistake;
+window.updateMistakeVaultBadge = updateMistakeVaultBadge;
+window.openMistakeVaultModal = openMistakeVaultModal;
+window.closeMistakeVaultModal = closeMistakeVaultModal;
+window.renderMistakeVaultView = renderMistakeVaultView;
+window.startMistakeVaultDrill = startMistakeVaultDrill;
+window.answerMistakeQuestion = answerMistakeQuestion;
+window.nextMistakeQuestion = nextMistakeQuestion;
+window.speakMistakeDialogue = speakMistakeDialogue;
+window.openIdiomDrillModal = openIdiomDrillModal;
+window.closeIdiomDrillModal = closeIdiomDrillModal;
+window.startIdiomDrillSession = startIdiomDrillSession;
+window.playIdiomDrillAudio = playIdiomDrillAudio;
+window.answerIdiomDrillQuestion = answerIdiomDrillQuestion;
+window.nextIdiomDrillQuestion = nextIdiomDrillQuestion;
+window.finishIdiomDrillSession = finishIdiomDrillSession;

@@ -11100,3 +11100,494 @@ body::before {
     font-size: 0.72rem;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════
+   🚀 TOEFL POWER TOOLS (MISTAKE VAULT & IDIOM DRILL)
+   ══════════════════════════════════════════════════════════ */
+.toefl-power-tools-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.btn-power-tool {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(22, 24, 48, 0.75);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-power-tool::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.btn-power-tool.vault-tool::before {
+  background: radial-gradient(circle at top left, rgba(239, 68, 68, 0.25), transparent 70%);
+}
+
+.btn-power-tool.idiom-tool::before {
+  background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.25), transparent 70%);
+}
+
+.btn-power-tool:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.btn-power-tool:hover::before {
+  opacity: 1;
+}
+
+.btn-power-tool:active {
+  transform: scale(0.98);
+}
+
+.pt-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.pt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pt-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pt-sub {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-power-tool.vault-tool .pt-sub.has-mistakes {
+  color: #f87171;
+  font-weight: 600;
+}
+
+.btn-power-tool.vault-tool .pt-sub.clean {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.pt-arrow {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.4);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-power-tool:hover .pt-arrow {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ⏱️ REAL-TIME PACING METER (ETS TIMING STRIP)
+   ══════════════════════════════════════════════════════════ */
+.exam-pacing-strip {
+  background: rgba(15, 18, 38, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.eps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.eps-status-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e2e8f0;
+}
+
+.eps-dot {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.eps-status-text {
+  font-weight: 600;
+}
+
+.eps-target-badge {
+  font-size: 0.72rem;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.eps-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.eps-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.45s linear, background-color 0.3s ease;
+}
+
+.eps-bar-fill.green {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.eps-bar-fill.yellow {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.eps-bar-fill.red {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.eps-bar-fill.pulse {
+  animation: epsPulse 1s infinite alternate;
+}
+
+@keyframes epsPulse {
+  0% { opacity: 0.75; }
+  100% { opacity: 1; filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8)); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   🎯 MISTAKE VAULT MODAL STYLING
+   ══════════════════════════════════════════════════════════ */
+.mistake-vault-modal-card {
+  max-width: 640px;
+  width: 95%;
+  background: #0f1123;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(239, 68, 68, 0.12);
+}
+
+.mvm-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 14px;
+}
+
+.mvm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mvm-icon {
+  font-size: 1.8rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mvm-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #f87171;
+  letter-spacing: 0.5px;
+}
+
+.mvm-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+}
+
+.mvm-body {
+  padding: 18px 0;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* Vault Empty State */
+.vault-empty-state {
+  text-align: center;
+  padding: 30px 16px;
+}
+
+.ves-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.ves-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.ves-desc {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+  line-height: 1.45;
+}
+
+/* Vault Drill Active Card */
+.vault-drill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vdc-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+}
+
+.vdc-counter {
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.vdc-sec-tag {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+}
+
+.vdc-prompt {
+  font-size: 0.98rem;
+  color: #ffffff;
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vdc-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.vdc-opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vdc-opt-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(2px);
+}
+
+.vdc-opt-btn.correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+
+.vdc-opt-btn.wrong {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+.vdc-opt-letter {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.vdc-feedback-box {
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 6px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  animation: fadeIn 0.2s ease;
+}
+
+.vdc-feedback-box.correct {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #a7f3d0;
+}
+
+.vdc-feedback-box.wrong {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+/* ══════════════════════════════════════════════════════════
+   🎧 5-MINUTE IDIOM DRILL MODAL
+   ══════════════════════════════════════════════════════════ */
+.idiom-drill-modal-card {
+  max-width: 600px;
+  width: 95%;
+  background: #110e26;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.idm-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 14px;
+}
+
+.idm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.idm-icon {
+  font-size: 1.8rem;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 8px;
+  border-radius: var(--radius-md);
+}
+
+.idm-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #c084fc;
+  letter-spacing: 0.5px;
+}
+
+.idm-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+}
+
+.idm-body {
+  padding: 16px 0;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.idm-audio-player {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-idm-play {
+  background: linear-gradient(135deg, #9333ea, #6366f1);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-idm-play:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(147, 51, 234, 0.4);
+}
+
+.idm-quote-card {
+  background: rgba(168, 85, 247, 0.08);
+  border-left: 3px solid #c084fc;
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .toefl-power-tools-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .btn-power-tool {
+    padding: 12px 14px;
+  }
+}

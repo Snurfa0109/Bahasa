@@ -571,6 +571,26 @@
           </div>
         </div>
 
+        <!-- 🚀 POWER TOOLS: MISTAKE VAULT & IDIOM DRILL -->
+        <div class="toefl-power-tools-row">
+          <button type="button" class="btn-power-tool vault-tool" onclick="openMistakeVaultModal()" title="Latihan khusus soal-soal TOEFL yang pernah salah">
+            <span class="pt-icon">🎯</span>
+            <div class="pt-text">
+              <span class="pt-title">Mistake Vault</span>
+              <span class="pt-sub" id="vault-badge-text">0 Soal Salah</span>
+            </div>
+            <span class="pt-arrow">→</span>
+          </button>
+          <button type="button" class="btn-power-tool idiom-tool" onclick="openIdiomDrillModal()" title="Drill 5 menit idiom penutur asli TOEFL Listening Part A">
+            <span class="pt-icon">🎧</span>
+            <div class="pt-text">
+              <span class="pt-title">Drill Idiom 5 Menit</span>
+              <span class="pt-sub">Second Speaker Tricks</span>
+            </div>
+            <span class="pt-arrow">⚡</span>
+          </button>
+        </div>
+
         <!-- 📅 PERSONAL STUDY PLAN & D-DAY COUNTDOWN CARD -->
         <div class="toefl-study-plan-card" id="toefl-study-plan-card">
           <!-- Dynamic content rendered by renderToeflStudyPlanCard() -->
@@ -896,6 +916,20 @@
           </div>
           <div class="exam-grid-numbers" id="exam-grid-numbers">
             <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Real-Time Pacing Meter (Manajemen Waktu Standar ETS) -->
+        <div class="exam-pacing-strip" id="exam-pacing-strip">
+          <div class="eps-header">
+            <div class="eps-status-group">
+              <span class="eps-dot" id="eps-status-icon">🟢</span>
+              <span class="eps-status-text" id="eps-status-text">Pace Cepat & Mantap (0d)</span>
+            </div>
+            <span class="eps-target-badge" id="eps-target-badge">🎯 Target ETS: ~37d / nomor</span>
+          </div>
+          <div class="eps-bar-track">
+            <div class="eps-bar-fill green" id="eps-bar-fill" style="width: 0%;"></div>
           </div>
         </div>
 
@@ -2133,6 +2167,46 @@
       <button type="button" class="btn-primary tetm-btn-save" onclick="saveToeflExamTarget()">
         Simpan Target 🚀
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: TOEFL MISTAKE VAULT (BANK SOAL SALAHKU) ───────── -->
+<div id="mistake-vault-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card mistake-vault-modal-card">
+    <div class="modal-header mvm-header">
+      <div class="mvm-header-left">
+        <span class="mvm-icon">🎯</span>
+        <div>
+          <div class="mvm-badge">MISTAKE VAULT & ERROR CORRECTION</div>
+          <h3 class="mvm-title">Bank Soal Salahku</h3>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeMistakeVaultModal()">✕</button>
+    </div>
+
+    <div class="modal-body mvm-body" id="mvm-body-content">
+      <!-- Populated dynamically by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MODAL: 5-MINUTE TOEFL IDIOM DRILL (LISTENING PART A) ───────── -->
+<div id="idiom-drill-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card idiom-drill-modal-card">
+    <div class="modal-header idm-header">
+      <div class="idm-header-left">
+        <span class="idm-icon">🎧</span>
+        <div>
+          <div class="idm-badge">5-MINUTE SECOND SPEAKER TRICK DRILL</div>
+          <h3 class="idm-title">Drill Kilat Idiom TOEFL (5 Menit)</h3>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeIdiomDrillModal()">✕</button>
+    </div>
+
+    <div class="modal-body idm-body" id="idm-body-content">
+      <!-- Populated dynamically by JS -->
     </div>
   </div>
 </div>
