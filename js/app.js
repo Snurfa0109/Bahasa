@@ -1820,13 +1820,20 @@ function prepareLessonQuiz(rawQuiz) {
   const pool = shuffle([...rawQuiz]);
 
   return pool.map(q => {
+    // If it's a Written Expression or options have fixed letter markers, do not scramble options
+    const isFixedWE = q.sentenceHighlighted ||
+      (q.q && (q.q.includes('(A)') || /bagian yang salah/i.test(q.q))) ||
+      (q.options && q.options.some(o => /\([A-D]\)/.test(o)));
+    if (isFixedWE) {
+      return { ...q };
+    }
     const correctText = q.options[q.answer];
     const shuffledOpts = shuffle([...q.options]);
     const newAnswer = shuffledOpts.indexOf(correctText);
     return {
       ...q,
       options: shuffledOpts,
-      answer: newAnswer
+      answer: newAnswer !== -1 ? newAnswer : q.answer
     };
   });
 }
@@ -1896,6 +1903,12 @@ function prepareActiveCheckpointQuizzes(excludeIds = []) {
   // Deep clone and randomize options positions (anti-key memorization)
   checkpointQuizzes = picked.map(q => {
     const cloned = JSON.parse(JSON.stringify(q));
+    const isFixedWE = cloned.sentenceHighlighted ||
+      (cloned.q && (cloned.q.includes('(A)') || /bagian yang salah/i.test(cloned.q))) ||
+      (cloned.options && cloned.options.some(o => /\([A-D]\)/.test(o)));
+    if (isFixedWE) {
+      return cloned;
+    }
     const correctText = cloned.options[cloned.answer];
     const shuffledOpts = [...cloned.options].sort(() => 0.5 - Math.random());
     cloned.options = shuffledOpts;
@@ -5343,24 +5356,12 @@ function generateRandomizedToeflExam(mode = 'real') {
   const pickS = shuffle([...rawS]).slice(0, targetS);
   const pickR = shuffle([...rawR]).slice(0, targetR);
 
-  // Randomize answer choices for each question so answers A/B/C/D change dynamically
-  const randomizeOpts = (q, newNumber) => {
-    if (!q.options || !q.options.length) return { ...q, number: newNumber };
-    const correctText = q.options[q.answer];
-    const shuffledOpts = shuffle([...q.options]);
-    return {
-      ...q,
-      number: newNumber,
-      options: shuffledOpts,
-      answer: shuffledOpts.indexOf(correctText)
-    };
-  };
-
+  // Canonical question formatting with sequential numbering across sections
   let num = 1;
   const finalQuestions = [
-    ...pickL.map(q => randomizeOpts(q, num++)),
-    ...pickS.map(q => randomizeOpts(q, num++)),
-    ...pickR.map(q => randomizeOpts(q, num++))
+    ...pickL.map(q => ({ ...q, number: num++ })),
+    ...pickS.map(q => ({ ...q, number: num++ })),
+    ...pickR.map(q => ({ ...q, number: num++ }))
   ];
 
   APP_DATA.toeflSimulation.questions = finalQuestions;
@@ -5622,20 +5623,15 @@ function renderExamQuestion(index) {
             : 'Pilihlah salah satu bagian bergaris bawah (A, B, C, atau D) yang memuat KESALAHAN tata bahasa:'}
         </div>
 
-        ${q.sentenceHighlighted ? `
-          <div class="exam-sentence-box">
-            ${q.sentenceHighlighted
+        <div class="exam-sentence-box">
+          ${q.sentenceHighlighted ? q.sentenceHighlighted
               .replace(/\[(.*?)\]\(A\)/g, '<u class="err-tag"><span class="err-sub">A</span>$1</u>')
               .replace(/\[(.*?)\]\(B\)/g, '<u class="err-tag"><span class="err-sub">B</span>$1</u>')
               .replace(/\[(.*?)\]\(C\)/g, '<u class="err-tag"><span class="err-sub">C</span>$1</u>')
               .replace(/\[(.*?)\]\(D\)/g, '<u class="err-tag"><span class="err-sub">D</span>$1</u>')
-            }
-          </div>
-        ` : `
-          <div class="exam-sentence-box">
-            ${q.questionText}
-          </div>
-        `}
+            : (q.sentence || q.questionText || q.prompt || '')
+          }
+        </div>
 
         <div class="exam-options-grid" style="margin-top: 18px;">
           ${q.options.map((opt, i) => `
@@ -5649,13 +5645,14 @@ function renderExamQuestion(index) {
     `;
   } else if (q.section === 'reading') {
     // Find passage (either on this question or referenced)
-    let passageTitle = q.passageTitle;
-    let passageText = q.passageText;
+    let passageTitle = q.passageTitle || (q.passage && q.passage.title);
+    let passageText = q.passageText || (q.passage && q.passage.text);
     if (!passageText && q.passageRef) {
-      const refQ = questions.find(item => item.id === q.passageRef);
+      const refQ = questions.find(item => item.id === q.passageRef) ||
+        ((APP_DATA.toeflQuestionBank && APP_DATA.toeflQuestionBank.reading) || []).find(item => item.id === q.passageRef);
       if (refQ) {
-        passageTitle = refQ.passageTitle;
-        passageText = refQ.passageText;
+        passageTitle = refQ.passageTitle || (refQ.passage && refQ.passage.title);
+        passageText = refQ.passageText || (refQ.passage && refQ.passage.text);
       }
     }
 
@@ -6126,7 +6123,11 @@ function submitToeflSim() {
           </div>
 
           <div class="review-question-title">
-            ${q.section === 'listening' ? `🎧 ${q.question}` : (q.sentence || q.prompt || q.question)}
+            ${q.section === 'listening' 
+              ? `🎧 ${q.question}` 
+              : (q.sentenceHighlighted 
+                  ? q.sentenceHighlighted.replace(/\[(.*?)\]\([A-D]\)/g, '$1') 
+                  : (q.sentence || q.questionText || q.prompt || q.question || 'Structure Question'))}
           </div>
 
           <div class="review-choices-compare">

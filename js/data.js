@@ -6030,10 +6030,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"The (A) university committee have (B) decided to postpone the annual conference until (C) next November (D).\"",
                 "options": [
-                  "The (A)",
-                  "have (B)",
-                  "until (C)",
-                  "next (D)"
+                  "The",
+                  "have",
+                  "until",
+                  "next"
                 ],
                 "answer": 1,
                 "explanation": "💡 Dosa 1: Subject-Verb Agreement! Subjek \"The university committee\" adalah kata benda kolektif tunggal dalam standar TOEFL ETS, sehingga verb harus \"has decided\", bukan \"have decided\"."
@@ -6041,10 +6041,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"Modern architecture emphasizes simplicity, functional (A), and the innovative (B) use of natural (C) daylight (D).\"",
                 "options": [
-                  "functional (A)",
-                  "innovative (B)",
-                  "natural (C)",
-                  "daylight (D)"
+                  "functional",
+                  "innovative",
+                  "natural",
+                  "daylight"
                 ],
                 "answer": 0,
                 "explanation": "💡 Dosa 2: Parallel Structure! Sebelum dan sesudah tanda koma harus setara: \"simplicity\" (noun), maka (A) harus berupa noun \"functionality\", bukan adjective \"functional\"."
@@ -6052,10 +6052,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"The driver steered the heavy transport vehicle very careful (A) around the dangerous (B) icy curve (C) on the highway (D).\"",
                 "options": [
-                  "careful (A)",
-                  "dangerous (B)",
-                  "curve (C)",
-                  "on the (D)"
+                  "careful",
+                  "dangerous",
+                  "curve",
+                  "on the"
                 ],
                 "answer": 0,
                 "explanation": "💡 Dosa 3: Word Form (Adj vs Adv)! Kata \"steered\" (mengemudi) adalah VERB, sehingga harus diterangkan oleh ADVERB (\"carefully\"), bukan adjective (\"careful\")."
@@ -6063,10 +6063,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"The research team collected many (A) valuable informations (B) regarding the atmospheric (C) changes in the Arctic (D).\"",
                 "options": [
-                  "many (A)",
-                  "informations (B)",
-                  "atmospheric (C)",
-                  "Arctic (D)"
+                  "many",
+                  "informations",
+                  "atmospheric",
+                  "Arctic"
                 ],
                 "answer": 1,
                 "explanation": "💡 Dosa 4: Uncountable Noun! Kata \"information\" adalah UNCOUNTABLE (tidak bisa dihitung). Tidak boleh ada akhiran \"-s\" (informations) dan tidak boleh memakai \"many\" (harus \"much information\")."
@@ -6074,10 +6074,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"Professor Clark was capable to solve (A) the complex aerodynamic (B) problem using advanced (C) computer simulations (D).\"",
                 "options": [
-                  "capable to solve (A)",
-                  "aerodynamic (B)",
-                  "advanced (C)",
-                  "simulations (D)"
+                  "capable to solve",
+                  "aerodynamic",
+                  "advanced",
+                  "simulations"
                 ],
                 "answer": 0,
                 "explanation": "💡 Dosa 5: Preposition Idiom! Pola kata \"capable\" SELALU berpasangan dengan \"OF + V-ing\" (\"capable of solving\"), BUKAN \"capable to solve\"."
@@ -6085,10 +6085,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"Neither the president nor the senators was (A) willing to compromise on (B) the proposed tax legislation (C) during yesterday's debate (D).\"",
                 "options": [
-                  "was (A)",
-                  "on (B)",
-                  "legislation (C)",
-                  "during (D)"
+                  "was",
+                  "on",
+                  "legislation",
+                  "during"
                 ],
                 "answer": 0,
                 "explanation": "💡 Neither... Nor Agreement: Subjek terdekat ke verb adalah \"senators\" (jamak), maka verb harus berbentuk jamak \"were\", bukan \"was\"!"
@@ -6096,10 +6096,10 @@ const APP_DATA = {
               {
                 "q": "Cari Bagian Salah: \"Plants absorb water and nutrients from the soil through (A) their root systems, which (B) anchor them firm (C) in the ground (D).\"",
                 "options": [
-                  "through (A)",
-                  "which (B)",
-                  "firm (C)",
-                  "ground (D)"
+                  "through",
+                  "which",
+                  "firm",
+                  "ground"
                 ],
                 "answer": 2,
                 "explanation": "💡 Word Form: Kata kerja \"anchor\" membutuhkan adverb untuk menerangkan bagaimana tanaman menancap: harus \"firmly\" (dengan kokoh), bukan adjective \"firm\"."
@@ -6215,10 +6215,10 @@ const APP_DATA = {
               {
                 "q": "Temukan bagian yang SALAH: \"The architect designed a (A) remarkably (B) beauty building that (C) attracted visitors (D) worldwide.\"",
                 "options": [
-                  "(A) remarkably",
-                  "(B) beauty",
-                  "(C) attracted",
-                  "(D) worldwide"
+                  "remarkably",
+                  "beauty",
+                  "attracted",
+                  "worldwide"
                 ],
                 "answer": 1,
                 "explanation": "💡 Analisis TOEFL: Kata \"building\" adalah kata benda (noun). Di depannya harus ada kata sifat (Adjective) yaitu \"beautiful\", bukan kata benda \"beauty\"! Opsi (B) salah."
@@ -6226,10 +6226,10 @@ const APP_DATA = {
               {
                 "q": "Temukan bagian yang SALAH: \"Recent (A) medical (B) researches have revealed that (C) regular exercise (D) improves cognitive health.\"",
                 "options": [
-                  "(A) medical",
-                  "(B) researches",
-                  "(C) regular",
-                  "(D) improves"
+                  "medical",
+                  "researches",
+                  "regular",
+                  "improves"
                 ],
                 "answer": 1,
                 "explanation": "💡 Analisis TOEFL: Kata \"research\" dalam bahasa Inggris akademik adalah Uncountable Noun (kata benda tak terhitung) sehingga TIDAK PERNAH memiliki akhiran jamak \"-es\". Seharusnya \"Recent medical research has revealed...\"."
@@ -8515,10 +8515,10 @@ const APP_DATA = {
               {
                 "q": "Written Expression: \"The committee has (A) decided to postpone (B) their annual meeting (C) because of (D) severe weather warnings.\"",
                 "options": [
-                  "(A) decided",
-                  "(B) their",
-                  "(C) because of",
-                  "(D) severe"
+                  "decided",
+                  "their",
+                  "because of",
+                  "severe"
                 ],
                 "answer": 1,
                 "explanation": "💡 Analisis TOEFL: \"The committee\" adalah kata benda kolektif tunggal yang memakai kata kerja \"has decided\" (tunggal). Kata ganti kepemilikannya harus tunggal yaitu \"its\", bukan jamak \"their\"!"
@@ -8537,10 +8537,10 @@ const APP_DATA = {
               {
                 "q": "Written Expression: \"Elephants use (A) their trunks (B) not only for smelling and breathing (C) but also to drink (D) water.\"",
                 "options": [
-                  "(A) their",
-                  "(B) not only",
-                  "(C) but also to drink",
-                  "(D) water"
+                  "their",
+                  "not only",
+                  "but also to drink",
+                  "water"
                 ],
                 "answer": 2,
                 "explanation": "💡 Analisis TOEFL: Dosa Struktur Paralel! Setelah \"not only\" ada bentuk gerund \"for smelling and breathing\". Maka setelah \"but also\" harus paralel berbentuk \"for drinking\", bukan infinitive \"to drink\"!"
@@ -9373,10 +9373,10 @@ const APP_DATA = {
         "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
         "sentenceHighlighted": "Although [iron is](A) the most abundant metal on Earth, pure elemental iron is [rarely find](B) in nature [because](C) it reacts readily [with](D) oxygen.",
         "options": [
-          "(A) iron is",
-          "(B) rarely find",
-          "(C) because",
-          "(D) with"
+          "iron is",
+          "rarely find",
+          "because",
+          "with"
         ],
         "answer": 1,
         "explanation": "💡 Analisis TOEFL: Kesalahan bentuk pasif (Passive Voice). Kalimat 'is rarely find' harus menggunakan bentuk Past Participle (V3), yaitu 'is rarely found' (jarang ditemukan)."
@@ -9389,10 +9389,10 @@ const APP_DATA = {
         "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
         "sentenceHighlighted": "The honeybee scout [conveys](A) detailed information about [the direction](B), distance, and [abundant](C) of nectar sources [to](D) the hive.",
         "options": [
-          "(A) conveys",
-          "(B) the direction",
-          "(C) abundant",
-          "(D) to"
+          "conveys",
+          "the direction",
+          "abundant",
+          "to"
         ],
         "answer": 2,
         "explanation": "💡 Analisis TOEFL: Struktur Paralel (Parallel Structure). Dalam daftar 'direction, distance, and...', semua elemen harus berjenis kata benda (noun). Kata 'abundant' adalah kata sifat (adjective), sehingga harus diubah menjadi kata benda 'abundance'."
@@ -9405,10 +9405,10 @@ const APP_DATA = {
         "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
         "sentenceHighlighted": "[Despite of](A) recent advancements [in](B) satellite meteorology, sudden microbursts [remain](C) extremely difficult [to forecast](D) accurately.",
         "options": [
-          "(A) Despite of",
-          "(B) in",
-          "(C) remain",
-          "(D) to forecast"
+          "Despite of",
+          "in",
+          "remain",
+          "to forecast"
         ],
         "answer": 0,
         "explanation": "💡 Analisis TOEFL: Kesalahan preposisi ganda. Kata 'Despite' tidak pernah diikuti kata 'of'. Bentuk yang benar adalah 'Despite' saja, atau jika ingin memakai 'of' harus menggunakan frasa 'In spite of'."
@@ -9421,10 +9421,10 @@ const APP_DATA = {
         "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
         "sentenceHighlighted": "[Each of](A) the clinical trials [were](B) conducted [under](C) the strict supervision of [licensed](D) medical professionals.",
         "options": [
-          "(A) Each of",
-          "(B) were",
-          "(C) under",
-          "(D) licensed"
+          "Each of",
+          "were",
+          "under",
+          "licensed"
         ],
         "answer": 1,
         "explanation": "💡 Analisis TOEFL: Subjek kata ganti 'Each' selalu dianggap tunggal (singular). Oleh karena itu, kata kerja bantu 'were' salah dan seharusnya adalah 'was conducted'."
@@ -9437,10 +9437,10 @@ const APP_DATA = {
         "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
         "sentenceHighlighted": "Coral reefs provide [essential](A) habitats [for](B) thousands of marine species, [protect](C) coastal shorelines, and [supporting](D) local fishing economies.",
         "options": [
-          "(A) essential",
-          "(B) for",
-          "(C) protect",
-          "(D) supporting"
+          "essential",
+          "for",
+          "protect",
+          "supporting"
         ],
         "answer": 3,
         "explanation": "💡 Analisis TOEFL: Struktur Paralel Kata Kerja. Deretan predikat dalam kalimat ini adalah 'provide...', 'protect...', dan seharusnya 'support...' (bentuk kata kerja dasar jamak), bukan bentuk gerund '-ing' ('supporting')."
@@ -11743,7 +11743,8 @@ const APP_DATA = {
           "when electricity was harnessed"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Pola Inversi Negatif (Negative Inversion). Jika sebuah kalimat diawali dengan frasa negatif atau restriktif seperti 'Not until...', maka klausa utama wajib mengalami pembalikan urutan (Auxiliary Verb + Subject): 'was electricity harnessed'."
+        "explanation": "💡 Analisis TOEFL: Pola Inversi Negatif (Negative Inversion). Jika sebuah kalimat diawali dengan frasa negatif atau restriktif seperti 'Not until...', maka klausa utama wajib mengalami pembalikan urutan (Auxiliary Verb + Subject): 'was electricity harnessed'.",
+        "questionText": "Not until the late nineteenth century __________ to illuminate city streets and factories."
       },
       {
         "id": "ts-q12",
@@ -11757,7 +11758,8 @@ const APP_DATA = {
           "to be"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Kesesuaian Subjek & Kata Kerja (Subject-Verb Agreement). Inti subjek dari kalimat ini adalah kata benda tunggal 'The behavior' (bukan 'molecules' yang berada di dalam frasa preposisi), sehingga memerlukan kata kerja tunggal 'is'."
+        "explanation": "💡 Analisis TOEFL: Kesesuaian Subjek & Kata Kerja (Subject-Verb Agreement). Inti subjek dari kalimat ini adalah kata benda tunggal 'The behavior' (bukan 'molecules' yang berada di dalam frasa preposisi), sehingga memerlukan kata kerja tunggal 'is'.",
+        "questionText": "The behavior of individual gas molecules under extremely high pressures and temperatures __________ quite complex."
       },
       {
         "id": "ts-q13",
@@ -11771,7 +11773,8 @@ const APP_DATA = {
           "which formed by"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Klausa Relatif Tereduksi (Reduced Relative Clause). Kalimat sudah memiliki predikat utama 'study'. Frasa setelah 'rocks' berasal dari bentuk pasif 'rocks [which were] formed beneath...', sehingga disederhanakan menjadi past participle (V3) 'formed'."
+        "explanation": "💡 Analisis TOEFL: Klausa Relatif Tereduksi (Reduced Relative Clause). Kalimat sudah memiliki predikat utama 'study'. Frasa setelah 'rocks' berasal dari bentuk pasif 'rocks [which were] formed beneath...', sehingga disederhanakan menjadi past participle (V3) 'formed'.",
+        "questionText": "Geologists study igneous rocks __________ beneath the Earth's crust through the slow cooling of magma."
       },
       {
         "id": "ts-q14",
@@ -11785,7 +11788,8 @@ const APP_DATA = {
           "or also"
         ],
         "answer": 2,
-        "explanation": "💡 Analisis TOEFL: Konjungsi Berpasangan (Correlative Conjunction). Pasangan gramatikal baku untuk 'not only' adalah 'but also' ('not only X but also Y')."
+        "explanation": "💡 Analisis TOEFL: Konjungsi Berpasangan (Correlative Conjunction). Pasangan gramatikal baku untuk 'not only' adalah 'but also' ('not only X but also Y').",
+        "questionText": "A truly successful entrepreneur must possess not only strategic vision __________ the resilience to overcome frequent setbacks."
       },
       {
         "id": "ts-q15",
@@ -11799,7 +11803,8 @@ const APP_DATA = {
           "will revise"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Bentuk Subjunctive Mandatif. Setelah kata kerja rekomendasi atau tuntutan seperti 'recommend that', 'demand that', 'require that', kata kerja klausa berikutnya wajib menggunakan bentuk kata kerja dasar (base form / bare infinitive), yaitu 'revise' (tanpa akhiran -s)."
+        "explanation": "💡 Analisis TOEFL: Bentuk Subjunctive Mandatif. Setelah kata kerja rekomendasi atau tuntutan seperti 'recommend that', 'demand that', 'require that', kata kerja klausa berikutnya wajib menggunakan bentuk kata kerja dasar (base form / bare infinitive), yaitu 'revise' (tanpa akhiran -s).",
+        "questionText": "The committee recommended that each university department __________ its graduation requirements to reflect industry demands."
       },
       {
         "id": "ts-q16",
@@ -11807,13 +11812,15 @@ const APP_DATA = {
         "part": "Part B: Error Identification",
         "prompt": "Pilih jawaban yang paling tepat:",
         "options": [
-          "(A) iron is",
-          "(B) rarely find",
-          "(C) because",
-          "(D) with"
+          "iron is",
+          "rarely find",
+          "because",
+          "with"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Kesalahan bentuk pasif (Passive Voice). Kalimat 'is rarely find' harus menggunakan bentuk Past Participle (V3), yaitu 'is rarely found' (jarang ditemukan)."
+        "explanation": "💡 Analisis TOEFL: Kesalahan bentuk pasif (Passive Voice). Kalimat 'is rarely find' harus menggunakan bentuk Past Participle (V3), yaitu 'is rarely found' (jarang ditemukan).",
+        "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
+        "sentenceHighlighted": "Although [iron is](A) the most abundant metal on Earth, pure elemental iron is [rarely find](B) in nature [because](C) it reacts readily [with](D) oxygen."
       },
       {
         "id": "ts-q17",
@@ -11821,13 +11828,15 @@ const APP_DATA = {
         "part": "Part B: Error Identification",
         "prompt": "Pilih jawaban yang paling tepat:",
         "options": [
-          "(A) conveys",
-          "(B) the direction",
-          "(C) abundant",
-          "(D) to"
+          "conveys",
+          "the direction",
+          "abundant",
+          "to"
         ],
         "answer": 2,
-        "explanation": "💡 Analisis TOEFL: Struktur Paralel (Parallel Structure). Dalam daftar 'direction, distance, and...', semua elemen harus berjenis kata benda (noun). Kata 'abundant' adalah kata sifat (adjective), sehingga harus diubah menjadi kata benda 'abundance'."
+        "explanation": "💡 Analisis TOEFL: Struktur Paralel (Parallel Structure). Dalam daftar 'direction, distance, and...', semua elemen harus berjenis kata benda (noun). Kata 'abundant' adalah kata sifat (adjective), sehingga harus diubah menjadi kata benda 'abundance'.",
+        "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
+        "sentenceHighlighted": "The honeybee scout [conveys](A) detailed information about [the direction](B), distance, and [abundant](C) of nectar sources [to](D) the hive."
       },
       {
         "id": "ts-q18",
@@ -11835,13 +11844,15 @@ const APP_DATA = {
         "part": "Part B: Error Identification",
         "prompt": "Pilih jawaban yang paling tepat:",
         "options": [
-          "(A) Despite of",
-          "(B) in",
-          "(C) remain",
-          "(D) to forecast"
+          "Despite of",
+          "in",
+          "remain",
+          "to forecast"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Kesalahan preposisi ganda. Kata 'Despite' tidak pernah diikuti kata 'of'. Bentuk yang benar adalah 'Despite' saja, atau jika ingin memakai 'of' harus menggunakan frasa 'In spite of'."
+        "explanation": "💡 Analisis TOEFL: Kesalahan preposisi ganda. Kata 'Despite' tidak pernah diikuti kata 'of'. Bentuk yang benar adalah 'Despite' saja, atau jika ingin memakai 'of' harus menggunakan frasa 'In spite of'.",
+        "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
+        "sentenceHighlighted": "[Despite of](A) recent advancements [in](B) satellite meteorology, sudden microbursts [remain](C) extremely difficult [to forecast](D) accurately."
       },
       {
         "id": "ts-q19",
@@ -11849,13 +11860,15 @@ const APP_DATA = {
         "part": "Part B: Error Identification",
         "prompt": "Pilih jawaban yang paling tepat:",
         "options": [
-          "(A) Each of",
-          "(B) were",
-          "(C) under",
-          "(D) licensed"
+          "Each of",
+          "were",
+          "under",
+          "licensed"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Subjek kata ganti 'Each' selalu dianggap tunggal (singular). Oleh karena itu, kata kerja bantu 'were' salah dan seharusnya adalah 'was conducted'."
+        "explanation": "💡 Analisis TOEFL: Subjek kata ganti 'Each' selalu dianggap tunggal (singular). Oleh karena itu, kata kerja bantu 'were' salah dan seharusnya adalah 'was conducted'.",
+        "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
+        "sentenceHighlighted": "[Each of](A) the clinical trials [were](B) conducted [under](C) the strict supervision of [licensed](D) medical professionals."
       },
       {
         "id": "ts-q20",
@@ -11863,13 +11876,15 @@ const APP_DATA = {
         "part": "Part B: Error Identification",
         "prompt": "Pilih jawaban yang paling tepat:",
         "options": [
-          "(A) essential",
-          "(B) for",
-          "(C) protect",
-          "(D) supporting"
+          "essential",
+          "for",
+          "protect",
+          "supporting"
         ],
         "answer": 3,
-        "explanation": "💡 Analisis TOEFL: Struktur Paralel Kata Kerja. Deretan predikat dalam kalimat ini adalah 'provide...', 'protect...', dan seharusnya 'support...' (bentuk kata kerja dasar jamak), bukan bentuk gerund '-ing' ('supporting')."
+        "explanation": "💡 Analisis TOEFL: Struktur Paralel Kata Kerja. Deretan predikat dalam kalimat ini adalah 'provide...', 'protect...', dan seharusnya 'support...' (bentuk kata kerja dasar jamak), bukan bentuk gerund '-ing' ('supporting').",
+        "questionText": "Pilihlah satu bagian bergaris bawah yang secara tata bahasa SALAH:",
+        "sentenceHighlighted": "Coral reefs provide [essential](A) habitats [for](B) thousands of marine species, [protect](C) coastal shorelines, and [supporting](D) local fishing economies."
       },
       {
         "id": "bank-sq-toefl-fast3-l4-0",
@@ -12403,10 +12418,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"The (A) university committee have (B) decided to postpone the annual conference until (C) next November (D).\"",
         "options": [
-          "The (A)",
-          "have (B)",
-          "until (C)",
-          "next (D)"
+          "The",
+          "have",
+          "until",
+          "next"
         ],
         "answer": 1,
         "explanation": "💡 Dosa 1: Subject-Verb Agreement! Subjek \"The university committee\" adalah kata benda kolektif tunggal dalam standar TOEFL ETS, sehingga verb harus \"has decided\", bukan \"have decided\"."
@@ -12418,10 +12433,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"Modern architecture emphasizes simplicity, functional (A), and the innovative (B) use of natural (C) daylight (D).\"",
         "options": [
-          "functional (A)",
-          "innovative (B)",
-          "natural (C)",
-          "daylight (D)"
+          "functional",
+          "innovative",
+          "natural",
+          "daylight"
         ],
         "answer": 0,
         "explanation": "💡 Dosa 2: Parallel Structure! Sebelum dan sesudah tanda koma harus setara: \"simplicity\" (noun), maka (A) harus berupa noun \"functionality\", bukan adjective \"functional\"."
@@ -12433,10 +12448,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"The driver steered the heavy transport vehicle very careful (A) around the dangerous (B) icy curve (C) on the highway (D).\"",
         "options": [
-          "careful (A)",
-          "dangerous (B)",
-          "curve (C)",
-          "on the (D)"
+          "careful",
+          "dangerous",
+          "curve",
+          "on the"
         ],
         "answer": 0,
         "explanation": "💡 Dosa 3: Word Form (Adj vs Adv)! Kata \"steered\" (mengemudi) adalah VERB, sehingga harus diterangkan oleh ADVERB (\"carefully\"), bukan adjective (\"careful\")."
@@ -12448,10 +12463,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"The research team collected many (A) valuable informations (B) regarding the atmospheric (C) changes in the Arctic (D).\"",
         "options": [
-          "many (A)",
-          "informations (B)",
-          "atmospheric (C)",
-          "Arctic (D)"
+          "many",
+          "informations",
+          "atmospheric",
+          "Arctic"
         ],
         "answer": 1,
         "explanation": "💡 Dosa 4: Uncountable Noun! Kata \"information\" adalah UNCOUNTABLE (tidak bisa dihitung). Tidak boleh ada akhiran \"-s\" (informations) dan tidak boleh memakai \"many\" (harus \"much information\")."
@@ -12463,10 +12478,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"Professor Clark was capable to solve (A) the complex aerodynamic (B) problem using advanced (C) computer simulations (D).\"",
         "options": [
-          "capable to solve (A)",
-          "aerodynamic (B)",
-          "advanced (C)",
-          "simulations (D)"
+          "capable to solve",
+          "aerodynamic",
+          "advanced",
+          "simulations"
         ],
         "answer": 0,
         "explanation": "💡 Dosa 5: Preposition Idiom! Pola kata \"capable\" SELALU berpasangan dengan \"OF + V-ing\" (\"capable of solving\"), BUKAN \"capable to solve\"."
@@ -12478,10 +12493,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"Neither the president nor the senators was (A) willing to compromise on (B) the proposed tax legislation (C) during yesterday's debate (D).\"",
         "options": [
-          "was (A)",
-          "on (B)",
-          "legislation (C)",
-          "during (D)"
+          "was",
+          "on",
+          "legislation",
+          "during"
         ],
         "answer": 0,
         "explanation": "💡 Neither... Nor Agreement: Subjek terdekat ke verb adalah \"senators\" (jamak), maka verb harus berbentuk jamak \"were\", bukan \"was\"!"
@@ -12493,10 +12508,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Cari Bagian Salah: \"Plants absorb water and nutrients from the soil through (A) their root systems, which (B) anchor them firm (C) in the ground (D).\"",
         "options": [
-          "through (A)",
-          "which (B)",
-          "firm (C)",
-          "ground (D)"
+          "through",
+          "which",
+          "firm",
+          "ground"
         ],
         "answer": 2,
         "explanation": "💡 Word Form: Kata kerja \"anchor\" membutuhkan adverb untuk menerangkan bagaimana tanaman menancap: harus \"firmly\" (dengan kokoh), bukan adjective \"firm\"."
@@ -12568,10 +12583,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Temukan bagian yang SALAH: \"The architect designed a (A) remarkably (B) beauty building that (C) attracted visitors (D) worldwide.\"",
         "options": [
-          "(A) remarkably",
-          "(B) beauty",
-          "(C) attracted",
-          "(D) worldwide"
+          "remarkably",
+          "beauty",
+          "attracted",
+          "worldwide"
         ],
         "answer": 1,
         "explanation": "💡 Analisis TOEFL: Kata \"building\" adalah kata benda (noun). Di depannya harus ada kata sifat (Adjective) yaitu \"beautiful\", bukan kata benda \"beauty\"! Opsi (B) salah."
@@ -12583,10 +12598,10 @@ const APP_DATA = {
         "prompt": "Pilih jawaban yang paling tepat:",
         "sentence": "Temukan bagian yang SALAH: \"Recent (A) medical (B) researches have revealed that (C) regular exercise (D) improves cognitive health.\"",
         "options": [
-          "(A) medical",
-          "(B) researches",
-          "(C) regular",
-          "(D) improves"
+          "medical",
+          "researches",
+          "regular",
+          "improves"
         ],
         "answer": 1,
         "explanation": "💡 Analisis TOEFL: Kata \"research\" dalam bahasa Inggris akademik adalah Uncountable Noun (kata benda tak terhitung) sehingga TIDAK PERNAH memiliki akhiran jamak \"-es\". Seharusnya \"Recent medical research has revealed...\"."
@@ -13265,7 +13280,13 @@ const APP_DATA = {
           "To argue that anglerfish are the most efficient predators in the ocean"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Ide Pokok (Main Idea). Paragraf 1 menjelaskan mekanisme kimiawi ('chemical mechanism'), dan paragraf 2 menguraikan berbagai fungsi ekologis (menangkap mangsa, pertahanan diri, dan kamuflase) dari bioluminesensi laut."
+        "explanation": "💡 Analisis TOEFL: Ide Pokok (Main Idea). Paragraf 1 menjelaskan mekanisme kimiawi ('chemical mechanism'), dan paragraf 2 menguraikan berbagai fungsi ekologis (menangkap mangsa, pertahanan diri, dan kamuflase) dari bioluminesensi laut.",
+        "passageTitle": "Bioluminescence in Deep-Sea Organisms",
+        "passageText": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below.",
+        "passage": {
+          "title": "Bioluminescence in Deep-Sea Organisms",
+          "text": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below."
+        }
       },
       {
         "id": "ts-q22",
@@ -13279,7 +13300,13 @@ const APP_DATA = {
           "artificially"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Makna Kosakata dalam Konteks. 'Predominantly' bermakna sebagian besar atau terutama (mostly/chiefly/mainly)."
+        "explanation": "💡 Analisis TOEFL: Makna Kosakata dalam Konteks. 'Predominantly' bermakna sebagian besar atau terutama (mostly/chiefly/mainly).",
+        "passageTitle": "Bioluminescence in Deep-Sea Organisms",
+        "passageText": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below.",
+        "passage": {
+          "title": "Bioluminescence in Deep-Sea Organisms",
+          "text": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below."
+        }
       },
       {
         "id": "ts-q23",
@@ -13293,7 +13320,13 @@ const APP_DATA = {
           "Because it produces no visible colors other than blue"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Rincian Fakta (Factual Detail). Teks menyatakan secara eksplisit: '...bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation' (kurang dari 20% energi hilang menjadi radiasi panas)."
+        "explanation": "💡 Analisis TOEFL: Rincian Fakta (Factual Detail). Teks menyatakan secara eksplisit: '...bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation' (kurang dari 20% energi hilang menjadi radiasi panas).",
+        "passageTitle": "Bioluminescence in Deep-Sea Organisms",
+        "passageText": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below.",
+        "passage": {
+          "title": "Bioluminescence in Deep-Sea Organisms",
+          "text": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below."
+        }
       },
       {
         "id": "ts-q24",
@@ -13307,7 +13340,13 @@ const APP_DATA = {
           "It allows fish to communicate complex hunting strategies"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Soal Kesimpulan Tersirat (Inference). Hatchetfish memancarkan cahaya dari perutnya yang cocok dengan intensitas sinar matahari dari atas ('camouflaging their silhouettes from predators lurking below'), sehingga bayangan gelap mereka tidak terlihat oleh pemangsa di bawahnya."
+        "explanation": "💡 Analisis TOEFL: Soal Kesimpulan Tersirat (Inference). Hatchetfish memancarkan cahaya dari perutnya yang cocok dengan intensitas sinar matahari dari atas ('camouflaging their silhouettes from predators lurking below'), sehingga bayangan gelap mereka tidak terlihat oleh pemangsa di bawahnya.",
+        "passageTitle": "Bioluminescence in Deep-Sea Organisms",
+        "passageText": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below.",
+        "passage": {
+          "title": "Bioluminescence in Deep-Sea Organisms",
+          "text": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below."
+        }
       },
       {
         "id": "ts-q25",
@@ -13321,7 +13360,13 @@ const APP_DATA = {
           "To illustrate how anglerfish hunt their prey"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Tujuan Retoris (Author's Purpose). Hatchetfish dihadirkan sebagai contoh konkret dari hewan laut yang memanfaatkan bioluminesensi untuk kamuflase bayangan (counter-illumination)."
+        "explanation": "💡 Analisis TOEFL: Tujuan Retoris (Author's Purpose). Hatchetfish dihadirkan sebagai contoh konkret dari hewan laut yang memanfaatkan bioluminesensi untuk kamuflase bayangan (counter-illumination).",
+        "passageTitle": "Bioluminescence in Deep-Sea Organisms",
+        "passageText": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below.",
+        "passage": {
+          "title": "Bioluminescence in Deep-Sea Organisms",
+          "text": "Bioluminescence, the production and emission of light by living organisms, is predominantly found in marine environments, ranging from coastal waters to the abyssal depths of the ocean. Unlike human-made light, which relies on incandescence and produces substantial heat, bioluminescence is 'cold light,' in which less than twenty percent of the generated energy is lost as thermal radiation. The chemical mechanism typically involves a light-emitting molecule termed luciferin and an enzyme known as luciferase, which catalyzes the oxidation of luciferin in the presence of oxygen and adenosine triphosphate (ATP).\n\nIn the deep sea, where sunlight cannot penetrate beyond a depth of two hundred meters, bioluminescence serves essential survival functions. Predatory species, such as the anglerfish, utilize glowing lures suspended from their heads to attract unsuspecting prey in the pitch-black abyss. Conversely, many smaller organisms utilize bioluminescence for defensive purposes. Certain species of deep-sea squid discharge a luminescent cloud of glowing fluid to disorient predators, allowing the squid to escape undetected. Furthermore, counter-illumination is employed by hatchetfish, which emit light from their bellies that precisely matches the intensity and wavelength of downwelling sunlight, effectively camouflaging their silhouettes from predators lurking below."
+        }
       },
       {
         "id": "ts-q26",
@@ -13335,7 +13380,13 @@ const APP_DATA = {
           "Why electricity grids fail during winter snowstorms in cities"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Ide Pokok Teks (Main Idea). Teks secara lengkap membahas: penyebab (paragraf 1), dampak berbahaya (paragraf 2), dan strategi mitigasi arsitektur hijau (paragraf 3) dari fenomena Urban Heat Island."
+        "explanation": "💡 Analisis TOEFL: Ide Pokok Teks (Main Idea). Teks secara lengkap membahas: penyebab (paragraf 1), dampak berbahaya (paragraf 2), dan strategi mitigasi arsitektur hijau (paragraf 3) dari fenomena Urban Heat Island.",
+        "passageTitle": "Urban Heat Islands and Sustainable Architecture",
+        "passageText": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius.",
+        "passage": {
+          "title": "Urban Heat Islands and Sustainable Architecture",
+          "text": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius."
+        }
       },
       {
         "id": "ts-q27",
@@ -13349,7 +13400,13 @@ const APP_DATA = {
           "fluctuation"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Makna Kosakata (Vocabulary in Context). 'Thermal disparity' merujuk pada perbedaan atau kesenjangan suhu yang kontras antara area perkotaan dan pedesaan (difference/gap)."
+        "explanation": "💡 Analisis TOEFL: Makna Kosakata (Vocabulary in Context). 'Thermal disparity' merujuk pada perbedaan atau kesenjangan suhu yang kontras antara area perkotaan dan pedesaan (difference/gap).",
+        "passageTitle": "Urban Heat Islands and Sustainable Architecture",
+        "passageText": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius.",
+        "passage": {
+          "title": "Urban Heat Islands and Sustainable Architecture",
+          "text": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius."
+        }
       },
       {
         "id": "ts-q28",
@@ -13363,7 +13420,13 @@ const APP_DATA = {
           "Extensive replacement of natural vegetation"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Soal Pengecualian (Negative Factual Detail / EXCEPT). Paragraf 1 menyebutkan bahwa UHI disebabkan oleh bahan berdaya pantul rendah ('low solar reflectance'), panas antropogenik kendaraan, dan hilangnya tumbuhan. Daya pantul tinggi daerah pedesaan (rural albedo) justru merupakan faktor kebalikan (bukan penyebab UHI)."
+        "explanation": "💡 Analisis TOEFL: Soal Pengecualian (Negative Factual Detail / EXCEPT). Paragraf 1 menyebutkan bahwa UHI disebabkan oleh bahan berdaya pantul rendah ('low solar reflectance'), panas antropogenik kendaraan, dan hilangnya tumbuhan. Daya pantul tinggi daerah pedesaan (rural albedo) justru merupakan faktor kebalikan (bukan penyebab UHI).",
+        "passageTitle": "Urban Heat Islands and Sustainable Architecture",
+        "passageText": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius.",
+        "passage": {
+          "title": "Urban Heat Islands and Sustainable Architecture",
+          "text": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius."
+        }
       },
       {
         "id": "ts-q29",
@@ -13377,7 +13440,13 @@ const APP_DATA = {
           "Chlorofluorocarbons (CFCs)"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Rincian Fakta Teks (Factual Detail). Paragraf 2 menyatakan: 'Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone...'"
+        "explanation": "💡 Analisis TOEFL: Rincian Fakta Teks (Factual Detail). Paragraf 2 menyatakan: 'Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone...'",
+        "passageTitle": "Urban Heat Islands and Sustainable Architecture",
+        "passageText": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius.",
+        "passage": {
+          "title": "Urban Heat Islands and Sustainable Architecture",
+          "text": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius."
+        }
       },
       {
         "id": "ts-q30",
@@ -13391,7 +13460,13 @@ const APP_DATA = {
           "Attracting continuous rainfall to downtown centers"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Kesimpulan Logis (Inference). Paragraf 3 menerangkan bahwa atap hijau ('green roofs') bekerja dengan cara memfasilitasi pendinginan evaporatif dari tanaman ('evaporative cooling') sekaligus mengisolasi ruang bangunan bagian dalam ('insulating interior living spaces')."
+        "explanation": "💡 Analisis TOEFL: Kesimpulan Logis (Inference). Paragraf 3 menerangkan bahwa atap hijau ('green roofs') bekerja dengan cara memfasilitasi pendinginan evaporatif dari tanaman ('evaporative cooling') sekaligus mengisolasi ruang bangunan bagian dalam ('insulating interior living spaces').",
+        "passageTitle": "Urban Heat Islands and Sustainable Architecture",
+        "passageText": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius.",
+        "passage": {
+          "title": "Urban Heat Islands and Sustainable Architecture",
+          "text": "The Urban Heat Island (UHI) effect is a phenomenon in which metropolitan areas experience significantly higher temperatures than their surrounding rural peripheries. This thermal disparity arises primarily from the extensive replacement of natural vegetation with conventional building materials, such as concrete and asphalt, which possess high thermal mass and low solar reflectance (albedo). During daylight hours, these dark, impervious surfaces absorb vast quantities of shortwave solar radiation, storing it as heat and re-emitting it into the lower atmosphere during the evening and night. Compounding this problem is the anthropogenic heat generated by motor vehicles, air conditioning compressors, and industrial manufacturing plants.\n\nThe consequences of urban heat islands extend beyond mere discomfort for metropolitan inhabitants. Elevated urban temperatures dramatically accelerate the formation of ground-level tropospheric ozone, a hazardous air pollutant that exacerbates respiratory ailments such as asthma and chronic bronchitis. Furthermore, as municipal cooling demand surges during heatwaves, electrical grids face unprecedented stress, frequently triggering brownouts and necessitating the increased combustion of fossil fuels at peak-load power plants.\n\nIn response, contemporary urban planners and architects are adopting innovative mitigation strategies. Among the most promising is the installation of extensive green roofs — rooftop gardens covered with sedum and drought-tolerant foliage that facilitate evaporative cooling while insulating interior living spaces. Additionally, the widespread deployment of 'cool pavements' and reflective cool-roof coatings with high solar reflectance index (SRI) values can redirect solar energy back into space before it can be absorbed. When integrated with expansive urban tree canopies, these nature-based solutions can suppress urban ambient temperatures by as much as three to five degrees Celsius."
+        }
       },
       {
         "id": "bank-r-toefl-fast3-l8-0",
@@ -13409,7 +13484,9 @@ const APP_DATA = {
           "The role of medieval monasteries in preserving ancient classical texts."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Kalimat pembuka paragraf 1 dan paragraf 2 menyoroti bagaimana pencetakan mekanik menggantikan naskah tulisan tangan serta dampak sosialnya yang masif."
+        "explanation": "💡 Analisis TOEFL: Kalimat pembuka paragraf 1 dan paragraf 2 menyoroti bagaimana pencetakan mekanik menggantikan naskah tulisan tangan serta dampak sosialnya yang masif.",
+        "passageTitle": "The Origins of Modern Printing and Information Flow",
+        "passageText": "Prior to the mid-fifteenth century in Western Europe, the reproduction of written works was an extraordinarily laborious and expensive endeavor. Every manuscript had to be meticulously copied by hand, a task primarily undertaken by scribes in monastic scriptoria or specialized urban workshops. Consequently, books remained scarce luxury items accessible almost exclusively to the ecclesiastical elite, universities, and wealthy royalty. Information flowed sluggishly, and scholarly debate was often constrained by the geographical isolation of literary materials.\n\nThe trajectory of European intellectual history shifted dramatically around 1440 when Johannes Gutenberg, a German goldsmith from Mainz, introduced movable metal type. While woodblock printing had been utilized for centuries in East Asia, Gutenberg combined multiple ingenious innovations into an integrated mechanical system: durable lead-alloy type pieces, oil-based ink that adhered smoothly to metal surfaces, and an adapted wooden screw press modeled after wine and olive presses. His invention allowed identical texts to be produced with unprecedented speed and uniform accuracy.\n\nThe societal repercussions of Gutenberg's press were immediate and far-reaching. Within several decades, print shops sprouted across major European commercial centers, from Venice to Paris. The resulting plunge in book prices democratized access to classical treatises, scientific discoveries, and religious translations. This democratization of knowledge was pivotal in accelerating the Renaissance, fueling the scientific revolution, and laying the groundwork for widespread literacy among the emergent middle classes."
       },
       {
         "id": "bank-r-toefl-fast3-l8-1",
@@ -13427,7 +13504,9 @@ const APP_DATA = {
           "Most secular universities discouraged students from purchasing books."
         ],
         "answer": 2,
-        "explanation": "💡 Analisis TOEFL: Paragraf 1 menyatakan: 'Every manuscript had to be meticulously copied by hand... Consequently, books remained scarce luxury items'."
+        "explanation": "💡 Analisis TOEFL: Paragraf 1 menyatakan: 'Every manuscript had to be meticulously copied by hand... Consequently, books remained scarce luxury items'.",
+        "passageTitle": "The Origins of Modern Printing and Information Flow",
+        "passageText": "Prior to the mid-fifteenth century in Western Europe, the reproduction of written works was an extraordinarily laborious and expensive endeavor. Every manuscript had to be meticulously copied by hand, a task primarily undertaken by scribes in monastic scriptoria or specialized urban workshops. Consequently, books remained scarce luxury items accessible almost exclusively to the ecclesiastical elite, universities, and wealthy royalty. Information flowed sluggishly, and scholarly debate was often constrained by the geographical isolation of literary materials.\n\nThe trajectory of European intellectual history shifted dramatically around 1440 when Johannes Gutenberg, a German goldsmith from Mainz, introduced movable metal type. While woodblock printing had been utilized for centuries in East Asia, Gutenberg combined multiple ingenious innovations into an integrated mechanical system: durable lead-alloy type pieces, oil-based ink that adhered smoothly to metal surfaces, and an adapted wooden screw press modeled after wine and olive presses. His invention allowed identical texts to be produced with unprecedented speed and uniform accuracy.\n\nThe societal repercussions of Gutenberg's press were immediate and far-reaching. Within several decades, print shops sprouted across major European commercial centers, from Venice to Paris. The resulting plunge in book prices democratized access to classical treatises, scientific discoveries, and religious translations. This democratization of knowledge was pivotal in accelerating the Renaissance, fueling the scientific revolution, and laying the groundwork for widespread literacy among the emergent middle classes."
       },
       {
         "id": "bank-r-toefl-fast3-l8-2",
@@ -13445,7 +13524,9 @@ const APP_DATA = {
           "temporary"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis Kosakata: Kata 'pivotal' berarti 'sangat penting / menjadi titik tolak krusial' (= crucial)."
+        "explanation": "💡 Analisis Kosakata: Kata 'pivotal' berarti 'sangat penting / menjadi titik tolak krusial' (= crucial).",
+        "passageTitle": "The Origins of Modern Printing and Information Flow",
+        "passageText": "Prior to the mid-fifteenth century in Western Europe, the reproduction of written works was an extraordinarily laborious and expensive endeavor. Every manuscript had to be meticulously copied by hand, a task primarily undertaken by scribes in monastic scriptoria or specialized urban workshops. Consequently, books remained scarce luxury items accessible almost exclusively to the ecclesiastical elite, universities, and wealthy royalty. Information flowed sluggishly, and scholarly debate was often constrained by the geographical isolation of literary materials.\n\nThe trajectory of European intellectual history shifted dramatically around 1440 when Johannes Gutenberg, a German goldsmith from Mainz, introduced movable metal type. While woodblock printing had been utilized for centuries in East Asia, Gutenberg combined multiple ingenious innovations into an integrated mechanical system: durable lead-alloy type pieces, oil-based ink that adhered smoothly to metal surfaces, and an adapted wooden screw press modeled after wine and olive presses. His invention allowed identical texts to be produced with unprecedented speed and uniform accuracy.\n\nThe societal repercussions of Gutenberg's press were immediate and far-reaching. Within several decades, print shops sprouted across major European commercial centers, from Venice to Paris. The resulting plunge in book prices democratized access to classical treatises, scientific discoveries, and religious translations. This democratization of knowledge was pivotal in accelerating the Renaissance, fueling the scientific revolution, and laying the groundwork for widespread literacy among the emergent middle classes."
       },
       {
         "id": "bank-r-toefl-fast3-l8-3",
@@ -13463,7 +13544,9 @@ const APP_DATA = {
           "An East Asian printer"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis Pronoun Reference: Kata ganti 'His invention' secara langsung merujuk pada subjek yang diperkenalkan sebelumnya: 'Johannes Gutenberg, a German goldsmith'."
+        "explanation": "💡 Analisis Pronoun Reference: Kata ganti 'His invention' secara langsung merujuk pada subjek yang diperkenalkan sebelumnya: 'Johannes Gutenberg, a German goldsmith'.",
+        "passageTitle": "The Origins of Modern Printing and Information Flow",
+        "passageText": "Prior to the mid-fifteenth century in Western Europe, the reproduction of written works was an extraordinarily laborious and expensive endeavor. Every manuscript had to be meticulously copied by hand, a task primarily undertaken by scribes in monastic scriptoria or specialized urban workshops. Consequently, books remained scarce luxury items accessible almost exclusively to the ecclesiastical elite, universities, and wealthy royalty. Information flowed sluggishly, and scholarly debate was often constrained by the geographical isolation of literary materials.\n\nThe trajectory of European intellectual history shifted dramatically around 1440 when Johannes Gutenberg, a German goldsmith from Mainz, introduced movable metal type. While woodblock printing had been utilized for centuries in East Asia, Gutenberg combined multiple ingenious innovations into an integrated mechanical system: durable lead-alloy type pieces, oil-based ink that adhered smoothly to metal surfaces, and an adapted wooden screw press modeled after wine and olive presses. His invention allowed identical texts to be produced with unprecedented speed and uniform accuracy.\n\nThe societal repercussions of Gutenberg's press were immediate and far-reaching. Within several decades, print shops sprouted across major European commercial centers, from Venice to Paris. The resulting plunge in book prices democratized access to classical treatises, scientific discoveries, and religious translations. This democratization of knowledge was pivotal in accelerating the Renaissance, fueling the scientific revolution, and laying the groundwork for widespread literacy among the emergent middle classes."
       },
       {
         "id": "bank-r-toefl-fast3-l8-4",
@@ -13481,7 +13564,9 @@ const APP_DATA = {
           "An adapted wooden screw press"
         ],
         "answer": 2,
-        "explanation": "💡 Soal Negative Factual: Mesin bertenaga uap ('steam-powered') baru muncul berabad-abad kemudian saat Revolusi Industri, bukan bagian dari inovasi Gutenberg tahun 1440."
+        "explanation": "💡 Soal Negative Factual: Mesin bertenaga uap ('steam-powered') baru muncul berabad-abad kemudian saat Revolusi Industri, bukan bagian dari inovasi Gutenberg tahun 1440.",
+        "passageTitle": "The Origins of Modern Printing and Information Flow",
+        "passageText": "Prior to the mid-fifteenth century in Western Europe, the reproduction of written works was an extraordinarily laborious and expensive endeavor. Every manuscript had to be meticulously copied by hand, a task primarily undertaken by scribes in monastic scriptoria or specialized urban workshops. Consequently, books remained scarce luxury items accessible almost exclusively to the ecclesiastical elite, universities, and wealthy royalty. Information flowed sluggishly, and scholarly debate was often constrained by the geographical isolation of literary materials.\n\nThe trajectory of European intellectual history shifted dramatically around 1440 when Johannes Gutenberg, a German goldsmith from Mainz, introduced movable metal type. While woodblock printing had been utilized for centuries in East Asia, Gutenberg combined multiple ingenious innovations into an integrated mechanical system: durable lead-alloy type pieces, oil-based ink that adhered smoothly to metal surfaces, and an adapted wooden screw press modeled after wine and olive presses. His invention allowed identical texts to be produced with unprecedented speed and uniform accuracy.\n\nThe societal repercussions of Gutenberg's press were immediate and far-reaching. Within several decades, print shops sprouted across major European commercial centers, from Venice to Paris. The resulting plunge in book prices democratized access to classical treatises, scientific discoveries, and religious translations. This democratization of knowledge was pivotal in accelerating the Renaissance, fueling the scientific revolution, and laying the groundwork for widespread literacy among the emergent middle classes."
       },
       {
         "id": "bank-r-toefl-u2-l2-0",
@@ -13499,7 +13584,9 @@ const APP_DATA = {
           "Karbon dioksida adalah penyebab utama perubahan iklim"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: Bacaan membahas berbagai dampak kerusakan akibat deforestasi DAN menegaskan bahwa aktivitas ini masih terus meningkat — menjadikan opsi ke-2 sebagai ide pokok (main idea) yang paling lengkap dan akurat."
+        "explanation": "💡 Penjelasan: Bacaan membahas berbagai dampak kerusakan akibat deforestasi DAN menegaskan bahwa aktivitas ini masih terus meningkat — menjadikan opsi ke-2 sebagai ide pokok (main idea) yang paling lengkap dan akurat.",
+        "passageTitle": "Deforestation and Global Ecosystems",
+        "passageText": "Deforestation, the large-scale removal of forests, poses significant threats to global ecosystems. Scientists estimate that approximately 18 million acres of forest are destroyed each year. This rapid loss of forest cover contributes to climate change, as trees play a crucial role in absorbing carbon dioxide from the atmosphere.\n\nFurthermore, deforestation leads to soil erosion, water cycle disruption, and the devastating loss of biodiversity. When forests disappear, countless species lose their natural habitats, often resulting in extinction. Tropical rainforests, which cover only 6% of Earth's surface, are estimated to contain more than half of the world's plant and animal species.\n\nDespite these alarming consequences, deforestation continues to accelerate, driven primarily by agricultural expansion, logging, and urban development. Governments and environmental organizations are increasingly calling for stricter regulations and sustainable land-use practices to address this global crisis."
       },
       {
         "id": "bank-r-toefl-u2-l2-1",
@@ -13517,7 +13604,9 @@ const APP_DATA = {
           "surprising (mengejutkan)"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: \"Crucial\" bermakna sangat penting / vital (extremely important/essential). Pohon memainkan peran penting dalam menyerap gas karbon dioksida di atmosfer."
+        "explanation": "💡 Penjelasan: \"Crucial\" bermakna sangat penting / vital (extremely important/essential). Pohon memainkan peran penting dalam menyerap gas karbon dioksida di atmosfer.",
+        "passageTitle": "Deforestation and Global Ecosystems",
+        "passageText": "Deforestation, the large-scale removal of forests, poses significant threats to global ecosystems. Scientists estimate that approximately 18 million acres of forest are destroyed each year. This rapid loss of forest cover contributes to climate change, as trees play a crucial role in absorbing carbon dioxide from the atmosphere.\n\nFurthermore, deforestation leads to soil erosion, water cycle disruption, and the devastating loss of biodiversity. When forests disappear, countless species lose their natural habitats, often resulting in extinction. Tropical rainforests, which cover only 6% of Earth's surface, are estimated to contain more than half of the world's plant and animal species.\n\nDespite these alarming consequences, deforestation continues to accelerate, driven primarily by agricultural expansion, logging, and urban development. Governments and environmental organizations are increasingly calling for stricter regulations and sustainable land-use practices to address this global crisis."
       },
       {
         "id": "bank-r-toefl-u2-l2-2",
@@ -13535,7 +13624,9 @@ const APP_DATA = {
           "Less than 1% (Kurang dari 1%)"
         ],
         "answer": 2,
-        "explanation": "💡 Penjelasan: Paragraf 2 menyatakan secara langsung: \"Tropical rainforests, which cover only 6% of Earth's surface...\" (Hutan hujan tropis hanya menutupi 6% permukaan Bumi)."
+        "explanation": "💡 Penjelasan: Paragraf 2 menyatakan secara langsung: \"Tropical rainforests, which cover only 6% of Earth's surface...\" (Hutan hujan tropis hanya menutupi 6% permukaan Bumi).",
+        "passageTitle": "Deforestation and Global Ecosystems",
+        "passageText": "Deforestation, the large-scale removal of forests, poses significant threats to global ecosystems. Scientists estimate that approximately 18 million acres of forest are destroyed each year. This rapid loss of forest cover contributes to climate change, as trees play a crucial role in absorbing carbon dioxide from the atmosphere.\n\nFurthermore, deforestation leads to soil erosion, water cycle disruption, and the devastating loss of biodiversity. When forests disappear, countless species lose their natural habitats, often resulting in extinction. Tropical rainforests, which cover only 6% of Earth's surface, are estimated to contain more than half of the world's plant and animal species.\n\nDespite these alarming consequences, deforestation continues to accelerate, driven primarily by agricultural expansion, logging, and urban development. Governments and environmental organizations are increasingly calling for stricter regulations and sustainable land-use practices to address this global crisis."
       },
       {
         "id": "bank-r-toefl-u2-l2-3",
@@ -13553,7 +13644,9 @@ const APP_DATA = {
           "Kehilangan keanekaragaman hayati bukan masalah serius"
         ],
         "answer": 2,
-        "explanation": "💡 Penjelasan: Kalimat penutup \"...calling for stricter regulations and sustainable land-use practices\" (mendesak regulasi yang lebih ketat) mengindikasikan bahwa penulis mendukung adanya tindakan nyata yang lebih tegas."
+        "explanation": "💡 Penjelasan: Kalimat penutup \"...calling for stricter regulations and sustainable land-use practices\" (mendesak regulasi yang lebih ketat) mengindikasikan bahwa penulis mendukung adanya tindakan nyata yang lebih tegas.",
+        "passageTitle": "Deforestation and Global Ecosystems",
+        "passageText": "Deforestation, the large-scale removal of forests, poses significant threats to global ecosystems. Scientists estimate that approximately 18 million acres of forest are destroyed each year. This rapid loss of forest cover contributes to climate change, as trees play a crucial role in absorbing carbon dioxide from the atmosphere.\n\nFurthermore, deforestation leads to soil erosion, water cycle disruption, and the devastating loss of biodiversity. When forests disappear, countless species lose their natural habitats, often resulting in extinction. Tropical rainforests, which cover only 6% of Earth's surface, are estimated to contain more than half of the world's plant and animal species.\n\nDespite these alarming consequences, deforestation continues to accelerate, driven primarily by agricultural expansion, logging, and urban development. Governments and environmental organizations are increasingly calling for stricter regulations and sustainable land-use practices to address this global crisis."
       },
       {
         "id": "bank-r-toefl-u2-l2-4",
@@ -13571,7 +13664,9 @@ const APP_DATA = {
           "Untuk menggambarkan ukuran hutan hujan tropis"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: Angka statistik 18 juta hektar hutan disajikan sebagai bukti konkret (evidence) untuk mendukung pernyataan bahwa deforestasi terjadi dalam skala yang luar biasa besar."
+        "explanation": "💡 Penjelasan: Angka statistik 18 juta hektar hutan disajikan sebagai bukti konkret (evidence) untuk mendukung pernyataan bahwa deforestasi terjadi dalam skala yang luar biasa besar.",
+        "passageTitle": "Deforestation and Global Ecosystems",
+        "passageText": "Deforestation, the large-scale removal of forests, poses significant threats to global ecosystems. Scientists estimate that approximately 18 million acres of forest are destroyed each year. This rapid loss of forest cover contributes to climate change, as trees play a crucial role in absorbing carbon dioxide from the atmosphere.\n\nFurthermore, deforestation leads to soil erosion, water cycle disruption, and the devastating loss of biodiversity. When forests disappear, countless species lose their natural habitats, often resulting in extinction. Tropical rainforests, which cover only 6% of Earth's surface, are estimated to contain more than half of the world's plant and animal species.\n\nDespite these alarming consequences, deforestation continues to accelerate, driven primarily by agricultural expansion, logging, and urban development. Governments and environmental organizations are increasingly calling for stricter regulations and sustainable land-use practices to address this global crisis."
       },
       {
         "id": "bank-r-toefl-u2-l3-0",
@@ -13589,7 +13684,9 @@ const APP_DATA = {
           "Sejarah komputer dan teknologi digital"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: Teks menyajikan KEDUA sisi secara objektif: manfaat positif AI (efisiensi, medis) dan kekhawatiran yang dihadapi (hilangnya lapangan kerja, etika keputusan mandiri)."
+        "explanation": "💡 Penjelasan: Teks menyajikan KEDUA sisi secara objektif: manfaat positif AI (efisiensi, medis) dan kekhawatiran yang dihadapi (hilangnya lapangan kerja, etika keputusan mandiri).",
+        "passageTitle": "The Rise of Artificial Intelligence",
+        "passageText": "The development of artificial intelligence (AI) has transformed numerous industries over the past decade. AI systems are now capable of performing tasks that previously required human intelligence, including image recognition, language translation, and complex decision-making. These capabilities have made AI an invaluable tool in fields such as medicine, finance, and transportation.\n\nProponents of AI argue that these technologies significantly increase efficiency and reduce human error. In the medical field, for example, AI algorithms have demonstrated the ability to detect certain cancers with greater accuracy than experienced physicians. Similarly, autonomous vehicles equipped with AI systems have the potential to drastically reduce traffic accidents caused by human error.\n\nHowever, critics express serious concerns about the rapid expansion of AI. Chief among these is the issue of job displacement, as automation threatens to render many traditional occupations obsolete. Additionally, questions surrounding the ethical implications of autonomous decision-making systems — particularly in law enforcement and military applications — remain largely unresolved."
       },
       {
         "id": "bank-r-toefl-u2-l3-1",
@@ -13607,7 +13704,9 @@ const APP_DATA = {
           "opponents (lawan)"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: \"Proponents\" artinya para pendukung / advokat ide tersebut (supporters/advocates). Mereka berargumen mengenai dampak positif peningkatan efisiensi."
+        "explanation": "💡 Penjelasan: \"Proponents\" artinya para pendukung / advokat ide tersebut (supporters/advocates). Mereka berargumen mengenai dampak positif peningkatan efisiensi.",
+        "passageTitle": "The Rise of Artificial Intelligence",
+        "passageText": "The development of artificial intelligence (AI) has transformed numerous industries over the past decade. AI systems are now capable of performing tasks that previously required human intelligence, including image recognition, language translation, and complex decision-making. These capabilities have made AI an invaluable tool in fields such as medicine, finance, and transportation.\n\nProponents of AI argue that these technologies significantly increase efficiency and reduce human error. In the medical field, for example, AI algorithms have demonstrated the ability to detect certain cancers with greater accuracy than experienced physicians. Similarly, autonomous vehicles equipped with AI systems have the potential to drastically reduce traffic accidents caused by human error.\n\nHowever, critics express serious concerns about the rapid expansion of AI. Chief among these is the issue of job displacement, as automation threatens to render many traditional occupations obsolete. Additionally, questions surrounding the ethical implications of autonomous decision-making systems — particularly in law enforcement and military applications — remain largely unresolved."
       },
       {
         "id": "bank-r-toefl-u2-l3-2",
@@ -13625,7 +13724,9 @@ const APP_DATA = {
           "AI hanya bermanfaat di bidang transportasi"
         ],
         "answer": 2,
-        "explanation": "💡 Penjelasan: Paragraf 3 secara eksplisit menyebutkan ancaman hilangnya lapangan pekerjaan (job displacement) dan dilema etika sebagai kekhawatiran utama para kritikus."
+        "explanation": "💡 Penjelasan: Paragraf 3 secara eksplisit menyebutkan ancaman hilangnya lapangan pekerjaan (job displacement) dan dilema etika sebagai kekhawatiran utama para kritikus.",
+        "passageTitle": "The Rise of Artificial Intelligence",
+        "passageText": "The development of artificial intelligence (AI) has transformed numerous industries over the past decade. AI systems are now capable of performing tasks that previously required human intelligence, including image recognition, language translation, and complex decision-making. These capabilities have made AI an invaluable tool in fields such as medicine, finance, and transportation.\n\nProponents of AI argue that these technologies significantly increase efficiency and reduce human error. In the medical field, for example, AI algorithms have demonstrated the ability to detect certain cancers with greater accuracy than experienced physicians. Similarly, autonomous vehicles equipped with AI systems have the potential to drastically reduce traffic accidents caused by human error.\n\nHowever, critics express serious concerns about the rapid expansion of AI. Chief among these is the issue of job displacement, as automation threatens to render many traditional occupations obsolete. Additionally, questions surrounding the ethical implications of autonomous decision-making systems — particularly in law enforcement and military applications — remain largely unresolved."
       },
       {
         "id": "bank-r-toefl-u2-l3-3",
@@ -13643,7 +13744,9 @@ const APP_DATA = {
           "tumbuh dengan cepat"
         ],
         "answer": 1,
-        "explanation": "💡 Penjelasan: \"Obsolete\" berarti usang, ketinggalan zaman, atau tidak lagi digunakan karena tergantikan oleh teknologi baru."
+        "explanation": "💡 Penjelasan: \"Obsolete\" berarti usang, ketinggalan zaman, atau tidak lagi digunakan karena tergantikan oleh teknologi baru.",
+        "passageTitle": "The Rise of Artificial Intelligence",
+        "passageText": "The development of artificial intelligence (AI) has transformed numerous industries over the past decade. AI systems are now capable of performing tasks that previously required human intelligence, including image recognition, language translation, and complex decision-making. These capabilities have made AI an invaluable tool in fields such as medicine, finance, and transportation.\n\nProponents of AI argue that these technologies significantly increase efficiency and reduce human error. In the medical field, for example, AI algorithms have demonstrated the ability to detect certain cancers with greater accuracy than experienced physicians. Similarly, autonomous vehicles equipped with AI systems have the potential to drastically reduce traffic accidents caused by human error.\n\nHowever, critics express serious concerns about the rapid expansion of AI. Chief among these is the issue of job displacement, as automation threatens to render many traditional occupations obsolete. Additionally, questions surrounding the ethical implications of autonomous decision-making systems — particularly in law enforcement and military applications — remain largely unresolved."
       },
       {
         "id": "bank-r-toefl-u2-l3-4",
@@ -13661,7 +13764,9 @@ const APP_DATA = {
           "Netral tanpa pemahaman materi"
         ],
         "answer": 2,
-        "explanation": "💡 Penjelasan: Penulis memaparkan sudut pandang para pendukung (proponents) dan kritikus (critics) dengan porsi adil tanpa memihak secara ekstrem, sehingga sikapnya adalah berimbang (balanced)."
+        "explanation": "💡 Penjelasan: Penulis memaparkan sudut pandang para pendukung (proponents) dan kritikus (critics) dengan porsi adil tanpa memihak secara ekstrem, sehingga sikapnya adalah berimbang (balanced).",
+        "passageTitle": "The Rise of Artificial Intelligence",
+        "passageText": "The development of artificial intelligence (AI) has transformed numerous industries over the past decade. AI systems are now capable of performing tasks that previously required human intelligence, including image recognition, language translation, and complex decision-making. These capabilities have made AI an invaluable tool in fields such as medicine, finance, and transportation.\n\nProponents of AI argue that these technologies significantly increase efficiency and reduce human error. In the medical field, for example, AI algorithms have demonstrated the ability to detect certain cancers with greater accuracy than experienced physicians. Similarly, autonomous vehicles equipped with AI systems have the potential to drastically reduce traffic accidents caused by human error.\n\nHowever, critics express serious concerns about the rapid expansion of AI. Chief among these is the issue of job displacement, as automation threatens to render many traditional occupations obsolete. Additionally, questions surrounding the ethical implications of autonomous decision-making systems — particularly in law enforcement and military applications — remain largely unresolved."
       },
       {
         "id": "bank-r-toefl-u2-l4-0",
@@ -13679,7 +13784,9 @@ const APP_DATA = {
           "Methods used by beekeepers to increase commercial honey production."
         ],
         "answer": 1,
-        "explanation": "💡 Main Idea: Paragraf pertama dan kedua secara eksplisit menjelaskan bagaimana tarian 'waggle dance' menyandikan koordinat arah dan jarak sumber makanan."
+        "explanation": "💡 Main Idea: Paragraf pertama dan kedua secara eksplisit menjelaskan bagaimana tarian 'waggle dance' menyandikan koordinat arah dan jarak sumber makanan.",
+        "passageTitle": "Honeybee Communication and the Waggle Dance",
+        "passageText": "Among social insects, the Western honeybee (Apis mellifera) possesses one of the most sophisticated communication systems found anywhere in the animal kingdom. When a successful foraging bee discovers a rich nectar or pollen source far from the hive, she returns to the colony and performs an intricate physical routine upon the vertical honeycomb, commonly known as the 'waggle dance.' First deciphered in detail by Austrian ethologist Karl von Frisch in the mid-twentieth century, this ritual encodes precise geographic coordinates using purely kinetic and sensory signals.\n\nThe choreography of the dance consists of a figure-eight pattern featuring a central straight run flanked by two alternating semicircular loops. During the straight run, the bee vigorously vibrates her abdomen from side to side while emitting low-frequency acoustic pulses with her wings. The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the current azimuth of the sun. For instance, if the dancer angles her run forty-five degrees to the right of vertical, following bees understand that the food is located forty-five degrees to the right of the sun's position.\n\nFurthermore, the duration of the waggle phase conveys distance. A longer duration corresponds directly to a greater flight distance, with each second of waggling translating to approximately one kilometer of flight. Potential recruits observe the dance in the dark interior of the hive using their antennae and mechanoreceptors. In addition, the dancer periodically regurgitates samples of floral nectar, allowing her nestmates to identify the distinctive scent and sugar concentration of the targeted flora before departing into the field."
       },
       {
         "id": "bank-r-toefl-u2-l4-1",
@@ -13697,7 +13804,9 @@ const APP_DATA = {
           "By flying directly towards the sun inside the hive."
         ],
         "answer": 1,
-        "explanation": "💡 Fact Detail: Paragraf 2 menyatakan: 'The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the sun'."
+        "explanation": "💡 Fact Detail: Paragraf 2 menyatakan: 'The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the sun'.",
+        "passageTitle": "Honeybee Communication and the Waggle Dance",
+        "passageText": "Among social insects, the Western honeybee (Apis mellifera) possesses one of the most sophisticated communication systems found anywhere in the animal kingdom. When a successful foraging bee discovers a rich nectar or pollen source far from the hive, she returns to the colony and performs an intricate physical routine upon the vertical honeycomb, commonly known as the 'waggle dance.' First deciphered in detail by Austrian ethologist Karl von Frisch in the mid-twentieth century, this ritual encodes precise geographic coordinates using purely kinetic and sensory signals.\n\nThe choreography of the dance consists of a figure-eight pattern featuring a central straight run flanked by two alternating semicircular loops. During the straight run, the bee vigorously vibrates her abdomen from side to side while emitting low-frequency acoustic pulses with her wings. The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the current azimuth of the sun. For instance, if the dancer angles her run forty-five degrees to the right of vertical, following bees understand that the food is located forty-five degrees to the right of the sun's position.\n\nFurthermore, the duration of the waggle phase conveys distance. A longer duration corresponds directly to a greater flight distance, with each second of waggling translating to approximately one kilometer of flight. Potential recruits observe the dance in the dark interior of the hive using their antennae and mechanoreceptors. In addition, the dancer periodically regurgitates samples of floral nectar, allowing her nestmates to identify the distinctive scent and sugar concentration of the targeted flora before departing into the field."
       },
       {
         "id": "bank-r-toefl-u2-l4-2",
@@ -13715,7 +13824,9 @@ const APP_DATA = {
           "frequent"
         ],
         "answer": 0,
-        "explanation": "💡 Vocabulary in Context: Kata 'intricate' berarti rumit, penuh detail terkoordinasi (= complex)."
+        "explanation": "💡 Vocabulary in Context: Kata 'intricate' berarti rumit, penuh detail terkoordinasi (= complex).",
+        "passageTitle": "Honeybee Communication and the Waggle Dance",
+        "passageText": "Among social insects, the Western honeybee (Apis mellifera) possesses one of the most sophisticated communication systems found anywhere in the animal kingdom. When a successful foraging bee discovers a rich nectar or pollen source far from the hive, she returns to the colony and performs an intricate physical routine upon the vertical honeycomb, commonly known as the 'waggle dance.' First deciphered in detail by Austrian ethologist Karl von Frisch in the mid-twentieth century, this ritual encodes precise geographic coordinates using purely kinetic and sensory signals.\n\nThe choreography of the dance consists of a figure-eight pattern featuring a central straight run flanked by two alternating semicircular loops. During the straight run, the bee vigorously vibrates her abdomen from side to side while emitting low-frequency acoustic pulses with her wings. The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the current azimuth of the sun. For instance, if the dancer angles her run forty-five degrees to the right of vertical, following bees understand that the food is located forty-five degrees to the right of the sun's position.\n\nFurthermore, the duration of the waggle phase conveys distance. A longer duration corresponds directly to a greater flight distance, with each second of waggling translating to approximately one kilometer of flight. Potential recruits observe the dance in the dark interior of the hive using their antennae and mechanoreceptors. In addition, the dancer periodically regurgitates samples of floral nectar, allowing her nestmates to identify the distinctive scent and sugar concentration of the targeted flora before departing into the field."
       },
       {
         "id": "bank-r-toefl-u2-l4-3",
@@ -13733,7 +13844,9 @@ const APP_DATA = {
           "Feeling the angle and duration of the central straight run in the dark hive."
         ],
         "answer": 2,
-        "explanation": "💡 Negative Factual: Paragraf 3 menyatakan sarang lebah bagian dalam berada dalam kondisi gelap gulita ('in the dark interior of the hive'), sehingga lebah tidak memakai penglihatan sinar matahari melainkan antena dan getaran mekanik."
+        "explanation": "💡 Negative Factual: Paragraf 3 menyatakan sarang lebah bagian dalam berada dalam kondisi gelap gulita ('in the dark interior of the hive'), sehingga lebah tidak memakai penglihatan sinar matahari melainkan antena dan getaran mekanik.",
+        "passageTitle": "Honeybee Communication and the Waggle Dance",
+        "passageText": "Among social insects, the Western honeybee (Apis mellifera) possesses one of the most sophisticated communication systems found anywhere in the animal kingdom. When a successful foraging bee discovers a rich nectar or pollen source far from the hive, she returns to the colony and performs an intricate physical routine upon the vertical honeycomb, commonly known as the 'waggle dance.' First deciphered in detail by Austrian ethologist Karl von Frisch in the mid-twentieth century, this ritual encodes precise geographic coordinates using purely kinetic and sensory signals.\n\nThe choreography of the dance consists of a figure-eight pattern featuring a central straight run flanked by two alternating semicircular loops. During the straight run, the bee vigorously vibrates her abdomen from side to side while emitting low-frequency acoustic pulses with her wings. The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the current azimuth of the sun. For instance, if the dancer angles her run forty-five degrees to the right of vertical, following bees understand that the food is located forty-five degrees to the right of the sun's position.\n\nFurthermore, the duration of the waggle phase conveys distance. A longer duration corresponds directly to a greater flight distance, with each second of waggling translating to approximately one kilometer of flight. Potential recruits observe the dance in the dark interior of the hive using their antennae and mechanoreceptors. In addition, the dancer periodically regurgitates samples of floral nectar, allowing her nestmates to identify the distinctive scent and sugar concentration of the targeted flora before departing into the field."
       },
       {
         "id": "bank-r-toefl-u2-l4-4",
@@ -13751,7 +13864,9 @@ const APP_DATA = {
           "The flight must be conducted exclusively during night hours."
         ],
         "answer": 0,
-        "explanation": "💡 Inference: Teks menyebutkan 'duration of the waggle phase conveys distance... with each second translating to approximately one kilometer'. Durasi 3 detik berarti jaraknya jauh lebih jauh (~3 km) dibanding 1 detik (~1 km)."
+        "explanation": "💡 Inference: Teks menyebutkan 'duration of the waggle phase conveys distance... with each second translating to approximately one kilometer'. Durasi 3 detik berarti jaraknya jauh lebih jauh (~3 km) dibanding 1 detik (~1 km).",
+        "passageTitle": "Honeybee Communication and the Waggle Dance",
+        "passageText": "Among social insects, the Western honeybee (Apis mellifera) possesses one of the most sophisticated communication systems found anywhere in the animal kingdom. When a successful foraging bee discovers a rich nectar or pollen source far from the hive, she returns to the colony and performs an intricate physical routine upon the vertical honeycomb, commonly known as the 'waggle dance.' First deciphered in detail by Austrian ethologist Karl von Frisch in the mid-twentieth century, this ritual encodes precise geographic coordinates using purely kinetic and sensory signals.\n\nThe choreography of the dance consists of a figure-eight pattern featuring a central straight run flanked by two alternating semicircular loops. During the straight run, the bee vigorously vibrates her abdomen from side to side while emitting low-frequency acoustic pulses with her wings. The angle at which this straight run deviates from vertical represents the exact angle of the food source relative to the current azimuth of the sun. For instance, if the dancer angles her run forty-five degrees to the right of vertical, following bees understand that the food is located forty-five degrees to the right of the sun's position.\n\nFurthermore, the duration of the waggle phase conveys distance. A longer duration corresponds directly to a greater flight distance, with each second of waggling translating to approximately one kilometer of flight. Potential recruits observe the dance in the dark interior of the hive using their antennae and mechanoreceptors. In addition, the dancer periodically regurgitates samples of floral nectar, allowing her nestmates to identify the distinctive scent and sugar concentration of the targeted flora before departing into the field."
       },
       {
         "id": "bank-r-toefl-u2-l5-0",
@@ -13769,7 +13884,9 @@ const APP_DATA = {
           "The diplomatic agreements between Macedonian rulers and ancient Greece."
         ],
         "answer": 2,
-        "explanation": "💡 Main Idea: Teks mengulas misteri hieroglif yang terkunci berabad-abad, penemuan Batu Rosetta tahun 1799, dan terobosan Champollion dalam menguraikan maknanya."
+        "explanation": "💡 Main Idea: Teks mengulas misteri hieroglif yang terkunci berabad-abad, penemuan Batu Rosetta tahun 1799, dan terobosan Champollion dalam menguraikan maknanya.",
+        "passageTitle": "The Rosetta Stone and Ancient Hieroglyphs",
+        "passageText": "For over fourteen centuries, the hieroglyphic writing system of ancient Egypt remained an impenetrable enigma to modern historians. Following the closure of non-Christian temples in the late Roman Empire during the fourth century CE, knowledge of how to read and write the pictorial script vanished completely. The monumental inscriptions carving Pharaohs' deeds into sandstone obelisks and temple walls stood silent, perceived by medieval scholars as mystical esoteric symbols rather than a phonetic spoken language.\n\nThis intellectual stalemate was shattered in July 1799 during Napoleon Bonaparte's military expedition to Egypt. While excavating fortifications near the port city of Rashid (Rosetta) in the Nile Delta, French engineering officer Pierre-François Bouchard uncovered a slab of dark granodiorite weighing over seven hundred kilograms. The stone, dating to 196 BCE during the reign of King Ptolemy V, bore a royal decree inscribed in three distinct scripts: ancient Egyptian hieroglyphs (used for sacred religious documents), Egyptian Demotic (the cursive script of daily administration), and Ancient Greek (the language of Egypt's ruling Macedonian court).\n\nBecause scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key. Scholars quickly deduced that all three inscriptions contained the identical decree. In 1822, French philologist Jean-François Champollion achieved the definitive breakthrough. By comparing royal cartouches—oval loops enclosing Pharaohs' names—Champollion realized that hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds. Champollion's linguistic triumph unlocked thousands of years of recorded Egyptian literature, history, and law."
       },
       {
         "id": "bank-r-toefl-u2-l5-1",
@@ -13787,7 +13904,9 @@ const APP_DATA = {
           "It demonstrated that hieroglyphs originated directly from the Greek alphabet."
         ],
         "answer": 1,
-        "explanation": "💡 Factual Detail: Teks menyebutkan: 'Because scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key'."
+        "explanation": "💡 Factual Detail: Teks menyebutkan: 'Because scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key'.",
+        "passageTitle": "The Rosetta Stone and Ancient Hieroglyphs",
+        "passageText": "For over fourteen centuries, the hieroglyphic writing system of ancient Egypt remained an impenetrable enigma to modern historians. Following the closure of non-Christian temples in the late Roman Empire during the fourth century CE, knowledge of how to read and write the pictorial script vanished completely. The monumental inscriptions carving Pharaohs' deeds into sandstone obelisks and temple walls stood silent, perceived by medieval scholars as mystical esoteric symbols rather than a phonetic spoken language.\n\nThis intellectual stalemate was shattered in July 1799 during Napoleon Bonaparte's military expedition to Egypt. While excavating fortifications near the port city of Rashid (Rosetta) in the Nile Delta, French engineering officer Pierre-François Bouchard uncovered a slab of dark granodiorite weighing over seven hundred kilograms. The stone, dating to 196 BCE during the reign of King Ptolemy V, bore a royal decree inscribed in three distinct scripts: ancient Egyptian hieroglyphs (used for sacred religious documents), Egyptian Demotic (the cursive script of daily administration), and Ancient Greek (the language of Egypt's ruling Macedonian court).\n\nBecause scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key. Scholars quickly deduced that all three inscriptions contained the identical decree. In 1822, French philologist Jean-François Champollion achieved the definitive breakthrough. By comparing royal cartouches—oval loops enclosing Pharaohs' names—Champollion realized that hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds. Champollion's linguistic triumph unlocked thousands of years of recorded Egyptian literature, history, and law."
       },
       {
         "id": "bank-r-toefl-u2-l5-2",
@@ -13805,7 +13924,9 @@ const APP_DATA = {
           "disaster"
         ],
         "answer": 0,
-        "explanation": "💡 Vocabulary in Context: 'Impenetrable enigma' berarti 'teka-teki misteri yang tak terpecahkan' (= mystery)."
+        "explanation": "💡 Vocabulary in Context: 'Impenetrable enigma' berarti 'teka-teki misteri yang tak terpecahkan' (= mystery).",
+        "passageTitle": "The Rosetta Stone and Ancient Hieroglyphs",
+        "passageText": "For over fourteen centuries, the hieroglyphic writing system of ancient Egypt remained an impenetrable enigma to modern historians. Following the closure of non-Christian temples in the late Roman Empire during the fourth century CE, knowledge of how to read and write the pictorial script vanished completely. The monumental inscriptions carving Pharaohs' deeds into sandstone obelisks and temple walls stood silent, perceived by medieval scholars as mystical esoteric symbols rather than a phonetic spoken language.\n\nThis intellectual stalemate was shattered in July 1799 during Napoleon Bonaparte's military expedition to Egypt. While excavating fortifications near the port city of Rashid (Rosetta) in the Nile Delta, French engineering officer Pierre-François Bouchard uncovered a slab of dark granodiorite weighing over seven hundred kilograms. The stone, dating to 196 BCE during the reign of King Ptolemy V, bore a royal decree inscribed in three distinct scripts: ancient Egyptian hieroglyphs (used for sacred religious documents), Egyptian Demotic (the cursive script of daily administration), and Ancient Greek (the language of Egypt's ruling Macedonian court).\n\nBecause scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key. Scholars quickly deduced that all three inscriptions contained the identical decree. In 1822, French philologist Jean-François Champollion achieved the definitive breakthrough. By comparing royal cartouches—oval loops enclosing Pharaohs' names—Champollion realized that hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds. Champollion's linguistic triumph unlocked thousands of years of recorded Egyptian literature, history, and law."
       },
       {
         "id": "bank-r-toefl-u2-l5-3",
@@ -13823,7 +13944,9 @@ const APP_DATA = {
           "Non-Christian temples"
         ],
         "answer": 1,
-        "explanation": "💡 Pronoun Referent: Frasa 'how to read and write the pictorial script vanished... The inscriptions... were perceived... rather than a language' merujuk pada tulisan bergambar / aksara hieroglif."
+        "explanation": "💡 Pronoun Referent: Frasa 'how to read and write the pictorial script vanished... The inscriptions... were perceived... rather than a language' merujuk pada tulisan bergambar / aksara hieroglif.",
+        "passageTitle": "The Rosetta Stone and Ancient Hieroglyphs",
+        "passageText": "For over fourteen centuries, the hieroglyphic writing system of ancient Egypt remained an impenetrable enigma to modern historians. Following the closure of non-Christian temples in the late Roman Empire during the fourth century CE, knowledge of how to read and write the pictorial script vanished completely. The monumental inscriptions carving Pharaohs' deeds into sandstone obelisks and temple walls stood silent, perceived by medieval scholars as mystical esoteric symbols rather than a phonetic spoken language.\n\nThis intellectual stalemate was shattered in July 1799 during Napoleon Bonaparte's military expedition to Egypt. While excavating fortifications near the port city of Rashid (Rosetta) in the Nile Delta, French engineering officer Pierre-François Bouchard uncovered a slab of dark granodiorite weighing over seven hundred kilograms. The stone, dating to 196 BCE during the reign of King Ptolemy V, bore a royal decree inscribed in three distinct scripts: ancient Egyptian hieroglyphs (used for sacred religious documents), Egyptian Demotic (the cursive script of daily administration), and Ancient Greek (the language of Egypt's ruling Macedonian court).\n\nBecause scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key. Scholars quickly deduced that all three inscriptions contained the identical decree. In 1822, French philologist Jean-François Champollion achieved the definitive breakthrough. By comparing royal cartouches—oval loops enclosing Pharaohs' names—Champollion realized that hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds. Champollion's linguistic triumph unlocked thousands of years of recorded Egyptian literature, history, and law."
       },
       {
         "id": "bank-r-toefl-u2-l5-4",
@@ -13841,7 +13964,9 @@ const APP_DATA = {
           "The decree had been fabricated by medieval scribes."
         ],
         "answer": 1,
-        "explanation": "💡 Inference & Key Detail: Paragraf 3 menjelaskan terobosan Champollion: 'hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds'."
+        "explanation": "💡 Inference & Key Detail: Paragraf 3 menjelaskan terobosan Champollion: 'hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds'.",
+        "passageTitle": "The Rosetta Stone and Ancient Hieroglyphs",
+        "passageText": "For over fourteen centuries, the hieroglyphic writing system of ancient Egypt remained an impenetrable enigma to modern historians. Following the closure of non-Christian temples in the late Roman Empire during the fourth century CE, knowledge of how to read and write the pictorial script vanished completely. The monumental inscriptions carving Pharaohs' deeds into sandstone obelisks and temple walls stood silent, perceived by medieval scholars as mystical esoteric symbols rather than a phonetic spoken language.\n\nThis intellectual stalemate was shattered in July 1799 during Napoleon Bonaparte's military expedition to Egypt. While excavating fortifications near the port city of Rashid (Rosetta) in the Nile Delta, French engineering officer Pierre-François Bouchard uncovered a slab of dark granodiorite weighing over seven hundred kilograms. The stone, dating to 196 BCE during the reign of King Ptolemy V, bore a royal decree inscribed in three distinct scripts: ancient Egyptian hieroglyphs (used for sacred religious documents), Egyptian Demotic (the cursive script of daily administration), and Ancient Greek (the language of Egypt's ruling Macedonian court).\n\nBecause scholars could still read Ancient Greek with relative ease, the stone provided an unprecedented bilingual key. Scholars quickly deduced that all three inscriptions contained the identical decree. In 1822, French philologist Jean-François Champollion achieved the definitive breakthrough. By comparing royal cartouches—oval loops enclosing Pharaohs' names—Champollion realized that hieroglyphic signs did not represent mere mystical concepts, but rather functioned primarily as phonetic symbols representing consonants and sounds. Champollion's linguistic triumph unlocked thousands of years of recorded Egyptian literature, history, and law."
       },
       {
         "id": "bank-r-toefl-u2-l6-0",
@@ -13859,7 +13984,9 @@ const APP_DATA = {
           "It produces high-grade radioactive minerals for commercial sale."
         ],
         "answer": 1,
-        "explanation": "💡 Comparison Detail: Paragraf 1 menyatakan: 'Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night'."
+        "explanation": "💡 Comparison Detail: Paragraf 1 menyatakan: 'Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night'.",
+        "passageTitle": "Geothermal Energy and Plate Tectonics",
+        "passageText": "Geothermal energy—the thermal energy generated and stored within the Earth's interior—represents one of the most reliable and environmentally benign sources of renewable baseload power. Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night regardless of weather. The ultimate origin of this subterranean heat stems from primordial thermal energy trapped during the planet's gravitational formation over 4.5 billion years ago, combined with the continuous radioactive decay of naturally occurring isotopes, primarily uranium, thorium, and potassium.\n\nWhile thermal energy exists ubiquitously deep underground everywhere on Earth, harvesting it economically requires geological conditions that concentrate heat near the surface. Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire circling the Pacific Ocean and along mid-ocean spreading ridges. In these active zones, fractured magma chambers heat circulating groundwater to temperatures exceeding three hundred degrees Celsius under high geological pressure.\n\nWhen geothermal power plants tap these pressurized aquifers through deep production wells, the superheated water flashes into steam as pressure drops upon reaching the surface. This high-pressure steam drives mechanical turbines connected to electric generators. Afterward, the condensed steam is reinjected back into the deep subterranean reservoir through injection wells, creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion and minimizes surface emissions."
       },
       {
         "id": "bank-r-toefl-u2-l6-1",
@@ -13877,7 +14004,9 @@ const APP_DATA = {
           "At high atmospheric altitudes near polar ice caps."
         ],
         "answer": 1,
-        "explanation": "💡 Fact Detail: Paragraf 2 menyatakan: 'Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire'."
+        "explanation": "💡 Fact Detail: Paragraf 2 menyatakan: 'Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire'.",
+        "passageTitle": "Geothermal Energy and Plate Tectonics",
+        "passageText": "Geothermal energy—the thermal energy generated and stored within the Earth's interior—represents one of the most reliable and environmentally benign sources of renewable baseload power. Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night regardless of weather. The ultimate origin of this subterranean heat stems from primordial thermal energy trapped during the planet's gravitational formation over 4.5 billion years ago, combined with the continuous radioactive decay of naturally occurring isotopes, primarily uranium, thorium, and potassium.\n\nWhile thermal energy exists ubiquitously deep underground everywhere on Earth, harvesting it economically requires geological conditions that concentrate heat near the surface. Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire circling the Pacific Ocean and along mid-ocean spreading ridges. In these active zones, fractured magma chambers heat circulating groundwater to temperatures exceeding three hundred degrees Celsius under high geological pressure.\n\nWhen geothermal power plants tap these pressurized aquifers through deep production wells, the superheated water flashes into steam as pressure drops upon reaching the surface. This high-pressure steam drives mechanical turbines connected to electric generators. Afterward, the condensed steam is reinjected back into the deep subterranean reservoir through injection wells, creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion and minimizes surface emissions."
       },
       {
         "id": "bank-r-toefl-u2-l6-2",
@@ -13895,7 +14024,9 @@ const APP_DATA = {
           "temporarily"
         ],
         "answer": 0,
-        "explanation": "💡 Vocabulary in Context: 'ubiquitously' berarti 'ada di mana-mana' (= everywhere)."
+        "explanation": "💡 Vocabulary in Context: 'ubiquitously' berarti 'ada di mana-mana' (= everywhere).",
+        "passageTitle": "Geothermal Energy and Plate Tectonics",
+        "passageText": "Geothermal energy—the thermal energy generated and stored within the Earth's interior—represents one of the most reliable and environmentally benign sources of renewable baseload power. Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night regardless of weather. The ultimate origin of this subterranean heat stems from primordial thermal energy trapped during the planet's gravitational formation over 4.5 billion years ago, combined with the continuous radioactive decay of naturally occurring isotopes, primarily uranium, thorium, and potassium.\n\nWhile thermal energy exists ubiquitously deep underground everywhere on Earth, harvesting it economically requires geological conditions that concentrate heat near the surface. Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire circling the Pacific Ocean and along mid-ocean spreading ridges. In these active zones, fractured magma chambers heat circulating groundwater to temperatures exceeding three hundred degrees Celsius under high geological pressure.\n\nWhen geothermal power plants tap these pressurized aquifers through deep production wells, the superheated water flashes into steam as pressure drops upon reaching the surface. This high-pressure steam drives mechanical turbines connected to electric generators. Afterward, the condensed steam is reinjected back into the deep subterranean reservoir through injection wells, creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion and minimizes surface emissions."
       },
       {
         "id": "bank-r-toefl-u2-l6-3",
@@ -13913,7 +14044,9 @@ const APP_DATA = {
           "To dissolve valuable gold and silver minerals."
         ],
         "answer": 1,
-        "explanation": "💡 Process Detail: Paragraf 3 menjelaskan: 'condensed steam is reinjected back... creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion'."
+        "explanation": "💡 Process Detail: Paragraf 3 menjelaskan: 'condensed steam is reinjected back... creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion'.",
+        "passageTitle": "Geothermal Energy and Plate Tectonics",
+        "passageText": "Geothermal energy—the thermal energy generated and stored within the Earth's interior—represents one of the most reliable and environmentally benign sources of renewable baseload power. Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night regardless of weather. The ultimate origin of this subterranean heat stems from primordial thermal energy trapped during the planet's gravitational formation over 4.5 billion years ago, combined with the continuous radioactive decay of naturally occurring isotopes, primarily uranium, thorium, and potassium.\n\nWhile thermal energy exists ubiquitously deep underground everywhere on Earth, harvesting it economically requires geological conditions that concentrate heat near the surface. Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire circling the Pacific Ocean and along mid-ocean spreading ridges. In these active zones, fractured magma chambers heat circulating groundwater to temperatures exceeding three hundred degrees Celsius under high geological pressure.\n\nWhen geothermal power plants tap these pressurized aquifers through deep production wells, the superheated water flashes into steam as pressure drops upon reaching the surface. This high-pressure steam drives mechanical turbines connected to electric generators. Afterward, the condensed steam is reinjected back into the deep subterranean reservoir through injection wells, creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion and minimizes surface emissions."
       },
       {
         "id": "bank-r-toefl-u2-l6-4",
@@ -13931,7 +14064,9 @@ const APP_DATA = {
           "Solar ultraviolet radiation absorbed by magma"
         ],
         "answer": 3,
-        "explanation": "💡 Negative Factual: Radiasi ultraviolet matahari tidak menembus ke dalam magma bawah tanah; sumber panas bumi murni berasal dari panas primordial pembentukan bumi dan peluruhan radioaktif alami."
+        "explanation": "💡 Negative Factual: Radiasi ultraviolet matahari tidak menembus ke dalam magma bawah tanah; sumber panas bumi murni berasal dari panas primordial pembentukan bumi dan peluruhan radioaktif alami.",
+        "passageTitle": "Geothermal Energy and Plate Tectonics",
+        "passageText": "Geothermal energy—the thermal energy generated and stored within the Earth's interior—represents one of the most reliable and environmentally benign sources of renewable baseload power. Unlike solar and wind power, which are intermittent and depend on atmospheric conditions, geothermal output remains continuous day and night regardless of weather. The ultimate origin of this subterranean heat stems from primordial thermal energy trapped during the planet's gravitational formation over 4.5 billion years ago, combined with the continuous radioactive decay of naturally occurring isotopes, primarily uranium, thorium, and potassium.\n\nWhile thermal energy exists ubiquitously deep underground everywhere on Earth, harvesting it economically requires geological conditions that concentrate heat near the surface. Such geothermal reservoirs are overwhelmingly concentrated along tectonic plate boundaries, particularly within the volcanic Ring of Fire circling the Pacific Ocean and along mid-ocean spreading ridges. In these active zones, fractured magma chambers heat circulating groundwater to temperatures exceeding three hundred degrees Celsius under high geological pressure.\n\nWhen geothermal power plants tap these pressurized aquifers through deep production wells, the superheated water flashes into steam as pressure drops upon reaching the surface. This high-pressure steam drives mechanical turbines connected to electric generators. Afterward, the condensed steam is reinjected back into the deep subterranean reservoir through injection wells, creating a sustainable closed-loop hydrothermal cycle that prevents aquifer depletion and minimizes surface emissions."
       },
       {
         "id": "bank-r-toefl-u2-l7-0",
@@ -13949,7 +14084,9 @@ const APP_DATA = {
           "The geographical locations of international rocket launch pads."
         ],
         "answer": 1,
-        "explanation": "💡 Main Idea: Paragraf 1 dan 2 mengulas lompatan teknologi teleskop James Webb dalam astronomi inframerah, orbitnya di L2, serta signifikansi ilmiahnya."
+        "explanation": "💡 Main Idea: Paragraf 1 dan 2 mengulas lompatan teknologi teleskop James Webb dalam astronomi inframerah, orbitnya di L2, serta signifikansi ilmiahnya.",
+        "passageTitle": "The James Webb Space Telescope and Infrared Astronomy",
+        "passageText": "Launched in late December 2021, the James Webb Space Telescope (JWST) represents an unprecedented leap forward in observational astrophysics. Unlike its venerable predecessor, the Hubble Space Telescope, which operates primarily in the optical and ultraviolet spectra from low Earth orbit, Webb is engineered specifically for infrared astronomy. Infrared instruments are essential for observing the most distant objects in the cosmos because light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves by the relentless expansion of spacetime itself.\n\nTo detect these extraordinarily faint thermal signatures without interference from its own mechanical heat, Webb cannot orbit Earth, where atmospheric glow and thermal radiation from the planet would blind its sensors. Instead, the observatory was dispatched approximately 1.5 million kilometers away to the second Sun-Earth Lagrange point (L2). At this gravitationally balanced vantage point, a tennis-court-sized, five-layer polyimide sunshield permanently shields Webb's 6.5-meter gold-plated beryllium primary mirror and cryogenically cooled detectors from the blistering radiation of the Sun, Earth, and Moon.\n\nWebb's unparalleled infrared sensitivity allows astronomers to peer through dense interstellar dust clouds that conceal stellar nurseries, revealing the birth of stars and planetary systems in breathtaking detail. Furthermore, by performing transit transmission spectroscopy on atmospheres of exoplanets, Webb can detect atmospheric biosignatures and chemical compounds, including water vapor, carbon dioxide, and methane, revolutionizing our understanding of planetary habitability across the Milky Way."
       },
       {
         "id": "bank-r-toefl-u2-l7-1",
@@ -13967,7 +14104,9 @@ const APP_DATA = {
           "The Earth's ozone layer completely reflects optical starlight."
         ],
         "answer": 1,
-        "explanation": "💡 Factual Detail: Teks menyebutkan: 'light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves'."
+        "explanation": "💡 Factual Detail: Teks menyebutkan: 'light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves'.",
+        "passageTitle": "The James Webb Space Telescope and Infrared Astronomy",
+        "passageText": "Launched in late December 2021, the James Webb Space Telescope (JWST) represents an unprecedented leap forward in observational astrophysics. Unlike its venerable predecessor, the Hubble Space Telescope, which operates primarily in the optical and ultraviolet spectra from low Earth orbit, Webb is engineered specifically for infrared astronomy. Infrared instruments are essential for observing the most distant objects in the cosmos because light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves by the relentless expansion of spacetime itself.\n\nTo detect these extraordinarily faint thermal signatures without interference from its own mechanical heat, Webb cannot orbit Earth, where atmospheric glow and thermal radiation from the planet would blind its sensors. Instead, the observatory was dispatched approximately 1.5 million kilometers away to the second Sun-Earth Lagrange point (L2). At this gravitationally balanced vantage point, a tennis-court-sized, five-layer polyimide sunshield permanently shields Webb's 6.5-meter gold-plated beryllium primary mirror and cryogenically cooled detectors from the blistering radiation of the Sun, Earth, and Moon.\n\nWebb's unparalleled infrared sensitivity allows astronomers to peer through dense interstellar dust clouds that conceal stellar nurseries, revealing the birth of stars and planetary systems in breathtaking detail. Furthermore, by performing transit transmission spectroscopy on atmospheres of exoplanets, Webb can detect atmospheric biosignatures and chemical compounds, including water vapor, carbon dioxide, and methane, revolutionizing our understanding of planetary habitability across the Milky Way."
       },
       {
         "id": "bank-r-toefl-u2-l7-2",
@@ -13985,7 +14124,9 @@ const APP_DATA = {
           "temporarily delayed"
         ],
         "answer": 0,
-        "explanation": "💡 Vocabulary in Context: 'Unprecedented' berarti belum pernah ada sebelumnya / tiada bandingnya (= never before seen)."
+        "explanation": "💡 Vocabulary in Context: 'Unprecedented' berarti belum pernah ada sebelumnya / tiada bandingnya (= never before seen).",
+        "passageTitle": "The James Webb Space Telescope and Infrared Astronomy",
+        "passageText": "Launched in late December 2021, the James Webb Space Telescope (JWST) represents an unprecedented leap forward in observational astrophysics. Unlike its venerable predecessor, the Hubble Space Telescope, which operates primarily in the optical and ultraviolet spectra from low Earth orbit, Webb is engineered specifically for infrared astronomy. Infrared instruments are essential for observing the most distant objects in the cosmos because light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves by the relentless expansion of spacetime itself.\n\nTo detect these extraordinarily faint thermal signatures without interference from its own mechanical heat, Webb cannot orbit Earth, where atmospheric glow and thermal radiation from the planet would blind its sensors. Instead, the observatory was dispatched approximately 1.5 million kilometers away to the second Sun-Earth Lagrange point (L2). At this gravitationally balanced vantage point, a tennis-court-sized, five-layer polyimide sunshield permanently shields Webb's 6.5-meter gold-plated beryllium primary mirror and cryogenically cooled detectors from the blistering radiation of the Sun, Earth, and Moon.\n\nWebb's unparalleled infrared sensitivity allows astronomers to peer through dense interstellar dust clouds that conceal stellar nurseries, revealing the birth of stars and planetary systems in breathtaking detail. Furthermore, by performing transit transmission spectroscopy on atmospheres of exoplanets, Webb can detect atmospheric biosignatures and chemical compounds, including water vapor, carbon dioxide, and methane, revolutionizing our understanding of planetary habitability across the Milky Way."
       },
       {
         "id": "bank-r-toefl-u2-l7-3",
@@ -14003,7 +14144,9 @@ const APP_DATA = {
           "To utilize solar wind currents to propel the telescope between planetary systems."
         ],
         "answer": 1,
-        "explanation": "💡 Factual Detail: Paragraf 2 menyatakan bahwa Webb tidak bisa berada di orbit Bumi karena panas Bumi akan menyilaukan sensornya; di L2, perisai matahari melindunginya dari radiasi matahari, Bumi, dan bulan."
+        "explanation": "💡 Factual Detail: Paragraf 2 menyatakan bahwa Webb tidak bisa berada di orbit Bumi karena panas Bumi akan menyilaukan sensornya; di L2, perisai matahari melindunginya dari radiasi matahari, Bumi, dan bulan.",
+        "passageTitle": "The James Webb Space Telescope and Infrared Astronomy",
+        "passageText": "Launched in late December 2021, the James Webb Space Telescope (JWST) represents an unprecedented leap forward in observational astrophysics. Unlike its venerable predecessor, the Hubble Space Telescope, which operates primarily in the optical and ultraviolet spectra from low Earth orbit, Webb is engineered specifically for infrared astronomy. Infrared instruments are essential for observing the most distant objects in the cosmos because light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves by the relentless expansion of spacetime itself.\n\nTo detect these extraordinarily faint thermal signatures without interference from its own mechanical heat, Webb cannot orbit Earth, where atmospheric glow and thermal radiation from the planet would blind its sensors. Instead, the observatory was dispatched approximately 1.5 million kilometers away to the second Sun-Earth Lagrange point (L2). At this gravitationally balanced vantage point, a tennis-court-sized, five-layer polyimide sunshield permanently shields Webb's 6.5-meter gold-plated beryllium primary mirror and cryogenically cooled detectors from the blistering radiation of the Sun, Earth, and Moon.\n\nWebb's unparalleled infrared sensitivity allows astronomers to peer through dense interstellar dust clouds that conceal stellar nurseries, revealing the birth of stars and planetary systems in breathtaking detail. Furthermore, by performing transit transmission spectroscopy on atmospheres of exoplanets, Webb can detect atmospheric biosignatures and chemical compounds, including water vapor, carbon dioxide, and methane, revolutionizing our understanding of planetary habitability across the Milky Way."
       },
       {
         "id": "bank-r-toefl-u2-l7-4",
@@ -14021,7 +14164,9 @@ const APP_DATA = {
           "Detecting traces of water vapor, carbon dioxide, and methane on distant worlds."
         ],
         "answer": 2,
-        "explanation": "💡 Negative Factual: James Webb adalah teleskop observatorium tak berawak, bukan wahana pengangkut astronaut ('transporting astronauts')."
+        "explanation": "💡 Negative Factual: James Webb adalah teleskop observatorium tak berawak, bukan wahana pengangkut astronaut ('transporting astronauts').",
+        "passageTitle": "The James Webb Space Telescope and Infrared Astronomy",
+        "passageText": "Launched in late December 2021, the James Webb Space Telescope (JWST) represents an unprecedented leap forward in observational astrophysics. Unlike its venerable predecessor, the Hubble Space Telescope, which operates primarily in the optical and ultraviolet spectra from low Earth orbit, Webb is engineered specifically for infrared astronomy. Infrared instruments are essential for observing the most distant objects in the cosmos because light emitted by early galaxies billions of years ago has undergone profound cosmological redshift—its wavelength stretched from short visible bands into long infrared waves by the relentless expansion of spacetime itself.\n\nTo detect these extraordinarily faint thermal signatures without interference from its own mechanical heat, Webb cannot orbit Earth, where atmospheric glow and thermal radiation from the planet would blind its sensors. Instead, the observatory was dispatched approximately 1.5 million kilometers away to the second Sun-Earth Lagrange point (L2). At this gravitationally balanced vantage point, a tennis-court-sized, five-layer polyimide sunshield permanently shields Webb's 6.5-meter gold-plated beryllium primary mirror and cryogenically cooled detectors from the blistering radiation of the Sun, Earth, and Moon.\n\nWebb's unparalleled infrared sensitivity allows astronomers to peer through dense interstellar dust clouds that conceal stellar nurseries, revealing the birth of stars and planetary systems in breathtaking detail. Furthermore, by performing transit transmission spectroscopy on atmospheres of exoplanets, Webb can detect atmospheric biosignatures and chemical compounds, including water vapor, carbon dioxide, and methane, revolutionizing our understanding of planetary habitability across the Milky Way."
       },
       {
         "id": "bank-r-toefl-u2-l8-0",
@@ -14039,7 +14184,9 @@ const APP_DATA = {
           "Medical therapies designed to assist patients in quitting smoking."
         ],
         "answer": 1,
-        "explanation": "💡 Main Idea: Paragraf 1 mendefinisikan disonansi kognitif, paragraf 2 menguraikan strategi rasionalisasi perilaku, dan paragraf 3 menjelaskan aplikasinya pada pengambilan keputusan."
+        "explanation": "💡 Main Idea: Paragraf 1 mendefinisikan disonansi kognitif, paragraf 2 menguraikan strategi rasionalisasi perilaku, dan paragraf 3 menjelaskan aplikasinya pada pengambilan keputusan.",
+        "passageTitle": "Cognitive Dissonance and Human Behavior",
+        "passageText": "First articulated by American social psychologist Leon Festinger in 1957, the theory of cognitive dissonance remains one of the cornerstone concepts of modern psychology. Cognitive dissonance refers to the distressing mental tension experienced by an individual who simultaneously holds two contradictory beliefs, values, or ideas, or whose behavior directly conflicts with their deeply held convictions. Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable, motivating individuals to reduce the disharmony through various cognitive coping strategies.\n\nWhen confronted with an acute contradiction between actions and principles, people rarely choose the most logical remedy—altering their established behavior. Modifying longstanding habits requires substantial willpower and effort. Instead, individuals frequently alter their perceptions or rationalize their conduct to harmonize the conflict. For example, consider chronic cigarette smokers who know the incontrovertible medical evidence that smoking causes fatal respiratory diseases. Rather than enduring nicotine withdrawal to quit, many resolve their dissonance by adopting defensive rationalizations, asserting that life is full of hazards regardless, that smoking relieves stress, or that empirical research exaggerates the risk.\n\nFurthermore, cognitive dissonance plays a prominent role in post-decisional regret and consumer choice, a phenomenon known as buyer's remorse. Once individuals commit to an irreversible decision between two equally appealing alternatives—such as purchasing an expensive automobile—they often emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative. By amplifying positive aspects and ignoring deficiencies, they preserve psychological equilibrium and validate their initial judgment."
       },
       {
         "id": "bank-r-toefl-u2-l8-1",
@@ -14057,7 +14204,9 @@ const APP_DATA = {
           "Peer pressure forces everyone to agree on common principles."
         ],
         "answer": 1,
-        "explanation": "💡 Detail Fact: Paragraf 1 menyatakan: 'Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable'."
+        "explanation": "💡 Detail Fact: Paragraf 1 menyatakan: 'Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable'.",
+        "passageTitle": "Cognitive Dissonance and Human Behavior",
+        "passageText": "First articulated by American social psychologist Leon Festinger in 1957, the theory of cognitive dissonance remains one of the cornerstone concepts of modern psychology. Cognitive dissonance refers to the distressing mental tension experienced by an individual who simultaneously holds two contradictory beliefs, values, or ideas, or whose behavior directly conflicts with their deeply held convictions. Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable, motivating individuals to reduce the disharmony through various cognitive coping strategies.\n\nWhen confronted with an acute contradiction between actions and principles, people rarely choose the most logical remedy—altering their established behavior. Modifying longstanding habits requires substantial willpower and effort. Instead, individuals frequently alter their perceptions or rationalize their conduct to harmonize the conflict. For example, consider chronic cigarette smokers who know the incontrovertible medical evidence that smoking causes fatal respiratory diseases. Rather than enduring nicotine withdrawal to quit, many resolve their dissonance by adopting defensive rationalizations, asserting that life is full of hazards regardless, that smoking relieves stress, or that empirical research exaggerates the risk.\n\nFurthermore, cognitive dissonance plays a prominent role in post-decisional regret and consumer choice, a phenomenon known as buyer's remorse. Once individuals commit to an irreversible decision between two equally appealing alternatives—such as purchasing an expensive automobile—they often emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative. By amplifying positive aspects and ignoring deficiencies, they preserve psychological equilibrium and validate their initial judgment."
       },
       {
         "id": "bank-r-toefl-u2-l8-2",
@@ -14075,7 +14224,9 @@ const APP_DATA = {
           "forget completely"
         ],
         "answer": 0,
-        "explanation": "💡 Vocabulary in Context: 'Rationalize' berarti membenarkan tindakan dengan alasan atau pembelaan diri (= justify with plausible excuses)."
+        "explanation": "💡 Vocabulary in Context: 'Rationalize' berarti membenarkan tindakan dengan alasan atau pembelaan diri (= justify with plausible excuses).",
+        "passageTitle": "Cognitive Dissonance and Human Behavior",
+        "passageText": "First articulated by American social psychologist Leon Festinger in 1957, the theory of cognitive dissonance remains one of the cornerstone concepts of modern psychology. Cognitive dissonance refers to the distressing mental tension experienced by an individual who simultaneously holds two contradictory beliefs, values, or ideas, or whose behavior directly conflicts with their deeply held convictions. Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable, motivating individuals to reduce the disharmony through various cognitive coping strategies.\n\nWhen confronted with an acute contradiction between actions and principles, people rarely choose the most logical remedy—altering their established behavior. Modifying longstanding habits requires substantial willpower and effort. Instead, individuals frequently alter their perceptions or rationalize their conduct to harmonize the conflict. For example, consider chronic cigarette smokers who know the incontrovertible medical evidence that smoking causes fatal respiratory diseases. Rather than enduring nicotine withdrawal to quit, many resolve their dissonance by adopting defensive rationalizations, asserting that life is full of hazards regardless, that smoking relieves stress, or that empirical research exaggerates the risk.\n\nFurthermore, cognitive dissonance plays a prominent role in post-decisional regret and consumer choice, a phenomenon known as buyer's remorse. Once individuals commit to an irreversible decision between two equally appealing alternatives—such as purchasing an expensive automobile—they often emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative. By amplifying positive aspects and ignoring deficiencies, they preserve psychological equilibrium and validate their initial judgment."
       },
       {
         "id": "bank-r-toefl-u2-l8-3",
@@ -14093,7 +14244,9 @@ const APP_DATA = {
           "Medical researchers"
         ],
         "answer": 1,
-        "explanation": "💡 Pronoun Referent: Dalam kalimat 'Once individuals commit to an irreversible decision... they often emphasize the superior qualities of their chosen option', kata 'their' merujuk pada 'individuals'."
+        "explanation": "💡 Pronoun Referent: Dalam kalimat 'Once individuals commit to an irreversible decision... they often emphasize the superior qualities of their chosen option', kata 'their' merujuk pada 'individuals'.",
+        "passageTitle": "Cognitive Dissonance and Human Behavior",
+        "passageText": "First articulated by American social psychologist Leon Festinger in 1957, the theory of cognitive dissonance remains one of the cornerstone concepts of modern psychology. Cognitive dissonance refers to the distressing mental tension experienced by an individual who simultaneously holds two contradictory beliefs, values, or ideas, or whose behavior directly conflicts with their deeply held convictions. Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable, motivating individuals to reduce the disharmony through various cognitive coping strategies.\n\nWhen confronted with an acute contradiction between actions and principles, people rarely choose the most logical remedy—altering their established behavior. Modifying longstanding habits requires substantial willpower and effort. Instead, individuals frequently alter their perceptions or rationalize their conduct to harmonize the conflict. For example, consider chronic cigarette smokers who know the incontrovertible medical evidence that smoking causes fatal respiratory diseases. Rather than enduring nicotine withdrawal to quit, many resolve their dissonance by adopting defensive rationalizations, asserting that life is full of hazards regardless, that smoking relieves stress, or that empirical research exaggerates the risk.\n\nFurthermore, cognitive dissonance plays a prominent role in post-decisional regret and consumer choice, a phenomenon known as buyer's remorse. Once individuals commit to an irreversible decision between two equally appealing alternatives—such as purchasing an expensive automobile—they often emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative. By amplifying positive aspects and ignoring deficiencies, they preserve psychological equilibrium and validate their initial judgment."
       },
       {
         "id": "bank-r-toefl-u2-l8-4",
@@ -14111,7 +14264,9 @@ const APP_DATA = {
           "They experience total memory loss regarding the price they paid."
         ],
         "answer": 1,
-        "explanation": "💡 Inference: Paragraf 3 menjelaskan bahwa pembeli menepis keraguan dengan 'emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative'."
+        "explanation": "💡 Inference: Paragraf 3 menjelaskan bahwa pembeli menepis keraguan dengan 'emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative'.",
+        "passageTitle": "Cognitive Dissonance and Human Behavior",
+        "passageText": "First articulated by American social psychologist Leon Festinger in 1957, the theory of cognitive dissonance remains one of the cornerstone concepts of modern psychology. Cognitive dissonance refers to the distressing mental tension experienced by an individual who simultaneously holds two contradictory beliefs, values, or ideas, or whose behavior directly conflicts with their deeply held convictions. Because human beings possess an innate psychological drive for internal consistency, experiencing dissonance is inherently uncomfortable, motivating individuals to reduce the disharmony through various cognitive coping strategies.\n\nWhen confronted with an acute contradiction between actions and principles, people rarely choose the most logical remedy—altering their established behavior. Modifying longstanding habits requires substantial willpower and effort. Instead, individuals frequently alter their perceptions or rationalize their conduct to harmonize the conflict. For example, consider chronic cigarette smokers who know the incontrovertible medical evidence that smoking causes fatal respiratory diseases. Rather than enduring nicotine withdrawal to quit, many resolve their dissonance by adopting defensive rationalizations, asserting that life is full of hazards regardless, that smoking relieves stress, or that empirical research exaggerates the risk.\n\nFurthermore, cognitive dissonance plays a prominent role in post-decisional regret and consumer choice, a phenomenon known as buyer's remorse. Once individuals commit to an irreversible decision between two equally appealing alternatives—such as purchasing an expensive automobile—they often emphasize the superior qualities of their chosen option while systematically disparaging the discarded alternative. By amplifying positive aspects and ignoring deficiencies, they preserve psychological equilibrium and validate their initial judgment."
       },
       {
         "id": "bank-r-51",
@@ -14127,7 +14282,11 @@ const APP_DATA = {
           "A comparison of agricultural methods between the Maya and the Aztecs"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Ide Pokok (Main Idea). Teks secara komprehensif mengulas bagaimana temuan geologis paleoklimat (megadroughts) menjelaskan runtuhnya peradaban suku Maya Klasik."
+        "explanation": "💡 Analisis TOEFL: Ide Pokok (Main Idea). Teks secara komprehensif mengulas bagaimana temuan geologis paleoklimat (megadroughts) menjelaskan runtuhnya peradaban suku Maya Klasik.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-52",
@@ -14143,7 +14302,11 @@ const APP_DATA = {
           "Genetic sequencing of ancient Mesoamerican crop seeds"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 2 menyatakan secara eksplisit: 'specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab'."
+        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 2 menyatakan secara eksplisit: 'specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab'.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-53",
@@ -14159,7 +14322,11 @@ const APP_DATA = {
           "bounces off"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Vocabulary in Context. 'Percolates' dalam konteks air hujan melalui batuan kapur berpori berarti 'filters through' (meresap/menyaring menembus ke dalam)."
+        "explanation": "💡 Analisis TOEFL: Vocabulary in Context. 'Percolates' dalam konteks air hujan melalui batuan kapur berpori berarti 'filters through' (meresap/menyaring menembus ke dalam).",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-54",
@@ -14175,7 +14342,11 @@ const APP_DATA = {
           "They had forgotten their traditional farming techniques."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Factual Inference. Paragraf 3 menjelaskan 'karst topography of the Yucatán lacks surface river networks... completely reliant on seasonal monsoon rains collected in artificial reservoirs'."
+        "explanation": "💡 Analisis TOEFL: Factual Inference. Paragraf 3 menjelaskan 'karst topography of the Yucatán lacks surface river networks... completely reliant on seasonal monsoon rains collected in artificial reservoirs'.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-55",
@@ -14191,7 +14362,11 @@ const APP_DATA = {
           "recording"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Undermining divine authority' berarti 'weakening' (merongrong atau melemahkan otoritas kekuasaan para raja Maya)."
+        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Undermining divine authority' berarti 'weakening' (merongrong atau melemahkan otoritas kekuasaan para raja Maya).",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-56",
@@ -14207,7 +14382,11 @@ const APP_DATA = {
           "A massive asteroid impact in the Yucatán"
         ],
         "answer": 3,
-        "explanation": "💡 Analisis TOEFL: Negative Factual (EXCEPT). Paragraf 2 menyebutkan warfare, succession crises, dan overfarming. Tumbukan asteroid tidak pernah disebutkan sebagai penyebab runtuhnya Maya Klasik."
+        "explanation": "💡 Analisis TOEFL: Negative Factual (EXCEPT). Paragraf 2 menyebutkan warfare, succession crises, dan overfarming. Tumbukan asteroid tidak pernah disebutkan sebagai penyebab runtuhnya Maya Klasik.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-57",
@@ -14223,7 +14402,11 @@ const APP_DATA = {
           "Nearly 100 percent"
         ],
         "answer": 2,
-        "explanation": "💡 Analisis TOEFL: Detail Fact. Paragraf 3 menyebutkan: 'annual rainfall diminished by an estimated 40 to 54 percent'."
+        "explanation": "💡 Analisis TOEFL: Detail Fact. Paragraf 3 menyebutkan: 'annual rainfall diminished by an estimated 40 to 54 percent'.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-58",
@@ -14239,7 +14422,11 @@ const APP_DATA = {
           "The commercial trade in hydraulic plaster across the Caribbean"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Author's Purpose. Penulis menyebutkan waduk berlapis plester untuk menunjukkan upaya rekayasa Maya dalam menampung air hujan karena ketiadaan sungai di atas tanah."
+        "explanation": "💡 Analisis TOEFL: Author's Purpose. Penulis menyebutkan waduk berlapis plester untuk menunjukkan upaya rekayasa Maya dalam menampung air hujan karena ketiadaan sungai di atas tanah.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-59",
@@ -14255,7 +14442,11 @@ const APP_DATA = {
           "The kings conquered northern territories to secure fresh river supplies."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Inference. Kalimat terakhir menjelaskan bahwa legitimasi raja bersandar pada kemampuan mereka memohon hujan kepada para dewa; ketika kekeringan berkepanjangan terjadi, kepercayaan masyarakat runtuh."
+        "explanation": "💡 Analisis TOEFL: Inference. Kalimat terakhir menjelaskan bahwa legitimasi raja bersandar pada kemampuan mereka memohon hujan kepada para dewa; ketika kekeringan berkepanjangan terjadi, kepercayaan masyarakat runtuh.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-60",
@@ -14271,7 +14462,11 @@ const APP_DATA = {
           "They were completely destroyed by volcanic eruptions."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Inference. Ketergantungan kota-kota besar tersebut pada penampungan air membuat jutaan populasinya tidak dapat bertahan hidup begitu waduk mengering akibat kekeringan bertahun-tahun."
+        "explanation": "💡 Analisis TOEFL: Inference. Ketergantungan kota-kota besar tersebut pada penampungan air membuat jutaan populasinya tidak dapat bertahan hidup begitu waduk mengering akibat kekeringan bertahun-tahun.",
+        "passage": {
+          "title": "The Collapse of the Classic Maya Civilization and Megadroughts",
+          "text": "For centuries, the Classic Maya civilization flourished across the dense tropical lowlands of the Yucatán Peninsula and Mesoamerica. Between 250 and 800 CE, the Maya constructed monumental limestone pyramids, developed a sophisticated hieroglyphic writing system, and achieved remarkable precision in astronomical calendar tracking. Yet, between 800 and 1000 CE, this prosperous urban network underwent a catastrophic collapse. Grand cities like Tikal, Palenque, and Calakmul were abruptly abandoned, agricultural terraces fell into disrepair, and millions perished or dispersed into the surrounding rainforest.\n\nHistorians long attributed the Maya downfall to warfare, royal succession crises, or environmental degradation caused by overfarming. However, recent paleoclimatic breakthroughs—specifically oxygen-isotope analyses of stalagmites from regional caves and sediment cores from Lake Chichancanab—have revolutionized this understanding. These geological proxies demonstrate that Mesoamerica suffered from the most severe series of prolonged megadroughts in over seven millennia between 800 and 1000 CE.\n\nThe Maya civilization was uniquely susceptible to precipitation deficits because the karst topography of the Yucatán lacks surface river networks. Rainwater rapidly percolates through porous limestone bedrock into deep subterranean aquifers, leaving communities completely reliant on seasonal monsoon rains collected in artificial plaster-lined reservoirs. When prolonged drought struck, annual rainfall diminished by an estimated 40 to 54 percent, causing reservoir evaporation and massive agricultural failures. Famine and the collapse of potable water supplies crippled the social hierarchy, undermining the divine authority of Maya kings whose primary legitimacy rested on their purported ability to intercede with the rain gods."
+        }
       },
       {
         "id": "bank-r-61",
@@ -14287,7 +14482,11 @@ const APP_DATA = {
           "A comparison of speed benchmarks between binary transistors and optical circuits"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Main Idea. Teks berfokus pada ancaman komputer kuantum terhadap kriptografi kunci publik klasik dan transisi menuju Post-Quantum Cryptography (PQC)."
+        "explanation": "💡 Analisis TOEFL: Main Idea. Teks berfokus pada ancaman komputer kuantum terhadap kriptografi kunci publik klasik dan transisi menuju Post-Quantum Cryptography (PQC).",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-62",
@@ -14303,7 +14502,11 @@ const APP_DATA = {
           "Computers operate only on analog radio signals."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 1 menyatakan: 'predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers'."
+        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 1 menyatakan: 'predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers'.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-63",
@@ -14319,7 +14522,11 @@ const APP_DATA = {
           "gradual obsolescence"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Inviolability' (tidak dapat ditembus/dirusak) paling dekat maknanya dengan 'unbreakability or security'."
+        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Inviolability' (tidak dapat ditembus/dirusak) paling dekat maknanya dengan 'unbreakability or security'.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-64",
@@ -14335,7 +14542,11 @@ const APP_DATA = {
           "Silicon oxidation"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Fact. Paragraf 2 menyatakan: 'Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously'."
+        "explanation": "💡 Analisis TOEFL: Fact. Paragraf 2 menyatakan: 'Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously'.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-65",
@@ -14351,7 +14562,11 @@ const APP_DATA = {
           "Explain the history of early 19th-century mechanical calculators"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Author's Purpose. Penulis merujuk Peter Shor untuk memperkenalkan algoritma kuantum ciptaannya yang mampu memecahkan faktorisasi prima dalam waktu polinomial, memecahkan enkripsi RSA."
+        "explanation": "💡 Analisis TOEFL: Author's Purpose. Penulis merujuk Peter Shor untuk memperkenalkan algoritma kuantum ciptaannya yang mampu memecahkan faktorisasi prima dalam waktu polinomial, memecahkan enkripsi RSA.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-66",
@@ -14367,7 +14582,11 @@ const APP_DATA = {
           "historical"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Looming vulnerability' berarti ancaman kerentanan yang 'approaching' atau 'impending' (sudah di depan mata/mengancam segera)."
+        "explanation": "💡 Analisis TOEFL: Vocabulary. 'Looming vulnerability' berarti ancaman kerentanan yang 'approaching' atau 'impending' (sudah di depan mata/mengancam segera).",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-67",
@@ -14383,7 +14602,11 @@ const APP_DATA = {
           "The International Monetary Fund"
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 3 secara jelas menuliskan: 'led by the National Institute of Standards and Technology (NIST)'."
+        "explanation": "💡 Analisis TOEFL: Factual Detail. Paragraf 3 secara jelas menuliskan: 'led by the National Institute of Standards and Technology (NIST)'.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-68",
@@ -14399,7 +14622,11 @@ const APP_DATA = {
           "Traditional Morse code encodings"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Fact. Paragraf 3 menyebutkan: 'constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures'."
+        "explanation": "💡 Analisis TOEFL: Fact. Paragraf 3 menyebutkan: 'constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures'.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-69",
@@ -14415,7 +14642,11 @@ const APP_DATA = {
           "Cryptographers would have no interest in building new algorithms."
         ],
         "answer": 1,
-        "explanation": "💡 Analisis TOEFL: Inference. Paragraf 1 dan 2 menjelaskan bahwa transaksi keuangan digital saat ini diamankan oleh RSA yang akan dapat didekripsi dalam hitungan jam oleh komputer kuantum."
+        "explanation": "💡 Analisis TOEFL: Inference. Paragraf 1 dan 2 menjelaskan bahwa transaksi keuangan digital saat ini diamankan oleh RSA yang akan dapat didekripsi dalam hitungan jam oleh komputer kuantum.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       },
       {
         "id": "bank-r-70",
@@ -14431,7 +14662,11 @@ const APP_DATA = {
           "It was completely rejected by international standards organizations"
         ],
         "answer": 0,
-        "explanation": "💡 Analisis TOEFL: Synthesis & Inference. Transisi ini melibatkan perombakan mendasar seluruh arsitektur enkripsi yang telah mengamankan telekomunikasi dan internet dunia selama puluhan tahun."
+        "explanation": "💡 Analisis TOEFL: Synthesis & Inference. Transisi ini melibatkan perombakan mendasar seluruh arsitektur enkripsi yang telah mengamankan telekomunikasi dan internet dunia selama puluhan tahun.",
+        "passage": {
+          "title": "Quantum Computing and the Cryptographic Paradigm Shift",
+          "text": "Modern digital security relies almost universally on public-key cryptography, particularly algorithms such as RSA and Elliptic Curve Cryptography (ECC). These cryptographic protocols secure everything from confidential financial transactions and national security communications to fundamental Internet browsing authentication. Their inviolability is predicated on the mathematical intractability of certain problems for classical computers—specifically, the immense computational difficulty of factoring extremely large composite integers into prime factors or computing discrete logarithms.\n\nHowever, this cryptographic foundation faces existential disruption from the advent of quantum computing. Unlike classical computers, which manipulate binary bits constrained to states of 0 or 1, quantum computers harness quantum bits (qubits). Through the principles of superposition and quantum entanglement, qubits can represent multiple computational states simultaneously. In 1994, mathematician Peter Shor formulated a quantum algorithm capable of solving prime factorization in polynomial time. Once large-scale, fault-tolerant quantum processors are realized, Shor's algorithm will render current RSA-2048 encryption easily decipherable within hours rather than millennia.\n\nIn response to this looming vulnerability, cybersecurity agencies and international standards bodies—led by the National Institute of Standards and Technology (NIST)—have launched intensive initiatives to develop Post-Quantum Cryptography (PQC). PQC focuses on constructing novel cryptographic algorithms based on mathematical lattices, multivariate polynomials, and hash-based signatures that remain invulnerable to both classical and quantum computing attacks. This architectural transition represents the largest cryptographic overhaul in modern telecommunications history."
+        }
       }
     ]
   }

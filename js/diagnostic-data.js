@@ -574,3 +574,5 @@ window.selectDiagnosticOption = selectDiagnosticOption;
 window.submitDiagnosticAnswer = submitDiagnosticAnswer;
 window.startDiagnosticRecommendedModule = startDiagnosticRecommendedModule;
 
+if (typeof module !== "undefined") module.exports = { TOEFL_DIAGNOSTIC_DATA };
+
