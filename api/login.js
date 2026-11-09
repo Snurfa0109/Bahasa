@@ -15,21 +15,21 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { email, password } = req.body || {};
-    const cleanEmail = (email || '').trim().toLowerCase();
+    const { email, username, password } = req.body || {};
+    const identifier = ((email || username || '')).trim().toLowerCase();
 
-    if (!cleanEmail || !password) {
-      return res.status(400).json({ error: 'Email dan password wajib diisi!' });
+    if (!identifier || !password) {
+      return res.status(400).json({ error: 'Email atau username serta password wajib diisi!' });
     }
 
-    // Find user
+    // Find user by email OR username (case-insensitive)
     const [users] = await pool.query(
-      'SELECT id, username, email, password_hash FROM users WHERE email = ? LIMIT 1',
-      [cleanEmail]
+      'SELECT id, username, email, password_hash FROM users WHERE LOWER(email) = ? OR LOWER(username) = ? LIMIT 1',
+      [identifier, identifier]
     );
 
     if (!users || users.length === 0) {
-      return res.status(401).json({ error: 'Email atau password salah! Jika belum punya akun, silakan daftar dulu.' });
+      return res.status(401).json({ error: 'Email/Username atau password salah! Jika belum punya akun, silakan daftar dulu.' });
     }
 
     const user = users[0];

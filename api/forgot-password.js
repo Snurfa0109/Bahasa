@@ -20,22 +20,22 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { action, email, answer, usernameFallback, newPassword } = req.body || {};
-    const cleanEmail = (email || '').trim().toLowerCase();
+    const { action, email, username, answer, usernameFallback, newPassword } = req.body || {};
+    const identifier = ((email || username || '')).trim().toLowerCase();
 
-    if (!cleanEmail) {
-      return res.status(400).json({ error: 'Email wajib diisi!' });
+    if (!identifier) {
+      return res.status(400).json({ error: 'Email atau username wajib diisi!' });
     }
 
     // Step 1: Retrieve user's security question
     if (action === 'get_question') {
       const [users] = await pool.query(
-        'SELECT id, username, security_question, security_answer_hash FROM users WHERE email = ? LIMIT 1',
-        [cleanEmail]
+        'SELECT id, username, email, security_question, security_answer_hash FROM users WHERE LOWER(email) = ? OR LOWER(username) = ? LIMIT 1',
+        [identifier, identifier]
       );
 
       if (!users || users.length === 0) {
-        return res.status(404).json({ error: 'Email tidak ditemukan di sistem. Pastikan penulisan email sudah benar atau daftar akun baru.' });
+        return res.status(404).json({ error: 'Akun (email/username) tidak ditemukan di sistem. Pastikan penulisan sudah benar atau daftar akun baru.' });
       }
 
       const user = users[0];
@@ -55,8 +55,8 @@ module.exports = async (req, res) => {
       }
 
       const [users] = await pool.query(
-        'SELECT id, username, security_question, security_answer_hash FROM users WHERE email = ? LIMIT 1',
-        [cleanEmail]
+        'SELECT id, username, email, security_question, security_answer_hash FROM users WHERE LOWER(email) = ? OR LOWER(username) = ? LIMIT 1',
+        [identifier, identifier]
       );
 
       if (!users || users.length === 0) {

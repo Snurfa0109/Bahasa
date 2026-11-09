@@ -645,6 +645,30 @@ body::before {
   box-shadow: 0 0 0 4px rgba(168,85,247,0.15);
 }
 
+/* Dark theme autofill override for Chromium, Edge & Safari */
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover, 
+.form-input:-webkit-autofill:focus, 
+.form-input:-webkit-autofill:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #141428 inset !important;
+  -webkit-text-fill-color: #f0f0ff !important;
+  caret-color: #f0f0ff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Hide Microsoft Edge / IE native password reveal & clear icons */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 .form-input.shake {
   animation: shake 0.5s ease;
   border-color: var(--error);

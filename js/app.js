@@ -4409,17 +4409,17 @@ function saveLocalUsers(users) {
 
 async function handleLogin(e) {
   if (e) e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
+  const identifier = (document.getElementById('login-email').value || '').trim();
   const password = document.getElementById('login-password').value;
-  if (!email || !password) {
-    return showAuthAlert('Harap isi email dan password!', 'error');
+  if (!identifier || !password) {
+    return showAuthAlert('Harap isi email/username dan password!', 'error');
   }
 
   try {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: identifier, username: identifier, password })
     });
     if (res.ok) {
       const data = await res.json();
@@ -4454,7 +4454,11 @@ async function handleLogin(e) {
 
   // Check local users database fallback
   const localUsers = getLocalUsers();
-  const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+  const found = localUsers.find(u =>
+    ((u.email && u.email.toLowerCase() === identifier.toLowerCase()) ||
+     (u.username && u.username.toLowerCase() === identifier.toLowerCase())) &&
+    u.password === password
+  );
   if (found) {
     state.currentUser = found;
     state.userName = found.username;
@@ -4561,23 +4565,23 @@ let currentForgotHasQuestion = true;
 
 async function checkForgotEmail() {
   const emailInput = document.getElementById('forgot-email');
-  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-  if (!email) {
-    return showAuthAlert('Masukkan email terdaftar kamu!', 'error');
+  const identifier = emailInput ? emailInput.value.trim().toLowerCase() : '';
+  if (!identifier) {
+    return showAuthAlert('Masukkan email atau username terdaftar kamu!', 'error');
   }
 
   try {
     const res = await fetch('/api/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'get_question', email })
+      body: JSON.stringify({ action: 'get_question', email: identifier, username: identifier })
     });
     const data = await res.json();
     if (!res.ok) {
-      return showAuthAlert(data.error || 'Email tidak ditemukan.', 'error');
+      return showAuthAlert(data.error || 'Akun tidak ditemukan.', 'error');
     }
 
-    currentForgotEmail = email;
+    currentForgotEmail = identifier;
     currentForgotHasQuestion = data.hasQuestion;
 
     const step1 = document.getElementById('forgot-step-1');

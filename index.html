@@ -1480,8 +1480,8 @@
       <!-- Form: Login -->
       <form id="auth-form-login" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label class="form-label">Email Terdaftar</label>
-          <input type="email" id="login-email" class="form-input" placeholder="nama@email.com" required>
+          <label class="form-label">Email atau Username</label>
+          <input type="text" id="login-email" class="form-input" placeholder="Email atau username kamu" autocomplete="username" autocapitalize="none" spellcheck="false" required>
         </div>
         <div class="form-group">
           <div class="form-label-row">
@@ -1542,10 +1542,10 @@
       <!-- Form: Forgot Password -->
       <form id="auth-form-forgot" class="hidden" onsubmit="handleForgotPasswordSubmit(event)" style="display: none;">
         <div class="forgot-step" id="forgot-step-1">
-          <p class="forgot-guide-text">Masukkan email akunmu untuk melihat pertanyaan keamanan pemulihan:</p>
+          <p class="forgot-guide-text">Masukkan email atau username akunmu untuk melihat pertanyaan keamanan pemulihan:</p>
           <div class="form-group">
-            <label class="form-label">Email Terdaftar</label>
-            <input type="email" id="forgot-email" class="form-input" placeholder="nama@email.com" required>
+            <label class="form-label">Email atau Username</label>
+            <input type="text" id="forgot-email" class="form-input" placeholder="nama@email.com atau username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
           </div>
           <button type="button" class="btn-primary btn-large" style="width: 100%; margin-top: 10px;" onclick="checkForgotEmail()">
             Cari Akun & Pertanyaan Keamanan 🔍
