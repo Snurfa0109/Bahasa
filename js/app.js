@@ -1845,9 +1845,14 @@ function prepareFillBlankQuestions(rawQuestions) {
   if (!rawQuestions || !rawQuestions.length) return [];
   const pool = shuffle([...rawQuestions]);
   return pool.map(q => {
+    if (!q.options || !q.options.length) return { ...q };
+    const correctText = typeof q.answer === 'number' ? q.options[q.answer] : q.answer;
+    const shuffledOpts = shuffle([...q.options]);
+    const newAnswer = typeof q.answer === 'number' ? shuffledOpts.indexOf(correctText) : q.answer;
     return {
       ...q,
-      options: shuffle([...q.options])
+      options: shuffledOpts,
+      answer: newAnswer !== -1 ? newAnswer : q.answer
     };
   });
 }
