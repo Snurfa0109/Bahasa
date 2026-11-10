@@ -1816,6 +1816,38 @@ function showLockedMsg() {
   });
 }
 
+// ─── PERMANENT TEXT-BOUND ANSWER SAFETY LOCK ──────────────────
+function lockQuestionAnswers(q) {
+  if (!q || !Array.isArray(q.options) || !q.options.length) return;
+  if (!q.correctAnswerText) {
+    if (typeof q.answer === 'number' && q.options[q.answer] !== undefined) {
+      q.correctAnswerText = String(q.options[q.answer]).trim();
+    } else if (typeof q.answer === 'string') {
+      q.correctAnswerText = q.answer.trim();
+    }
+  }
+}
+
+function lockAllQuestionsInTree(root) {
+  if (!root || typeof root !== 'object') return;
+  function traverse(obj) {
+    if (!obj || typeof obj !== 'object') return;
+    if (Array.isArray(obj)) {
+      obj.forEach(traverse);
+      return;
+    }
+    if (Array.isArray(obj.options) && obj.options.length > 0 && ('answer' in obj)) {
+      lockQuestionAnswers(obj);
+    }
+    for (const key of Object.keys(obj)) {
+      if (typeof obj[key] === 'object') {
+        traverse(obj[key]);
+      }
+    }
+  }
+  traverse(root);
+}
+
 // ─── DYNAMIC QUESTION POOL & OPTION SHUFFLE ENGINE ────────────
 function prepareLessonQuiz(rawQuiz) {
   if (!rawQuiz || !rawQuiz.length) return [];
@@ -1823,6 +1855,7 @@ function prepareLessonQuiz(rawQuiz) {
   const pool = shuffle([...rawQuiz]);
 
   return pool.map(q => {
+    lockQuestionAnswers(q);
     // If it's a Written Expression or options have fixed letter markers, do not scramble options
     const isFixedWE = q.sentenceHighlighted ||
       (q.q && (q.q.includes('(A)') || /bagian yang salah/i.test(q.q))) ||
@@ -1830,11 +1863,12 @@ function prepareLessonQuiz(rawQuiz) {
     if (isFixedWE) {
       return { ...q };
     }
-    const correctText = q.options[q.answer];
+    const correctText = q.correctAnswerText || q.options[q.answer];
     const shuffledOpts = shuffle([...q.options]);
     const newAnswer = shuffledOpts.indexOf(correctText);
     return {
       ...q,
+      correctAnswerText: correctText,
       options: shuffledOpts,
       answer: newAnswer !== -1 ? newAnswer : q.answer
     };
@@ -1845,12 +1879,14 @@ function prepareFillBlankQuestions(rawQuestions) {
   if (!rawQuestions || !rawQuestions.length) return [];
   const pool = shuffle([...rawQuestions]);
   return pool.map(q => {
+    lockQuestionAnswers(q);
     if (!q.options || !q.options.length) return { ...q };
-    const correctText = typeof q.answer === 'number' ? q.options[q.answer] : q.answer;
+    const correctText = q.correctAnswerText || (typeof q.answer === 'number' ? q.options[q.answer] : q.answer);
     const shuffledOpts = shuffle([...q.options]);
     const newAnswer = typeof q.answer === 'number' ? shuffledOpts.indexOf(correctText) : q.answer;
     return {
       ...q,
+      correctAnswerText: correctText,
       options: shuffledOpts,
       answer: newAnswer !== -1 ? newAnswer : q.answer
     };
@@ -1861,11 +1897,13 @@ function prepareConversationQuestions(rawConvos) {
   if (!rawConvos || !rawConvos.length) return [];
   const pool = shuffle([...rawConvos]);
   return pool.map(c => {
+    lockQuestionAnswers(c);
     if (!c.options) return c;
-    const correctText = c.options[c.answer];
+    const correctText = c.correctAnswerText || c.options[c.answer];
     const shuffledOpts = shuffle([...c.options]);
     return {
       ...c,
+      correctAnswerText: correctText,
       options: shuffledOpts,
       answer: shuffledOpts.indexOf(correctText)
     };
@@ -1911,14 +1949,16 @@ function prepareActiveCheckpointQuizzes(excludeIds = []) {
   // Deep clone and randomize options positions (anti-key memorization)
   checkpointQuizzes = picked.map(q => {
     const cloned = JSON.parse(JSON.stringify(q));
+    lockQuestionAnswers(cloned);
     const isFixedWE = cloned.sentenceHighlighted ||
       (cloned.q && (cloned.q.includes('(A)') || /bagian yang salah/i.test(cloned.q))) ||
       (cloned.options && cloned.options.some(o => /\([A-D]\)/.test(o)));
     if (isFixedWE) {
       return cloned;
     }
-    const correctText = cloned.options[cloned.answer];
+    const correctText = cloned.correctAnswerText || cloned.options[cloned.answer];
     const shuffledOpts = [...cloned.options].sort(() => 0.5 - Math.random());
+    cloned.correctAnswerText = correctText;
     cloned.options = shuffledOpts;
     cloned.answer = shuffledOpts.indexOf(correctText);
     return cloned;
@@ -2119,6 +2159,7 @@ function startLesson(lang, unitId, lessonId) {
 
   // Deep clone so master data in APP_DATA is pristine on each repeat
   currentLesson = JSON.parse(JSON.stringify(lesson));
+  lockAllQuestionsInTree(currentLesson);
   currentUnit = unit;
   currentLang = lang;
 
@@ -3189,20 +3230,30 @@ function answerQuiz(selected, correct, isTimeout) {
   }
 
   totalAnswers++;
-  const isCorrect = !isTimeout && selected === correct;
-  if (currentLesson && currentLesson.type === 'checkpoint-loop') {
-    if (isCorrect) checkpointCorrectCount++;
-  }
   const cards = currentLesson.type === 'verb-drill' ? (currentLesson.verbs || []) : (currentLesson.cards || []);
   const totalCards = cards.length;
   const qi = Math.max(0, lessonStep - totalCards);
   const currentQ = currentLesson.type === 'checkpoint-loop' 
     ? checkpointQuizzes[checkpointQuizIndex]
     : ((currentLesson.quiz && currentLesson.quiz[qi]) || null);
-  const correctText = (currentQ && currentQ.options && currentQ.options[correct]) || (opts[correct] ? opts[correct].innerText : '');
+
+  const rawCorrectText = (currentQ && currentQ.correctAnswerText) || (currentQ && currentQ.options && currentQ.options[correct]) || (opts[correct] ? opts[correct].innerText.trim() : '');
+  const rawSelectedText = (currentQ && currentQ.options && currentQ.options[selected]) || (opts[selected] ? opts[selected].innerText.trim() : '');
+
+  // Triple-Lock: Text-bound matching guarantees accuracy regardless of shuffle state
+  const isCorrect = !isTimeout && (
+    (rawCorrectText && rawSelectedText && rawSelectedText.trim() === rawCorrectText.trim()) ||
+    selected === correct
+  );
+
+  if (currentLesson && currentLesson.type === 'checkpoint-loop') {
+    if (isCorrect) checkpointCorrectCount++;
+  }
+
+  const correctText = rawCorrectText;
   const selectedText = isTimeout
     ? '⏰ Waktu Habis (Tidak sempat menjawab)'
-    : ((currentQ && currentQ.options && currentQ.options[selected]) || (opts[selected] ? opts[selected].innerText : ''));
+    : rawSelectedText;
   let explanation = currentQ?.explanation || currentQ?.tip || currentLesson?.tip || '';
   if (isTimeout) {
     explanation = `<span style="color: #ef4444; font-weight: 700;">⏰ Waktu Pengerjaan Habis!</span><br>Di ujian TOEFL asli, kamu rata-rata hanya memiliki waktu 37 detik per soal di Structure. Jangan panik, pelajari pembahasannya di bawah ini:<br><br>${explanation}`;
@@ -3227,7 +3278,14 @@ function answerQuiz(selected, correct, isTimeout) {
     });
   } else {
     if (opts[selected]) opts[selected].classList.add('wrong');
-    if (opts[correct]) opts[correct].classList.add('correct');
+    let highlightedCorrect = false;
+    opts.forEach(o => {
+      if (rawCorrectText && o.innerText.trim() === rawCorrectText.trim()) {
+        o.classList.add('correct');
+        highlightedCorrect = true;
+      }
+    });
+    if (!highlightedCorrect && opts[correct]) opts[correct].classList.add('correct');
     loseHeart();
     showQuizFeedback({
       isCorrect: false,
@@ -3382,7 +3440,7 @@ function checkMatchPair() {
 function renderFillBlank(q) {
   const content = document.getElementById('lesson-content');
   const sentenceText = q.sentence || q.text || '';
-  const correctVal = typeof q.answer === 'number' ? q.options[q.answer] : (q.answer || '');
+  const correctVal = q.correctAnswerText || (typeof q.answer === 'number' ? q.options[q.answer] : (q.answer || ''));
   const hintText = q.hint || '';
   const contextText = q.context || 'Lengkapi kalimat baku di bawah ini sesuai kaidah Structure TOEFL:';
   const safeAnswer = String(correctVal).replace(/'/g, "\\'");
@@ -3418,11 +3476,21 @@ function answerFill(selected, correct, ttsText, ttsLang, explanation, isTimeout)
   const opts = document.querySelectorAll('.fill-option');
   opts.forEach(o => o.disabled = true);
   totalAnswers++;
-  const isCorrect = !isTimeout && selected.trim() === correct.trim();
+
+  const currentQ = (currentLesson && currentLesson.questions && currentLesson.questions[fillBlankStep]) || null;
+  const targetCorrect = (currentQ && currentQ.correctAnswerText) || correct || '';
+  const isCorrect = !isTimeout && (
+    (targetCorrect && selected.trim() === targetCorrect.trim()) ||
+    selected.trim() === correct.trim()
+  );
 
   opts.forEach(o => {
-    if (o.textContent.trim() === correct.trim()) o.classList.add('correct');
-    if (o.textContent.trim() === selected.trim() && !isCorrect) o.classList.add('wrong');
+    const text = o.textContent.trim();
+    if ((targetCorrect && text === targetCorrect.trim()) || text === correct.trim()) {
+      o.classList.add('correct');
+    } else if (text === selected.trim() && !isCorrect) {
+      o.classList.add('wrong');
+    }
   });
 
   if (isCorrect) {
@@ -3540,16 +3608,23 @@ function answerReadingQuiz(selectedIndex, correctIndex, explanation, isTimeout) 
   btns.forEach(btn => btn.disabled = true);
 
   totalAnswers++;
-  const isCorrect = !isTimeout && selectedIndex === correctIndex;
   const letters = ['A', 'B', 'C', 'D'];
-  const qObj = currentLesson.questions[readingStep] || {};
+  const qObj = (currentLesson && currentLesson.questions && currentLesson.questions[readingStep]) || {};
+  const rawTargetText = qObj.correctAnswerText || (qObj.options && qObj.options[correctIndex]) || '';
+  const rawSelectedText = (qObj.options && qObj.options[selectedIndex]) || '';
+
+  const isCorrect = !isTimeout && (
+    (rawTargetText && rawSelectedText && rawSelectedText.trim() === rawTargetText.trim()) ||
+    selectedIndex === correctIndex
+  );
+
   const selectedText = isTimeout
     ? '⏰ Waktu Habis (Tidak sempat menjawab)'
     : ((qObj.options && qObj.options[selectedIndex]) ? `${letters[selectedIndex]}. ${qObj.options[selectedIndex]}` : `Opsi ${letters[selectedIndex]}`);
   const correctText = (qObj.options && qObj.options[correctIndex]) ? `${letters[correctIndex]}. ${qObj.options[correctIndex]}` : `Opsi ${letters[correctIndex]}`;
 
   if (isCorrect) {
-    btns[selectedIndex].classList.add('correct');
+    if (btns[selectedIndex]) btns[selectedIndex].classList.add('correct');
     correctAnswers++;
     let xpGain = Math.round(currentLesson.xpReward / currentLesson.questions.length);
     if (state.toeflTimerEnabled && currentLang === 'toefl') {
@@ -3561,7 +3636,15 @@ function answerReadingQuiz(selectedIndex, correctIndex, explanation, isTimeout) 
     playSuccessEffect();
   } else {
     if (btns[selectedIndex]) btns[selectedIndex].classList.add('wrong');
-    if (btns[correctIndex]) btns[correctIndex].classList.add('correct');
+    let highlighted = false;
+    btns.forEach((btn, idx) => {
+      const optText = (qObj.options && qObj.options[idx]) ? qObj.options[idx].trim() : '';
+      if (rawTargetText && optText === rawTargetText.trim()) {
+        btn.classList.add('correct');
+        highlighted = true;
+      }
+    });
+    if (!highlighted && btns[correctIndex]) btns[correctIndex].classList.add('correct');
     loseHeart();
     showToast(isTimeout ? '⏰ Waktu Habis!' : '❌ Kurang tepat, periksa pembahasannya', 'error');
   }
@@ -6582,6 +6665,9 @@ window.addEventListener('hashchange', () => {
 
 // ─── INIT ─────────────────────────────────────────────────────
 function initApp() {
+  if (typeof APP_DATA !== 'undefined') {
+    lockAllQuestionsInTree(APP_DATA);
+  }
   loadState();
   let hasValidUser = !!(state.currentUser && (state.currentUser.id || state.currentUser.email));
   if (!hasValidUser) {
